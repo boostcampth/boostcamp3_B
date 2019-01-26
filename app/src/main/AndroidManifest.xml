@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/noActionBarStyle">
-        <activity android:name=".view.activity.BottomNavActivity">
+        <activity android:name=".view.activities.BottomNavActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

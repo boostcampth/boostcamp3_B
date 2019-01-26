@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -10,6 +10,26 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="et_round">
+        <item name="android:background">@drawable/round_corner</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/aller_default</item>
+        <item name="android:layout_width">@dimen/sign_in_et_width</item>
+        <item name="android:layout_height">@dimen/sign_in_et_height</item>
+        <item name="android:textSize">@dimen/sign_in_et_text_size</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="tv_my_page">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:fontFamily">@font/aller_bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
 </resources>

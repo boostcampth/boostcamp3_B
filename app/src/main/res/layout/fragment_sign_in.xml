@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/ctl_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/main_background">
+
+                    <TextView
+                        android:id="@+id/tv_sign_in_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="60dp"
+                        android:fontFamily="@font/aller_bold"
+                        android:text="@string/main_title"
+                        android:textColor="@android:color/black"
+                        android:textSize="30sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/et_sign_in_email"
+                        style="@style/et_round"
+                        android:layout_marginTop="40dp"
+                        android:backgroundTint="@android:color/white"
+                        android:hint="@string/sign_email"
+                        android:inputType="textEmailAddress"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_sign_in_title" />
+
+                    <EditText
+                        android:id="@+id/et_sign_in_password"
+                        style="@style/et_round"
+                        android:layout_marginTop="8dp"
+                        android:backgroundTint="@android:color/white"
+                        android:hint="@string/sign_password"
+                        android:inputType="textPassword"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/et_sign_in_email" />
+
+                    <TextView
+                        android:id="@+id/tv_sign_in_login"
+                        style="@style/et_round"
+                        android:layout_marginTop="28dp"
+                        android:backgroundTint="@color/colorAccent"
+                        android:gravity="center"
+                        android:text="@string/sign_in_login"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/et_sign_in_password" />
+
+                    <ImageView
+                        android:id="@+id/iv_sign_in_google"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:src="@drawable/google"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_sign_in_facebook"
+                        app:layout_constraintStart_toStartOf="@+id/tv_sign_in_login"
+                        app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />
+
+                    <ImageView
+                        android:id="@+id/iv_sign_in_facebook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:src="@drawable/facebook"
+                        app:layout_constraintEnd_toStartOf="@+id/iv_sign_in_email"
+                        app:layout_constraintStart_toEndOf="@+id/iv_sign_in_google"
+                        app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />
+
+                    <ImageView
+                        android:id="@+id/iv_sign_in_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="32dp"
+                        android:src="@drawable/email"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_sign_in_login"
+                        app:layout_constraintStart_toEndOf="@+id/iv_sign_in_facebook"
+                        app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tb_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <include
+            layout="@layout/bottom_my_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

@@ -1,4 +1,4 @@
-package com.boostcampa2.catchhouse.view.activity;
+package com.boostcampa2.catchhouse.view.activities;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
