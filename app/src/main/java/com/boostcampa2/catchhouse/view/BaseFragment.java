@@ -1,6 +1,7 @@
 package com.boostcampa2.catchhouse.view;
 
 import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -14,7 +15,7 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewModel> extends Fragment {
 
-    protected B mBinding;
+    private B mBinding;
     protected V mViewModel;
 
     @Nullable
@@ -43,4 +44,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
         return mBinding;
     }
 
+    protected V getViewModel() {
+        return mViewModel;
+    }
 }
