@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="handler"
+            type="com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -51,6 +54,9 @@
                         android:backgroundTint="@android:color/white"
                         android:hint="@string/sign_email"
                         android:inputType="textEmailAddress"
+                        android:paddingStart="20dp"
+                        android:text="@={handler.mEmail}"
+                        android:textAlignment="textStart"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/tv_sign_in_title" />
@@ -62,6 +68,9 @@
                         android:backgroundTint="@android:color/white"
                         android:hint="@string/sign_password"
                         android:inputType="textPassword"
+                        android:paddingStart="20dp"
+                        android:text="@={handler.mPassword}"
+                        android:textAlignment="textStart"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/et_sign_in_email" />
@@ -82,7 +91,7 @@
                         android:id="@+id/iv_sign_in_google"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="24dp"
                         android:src="@drawable/google"
                         app:layout_constraintEnd_toStartOf="@+id/iv_sign_in_facebook"
                         app:layout_constraintStart_toStartOf="@+id/tv_sign_in_login"
@@ -92,7 +101,7 @@
                         android:id="@+id/iv_sign_in_facebook"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="24dp"
                         android:src="@drawable/facebook"
                         app:layout_constraintEnd_toStartOf="@+id/iv_sign_in_email"
                         app:layout_constraintStart_toEndOf="@+id/iv_sign_in_google"
@@ -102,7 +111,7 @@
                         android:id="@+id/iv_sign_in_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="24dp"
                         android:src="@drawable/email"
                         app:layout_constraintEnd_toEndOf="@+id/tv_sign_in_login"
                         app:layout_constraintStart_toEndOf="@+id/iv_sign_in_facebook"

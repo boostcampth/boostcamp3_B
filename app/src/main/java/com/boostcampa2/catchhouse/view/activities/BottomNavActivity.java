@@ -1,20 +1,20 @@
 package com.boostcampa2.catchhouse.view.activities;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 
 import com.boostcampa2.catchhouse.R;
 import com.boostcampa2.catchhouse.databinding.ActivityBottomNavBinding;
 import com.boostcampa2.catchhouse.view.BaseActivity;
+import com.boostcampa2.catchhouse.view.fragments.SignInFragment;
+import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
+import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding, ViewModel, ViewModelProvider.Factory> {
+public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
@@ -25,21 +25,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding, Vi
     }
 
     @Override
-    protected Class<ViewModel> setViewModel() {
-        /* this activity is not using ViewModel */
-        return null;
-    }
-
-    @Nullable
-    @Override
-    protected ViewModelProvider.Factory setViewModelFactory() {
-        return null;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        createViewModes();
         mDisposable = new CompositeDisposable();
         mFragmentManager = getSupportFragmentManager();
         getBinding().bnavHomeActivity.setItemIconTintList(null);
@@ -47,6 +36,11 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding, Vi
             onNavItemSelected(v);
             return true;
         });
+
+    }
+
+    private void createViewModes() {
+        createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication()));
     }
 
     private void onNavItemSelected(MenuItem item) {
@@ -64,7 +58,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding, Vi
                             /* handle here: replace fragment on message btn Clicked */
                             break;
                         case R.id.action_my_page:
-                            /* handle here: replace fragment on myPage btn Clicked */
+                            mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new SignInFragment()).commit();
                             break;
                     }
                 }));
