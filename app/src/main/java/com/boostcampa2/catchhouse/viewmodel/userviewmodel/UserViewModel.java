@@ -6,7 +6,9 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 
 import com.boostcampa2.catchhouse.R;
+import com.boostcampa2.catchhouse.data.userdata.UserRepository;
 import com.boostcampa2.catchhouse.viewmodel.ReactiveViewModel;
+import com.boostcampa2.catchhouse.viewmodel.ViewModelListener;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,15 +21,19 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class UserViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
-    public MutableLiveData<FirebaseUser> mFirebaseUser;
+    private UserRepository mRepository;
+    private ViewModelListener mListener;
+    private MutableLiveData<FirebaseUser> mFirebaseUser;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
 
-    UserViewModel(Application application) {
+    UserViewModel(Application application, UserRepository repository, ViewModelListener listener) {
         super();
-        mAppContext = application;
-        mFirebaseUser = new MutableLiveData<>();
-        mEmail = new MutableLiveData<>();
+        this.mAppContext = application;
+        this.mRepository = repository;
+        this.mListener = listener;
+        this.mFirebaseUser = new MutableLiveData<>();
+        this.mEmail = new MutableLiveData<>();
     }
 
     public GoogleSignInClient getGoogleSignUpInfo() {
@@ -39,12 +45,20 @@ public class UserViewModel extends ReactiveViewModel {
     }
 
     public void handleSignIn(Intent data) {
+        mListener.isWorking();
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         GoogleSignInAccount account = task.getResult();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signInWithCredential(GoogleAuthProvider.getCredential(account.getIdToken(), null))
-                .addOnSuccessListener(user -> mFirebaseUser.setValue(user.getUser()))
-                .addOnFailureListener(user -> mFirebaseUser.setValue(null));
+                .addOnSuccessListener(user -> {
+                    mFirebaseUser.setValue(user.getUser());
+                    mListener.isFinished();
+                })
+                .addOnFailureListener(error -> {
+                    mFirebaseUser.setValue(null);
+                    mListener.isFinished();
+                    mListener.onError(error.getCause());
+                });
     }
 
     public LiveData<FirebaseUser> getUserInfo() {

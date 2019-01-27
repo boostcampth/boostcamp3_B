@@ -16,7 +16,7 @@ import com.boostcampa2.catchhouse.databinding.FragmentSignInBinding;
 import com.boostcampa2.catchhouse.view.BaseFragment;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
-public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel> {
+public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel>{
 
     @Override
     protected int setLayout() {
@@ -51,8 +51,9 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()) {
+        if (requestCode == Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()) {
             getViewModel().handleSignIn(data);
         }
     }
+
 }

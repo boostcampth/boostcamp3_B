@@ -3,7 +3,6 @@ package com.boostcampa2.catchhouse.data.userdata.pojo;
 public class User {
 
     private String eMail;
-    private String password;
     private String nickName;
     private String gender;
     private String profile;
@@ -13,9 +12,10 @@ public class User {
 
     }
 
-    public User(String eMail, String password, String nickName, String gender, String profile, String myRoom) {
+
+
+    public User(String eMail, String nickName, String gender, String profile, String myRoom) {
         this.eMail = eMail;
-        this.password = password;
         this.nickName = nickName;
         this.gender = gender;
         this.profile = profile;
@@ -28,14 +28,6 @@ public class User {
 
     public void seteMail(String eMail) {
         this.eMail = eMail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getNickName() {
