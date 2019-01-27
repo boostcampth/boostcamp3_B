@@ -12,6 +12,10 @@ public class User {
 
     }
 
+    public User(String name) {
+        this.nickName = name;
+    }
+
     public User(String name, String gender) {
         this.nickName = name;
         this.gender = gender;

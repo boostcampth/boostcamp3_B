@@ -15,8 +15,13 @@ import com.boostcampa2.catchhouse.constants.Constants;
 import com.boostcampa2.catchhouse.databinding.FragmentSignInBinding;
 import com.boostcampa2.catchhouse.view.BaseFragment;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
+import com.facebook.CallbackManager;
 
-public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel>{
+import java.util.Arrays;
+
+public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel> {
+
+    private CallbackManager callbackManager;
 
     @Override
     protected int setLayout() {
@@ -43,7 +48,12 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         getBinding().setLifecycleOwner(getActivity());
 
         getBinding().ivSignInGoogle.setOnClickListener(__ ->
-                startActivityForResult(getViewModel().getGoogleSignUpInfo().getSignInIntent(), Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()));
+                startActivityForResult(getViewModel().requestGoogleSignIn().getSignInIntent(), Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()));
+
+        getBinding().ivSignInFacebook.setOnClickListener(__ -> {
+            callbackManager = CallbackManager.Factory.create();
+            getViewModel().requestFacebookSignIn(callbackManager).logInWithReadPermissions(this, Arrays.asList("email", "public_profile", "user_gender", "user_photos"));
+        });
 
         getViewModel().getUserInfo().observe(this, v -> Log.d("파베", v.getEmail()));
     }
@@ -52,8 +62,10 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()) {
-            getViewModel().handleSignIn(data);
+            getViewModel().signUpFirebaseWithGoogle(data);
+            return;
         }
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 }

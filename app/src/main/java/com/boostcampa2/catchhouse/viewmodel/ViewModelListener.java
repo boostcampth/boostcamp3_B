@@ -7,4 +7,5 @@ public interface ViewModelListener {
     void isWorking();
 
     void isFinished();
+
 }
