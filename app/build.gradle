@@ -46,6 +46,8 @@ dependencies {
     //firebase google auth api
     implementation 'com.google.firebase:firebase-auth:16.1.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    //firebase facebook auth api
+    implementation 'com.facebook.android:facebook-login:4.39.0'
     //firebase realtime database
     implementation 'com.google.firebase:firebase-database:16.0.5'
 
