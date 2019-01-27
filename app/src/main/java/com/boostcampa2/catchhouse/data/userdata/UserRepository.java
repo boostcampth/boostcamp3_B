@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.boostcampa2.catchhouse.data.userdata.pojo.User;
 import com.boostcampa2.catchhouse.data.userdata.remote.UserRemoteData;
+import com.facebook.AccessToken;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -30,7 +31,12 @@ public class UserRepository {
     }
 
     @NonNull
-    public Completable setUserToRemote(User user) {
-        return mUserRemote.setUser(user);
+    public Single<User> getDetailInfoFromRemote(AccessToken token) {
+        return mUserRemote.getNameAndGenderFromFB(token);
+    }
+
+    @NonNull
+    public Completable setUserToRemote(String uuid, User user) {
+        return mUserRemote.setUser(uuid, user);
     }
 }

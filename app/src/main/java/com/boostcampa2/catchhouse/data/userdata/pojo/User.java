@@ -12,7 +12,10 @@ public class User {
 
     }
 
-
+    public User(String name, String gender) {
+        this.nickName = name;
+        this.gender = gender;
+    }
 
     public User(String eMail, String nickName, String gender, String profile, String myRoom) {
         this.eMail = eMail;

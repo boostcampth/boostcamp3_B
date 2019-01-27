@@ -13,6 +13,6 @@ public interface UserDataSource {
     Single<User> getUser(String uuid);
 
     @NonNull
-    Completable setUser(User user);
+    Completable setUser(String uuid, User user);
 
 }
