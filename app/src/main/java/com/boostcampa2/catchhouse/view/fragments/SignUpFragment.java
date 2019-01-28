@@ -48,8 +48,6 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         getBinding().setLifecycleOwner(this);
 
         getBinding().ivSignUpProfile.setOnClickListener(__ -> {
-//            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.CONTENT_TYPE);
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, GALLERY);

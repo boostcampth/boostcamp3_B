@@ -4,7 +4,6 @@
     <string name="bottom_nav_map">map</string>
     <string name="bottom_nav_message">message</string>
     <string name="bottom_nav_my_page">myPage</string>
-    <!--<string name="facebook_app_id">2175807422479387</string>-->
     <string name="fb_login_protocol_scheme">fb2175807422479387</string>
     <string name="gender_male">male</string>
     <string name="gender_female">female</string>
