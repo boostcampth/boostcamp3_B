@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewModel> extends Fragment {
 
-    protected B mBinding;
+    private B mBinding;
     protected V mViewModel;
 
     @Nullable
@@ -43,4 +43,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
         return mBinding;
     }
 
+    protected V getViewModel() {
+        return mViewModel;
+    }
 }

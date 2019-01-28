@@ -4,4 +4,17 @@
     <string name="bottom_nav_map">map</string>
     <string name="bottom_nav_message">message</string>
     <string name="bottom_nav_my_page">myPage</string>
+    <string name="fb_login_protocol_scheme">fb2175807422479387</string>
+    <string name="gender_male">male</string>
+    <string name="gender_female">female</string>
+    <string name="main_title">Catch House</string>
+    <string name="my_favorite_title">내가 찜한 방</string>
+    <string name="recently_visit_title">최근 둘러본 방</string>
+    <string name="sign_email">E - MAIL</string>
+    <string name="sign_password">PASSWORD</string>
+    <string name="sign_in_login">로그인</string>
+    <string name="sign_up_nick_name">NickName</string>
+    <string name="sign_up_gender">Gender</string>
+    <string name="sign_up">회원 가입</string>
+
 </resources>
