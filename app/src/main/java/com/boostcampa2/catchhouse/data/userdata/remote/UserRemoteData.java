@@ -1,5 +1,6 @@
 package com.boostcampa2.catchhouse.data.userdata.remote;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -12,6 +13,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -19,6 +23,7 @@ import io.reactivex.Single;
 public class UserRemoteData implements UserDataSource {
 
     private DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users");
+    private StorageReference fs = FirebaseStorage.getInstance().getReference().child("profile");
 
     private static class UserRemoteDataHelper {
         private static final UserRemoteData INSTANCE = new UserRemoteData();
@@ -73,5 +78,21 @@ public class UserRemoteData implements UserDataSource {
                     request.setParameters(parameter);
                     request.executeAsync();
                 }));
+    }
+
+    public Single<Uri> saveProfileAndGetUrl(String uuid, byte[] profileByreArray) {
+        return Single.defer(() ->
+                Single.create(subscriber -> {
+                    StorageReference ref = fs.child(uuid);
+                    UploadTask uploadTask = ref.putBytes(profileByreArray);
+                    uploadTask.addOnSuccessListener(snapshot -> uploadTask.continueWithTask(task -> {
+                        if (!task.isSuccessful()) {
+                            subscriber.onError(task.getException());
+                        }
+                        return ref.getDownloadUrl();
+                    }).addOnSuccessListener(subscriber::onSuccess)
+                            .addOnFailureListener(subscriber::onError));
+                })
+        );
     }
 }

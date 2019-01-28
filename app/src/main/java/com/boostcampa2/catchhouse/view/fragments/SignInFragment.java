@@ -64,7 +64,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         });
 
         getBinding().ivSignInGoogle.setOnClickListener(__ ->
-                startActivityForResult(getViewModel().gettGoogleSignInIntent(), Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()));
+                startActivityForResult(getViewModel().getGoogleSignInIntent(), Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()));
 
         getBinding().ivSignInFacebook.setOnClickListener(__ -> {
             mCallbackManager = CallbackManager.Factory.create();

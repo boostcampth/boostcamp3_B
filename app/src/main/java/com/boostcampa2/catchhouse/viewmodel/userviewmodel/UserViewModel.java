@@ -28,6 +28,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.io.ByteArrayOutputStream;
+
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -80,7 +82,36 @@ public class UserViewModel extends ReactiveViewModel {
                         }, error -> mListener.onError(error)));
     }
 
-    public Intent gettGoogleSignInIntent() {
+    private byte[] getProfileByteArray() {
+        if (mProfile.getValue() == null) {
+            return null;
+        }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        mProfile.getValue().compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        return outputStream.toByteArray();
+    }
+
+    private void setUserToRemote(String uid) {
+        getCompositeDisposable().add(mRepository.setUserToRemote(uid, mUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> mListener.onSuccess(SIGN_UP_SUCCESS),
+                        error -> mListener.onError(error)));
+    }
+
+    private void setProfileImageToRemote(String uid) {
+        getCompositeDisposable().add(
+                mRepository.saveProfileAndGetUrl(uid, getProfileByteArray())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(path -> {
+                                    mUser.setProfile(path.toString());
+                                    setUserToRemote(uid);
+                                },
+                                error -> mListener.onError(error)));
+    }
+
+    public Intent getGoogleSignInIntent() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(mAppContext.getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -132,12 +163,19 @@ public class UserViewModel extends ReactiveViewModel {
 
     public void signUpWithEmail() {
         mListener.isWorking();
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
+        FirebaseAuth.getInstance()
+                .createUserWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
                 .addOnSuccessListener(authResult -> {
+                    String uid = authResult.getUser().getUid();
                     mUser = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
-                    mFirebaseUser.setValue(authResult.getUser());
-                    getCompositeDisposable().add(mRepository.setUserToRemote(mFirebaseUser.getValue().getUid(), mUser)
-                            .subscribe(() -> mListener.onSuccess(SIGN_UP_SUCCESS), error -> mListener.onError(error)));
+                    if (mProfile.getValue() != null) {
+                        //Firebase 인증 성공시, profile image가 있는지 확인,
+                        //확인 후, storage 저장, 그 후 storage의 경로와 함께 유저 정보 db 저장
+                        setProfileImageToRemote(uid);
+                    } else {
+                        //profile image 가 없다면, db에 바로 유저 정보 저장
+                        setUserToRemote(uid);
+                    }
                 }).addOnFailureListener(error -> mListener.onError(error));
     }
 
