@@ -17,4 +17,9 @@
     <string name="sign_up_gender">Gender</string>
     <string name="sign_up">회원 가입</string>
 
+    /* fragment_home */
+    <string name="home_title">Catch House</string>
+    <string name="search_btn">내놓은 방 검색</string>
+    <string name="post_article_btn">우리집 내놓기</string>
+
 </resources>
