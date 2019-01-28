@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.boostcampa2.catchhouse.R;
+import com.boostcampa2.catchhouse.constants.Constants;
 import com.boostcampa2.catchhouse.data.userdata.UserRepository;
 import com.boostcampa2.catchhouse.databinding.ActivityBottomNavBinding;
 import com.boostcampa2.catchhouse.view.BaseActivity;
@@ -14,9 +15,12 @@ import com.boostcampa2.catchhouse.view.fragments.SignInFragment;
 import com.boostcampa2.catchhouse.viewmodel.ViewModelListener;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
+import com.google.firebase.auth.FirebaseAuth;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+
+import static com.boostcampa2.catchhouse.constants.Constants.SIGN_IN_SUCCESS;
 
 public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener {
 
@@ -31,17 +35,23 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     public void onError(Throwable throwable) {
         Toast.makeText(this, throwable.toString(), Toast.LENGTH_SHORT).show();
-        Log.d("에러", "onError: " + throwable.toString());
+    }
+
+    @Override
+    public void onSuccess(String success) {
+        switch (success) {
+            case SIGN_IN_SUCCESS:
+
+                break;
+        }
     }
 
     @Override
     public void isWorking() {
-        Toast.makeText(this, "일합니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void isFinished() {
-        Toast.makeText(this, "끝", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -78,10 +88,20 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                             /* handle here: replace fragment on message btn Clicked */
                             break;
                         case R.id.action_my_page:
-                            mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new SignInFragment()).commit();
+                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                                mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new SignInFragment()).commit();
+                                return;
+                            }
                             break;
                     }
                 }));
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseAuth.getInstance().signOut();
+
     }
 
     @Override

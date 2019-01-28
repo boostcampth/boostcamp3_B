@@ -20,7 +20,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -32,6 +31,8 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.boostcampa2.catchhouse.constants.Constants.SIGN_IN_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
 
@@ -78,12 +79,12 @@ public class UserViewModel extends ReactiveViewModel {
                         }, error -> mListener.onError(error)));
     }
 
-    public GoogleSignInClient requestGoogleSignIn() {
+    public Intent gettGoogleSignInIntent() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(mAppContext.getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        return GoogleSignIn.getClient(mAppContext, gso);
+        return GoogleSignIn.getClient(mAppContext, gso).getSignInIntent();
     }
 
     public void signUpFirebaseWithGoogle(Intent data) {
@@ -119,6 +120,14 @@ public class UserViewModel extends ReactiveViewModel {
         return loginManager;
     }
 
+    private void getDetailDataFromFaceBook(LoginResult loginResult) {
+        mListener.isWorking();
+        getCompositeDisposable().add(mRepository.getDetailInfoFromRemote(loginResult.getAccessToken())
+                .subscribeOn(Schedulers.io())
+                .subscribe(info -> mUser = info));
+        handlingSignUpData(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()));
+    }
+
     public void signUpWithEmail() {
         mListener.isWorking();
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
@@ -130,12 +139,11 @@ public class UserViewModel extends ReactiveViewModel {
                 }).addOnFailureListener(error -> mListener.onError(error));
     }
 
-    private void getDetailDataFromFaceBook(LoginResult loginResult) {
+    public void signInWithEmail() {
         mListener.isWorking();
-        getCompositeDisposable().add(mRepository.getDetailInfoFromRemote(loginResult.getAccessToken())
-                .subscribeOn(Schedulers.io())
-                .subscribe(info -> mUser = info));
-        handlingSignUpData(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()));
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
+                .addOnSuccessListener(authResult -> mListener.onSuccess(SIGN_IN_SUCCESS))
+                .addOnFailureListener(error -> mListener.onError(error));
     }
 
     private void handlingSignUpData(AuthCredential credential) {

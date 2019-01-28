@@ -16,5 +16,7 @@
     <string name="sign_up_nick_name">NickName</string>
     <string name="sign_up_gender">Gender</string>
     <string name="sign_up">회원 가입</string>
+    <string name="snack_fill_info">모든 정보를 입력해 주세요</string>
+    <string name="snack_failed_load_image">이미지 로드에 실패했습니다.</string>
 
 </resources>

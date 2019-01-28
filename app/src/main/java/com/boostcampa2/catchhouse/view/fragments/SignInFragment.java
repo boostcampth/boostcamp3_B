@@ -1,12 +1,13 @@
 package com.boostcampa2.catchhouse.view.fragments;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,9 @@ import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.facebook.CallbackManager;
 
 import java.util.Arrays;
+
+import static com.boostcampa2.catchhouse.constants.Constants.E_MAIL;
+import static com.boostcampa2.catchhouse.constants.Constants.PUBLIC_PROFILE;
 
 public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel> {
 
@@ -51,30 +55,46 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         getBinding().setHandler(getViewModel());
         getBinding().setLifecycleOwner(getActivity());
 
+        getBinding().tvSignInLogin.setOnClickListener(v -> {
+            if (signInInfoCheck()) {
+                Snackbar.make(v, R.string.snack_fill_info, Snackbar.LENGTH_SHORT);
+                return;
+            }
+            mViewModel.signInWithEmail();
+        });
+
         getBinding().ivSignInGoogle.setOnClickListener(__ ->
-                startActivityForResult(getViewModel().requestGoogleSignIn().getSignInIntent(), Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()));
+                startActivityForResult(getViewModel().gettGoogleSignInIntent(), Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()));
 
         getBinding().ivSignInFacebook.setOnClickListener(__ -> {
             mCallbackManager = CallbackManager.Factory.create();
             getViewModel().requestFacebookSignIn(mCallbackManager)
-                    .logInWithReadPermissions(this, Arrays.asList("email", "public_profile", "user_gender", "user_photos"));
+                    .logInWithReadPermissions(this, Arrays.asList(E_MAIL, PUBLIC_PROFILE));
         });
 
-        getBinding().ivSignInEmail.setOnClickListener(__ -> mFragmentManager.beginTransaction()
-                .replace(R.id.fl_home_container, new SignUpFragment())
-                .addToBackStack(SignUpFragment.class.getName()).commit());
-
-        getViewModel().getUserInfo().observe(this, v -> Log.d("파베", v.getEmail()));
+        getBinding().ivSignInEmail.setOnClickListener(__ ->
+                mFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fl_home_container, new SignUpFragment())
+                        .addToBackStack(SignUpFragment.class.getName())
+                        .commit());
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()) {
-            getViewModel().signUpFirebaseWithGoogle(data);
+            if (resultCode == Activity.RESULT_OK) {
+                getViewModel().signUpFirebaseWithGoogle(data);
+            }
             return;
         }
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private boolean signInInfoCheck() {
+        return getBinding().etSignInEmail.getText().toString().trim().equals("") &&
+                getBinding().etSignInPassword.getText().toString().trim().equals("");
     }
 
 }

@@ -3,7 +3,6 @@ package com.boostcampa2.catchhouse.view.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -17,7 +16,9 @@ import com.boostcampa2.catchhouse.view.BaseFragment;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import static android.app.Activity.RESULT_OK;
+import static com.boostcampa2.catchhouse.constants.Constants.FEMALE;
 import static com.boostcampa2.catchhouse.constants.Constants.GALLERY;
+import static com.boostcampa2.catchhouse.constants.Constants.MALE;
 
 public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserViewModel> {
 
@@ -55,19 +56,19 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
 
         getBinding().rbSignUpMale.setOnCheckedChangeListener((__, isChecked) -> {
             if (isChecked) {
-                mViewModel.setGender("male");
+                mViewModel.setGender(MALE);
             }
         });
 
         getBinding().rbSignUpFemale.setOnCheckedChangeListener((__, isChecked) -> {
             if (isChecked) {
-                mViewModel.setGender("female");
+                mViewModel.setGender(FEMALE);
             }
         });
 
         getBinding().tvSignUp.setOnClickListener(v -> {
             if (signUpInfoCheck()) {
-                Snackbar.make(v, "모든 정보를 입력해 주세요", Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(v, R.string.snack_fill_info, Snackbar.LENGTH_SHORT).show();
                 return;
             }
             getViewModel().signUpWithEmail();
@@ -87,7 +88,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
                 getViewModel().getBitmapFromData(data.getData());
                 return;
             }
-            Snackbar.make(getBinding().getRoot(), "이미지 로드에 실패했습니다.", Snackbar.LENGTH_SHORT);
+            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);
         }
     }
 }
