@@ -21,12 +21,10 @@ public class User {
         this.gender = gender;
     }
 
-    public User(String eMail, String nickName, String gender, String profile, String myRoom) {
+    public User(String eMail, String nickName, String gender) {
         this.eMail = eMail;
         this.nickName = nickName;
         this.gender = gender;
-        this.profile = profile;
-        this.myRoom = myRoom;
     }
 
     public String geteMail() {

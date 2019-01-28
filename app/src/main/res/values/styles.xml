@@ -18,8 +18,23 @@
         <item name="android:layout_width">@dimen/sign_in_et_width</item>
         <item name="android:layout_height">@dimen/sign_in_et_height</item>
         <item name="android:textSize">@dimen/sign_in_et_text_size</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:gravity">center</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+    </style>
+
+    <style name="tv_accent">
+        <item name="android:background">@drawable/tv_accent</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/aller_default</item>
+        <item name="android:layout_width">@dimen/sign_in_et_width</item>
+        <item name="android:layout_height">@dimen/sign_in_et_height</item>
+        <item name="android:textSize">@dimen/sign_in_et_text_size</item>
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+
     </style>
 
     <style name="tv_my_page">

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tb_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:title="@string/sign_up" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/main_background"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ImageView
+                android:id="@+id/iv_sign_up_profile"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/circular_image_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bind:setProfile="@{handler.mProfile}" />
+
+            <EditText
+                android:id="@+id/et_sign_up_email"
+                style="@style/et_round"
+                android:layout_marginTop="28dp"
+                android:hint="@string/sign_email"
+                android:inputType="textEmailAddress"
+                android:text="@={handler.mEmail}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_sign_up_profile" />
+
+            <EditText
+                android:id="@+id/et_sign_up_password"
+                style="@style/et_round"
+                android:layout_marginTop="8dp"
+                android:hint="@string/sign_password"
+                android:inputType="textPassword"
+                android:text="@={handler.mPassword}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_sign_up_email" />
+
+            <EditText
+                android:id="@+id/et_sign_up_nick_name"
+                style="@style/et_round"
+                android:layout_marginTop="20dp"
+                android:hint="@string/sign_up_nick_name"
+                android:inputType="text"
+                android:text="@={handler.mNickName}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/et_sign_up_password" />
+
+            <TextView
+                android:id="@+id/tv_sign_up_gender"
+                style="@style/et_round"
+                android:layout_marginTop="8dp"
+                android:hint="@string/sign_up_gender"
+                app:layout_constraintEnd_toEndOf="@id/et_sign_up_nick_name"
+                app:layout_constraintStart_toStartOf="@id/et_sign_up_nick_name"
+                app:layout_constraintTop_toBottomOf="@id/et_sign_up_nick_name" />
+
+            <RadioGroup
+                android:id="@+id/rg_sign_up_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_gender"
+                app:layout_constraintEnd_toEndOf="@id/tv_sign_up_gender"
+                app:layout_constraintTop_toTopOf="@id/tv_sign_up_gender">
+
+                <RadioButton
+                    android:id="@+id/rb_sign_up_male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/gender_male" />
+
+                <RadioButton
+                    android:id="@+id/rb_sign_up_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gender_female" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/tv_sign_up"
+                style="@style/tv_accent"
+                android:layout_marginBottom="28dp"
+                android:text="@string/sign_up"
+                android:textColor="@android:color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

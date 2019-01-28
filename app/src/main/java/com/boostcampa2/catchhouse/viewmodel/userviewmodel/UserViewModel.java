@@ -4,12 +4,15 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 
 import com.boostcampa2.catchhouse.R;
 import com.boostcampa2.catchhouse.data.userdata.UserRepository;
 import com.boostcampa2.catchhouse.data.userdata.pojo.User;
 import com.boostcampa2.catchhouse.viewmodel.ReactiveViewModel;
 import com.boostcampa2.catchhouse.viewmodel.ViewModelListener;
+import com.bumptech.glide.Glide;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -26,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class UserViewModel extends ReactiveViewModel {
@@ -37,8 +42,9 @@ public class UserViewModel extends ReactiveViewModel {
     private User mUser;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
-    private MutableLiveData<String> mNickName;
+    public MutableLiveData<String> mNickName;
     private MutableLiveData<String> mGender;
+    public MutableLiveData<Bitmap> mProfile;
 
     UserViewModel(Application application, UserRepository repository, ViewModelListener listener) {
         super();
@@ -47,8 +53,29 @@ public class UserViewModel extends ReactiveViewModel {
         this.mListener = listener;
         this.mFirebaseUser = new MutableLiveData<>();
         this.mEmail = new MutableLiveData<>();
+        this.mPassword = new MutableLiveData<>();
         this.mNickName = new MutableLiveData<>();
         this.mGender = new MutableLiveData<>();
+        this.mProfile = new MutableLiveData<>();
+    }
+
+    public void getBitmapFromData(Uri uri) {
+        mListener.isWorking();
+        getCompositeDisposable().add(
+                Single.create(subscriber -> {
+                    Bitmap bitmap = Glide.with(mAppContext)
+                            .asBitmap()
+                            .load(uri)
+                            .submit()
+                            .get();
+                    subscriber.onSuccess(bitmap);
+                })
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(bitmap -> {
+                            mProfile.setValue((Bitmap) bitmap);
+                            mListener.isFinished();
+                        }, error -> mListener.onError(error)));
     }
 
     public GoogleSignInClient requestGoogleSignIn() {
@@ -92,6 +119,17 @@ public class UserViewModel extends ReactiveViewModel {
         return loginManager;
     }
 
+    public void signUpWithEmail() {
+        mListener.isWorking();
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
+                .addOnSuccessListener(authResult -> {
+                    mUser = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
+                    mFirebaseUser.setValue(authResult.getUser());
+                    getCompositeDisposable().add(mRepository.setUserToRemote(mFirebaseUser.getValue().getUid(), mUser)
+                            .subscribe(() -> mListener.isFinished(), error -> mListener.onError(error)));
+                }).addOnFailureListener(error -> mListener.onError(error));
+    }
+
     private void getDetailDataFromFaceBook(LoginResult loginResult) {
         mListener.isWorking();
         getCompositeDisposable().add(mRepository.getDetailInfoFromRemote(loginResult.getAccessToken())
@@ -118,5 +156,13 @@ public class UserViewModel extends ReactiveViewModel {
 
     public LiveData<FirebaseUser> getUserInfo() {
         return mFirebaseUser;
+    }
+
+    public void setGender(String gender) {
+        mGender.setValue(gender);
+    }
+
+    public LiveData<String> getGender() {
+        return mGender;
     }
 }

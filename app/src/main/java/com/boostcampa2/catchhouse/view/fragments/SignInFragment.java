@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,8 @@ import java.util.Arrays;
 
 public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel> {
 
-    private CallbackManager callbackManager;
+    private CallbackManager mCallbackManager;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected int setLayout() {
@@ -44,6 +46,8 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mFragmentManager = getActivity().getSupportFragmentManager();
+
         getBinding().setHandler(getViewModel());
         getBinding().setLifecycleOwner(getActivity());
 
@@ -51,9 +55,14 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                 startActivityForResult(getViewModel().requestGoogleSignIn().getSignInIntent(), Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()));
 
         getBinding().ivSignInFacebook.setOnClickListener(__ -> {
-            callbackManager = CallbackManager.Factory.create();
-            getViewModel().requestFacebookSignIn(callbackManager).logInWithReadPermissions(this, Arrays.asList("email", "public_profile", "user_gender", "user_photos"));
+            mCallbackManager = CallbackManager.Factory.create();
+            getViewModel().requestFacebookSignIn(mCallbackManager)
+                    .logInWithReadPermissions(this, Arrays.asList("email", "public_profile", "user_gender", "user_photos"));
         });
+
+        getBinding().ivSignInEmail.setOnClickListener(__ -> mFragmentManager.beginTransaction()
+                .replace(R.id.fl_home_container, new SignUpFragment())
+                .addToBackStack(SignUpFragment.class.getName()).commit());
 
         getViewModel().getUserInfo().observe(this, v -> Log.d("파베", v.getEmail()));
     }
@@ -65,7 +74,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
             getViewModel().signUpFirebaseWithGoogle(data);
             return;
         }
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 }

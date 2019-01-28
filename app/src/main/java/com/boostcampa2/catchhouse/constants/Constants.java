@@ -8,7 +8,7 @@ public class Constants {
 
         final private int requestCode;
 
-        private SignInRequestCode(int requestCode) {
+        SignInRequestCode(int requestCode) {
             this.requestCode = requestCode;
         }
 
@@ -16,4 +16,6 @@ public class Constants {
             return this.requestCode;
         }
     }
+
+    public static int GALLERY = 1003;
 }

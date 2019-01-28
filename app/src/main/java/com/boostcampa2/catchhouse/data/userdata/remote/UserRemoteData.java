@@ -61,16 +61,17 @@ public class UserRemoteData implements UserDataSource {
 
     @NonNull
     public Single<User> getNameAndGenderFromFB(AccessToken token) {
-        return Single.defer(() -> Single.create(subscriber -> {
-            GraphRequest request = GraphRequest.newMeRequest(token, (object, response) -> {
-                String name = object.optString("name");
-                String gender = object.optString("gender");
-                subscriber.onSuccess(new User(name, gender));
-            });
-            Bundle parameter = new Bundle();
-            parameter.putString("fields", "name,gender");
-            request.setParameters(parameter);
-            request.executeAsync();
-        }));
+        return Single.defer(() ->
+                Single.create(subscriber -> {
+                    GraphRequest request = GraphRequest.newMeRequest(token, (object, response) -> {
+                        String name = object.optString("name");
+                        String gender = object.optString("gender");
+                        subscriber.onSuccess(new User(name, gender));
+                    });
+                    Bundle parameter = new Bundle();
+                    parameter.putString("fields", "name,gender");
+                    request.setParameters(parameter);
+                    request.executeAsync();
+                }));
     }
 }

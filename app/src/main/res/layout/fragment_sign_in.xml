@@ -54,7 +54,6 @@
                         android:backgroundTint="@android:color/white"
                         android:hint="@string/sign_email"
                         android:inputType="textEmailAddress"
-                        android:paddingStart="20dp"
                         android:text="@={handler.mEmail}"
                         android:textAlignment="textStart"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +67,6 @@
                         android:backgroundTint="@android:color/white"
                         android:hint="@string/sign_password"
                         android:inputType="textPassword"
-                        android:paddingStart="20dp"
                         android:text="@={handler.mPassword}"
                         android:textAlignment="textStart"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -77,12 +75,10 @@
 
                     <TextView
                         android:id="@+id/tv_sign_in_login"
-                        style="@style/et_round"
+                        style="@style/tv_accent"
                         android:layout_marginTop="28dp"
-                        android:backgroundTint="@color/colorAccent"
                         android:gravity="center"
                         android:text="@string/sign_in_login"
-                        android:textColor="@android:color/white"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/et_sign_in_password" />

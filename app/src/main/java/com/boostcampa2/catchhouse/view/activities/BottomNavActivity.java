@@ -2,6 +2,7 @@ package com.boostcampa2.catchhouse.view.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     public void onError(Throwable throwable) {
         Toast.makeText(this, throwable.toString(), Toast.LENGTH_SHORT).show();
+        Log.d("에러", "onError: " + throwable.toString());
     }
 
     @Override
