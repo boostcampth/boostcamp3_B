@@ -12,6 +12,7 @@ import com.boostcampa2.catchhouse.data.userdata.UserRepository;
 import com.boostcampa2.catchhouse.databinding.ActivityBottomNavBinding;
 import com.boostcampa2.catchhouse.view.BaseActivity;
 import com.boostcampa2.catchhouse.view.fragments.MapFragment;
+import com.boostcampa2.catchhouse.view.fragments.HomeFragment;
 import com.boostcampa2.catchhouse.view.fragments.SignInFragment;
 import com.boostcampa2.catchhouse.viewmodel.ViewModelListener;
 import com.boostcampa2.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
@@ -22,7 +23,7 @@ import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener {
+public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener, HomeFragment.OnSearchButtonListener {
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
@@ -61,6 +62,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             return true;
         });
 
+        mFragmentManager.beginTransaction().add(R.id.fl_home_container, new HomeFragment()).commit();
     }
 
     private void createViewModels() {
@@ -69,8 +71,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     }
 
-
-
     private void onNavItemSelected(MenuItem item) {
         mDisposable.add(Single.just(item)
                 .map(MenuItem::getItemId)
@@ -78,10 +78,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                     switch (id) {
                         case R.id.action_home:
                             /* handle here: replace fragment on home btn Clicked */
+                            mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new HomeFragment()).commit();
                             break;
                         case R.id.action_map:
                             mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new MapFragment()).commit();
-
                             break;
                         case R.id.action_message:
                             /* handle here: replace fragment on message btn Clicked */
@@ -98,4 +98,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         super.onStop();
         mDisposable.dispose();
     }
+
+    @Override
+    public void onClicked() {
+        getBinding().bnavHomeActivity.setSelectedItemId(R.id.action_map);
+    }
+
 }
