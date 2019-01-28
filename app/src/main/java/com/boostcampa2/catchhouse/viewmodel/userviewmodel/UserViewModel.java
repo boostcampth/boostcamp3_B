@@ -25,8 +25,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.io.ByteArrayOutputStream;
 
@@ -42,7 +42,6 @@ public class UserViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private UserRepository mRepository;
     private ViewModelListener mListener;
-    private MutableLiveData<FirebaseUser> mFirebaseUser;
     private User mUser;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
@@ -55,7 +54,6 @@ public class UserViewModel extends ReactiveViewModel {
         this.mAppContext = application;
         this.mRepository = repository;
         this.mListener = listener;
-        this.mFirebaseUser = new MutableLiveData<>();
         this.mEmail = new MutableLiveData<>();
         this.mPassword = new MutableLiveData<>();
         this.mNickName = new MutableLiveData<>();
@@ -96,7 +94,11 @@ public class UserViewModel extends ReactiveViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> mListener.onSuccess(SIGN_UP_SUCCESS),
-                        error -> mListener.onError(error)));
+                        error -> {
+                            FirebaseAuth.getInstance().getCurrentUser().delete();
+                            FirebaseStorage.getInstance().getReference().child(uid).delete();
+                            mListener.onError(error);
+                        }));
     }
 
     private void setProfileImageToRemote(String uid) {
@@ -108,7 +110,10 @@ public class UserViewModel extends ReactiveViewModel {
                                     mUser.setProfile(path.toString());
                                     setUserToRemote(uid);
                                 },
-                                error -> mListener.onError(error)));
+                                error -> {
+                                    mListener.onError(error);
+                                    FirebaseAuth.getInstance().getCurrentUser().delete();
+                                }));
     }
 
     public Intent getGoogleSignInIntent() {
@@ -155,9 +160,10 @@ public class UserViewModel extends ReactiveViewModel {
 
     private void getDetailDataFromFaceBook(LoginResult loginResult) {
         mListener.isWorking();
-        getCompositeDisposable().add(mRepository.getDetailInfoFromRemote(loginResult.getAccessToken())
-                .subscribeOn(Schedulers.io())
-                .subscribe(info -> mUser = info));
+        getCompositeDisposable()
+                .add(mRepository.getDetailInfoFromRemote(loginResult.getAccessToken())
+                        .subscribeOn(Schedulers.io())
+                        .subscribe(info -> mUser = info));
         handlingSignUpData(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()));
     }
 
@@ -190,17 +196,15 @@ public class UserViewModel extends ReactiveViewModel {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signInWithCredential(credential).addOnSuccessListener(success -> {
             String uuid = auth.getCurrentUser().getUid();
-            getCompositeDisposable().add(mRepository.setUserToRemote(uuid, mUser)
-                    .subscribe(() -> {
-                        mListener.onSuccess(SIGN_IN_SUCCESS);
-                        mFirebaseUser.setValue(auth.getCurrentUser());
-                    }, error -> mListener.onError(error)));
+            getCompositeDisposable()
+                    .add(mRepository.setUserToRemote(uuid, mUser)
+                            .subscribe(() -> mListener.onSuccess(SIGN_IN_SUCCESS),
+                                    error -> {
+                                        mListener.onError(error);
+                                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                                    }));
         })
                 .addOnFailureListener(error -> mListener.onError(error));
-    }
-
-    public LiveData<FirebaseUser> getUserInfo() {
-        return mFirebaseUser;
     }
 
     public void setGender(String gender) {

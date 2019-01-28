@@ -134,8 +134,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseAuth.getInstance().signOut();
-
+        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+            /* User is logined. hadle here*/
+        }
     }
 
     @Override
