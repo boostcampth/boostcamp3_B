@@ -17,7 +17,7 @@
             android:layout_height="wrap_content">
 
             <android.support.v7.widget.Toolbar
-                android:id="@+id/tb_sign_in"
+                android:id="@+id/tb_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/home_title" />
@@ -30,7 +30,7 @@
             android:background="@drawable/main_background">
 
             <TextView
-                android:id="@+id/search_btn"
+                android:id="@+id/tv_home_search"
                 style="@style/tv_accent"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -38,15 +38,15 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/search_btn"
+                android:text="@string/tv_home_search"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/post_article_btn"
+                app:layout_constraintEnd_toStartOf="@+id/tv_home_post"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/post_article_btn"
+                android:id="@+id/tv_home_post"
                 style="@style/tv_accent"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -54,11 +54,11 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/post_article_btn"
+                android:text="@string/tv_home_post"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/search_btn"
+                app:layout_constraintStart_toEndOf="@+id/tv_home_search"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
