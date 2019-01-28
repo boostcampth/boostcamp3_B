@@ -7,11 +7,15 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.boostcampa2.catchhouse.R;
+import com.boostcampa2.catchhouse.data.roomsdata.RoomsRepository;
 import com.boostcampa2.catchhouse.data.userdata.UserRepository;
 import com.boostcampa2.catchhouse.databinding.ActivityBottomNavBinding;
 import com.boostcampa2.catchhouse.view.BaseActivity;
+import com.boostcampa2.catchhouse.view.fragments.MapFragment;
 import com.boostcampa2.catchhouse.view.fragments.SignInFragment;
 import com.boostcampa2.catchhouse.viewmodel.ViewModelListener;
+import com.boostcampa2.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
+import com.boostcampa2.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 
@@ -48,7 +52,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        createViewModes();
+        createViewModels();
         mDisposable = new CompositeDisposable();
         mFragmentManager = getSupportFragmentManager();
         getBinding().bnavHomeActivity.setItemIconTintList(null);
@@ -59,9 +63,13 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     }
 
-    private void createViewModes() {
+    private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(), UserRepository.getInstance(), this));
+        createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
+
     }
+
+
 
     private void onNavItemSelected(MenuItem item) {
         mDisposable.add(Single.just(item)
@@ -72,7 +80,8 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                             /* handle here: replace fragment on home btn Clicked */
                             break;
                         case R.id.action_map:
-                            /* handle here: replace fragment on map btn Clicked */
+                            mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new MapFragment()).commit();
+
                             break;
                         case R.id.action_message:
                             /* handle here: replace fragment on message btn Clicked */
