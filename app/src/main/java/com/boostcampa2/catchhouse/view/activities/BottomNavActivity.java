@@ -1,13 +1,13 @@
 package com.boostcampa2.catchhouse.view.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.view.WindowManager;
 
 import com.boostcampa2.catchhouse.R;
-import com.boostcampa2.catchhouse.constants.Constants;
 import com.boostcampa2.catchhouse.data.userdata.UserRepository;
 import com.boostcampa2.catchhouse.databinding.ActivityBottomNavBinding;
 import com.boostcampa2.catchhouse.view.BaseActivity;
@@ -15,12 +15,18 @@ import com.boostcampa2.catchhouse.view.fragments.SignInFragment;
 import com.boostcampa2.catchhouse.viewmodel.ViewModelListener;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
+import com.bumptech.glide.load.engine.GlideException;
+import com.facebook.FacebookException;
+import com.google.android.gms.auth.GoogleAuthException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.boostcampa2.catchhouse.constants.Constants.SIGN_IN_SUCCESS;
+import static com.boostcampa2.catchhouse.constants.Constants.SIGN_UP_SUCCESS;
 
 public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener {
 
@@ -34,24 +40,53 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     @Override
     public void onError(Throwable throwable) {
-        Toast.makeText(this, throwable.toString(), Toast.LENGTH_SHORT).show();
+        unFreezeUI();
+        if (throwable instanceof FirebaseAuthInvalidCredentialsException) {
+            Snackbar.make(getBinding().getRoot(), R.string.snack_invalid_user, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (throwable instanceof FirebaseAuthUserCollisionException) {
+            Snackbar.make(getBinding().getRoot(), R.string.snack_already_exist_email, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (throwable instanceof GlideException) {
+            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (throwable instanceof FacebookException || throwable instanceof GoogleAuthException) {
+            Snackbar.make(getBinding().getRoot(), R.string.snack_fb_sign_in_failed, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        Snackbar.make(getBinding().getRoot(), R.string.snack_failed_sign_up, Snackbar.LENGTH_SHORT).show();
+
     }
 
     @Override
     public void onSuccess(String success) {
+        unFreezeUI();
         switch (success) {
+            case SIGN_UP_SUCCESS:
+                mFragmentManager.popBackStack();
+                break;
             case SIGN_IN_SUCCESS:
-
+                /*handle here : when sign in success replace fragment to my page*/
+                Snackbar.make(getBinding().getRoot(), "로그인 성공", Snackbar.LENGTH_SHORT).show();
                 break;
         }
     }
 
     @Override
     public void isWorking() {
+        freezeUI();
     }
 
     @Override
     public void isFinished() {
+        unFreezeUI();
     }
 
     @Override
@@ -61,12 +96,11 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         createViewModes();
         mDisposable = new CompositeDisposable();
         mFragmentManager = getSupportFragmentManager();
-        getBinding().bnavHomeActivity.setItemIconTintList(null);
-        getBinding().bnavHomeActivity.setOnNavigationItemSelectedListener(v -> {
+        getBinding().bottomNav.setItemIconTintList(null);
+        getBinding().bottomNav.setOnNavigationItemSelectedListener(v -> {
             onNavItemSelected(v);
             return true;
         });
-
     }
 
     private void createViewModes() {
@@ -89,7 +123,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                             break;
                         case R.id.action_my_page:
                             if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                                mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new SignInFragment()).commit();
+                                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment()).commit();
                                 return;
                             }
                             break;
@@ -108,5 +142,17 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     protected void onStop() {
         super.onStop();
         mDisposable.dispose();
+    }
+
+    private void freezeUI() {
+        getBinding().pgBottomNav.setVisibility(View.VISIBLE);
+        getBinding().getRoot().setAlpha(0.6f);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    private void unFreezeUI() {
+        getBinding().pgBottomNav.setVisibility(View.GONE);
+        getBinding().getRoot().setAlpha(1.0f);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }

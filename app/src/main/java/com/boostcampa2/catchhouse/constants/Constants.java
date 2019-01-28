@@ -29,4 +29,6 @@ public class Constants {
 
     //success code
     public static final String SIGN_IN_SUCCESS = "signInSuccess";
+    public static final String SIGN_IN_FAILED = "signInFailed";
+    public static final String SIGN_UP_SUCCESS = "signUpSuccess";
 }

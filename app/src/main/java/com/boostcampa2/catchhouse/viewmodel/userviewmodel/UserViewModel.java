@@ -33,6 +33,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.boostcampa2.catchhouse.constants.Constants.SIGN_IN_SUCCESS;
+import static com.boostcampa2.catchhouse.constants.Constants.SIGN_UP_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
 
@@ -88,6 +89,7 @@ public class UserViewModel extends ReactiveViewModel {
     }
 
     public void signUpFirebaseWithGoogle(Intent data) {
+        mListener.isWorking();
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         GoogleSignInAccount account = task.getResult();
         mUser = new User(account.getDisplayName());
@@ -135,7 +137,7 @@ public class UserViewModel extends ReactiveViewModel {
                     mUser = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
                     mFirebaseUser.setValue(authResult.getUser());
                     getCompositeDisposable().add(mRepository.setUserToRemote(mFirebaseUser.getValue().getUid(), mUser)
-                            .subscribe(() -> mListener.isFinished(), error -> mListener.onError(error)));
+                            .subscribe(() -> mListener.onSuccess(SIGN_UP_SUCCESS), error -> mListener.onError(error)));
                 }).addOnFailureListener(error -> mListener.onError(error));
     }
 
@@ -152,14 +154,11 @@ public class UserViewModel extends ReactiveViewModel {
             String uuid = auth.getCurrentUser().getUid();
             getCompositeDisposable().add(mRepository.setUserToRemote(uuid, mUser)
                     .subscribe(() -> {
-                        mListener.isFinished();
+                        mListener.onSuccess(SIGN_IN_SUCCESS);
                         mFirebaseUser.setValue(auth.getCurrentUser());
                     }, error -> mListener.onError(error)));
         })
-                .addOnFailureListener(error -> {
-                    mListener.isFinished();
-                    mListener.onError(error);
-                });
+                .addOnFailureListener(error -> mListener.onError(error));
     }
 
     public LiveData<FirebaseUser> getUserInfo() {

@@ -75,7 +75,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         getBinding().ivSignInEmail.setOnClickListener(__ ->
                 mFragmentManager
                         .beginTransaction()
-                        .replace(R.id.fl_home_container, new SignUpFragment())
+                        .replace(R.id.fl_bottom_nav_container, new SignUpFragment())
                         .addToBackStack(SignUpFragment.class.getName())
                         .commit());
     }
