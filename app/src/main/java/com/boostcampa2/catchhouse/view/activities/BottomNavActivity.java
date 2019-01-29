@@ -122,10 +122,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                             /* handle here: replace fragment on message btn Clicked */
                             break;
                         case R.id.action_my_page:
-                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment()).commit();
-                                return;
-                            }
+//                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+//                                return;
+//                            }
                             break;
                     }
                 }));

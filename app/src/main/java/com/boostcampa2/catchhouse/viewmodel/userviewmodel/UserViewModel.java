@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.util.Log;
 
 import com.boostcampa2.catchhouse.R;
 import com.boostcampa2.catchhouse.data.userdata.UserRepository;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,7 +44,6 @@ public class UserViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private UserRepository mRepository;
     private ViewModelListener mListener;
-    private User mUser;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
     public MutableLiveData<String> mNickName;
@@ -89,33 +90,6 @@ public class UserViewModel extends ReactiveViewModel {
         return outputStream.toByteArray();
     }
 
-    private void setUserToRemote(String uid) {
-        getCompositeDisposable().add(mRepository.setUserToRemote(uid, mUser)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> mListener.onSuccess(SIGN_UP_SUCCESS),
-                        error -> {
-                            FirebaseAuth.getInstance().getCurrentUser().delete();
-                            FirebaseStorage.getInstance().getReference().child(uid).delete();
-                            mListener.onError(error);
-                        }));
-    }
-
-    private void setProfileImageToRemote(String uid) {
-        getCompositeDisposable().add(
-                mRepository.saveProfileAndGetUrl(uid, getProfileByteArray())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(path -> {
-                                    mUser.setProfile(path.toString());
-                                    setUserToRemote(uid);
-                                },
-                                error -> {
-                                    mListener.onError(error);
-                                    FirebaseAuth.getInstance().getCurrentUser().delete();
-                                }));
-    }
-
     public Intent getGoogleSignInIntent() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(mAppContext.getString(R.string.default_web_client_id))
@@ -124,15 +98,15 @@ public class UserViewModel extends ReactiveViewModel {
         return GoogleSignIn.getClient(mAppContext, gso).getSignInIntent();
     }
 
-    public void signUpFirebaseWithGoogle(Intent data) {
+    public void authWithGoogle(Intent data) {
         mListener.isWorking();
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
         GoogleSignInAccount account = task.getResult();
-        mUser = new User(account.getDisplayName());
+        User user = new User(account.getDisplayName());
         if (account.getPhotoUrl() != null) {
-            mUser.setProfile(account.getPhotoUrl().toString());
+            user.setProfile(account.getPhotoUrl().toString());
         }
-        handlingSignUpData(GoogleAuthProvider.getCredential(account.getIdToken(), null));
+        authWithCredential(GoogleAuthProvider.getCredential(account.getIdToken(), null), user);
     }
 
     public LoginManager requestFacebookSignIn(CallbackManager callbackManager) {
@@ -141,7 +115,7 @@ public class UserViewModel extends ReactiveViewModel {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 mListener.isWorking();
-                getDetailDataFromFaceBook(loginResult);
+                authWithFacebook(loginResult, Profile.getCurrentProfile().getProfilePictureUri(300, 300));
             }
 
             @Override
@@ -158,13 +132,58 @@ public class UserViewModel extends ReactiveViewModel {
         return loginManager;
     }
 
-    private void getDetailDataFromFaceBook(LoginResult loginResult) {
+    private void authWithFacebook(LoginResult loginResult, Uri uri) {
         mListener.isWorking();
         getCompositeDisposable()
                 .add(mRepository.getDetailInfoFromRemote(loginResult.getAccessToken())
                         .subscribeOn(Schedulers.io())
-                        .subscribe(info -> mUser = info));
-        handlingSignUpData(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()));
+                        .subscribe(user -> {
+                            user.setProfile(uri.toString());
+                            authWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()), user);
+                        }));
+    }
+
+    private void authWithCredential(AuthCredential credential, User user) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.signInWithCredential(credential)
+                .addOnSuccessListener(success -> {
+                    String uuid = auth.getCurrentUser().getUid();
+                    getCompositeDisposable()
+                            .add(mRepository.setUserToRemote(uuid, user)
+                                    .subscribe(() -> mListener.onSuccess(SIGN_IN_SUCCESS),
+                                            error -> {
+                                                mListener.onError(error);
+                                                FirebaseAuth.getInstance().getCurrentUser().delete();
+                                            }));
+                })
+                .addOnFailureListener(error -> mListener.onError(error));
+    }
+
+    private void setUserToRemote(String uid, User user) {
+        getCompositeDisposable().add(mRepository.setUserToRemote(uid, user)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> mListener.onSuccess(SIGN_UP_SUCCESS),
+                        error -> {
+                            FirebaseAuth.getInstance().getCurrentUser().delete();
+                            FirebaseStorage.getInstance().getReference().child(uid).delete();
+                            mListener.onError(error);
+                        }));
+    }
+
+    private void setProfileAndWriteToRemote(String uid, User user) {
+        getCompositeDisposable().add(
+                mRepository.saveProfileAndGetUrl(uid, getProfileByteArray())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(path -> {
+                                    user.setProfile(path.toString());
+                                    setUserToRemote(uid, user);
+                                },
+                                error -> {
+                                    mListener.onError(error);
+                                    FirebaseAuth.getInstance().getCurrentUser().delete();
+                                }));
     }
 
     public void signUpWithEmail() {
@@ -173,14 +192,14 @@ public class UserViewModel extends ReactiveViewModel {
                 .createUserWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
                 .addOnSuccessListener(authResult -> {
                     String uid = authResult.getUser().getUid();
-                    mUser = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
+                    User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
                     if (mProfile.getValue() != null) {
                         //Firebase 인증 성공시, profile image가 있는지 확인,
                         //확인 후, storage 저장, 그 후 storage의 경로와 함께 유저 정보 db 저장
-                        setProfileImageToRemote(uid);
+                        setProfileAndWriteToRemote(uid, user);
                     } else {
                         //profile image 가 없다면, db에 바로 유저 정보 저장
-                        setUserToRemote(uid);
+                        setUserToRemote(uid, user);
                     }
                 }).addOnFailureListener(error -> mListener.onError(error));
     }
@@ -189,21 +208,6 @@ public class UserViewModel extends ReactiveViewModel {
         mListener.isWorking();
         FirebaseAuth.getInstance().signInWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
                 .addOnSuccessListener(authResult -> mListener.onSuccess(SIGN_IN_SUCCESS))
-                .addOnFailureListener(error -> mListener.onError(error));
-    }
-
-    private void handlingSignUpData(AuthCredential credential) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        auth.signInWithCredential(credential).addOnSuccessListener(success -> {
-            String uuid = auth.getCurrentUser().getUid();
-            getCompositeDisposable()
-                    .add(mRepository.setUserToRemote(uuid, mUser)
-                            .subscribe(() -> mListener.onSuccess(SIGN_IN_SUCCESS),
-                                    error -> {
-                                        mListener.onError(error);
-                                        FirebaseAuth.getInstance().getCurrentUser().delete();
-                                    }));
-        })
                 .addOnFailureListener(error -> mListener.onError(error));
     }
 

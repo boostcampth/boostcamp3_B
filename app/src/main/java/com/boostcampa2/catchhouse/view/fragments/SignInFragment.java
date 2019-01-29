@@ -85,7 +85,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()) {
             if (resultCode == Activity.RESULT_OK) {
-                getViewModel().signUpFirebaseWithGoogle(data);
+                getViewModel().authWithGoogle(data);
             }
             return;
         }

@@ -81,7 +81,8 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         }
         if (getBinding().etSignUpEmail.getText().toString().trim().equals("")
                 && getBinding().etSignUpPassword.getText().toString().trim().equals("")
-                && getBinding().etSignUpNickName.getText().toString().trim().equals("")) {
+                && getBinding().etSignUpNickName.getText().toString().trim().equals("")
+                && getViewModel().getGender().getValue() == null) {
             Snackbar.make(getBinding().getRoot(), getString(R.string.snack_fill_info), Snackbar.LENGTH_SHORT).show();
             return true;
         }
@@ -99,4 +100,49 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
             Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);
         }
     }
+
+//    private void setFacebookData(final LoginResult loginResult)
+//    {
+//        GraphRequest request = GraphRequest.newMeRequest(
+//                loginResult.getAccessToken(),
+//                new GraphRequest.GraphJSONObjectCallback() {
+//                    @Override
+//                    public void onCompleted(JSONObject object, GraphResponse response) {
+//                        // Application code
+//                        try {
+//                            Log.i("Response",response.toString());
+//
+//                            String email = response.getJSONObject().getString("email");
+//                            String firstName = response.getJSONObject().getString("first_name");
+//                            String lastName = response.getJSONObject().getString("last_name");
+//                            String gender = response.getJSONObject().getString("gender");
+//
+//
+//
+//                            Profile profile = Profile.getCurrentProfile();
+//                            String id = profile.getId();
+//                            String link = profile.getLinkUri().toString();
+//                            Log.i("Link",link);
+//                            if (Profile.getCurrentProfile()!=null)
+//                            {
+//                                Log.i("Login", "ProfilePic" + Profile.getCurrentProfile().getProfilePictureUri(200, 200));
+//                            }
+//
+//                            Log.i("Login" + "Email", email);
+//                            Log.i("Login"+ "FirstName", firstName);
+//                            Log.i("Login" + "LastName", lastName);
+//                            Log.i("Login" + "Gender", gender);
+//
+//
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                });
+//        Bundle parameters = new Bundle();
+//        parameters.putString("fields", "id,email,first_name,last_name,gender");
+//        request.setParameters(parameters);
+//        request.executeAsync();
+//    }
+//    F
 }
