@@ -8,6 +8,8 @@
     <string name="gender_male">male</string>
     <string name="gender_female">female</string>
     <string name="main_title">Catch House</string>
+    <string name="map_filter">필터</string>
+    <string name="map_see_rooms">이 지역 매물보기</string>
     <string name="my_favorite_title">내가 찜한 방</string>
     <string name="recently_visit_title">최근 둘러본 방</string>
     <string name="sign_email">E - MAIL</string>
@@ -24,5 +26,10 @@
     <string name="snack_fb_sign_in_failed">로그인에 실패했습니다.</string>
     <string name="snack_failed_sign_up">회원가입에 실패했습니다.</string>
     <string name="snack_invalid_user">아이디 비밀번호를 확인하세요</string>
+
+    /* fragment_home */
+    <string name="home_title">Catch House</string>
+    <string name="tv_home_search">내놓은 방 검색</string>
+    <string name="tv_home_post">우리집 내놓기</string>
 
 </resources>

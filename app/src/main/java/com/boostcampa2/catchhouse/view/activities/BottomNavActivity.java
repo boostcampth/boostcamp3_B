@@ -8,11 +8,17 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.boostcampa2.catchhouse.R;
+import com.boostcampa2.catchhouse.constants.Constants;
+import com.boostcampa2.catchhouse.data.roomsdata.RoomsRepository;
 import com.boostcampa2.catchhouse.data.userdata.UserRepository;
 import com.boostcampa2.catchhouse.databinding.ActivityBottomNavBinding;
 import com.boostcampa2.catchhouse.view.BaseActivity;
+import com.boostcampa2.catchhouse.view.fragments.MapFragment;
+import com.boostcampa2.catchhouse.view.fragments.HomeFragment;
 import com.boostcampa2.catchhouse.view.fragments.SignInFragment;
 import com.boostcampa2.catchhouse.viewmodel.ViewModelListener;
+import com.boostcampa2.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
+import com.boostcampa2.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 import com.bumptech.glide.load.engine.GlideException;
@@ -25,10 +31,7 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-import static com.boostcampa2.catchhouse.constants.Constants.SIGN_IN_SUCCESS;
-import static com.boostcampa2.catchhouse.constants.Constants.SIGN_UP_SUCCESS;
-
-public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener {
+public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener, HomeFragment.OnSearchButtonListener {
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
@@ -69,10 +72,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     public void onSuccess(String success) {
         unFreezeUI();
         switch (success) {
-            case SIGN_UP_SUCCESS:
+            case Constants.UserStatus.SIGN_UP_SUCCESS:
                 mFragmentManager.popBackStack();
                 break;
-            case SIGN_IN_SUCCESS:
+            case Constants.UserStatus.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
                 Snackbar.make(getBinding().getRoot(), "로그인 성공", Snackbar.LENGTH_SHORT).show();
                 break;
@@ -93,7 +96,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        createViewModes();
+        createViewModels();
         mDisposable = new CompositeDisposable();
         mFragmentManager = getSupportFragmentManager();
         getBinding().bottomNav.setItemIconTintList(null);
@@ -101,10 +104,13 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             onNavItemSelected(v);
             return true;
         });
+        mFragmentManager.beginTransaction().add(R.id.fl_home_container, new HomeFragment()).commit();
     }
 
-    private void createViewModes() {
+    private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(), UserRepository.getInstance(), this));
+        createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
+
     }
 
     private void onNavItemSelected(MenuItem item) {
@@ -114,18 +120,16 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                     switch (id) {
                         case R.id.action_home:
                             /* handle here: replace fragment on home btn Clicked */
+                            mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new HomeFragment()).commit();
                             break;
                         case R.id.action_map:
-                            /* handle here: replace fragment on map btn Clicked */
+                            mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new MapFragment()).commit();
                             break;
                         case R.id.action_message:
                             /* handle here: replace fragment on message btn Clicked */
                             break;
                         case R.id.action_my_page:
-//                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
-//                                return;
-//                            }
+                            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                             break;
                     }
                 }));
@@ -134,7 +138,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     protected void onStart() {
         super.onStart();
-        if(FirebaseAuth.getInstance().getCurrentUser() != null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             /* User is logined. hadle here*/
         }
     }
@@ -156,4 +160,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         getBinding().getRoot().setAlpha(1.0f);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
+
+    @Override
+    public void onClicked() {
+        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
+    }
+
 }
