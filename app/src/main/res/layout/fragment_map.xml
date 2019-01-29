@@ -21,16 +21,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:id="@+id/tb_map">
-                <EditText
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:id="@+id/et_map_search"
-                    />
-                <Button
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/map_filter"
-                    android:id="@+id/bt_filter"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <EditText
+                        android:id="@+id/et_map_search"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.5"
+                        android:layout_height="match_parent"
+                        android:inputType="text" />
+                    <Button
+                        android:id="@+id/bt_filter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/map_filter" />
+                </LinearLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
@@ -40,20 +45,17 @@
             android:id="@+id/cl_map"
             android:background="@color/colorPrimaryDark"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/map_see_rooms"
                 app:layout_constraintBottom_toBottomOf="parent"
-                />
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
-
-
     </android.support.design.widget.CoordinatorLayout>
-
-
 
 </layout>

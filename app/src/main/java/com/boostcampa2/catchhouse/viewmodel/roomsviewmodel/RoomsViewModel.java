@@ -13,11 +13,13 @@ public class RoomsViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private RoomsRepository mRepository;
     private ViewModelListener mListener;
-    private List<Room> mRoomList;
+    // private List<Room> mRoomList;
 
     RoomsViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
         super();
-
+        mAppContext = application;
+        mRepository = repository;
+        mListener = listener;
     }
 
 }
