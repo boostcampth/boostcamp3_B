@@ -21,9 +21,7 @@ import com.skt.Tmap.TMapView;
 import io.reactivex.annotations.Nullable;
 
 public class MapFragment extends BaseFragment<FragmentMapBinding, RoomsViewModel> {
-    public CallbackManager mCallbackManager;
     public FragmentManager mFragmentManager;
-
 
     @Override
     protected int setLayout() {
@@ -63,7 +61,6 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, RoomsViewModel
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
