@@ -12,7 +12,8 @@
 
         <TextView
             android:id="@+id/tv_my_page_recently_visit_title"
-            style="@style/tv_my_page"
+            style="@style/tv"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="28dp"
             android:text="@string/recently_visit_title"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,8 @@
 
         <TextView
             android:id="@+id/tv_my_page_my_favorite_title"
-            style="@style/tv_my_page"
+            style="@style/tv"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:text="@string/my_favorite_title"
             app:layout_constraintStart_toStartOf="parent"

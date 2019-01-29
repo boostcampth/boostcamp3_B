@@ -46,7 +46,7 @@
 
             <EditText
                 android:id="@+id/et_sign_up_email"
-                style="@style/et_round"
+                style="@style/tv.round"
                 android:layout_marginTop="28dp"
                 android:hint="@string/sign_email"
                 android:inputType="textEmailAddress"
@@ -57,7 +57,7 @@
 
             <EditText
                 android:id="@+id/et_sign_up_password"
-                style="@style/et_round"
+                style="@style/tv.round"
                 android:layout_marginTop="8dp"
                 android:hint="@string/sign_password"
                 android:inputType="textPassword"
@@ -68,7 +68,7 @@
 
             <EditText
                 android:id="@+id/et_sign_up_nick_name"
-                style="@style/et_round"
+                style="@style/tv.round"
                 android:layout_marginTop="20dp"
                 android:hint="@string/sign_up_nick_name"
                 android:inputType="text"
@@ -79,7 +79,7 @@
 
             <TextView
                 android:id="@+id/tv_sign_up_gender"
-                style="@style/et_round"
+                style="@style/tv.round"
                 android:layout_marginTop="8dp"
                 android:hint="@string/sign_up_gender"
                 app:layout_constraintEnd_toEndOf="@id/et_sign_up_nick_name"
@@ -112,12 +112,13 @@
 
             <TextView
                 android:id="@+id/tv_sign_up"
-                style="@style/tv_accent"
+                style="@style/tv.accent"
                 android:layout_marginBottom="28dp"
                 android:text="@string/sign_up"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_sign_up_gender"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </android.support.constraint.ConstraintLayout>

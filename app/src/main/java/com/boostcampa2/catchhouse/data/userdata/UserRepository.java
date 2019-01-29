@@ -1,5 +1,6 @@
 package com.boostcampa2.catchhouse.data.userdata;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.boostcampa2.catchhouse.data.userdata.pojo.User;
@@ -38,5 +39,10 @@ public class UserRepository {
     @NonNull
     public Completable setUserToRemote(String uuid, User user) {
         return mUserRemote.setUser(uuid, user);
+    }
+
+    @NonNull
+    public Single<Uri> saveProfileAndGetUrl(String uuid, byte[] profileByreArray) {
+        return mUserRemote.saveProfileAndGetUrl(uuid, profileByreArray);
     }
 }

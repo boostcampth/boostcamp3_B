@@ -13,12 +13,11 @@ public class User {
     }
 
     public User(String name) {
-        this.nickName = name;
+        this(name, null);
     }
 
     public User(String name, String gender) {
-        this.nickName = name;
-        this.gender = gender;
+        this(null, name, gender);
     }
 
     public User(String eMail, String nickName, String gender) {

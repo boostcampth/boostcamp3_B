@@ -11,14 +11,14 @@
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:id="@+id/fl_home_container"
+            android:id="@+id/fl_bottom_nav_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/bnav_home_activity"
+            app:layout_constraintBottom_toTopOf="@id/bottom_nav"
             app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.design.widget.BottomNavigationView
-            android:id="@+id/bnav_home_activity"
+            android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
@@ -30,6 +30,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_nav_item_menu" />
+
+        <ProgressBar
+            android:id="@+id/pg_bottom_nav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
 
