@@ -29,37 +29,28 @@
             android:layout_height="match_parent"
             android:background="@drawable/main_background">
 
-            <TextView
-                android:id="@+id/tv_home_search"
-                style="@style/tv_accent"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_write"
+                android:layout_width="match_parent"
+                android:layout_height="190dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/tv_home_search"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tv_home_post"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_home_post"
-                style="@style/tv_accent"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:id="@+id/tv_write_gallery"
+                style="@style/tv_accent.small"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/tv_home_post"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/tv_write_gallery"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_home_search"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.08"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vp_write" />
 
         </android.support.constraint.ConstraintLayout>
     </android.support.design.widget.CoordinatorLayout>

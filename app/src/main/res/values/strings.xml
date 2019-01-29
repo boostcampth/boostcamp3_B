@@ -24,4 +24,6 @@
     <string name="tv_home_search">내놓은 방 검색</string>
     <string name="tv_home_post">우리집 내놓기</string>
 
+    /* activity_write */
+    <string name="tv_write_gallery">사진 선택</string>
 </resources>

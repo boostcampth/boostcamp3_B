@@ -1,6 +1,7 @@
 package com.boostcampa2.catchhouse.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.boostcampa2.catchhouse.R;
 import com.boostcampa2.catchhouse.databinding.FragmentHomeBinding;
+import com.boostcampa2.catchhouse.view.activities.WriteActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -35,8 +37,13 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mBinding.tvHomeSearch.setOnClickListener(__ -> mListener.onClicked());
-        mBinding.tvHomePost.setOnClickListener(__ -> Log.i(TAG, "start write activity"));
+        mBinding.tvHomeSearch.setOnClickListener(__ ->
+                mListener.onClicked()
+        );
+        
+        mBinding.tvHomePost.setOnClickListener(__ ->
+                startActivity(new Intent(getActivity(), WriteActivity.class))
+        );
     }
 
     @Override
