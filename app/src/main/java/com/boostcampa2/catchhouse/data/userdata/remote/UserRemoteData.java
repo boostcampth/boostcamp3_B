@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.boostcampa2.catchhouse.constants.Constants;
 import com.boostcampa2.catchhouse.data.userdata.UserDataSource;
 import com.boostcampa2.catchhouse.data.userdata.pojo.User;
 import com.facebook.AccessToken;
@@ -22,8 +23,8 @@ import io.reactivex.Single;
 
 public class UserRemoteData implements UserDataSource {
 
-    private DatabaseReference db = FirebaseDatabase.getInstance().getReference().child("users");
-    private StorageReference fs = FirebaseStorage.getInstance().getReference().child("profile");
+    private DatabaseReference db;
+    private StorageReference fs;
 
     private static class UserRemoteDataHelper {
         private static final UserRemoteData INSTANCE = new UserRemoteData();
@@ -35,7 +36,8 @@ public class UserRemoteData implements UserDataSource {
     }
 
     private UserRemoteData() {
-
+        db = FirebaseDatabase.getInstance().getReference().child(Constants.FirebaseKey.DB_USER);
+        fs = FirebaseStorage.getInstance().getReference().child(Constants.FirebaseKey.STORAGE_PROFILE);
     }
 
     @NonNull
@@ -69,12 +71,12 @@ public class UserRemoteData implements UserDataSource {
         return Single.defer(() ->
                 Single.create(subscriber -> {
                     GraphRequest request = GraphRequest.newMeRequest(token, (object, response) -> {
-                        String name = object.optString("name");
-                        String gender = object.optString("gender");
+                        String name = object.optString(Constants.FacebookData.NAME);
+                        String gender = object.optString(Constants.FacebookData.GENDER);
                         subscriber.onSuccess(new User(name, gender));
                     });
                     Bundle parameter = new Bundle();
-                    parameter.putString("fields", "name,gender");
+                    parameter.putString(Constants.FacebookData.KEY, Constants.FacebookData.VALUE);
                     request.setParameters(parameter);
                     request.executeAsync();
                 }));

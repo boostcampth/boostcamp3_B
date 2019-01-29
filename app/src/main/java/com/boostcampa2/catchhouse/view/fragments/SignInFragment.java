@@ -18,11 +18,17 @@ import com.boostcampa2.catchhouse.databinding.FragmentSignInBinding;
 import com.boostcampa2.catchhouse.view.BaseFragment;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import java.util.Arrays;
 
-import static com.boostcampa2.catchhouse.constants.Constants.E_MAIL;
-import static com.boostcampa2.catchhouse.constants.Constants.PUBLIC_PROFILE;
+import static com.boostcampa2.catchhouse.constants.Constants.GOOGLE_SIGN_IN;
 
 public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel> {
 
@@ -43,6 +49,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        init();
         return getBinding().getRoot();
     }
 
@@ -55,22 +62,17 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         getBinding().setHandler(getViewModel());
         getBinding().setLifecycleOwner(getActivity());
 
-        getBinding().tvSignInLogin.setOnClickListener(v -> {
-            if (signInInfoCheck()) {
-                Snackbar.make(v, R.string.snack_fill_info, Snackbar.LENGTH_SHORT);
-                return;
-            }
-            mViewModel.signInWithEmail();
+        getBinding().ivSignInGoogle.setOnClickListener(__ -> {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
+            Intent intent = GoogleSignIn.getClient(getContext(), gso).getSignInIntent();
+            startActivityForResult(intent, GOOGLE_SIGN_IN);
         });
 
-        getBinding().ivSignInGoogle.setOnClickListener(__ ->
-                startActivityForResult(getViewModel().getGoogleSignInIntent(), Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()));
-
-        getBinding().ivSignInFacebook.setOnClickListener(__ -> {
-            mCallbackManager = CallbackManager.Factory.create();
-            getViewModel().requestFacebookSignIn(mCallbackManager)
-                    .logInWithReadPermissions(this, Arrays.asList(E_MAIL, PUBLIC_PROFILE));
-        });
+        getBinding().ivSignInFacebook.setOnClickListener(__ ->
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(Constants.FacebookData.E_MAIL, Constants.FacebookData.PROFILE)));
 
         getBinding().ivSignInEmail.setOnClickListener(__ ->
                 mFragmentManager
@@ -78,21 +80,50 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                         .replace(R.id.fl_bottom_nav_container, new SignUpFragment())
                         .addToBackStack(SignUpFragment.class.getName())
                         .commit());
+
+        getBinding().tvSignInLogin.setOnClickListener(v -> {
+            if (inSufficientInfo()) {
+                Snackbar.make(v, R.string.snack_fill_info, Snackbar.LENGTH_SHORT);
+                return;
+            }
+            mViewModel.signInWithEmail();
+        });
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constants.SignInRequestCode.GOOGLE_SIGN_IN.getRequestCode()) {
+        if (requestCode == GOOGLE_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
-                getViewModel().authWithGoogle(data);
+                getViewModel().signInWithGoogle(data);
             }
             return;
         }
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private boolean signInInfoCheck() {
+    private void init() {
+        LoginManager loginManager = LoginManager.getInstance();
+        mCallbackManager = CallbackManager.Factory.create();
+        loginManager.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                getViewModel().signInWithFacebook(loginResult, Profile.getCurrentProfile().getProfilePictureUri(300, 300));
+            }
+
+            @Override
+            public void onCancel() {
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
+    }
+
+    private boolean inSufficientInfo() {
         return getBinding().etSignInEmail.getText().toString().trim().equals("") &&
                 getBinding().etSignInPassword.getText().toString().trim().equals("");
     }

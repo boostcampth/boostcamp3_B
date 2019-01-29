@@ -104,7 +104,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             onNavItemSelected(v);
             return true;
         });
-        mFragmentManager.beginTransaction().add(R.id.fl_home_container, new HomeFragment()).commit();
+        mFragmentManager.beginTransaction().add(R.id.fl_bottom_nav_container, new HomeFragment()).commit();
     }
 
     private void createViewModels() {
@@ -120,10 +120,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                     switch (id) {
                         case R.id.action_home:
                             /* handle here: replace fragment on home btn Clicked */
-                            mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new HomeFragment()).commit();
+                            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new HomeFragment()).commit();
                             break;
                         case R.id.action_map:
-                            mFragmentManager.beginTransaction().replace(R.id.fl_home_container, new MapFragment()).commit();
+                            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new MapFragment()).commit();
                             break;
                         case R.id.action_message:
                             /* handle here: replace fragment on message btn Clicked */

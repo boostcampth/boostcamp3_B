@@ -11,14 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.boostcampa2.catchhouse.R;
+import com.boostcampa2.catchhouse.constants.Constants;
 import com.boostcampa2.catchhouse.databinding.FragmentSignUpBinding;
 import com.boostcampa2.catchhouse.view.BaseFragment;
 import com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import static android.app.Activity.RESULT_OK;
-import static com.boostcampa2.catchhouse.constants.Constants.FEMALE;
 import static com.boostcampa2.catchhouse.constants.Constants.GALLERY;
-import static com.boostcampa2.catchhouse.constants.Constants.MALE;
 
 public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserViewModel> {
 
@@ -56,13 +55,13 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
 
         getBinding().rbSignUpMale.setOnCheckedChangeListener((__, isChecked) -> {
             if (isChecked) {
-                mViewModel.setGender(MALE);
+                mViewModel.setGender(Constants.Gender.MALE);
             }
         });
 
         getBinding().rbSignUpFemale.setOnCheckedChangeListener((__, isChecked) -> {
             if (isChecked) {
-                mViewModel.setGender(FEMALE);
+                mViewModel.setGender(Constants.Gender.FEMALE);
             }
         });
 
@@ -94,7 +93,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY) {
             if (resultCode == RESULT_OK) {
-                getViewModel().getBitmapFromData(data.getData());
+                getViewModel().getBitmapAndByteArrayFromUri(data.getData());
                 return;
             }
             Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);
