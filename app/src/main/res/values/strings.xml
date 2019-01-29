@@ -8,6 +8,8 @@
     <string name="gender_male">male</string>
     <string name="gender_female">female</string>
     <string name="main_title">Catch House</string>
+    <string name="map_filter">필터</string>
+    <string name="map_see_rooms">이 지역 매물보기</string>
     <string name="my_favorite_title">내가 찜한 방</string>
     <string name="recently_visit_title">최근 둘러본 방</string>
     <string name="sign_email">E - MAIL</string>
