@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.boostcampa2.catchhouse"
+        applicationId "com.swsnack.catchhouse"
         minSdkVersion 23
         targetSdkVersion 28
         versionCode 1

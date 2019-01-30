@@ -6,7 +6,7 @@
 
         <variable
             name="handler"
-            type="com.boostcampa2.catchhouse.viewmodel.userviewmodel.UserViewModel" />
+            type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
