@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.boostcampa2.catchhouse">
+    package="com.swsnack.catchhouse">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -31,7 +31,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activities.BottomNavActivity">
+        <activity android:name="com.swsnack.catchhouse.view.activities.BottomNavActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

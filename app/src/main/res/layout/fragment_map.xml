@@ -5,7 +5,7 @@
     <data>
         <variable
             name="handler"
-            type="com.boostcampa2.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel"/>
+            type="com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
