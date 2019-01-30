@@ -7,7 +7,6 @@ import android.net.Uri;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
-
 import java.util.ArrayList;
 
 public class RoomsViewModel extends ReactiveViewModel {
@@ -15,6 +14,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     private RoomsRepository mRepository;
     private ViewModelListener mListener;
     public final MutableLiveData<ArrayList<Uri>> mUriList;
+
     // private List<Room> mRoomList;
 
     RoomsViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {

@@ -11,10 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.databinding.FragmentSignUpBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
-import com.swsnack.catchhouse.constants.Constants;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -44,8 +44,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         super.onViewCreated(view, savedInstanceState);
 
         getBinding().setHandler(getViewModel());
-        getBinding().setLifecycleOwner(this);
-
+        getBinding().setLifecycleOwner(getActivity());
         getBinding().ivSignUpProfile.setOnClickListener(__ -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
@@ -54,19 +53,18 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
 
         getBinding().rbSignUpMale.setOnCheckedChangeListener((__, isChecked) -> {
             if (isChecked) {
-                mViewModel.setGender("male");
+                mViewModel.setGender(Constants.Gender.MALE);
             }
         });
 
         getBinding().rbSignUpFemale.setOnCheckedChangeListener((__, isChecked) -> {
             if (isChecked) {
-                mViewModel.setGender("female");
+                mViewModel.setGender(Constants.Gender.FEMALE);
             }
         });
 
         getBinding().tvSignUp.setOnClickListener(v -> {
             if (signUpInfoCheck()) {
-                Snackbar.make(v, "모든 정보를 입력해 주세요", Snackbar.LENGTH_SHORT).show();
                 return;
             }
             getViewModel().signUpWithEmail();
@@ -74,8 +72,18 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
     }
 
     private boolean signUpInfoCheck() {
-        return getBinding().etSignUpEmail.getText().toString().trim().equals("") && getBinding().etSignUpPassword.getText().toString().trim().equals("") &&
-                getBinding().etSignUpNickName.getText().toString().trim().equals("");
+        if (getBinding().etSignUpPassword.getText().toString().length() < 6) {
+            Snackbar.make(getBinding().getRoot(), getString(R.string.snack_wrong_password_length), Snackbar.LENGTH_SHORT).show();
+            return true;
+        }
+        if (getBinding().etSignUpEmail.getText().toString().trim().equals("")
+                && getBinding().etSignUpPassword.getText().toString().trim().equals("")
+                && getBinding().etSignUpNickName.getText().toString().trim().equals("")
+                && getViewModel().getGender().getValue() == null) {
+            Snackbar.make(getBinding().getRoot(), getString(R.string.snack_fill_info), Snackbar.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -83,10 +91,10 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.GALLERY) {
             if (resultCode == RESULT_OK) {
-                getViewModel().getBitmapFromData(data.getData());
+                getViewModel().getBitmapAndByteArrayFromUri(data.getData());
                 return;
             }
-            Snackbar.make(getBinding().getRoot(), "이미지 로드에 실패했습니다.", Snackbar.LENGTH_SHORT);
+            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);
         }
     }
 }

@@ -49,7 +49,7 @@
 
                     <EditText
                         android:id="@+id/et_sign_in_email"
-                        style="@style/et_round"
+                        style="@style/tv.round"
                         android:layout_marginTop="40dp"
                         android:backgroundTint="@android:color/white"
                         android:hint="@string/sign_email"
@@ -62,7 +62,7 @@
 
                     <EditText
                         android:id="@+id/et_sign_in_password"
-                        style="@style/et_round"
+                        style="@style/tv.round"
                         android:layout_marginTop="8dp"
                         android:backgroundTint="@android:color/white"
                         android:hint="@string/sign_password"
@@ -75,7 +75,7 @@
 
                     <TextView
                         android:id="@+id/tv_sign_in_login"
-                        style="@style/tv_accent"
+                        style="@style/tv.accent"
                         android:layout_marginTop="28dp"
                         android:gravity="center"
                         android:text="@string/sign_in_login"
