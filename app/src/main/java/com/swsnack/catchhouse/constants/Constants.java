@@ -5,6 +5,8 @@ import android.support.annotation.StringDef;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.KEY;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
@@ -28,6 +30,7 @@ public class Constants {
         String SIGN_UP_SUCCESS = "signUpSuccess";
     }
 
+    //magic constant
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({NAME, GENDER, KEY, VALUE})
     public @interface FacebookData {
@@ -51,5 +54,12 @@ public class Constants {
     public @interface FirebaseKey {
         String DB_USER = "users";
         String STORAGE_PROFILE = "profile";
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({IN_SUFFICIENT_INFO, SHORT_PASSWORD})
+    public @interface ExceptionReason {
+        String IN_SUFFICIENT_INFO = "InSufficientInfo";
+        String SHORT_PASSWORD = "shortPassword";
     }
 }

@@ -12,11 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.constants.Constants;
-import com.swsnack.catchhouse.databinding.FragmentSignInBinding;
-import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -25,6 +20,11 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.databinding.FragmentSignInBinding;
+import com.swsnack.catchhouse.view.BaseFragment;
+import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import java.util.Arrays;
 
@@ -78,15 +78,6 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                         .replace(R.id.fl_bottom_nav_container, new SignUpFragment())
                         .addToBackStack(SignUpFragment.class.getName())
                         .commit());
-
-        getBinding().tvSignInLogin.setOnClickListener(v -> {
-            if (inSufficientInfo()) {
-                Snackbar.make(v, R.string.snack_fill_info, Snackbar.LENGTH_SHORT);
-                return;
-            }
-            mViewModel.signInWithEmail();
-        });
-
     }
 
     @Override
@@ -116,14 +107,8 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
 
             @Override
             public void onError(FacebookException error) {
-
+                Snackbar.make(getBinding().getRoot(), R.string.snack_occured_error, Snackbar.LENGTH_SHORT).show();
             }
         });
     }
-
-    private boolean inSufficientInfo() {
-        return getBinding().etSignInEmail.getText().toString().trim().equals("") &&
-                getBinding().etSignInPassword.getText().toString().trim().equals("");
-    }
-
 }

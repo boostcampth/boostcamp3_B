@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.userdata.UserRepository;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragments.MapFragment;
@@ -19,6 +18,7 @@ import com.swsnack.catchhouse.view.fragments.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
+import com.swsnack.catchhouse.viewmodel.userviewmodel.InSufficientException;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 import com.bumptech.glide.load.engine.GlideException;
@@ -30,6 +30,9 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
 
 public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener, HomeFragment.OnSearchButtonListener {
 
@@ -62,6 +65,17 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         if (throwable instanceof FacebookException || throwable instanceof GoogleAuthException) {
             Snackbar.make(getBinding().getRoot(), R.string.snack_fb_sign_in_failed, Snackbar.LENGTH_SHORT).show();
             return;
+        }
+
+        if (throwable instanceof InSufficientException) {
+            switch (((InSufficientException) throwable).getReason()) {
+                case IN_SUFFICIENT_INFO:
+                    Snackbar.make(getBinding().getRoot(), R.string.snack_invalid_user, Snackbar.LENGTH_SHORT).show();
+                    break;
+                case SHORT_PASSWORD:
+                    Snackbar.make(getBinding().getRoot(), R.string.snack_short_password, Snackbar.LENGTH_SHORT).show();
+                    break;
+            }
         }
 
         Snackbar.make(getBinding().getRoot(), R.string.snack_failed_sign_up, Snackbar.LENGTH_SHORT).show();
@@ -108,7 +122,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     }
 
     private void createViewModels() {
-        createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(), UserRepository.getInstance(), this));
+        createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(), this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
 
     }

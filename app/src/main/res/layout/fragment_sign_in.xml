@@ -78,6 +78,7 @@
                         style="@style/tv.accent"
                         android:layout_marginTop="28dp"
                         android:gravity="center"
+                        android:onClick="@{handler::signInWithEmail}"
                         android:text="@string/sign_in_login"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

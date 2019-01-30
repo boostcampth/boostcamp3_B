@@ -46,4 +46,5 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
     protected V getViewModel() {
         return mViewModel;
     }
+
 }

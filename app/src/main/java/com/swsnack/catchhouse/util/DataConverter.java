@@ -9,7 +9,7 @@ import io.reactivex.Single;
 public class DataConverter {
 
     public static Bitmap getScaledBitmap(Bitmap bitmap) {
-        return Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 0.7), (int) (bitmap.getHeight() * 0.7), true);
+        return Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 0.2), (int) (bitmap.getHeight() * 0.2), true);
     }
 
     public static Single<byte[]> getByteArray(Bitmap bitmap) {

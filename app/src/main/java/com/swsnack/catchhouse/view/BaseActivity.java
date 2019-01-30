@@ -9,6 +9,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.DataManager;
+
 public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatActivity {
 
     private B mBinding;
@@ -26,11 +29,10 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatA
     }
 
     protected void createViewModel(@NonNull Class viewModelClass) {
-        ViewModelProviders.of(this).get(viewModelClass);
+        createViewModel(viewModelClass, null);
     }
 
     protected void createViewModel(@NonNull Class viewModelClass, @Nullable ViewModelProvider.Factory factory) {
         ViewModelProviders.of(this, factory).get(viewModelClass);
     }
-
 }
