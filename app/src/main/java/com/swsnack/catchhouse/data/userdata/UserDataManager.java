@@ -10,12 +10,16 @@ import io.reactivex.Single;
 public interface UserDataManager {
 
     @NonNull
-    Single<User> getUser(String uuid);
+    Single<User> getUser(@NonNull String uuid);
 
     @NonNull
-    Completable setUser(String uuid, User user);
+    Single<String> setProfile(@NonNull String uuid, @NonNull byte[] profile);
 
     @NonNull
-    Single<String> setProfile(String uuid, byte[] profile);
+    Completable setUser(@NonNull String uuid, @NonNull User user);
+
+    @NonNull
+    Completable deleteUser(@NonNull String uuid);
+
 
 }

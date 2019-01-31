@@ -1,17 +1,22 @@
 package com.swsnack.catchhouse.data.userdata.api;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
 import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+
+import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
 
 public class AppAPIManager implements APIManager {
 
@@ -26,8 +31,9 @@ public class AppAPIManager implements APIManager {
         return SINGLETON.INSTANCE;
     }
 
+    @NonNull
     @Override
-    public Single<String> firebaseSignUp(AuthCredential authCredential) {
+    public Single<String> firebaseSignUp(@NonNull AuthCredential authCredential) {
         return Single.defer(() ->
                 Single.create(subscriber ->
                         FirebaseAuth.getInstance().signInWithCredential(authCredential)
@@ -35,8 +41,9 @@ public class AppAPIManager implements APIManager {
                                 .addOnFailureListener(subscriber::onError)));
     }
 
+    @NonNull
     @Override
-    public Single<String> firebaseSignUp(String email, String password) {
+    public Single<String> firebaseSignUp(@NonNull String email, @NonNull String password) {
         return Single.defer(() ->
                 Single.create(subscriber ->
                         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
@@ -45,8 +52,9 @@ public class AppAPIManager implements APIManager {
                 ));
     }
 
+    @NonNull
     @Override
-    public Single<User> facebookUserProfile(AccessToken token) {
+    public Single<User> facebookUserProfile(@NonNull AccessToken token) {
         return Single.defer(() ->
                 Single.create(subscriber -> {
                     GraphRequest request = GraphRequest.newMeRequest(token, (object, response) -> {
@@ -61,8 +69,9 @@ public class AppAPIManager implements APIManager {
                 }));
     }
 
+    @NonNull
     @Override
-    public Completable firebaseSignIn(String email, String password) {
+    public Completable firebaseSignIn(@NonNull String email, @NonNull String password) {
         return Completable.defer(() ->
                 Completable.create(subscriber ->
                         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
@@ -70,13 +79,26 @@ public class AppAPIManager implements APIManager {
                                 .addOnFailureListener(subscriber::onError)));
     }
 
+    @NonNull
     @Override
-    public Completable firebaseDeleteUser() {
+    public Completable firebaseDeleteUser(@NonNull String uuid) {
         return Completable.defer(() ->
                 Completable.create(subscriber ->
                         FirebaseAuth.getInstance().getCurrentUser()
                                 .delete()
                                 .addOnSuccessListener(authResult -> subscriber.onComplete())
                                 .addOnFailureListener(subscriber::onError)));
+    }
+
+    @NonNull
+    @Override
+    public Completable firebaseDeleteStorage(@NonNull String uuid) {
+        return Completable.defer(() ->
+                Completable.create(subscriber -> FirebaseStorage.getInstance()
+                        .getReference(STORAGE_PROFILE)
+                        .child(uuid)
+                        .delete()
+                        .addOnSuccessListener(result -> subscriber.onComplete())
+                        .addOnFailureListener(subscriber::onError)));
     }
 }

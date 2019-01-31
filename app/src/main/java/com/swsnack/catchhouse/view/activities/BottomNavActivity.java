@@ -7,13 +7,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.bumptech.glide.load.engine.GlideException;
+import com.facebook.FacebookException;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
+import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
+import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
-import com.swsnack.catchhouse.view.fragments.MapFragment;
 import com.swsnack.catchhouse.view.fragments.HomeFragment;
+import com.swsnack.catchhouse.view.fragments.MapFragment;
 import com.swsnack.catchhouse.view.fragments.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
@@ -21,12 +30,6 @@ import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.InSufficientException;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
-import com.bumptech.glide.load.engine.GlideException;
-import com.facebook.FacebookException;
-import com.google.android.gms.auth.GoogleAuthException;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
@@ -70,16 +73,16 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         if (throwable instanceof InSufficientException) {
             switch (((InSufficientException) throwable).getReason()) {
                 case IN_SUFFICIENT_INFO:
-                    Snackbar.make(getBinding().getRoot(), R.string.snack_invalid_user, Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(getBinding().getRoot(), R.string.snack_fill_info, Snackbar.LENGTH_SHORT).show();
                     break;
                 case SHORT_PASSWORD:
                     Snackbar.make(getBinding().getRoot(), R.string.snack_short_password, Snackbar.LENGTH_SHORT).show();
                     break;
             }
+            return;
         }
 
-        Snackbar.make(getBinding().getRoot(), R.string.snack_failed_sign_up, Snackbar.LENGTH_SHORT).show();
-
+        Snackbar.make(getBinding().getRoot(), R.string.snack_error_occured, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -91,7 +94,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 break;
             case Constants.UserStatus.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
-                Snackbar.make(getBinding().getRoot(), "로그인 성공", Snackbar.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -122,7 +124,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     }
 
     private void createViewModels() {
-        createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(), this));
+        createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
+                AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()),
+                this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
 
     }

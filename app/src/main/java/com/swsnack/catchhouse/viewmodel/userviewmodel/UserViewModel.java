@@ -1,7 +1,6 @@
 package com.swsnack.catchhouse.viewmodel.userviewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,8 +16,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.storage.FirebaseStorage;
-import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
@@ -30,27 +28,33 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
     private byte[] mProfileByteArray;
+    private MutableLiveData<String> mGender;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
     public MutableLiveData<String> mNickName;
-    private MutableLiveData<String> mGender;
     public MutableLiveData<Bitmap> mProfile;
 
-    UserViewModel(Application application, ViewModelListener listener) {
-        super();
+    UserViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
+        super(dataManager);
         this.mAppContext = application;
         this.mListener = listener;
+        this.mGender = new MutableLiveData<>();
         this.mEmail = new MutableLiveData<>();
         this.mPassword = new MutableLiveData<>();
         this.mNickName = new MutableLiveData<>();
-        this.mGender = new MutableLiveData<>();
         this.mProfile = new MutableLiveData<>();
+    }
+
+    public void setGender(String gender) {
+        mGender.setValue(gender);
     }
 
     public void getBitmapAndByteArrayFromUri(Uri uri) {
@@ -109,19 +113,19 @@ public class UserViewModel extends ReactiveViewModel {
                         .firebaseSignUp(authCredential)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(uuid -> setUser(uuid, user, Constants.UserStatus.SIGN_IN_SUCCESS),
+                        .subscribe(uuid -> setUser(uuid, user, SIGN_IN_SUCCESS),
                                 mListener::onError));
     }
 
     public void signUpWithEmail(View v) {
-        if (mPassword.getValue().length() < 6) {
+        if (mPassword.getValue() == null || mPassword.getValue().length() < 6) {
             mListener.onError(new InSufficientException(SHORT_PASSWORD));
             return;
         }
-        if (mEmail.getValue().trim().equals("")
-                && mPassword.getValue().trim().equals("")
-                && mNickName.getValue().trim().equals("")
-                && mGender.getValue() == null) {
+        if (mEmail.getValue() == null || mPassword.getValue() == null ||
+                mNickName.getValue() == null || mGender.getValue() == null ||
+                mEmail.getValue().trim().equals("") || mPassword.getValue().trim().equals("") ||
+                mNickName.getValue().trim().equals("") || mGender.getValue() == null) {
             mListener.onError(new InSufficientException(IN_SUFFICIENT_INFO));
             return;
         }
@@ -137,7 +141,7 @@ public class UserViewModel extends ReactiveViewModel {
                                 setProfile(uuid, user);
                                 return;
                             }
-                            setUser(uuid, user, Constants.UserStatus.SIGN_UP_SUCCESS);
+                            setUser(uuid, user, SIGN_UP_SUCCESS);
                         }, mListener::onError));
     }
 
@@ -148,11 +152,7 @@ public class UserViewModel extends ReactiveViewModel {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> mListener.onSuccess(userStatusFlag),
-                                error -> {
-                                    mListener.onError(error);
-                                    FirebaseAuth.getInstance().getCurrentUser().delete();
-                                    FirebaseStorage.getInstance().getReference(Constants.FirebaseKey.STORAGE_PROFILE).child(uuid).delete();
-                                }));
+                                error -> mListener.onError(error)));
     }
 
     private void setProfile(String uuid, User user) {
@@ -163,21 +163,19 @@ public class UserViewModel extends ReactiveViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(path -> {
                                     user.setProfile(path);
-                                    setUser(uuid, user, Constants.UserStatus.SIGN_UP_SUCCESS);
+                                    setUser(uuid, user, SIGN_UP_SUCCESS);
                                 },
-                                error -> {
-                                    mListener.onError(error);
-                                    FirebaseAuth.getInstance().getCurrentUser().delete();
-                                }));
+                                error -> mListener.onError(error)));
     }
 
     public void signInWithEmail(View v) {
-        if (mEmail.getValue().trim().equals("") && mPassword.getValue().trim().equals("")) {
-            mListener.onError(new InSufficientException(Constants.ExceptionReason.IN_SUFFICIENT_INFO));
+        if (mEmail.getValue() == null || mPassword.getValue() == null
+                || mEmail.getValue().trim().equals("") || mPassword.getValue().trim().equals("")) {
+            mListener.onError(new InSufficientException(IN_SUFFICIENT_INFO));
             return;
         }
 
-        if (mPassword.getValue().length() < 6) {
+        if (mPassword.getValue() == null || mPassword.getValue().length() < 6) {
             mListener.onError(new InSufficientException(SHORT_PASSWORD));
             return;
         }
@@ -187,15 +185,17 @@ public class UserViewModel extends ReactiveViewModel {
                         .firebaseSignIn(mEmail.getValue(), mPassword.getValue())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> mListener.onSuccess(Constants.UserStatus.SIGN_IN_SUCCESS),
+                        .subscribe(() -> mListener.onSuccess(SIGN_IN_SUCCESS),
                                 mListener::onError));
     }
 
-    public void setGender(String gender) {
-        mGender.setValue(gender);
-    }
-
-    public LiveData<String> getGender() {
-        return mGender;
+    public void deleteUser() {
+        getCompositeDisposable().add(
+                getDataManager()
+                        .firebaseDeleteUser(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.newThread())
+                        .subscribe()
+        );
     }
 }

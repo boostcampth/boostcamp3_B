@@ -12,9 +12,9 @@ public class ReactiveViewModel extends ViewModel {
     private CompositeDisposable mDisposables;
     private DataManager mDataManager;
 
-    public ReactiveViewModel() {
+    public ReactiveViewModel(DataManager dataManager) {
         mDisposables = new CompositeDisposable();
-        mDataManager = AppDataManager.getInstance();
+        mDataManager = dataManager;
     }
 
     @Override
