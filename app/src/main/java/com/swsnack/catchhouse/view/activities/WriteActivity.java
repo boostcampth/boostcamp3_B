@@ -43,6 +43,11 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     }
 
     @Override
+    public void onSuccess(String success) {
+
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

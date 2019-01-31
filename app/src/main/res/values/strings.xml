@@ -34,4 +34,5 @@
 
     /* activity_write */
     <string name="tv_write_gallery">사진 선택</string>
+    <string name="tb_write">매물 올리기</string>
 </resources>

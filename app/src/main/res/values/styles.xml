@@ -37,7 +37,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="tv_accent.small">
+    <style name="tv.accent.small">
         <item name="android:layout_width">@dimen/write_tv_width</item>
         <item name="android:layout_height">@dimen/write_tv_height</item>
         <item name="android:textSize">@dimen/write_tv_text_size</item>
