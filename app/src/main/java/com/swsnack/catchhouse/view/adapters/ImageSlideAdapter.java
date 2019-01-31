@@ -2,16 +2,15 @@ package com.swsnack.catchhouse.view.adapters;
 
 import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.swsnack.catchhouse.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.swsnack.catchhouse.R;
 
 import java.util.ArrayList;
 
@@ -19,25 +18,30 @@ import io.reactivex.annotations.NonNull;
 
 public class ImageSlideAdapter extends PagerAdapter {
 
+
     ArrayList<Uri> mUri;
     private LayoutInflater inflater;
 
     public ImageSlideAdapter() {
     }
 
-    public void setUriArray(ArrayList<Uri> uri) {
+    public void setUri(ArrayList<Uri> uri) {
         mUri = uri;
     }
 
+    public ArrayList<Uri> getUri() {
+        return mUri;
+    }
+
     public void removeItem(int position) {
-        if(mUri.get(position) != null) {
+        if (mUri.get(position) != null) {
             mUri.remove(position);
         }
     }
 
     @Override
     public int getCount() {
-        if(mUri == null) {
+        if (mUri == null) {
             return 0;
         } else {
             return mUri.size();
@@ -56,8 +60,8 @@ public class ImageSlideAdapter extends PagerAdapter {
         View view = inflater.inflate(R.layout.slider, container, false);
         ImageView imageView = view.findViewById(R.id.imageView);
         ImageView deleteImageView = view.findViewById(R.id.imageView2);
+
         deleteImageView.setOnClickListener(__ -> {
-            Log.d("Tag_OnClick", Integer.toString(position));
             removeItem(position);
             notifyDataSetChanged();
         });

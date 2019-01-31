@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
@@ -29,22 +30,23 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
 
     @Override
     public void onError(Throwable throwable) {
-
+        Log.d("Tag__write_activity", "error");
+        Log.e("Tag__write_activity", "error", throwable);
     }
 
     @Override
     public void isWorking() {
-
+        Log.d("Tag__write_activity", "working...");
     }
 
     @Override
     public void isFinished() {
-
+        Log.d("Tag__write_activity", "Finished");
     }
 
     @Override
     public void onSuccess(String success) {
-
+        Log.d("Tag__write_activity", "success__" + success);
     }
 
     @Override
