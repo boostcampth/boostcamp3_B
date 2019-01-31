@@ -11,20 +11,12 @@ import java.util.ArrayList;
 public class RoomsDataBinding {
 
     @BindingAdapter("items")
-    public static void setItems(ViewPager vp, ArrayList<Uri> items) {
+    public static void setItems(ViewPager viewPager, ArrayList<Uri> items) {
         ImageSlideAdapter adapter;
 
-        if (vp.getAdapter() == null) {
-            adapter = new ImageSlideAdapter();
-            adapter.setUri(items);
-            vp.setAdapter(adapter);
-        } else {
-            adapter = (ImageSlideAdapter) vp.getAdapter();
-        }
+        adapter = (ImageSlideAdapter) viewPager.getAdapter();
+        adapter.setUri(items);
+        adapter.notifyDataSetChanged();
 
-        if (items != null) {
-            adapter.setUri(items);
-            adapter.notifyDataSetChanged();
-        }
     }
 }

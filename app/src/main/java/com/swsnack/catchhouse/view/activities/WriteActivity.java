@@ -12,6 +12,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
+import com.swsnack.catchhouse.view.adapters.ImageSlideAdapter;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
@@ -57,6 +58,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
         mViewModel = ViewModelProviders.of(this).get(RoomsViewModel.class);
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
+        getBinding().vpWrite.setAdapter(new ImageSlideAdapter(mViewModel));
 
         getBinding().tvWriteGallery.setOnClickListener(__ -> {
             Intent intent = new Intent();

@@ -35,6 +35,12 @@ public class RoomsViewModel extends ReactiveViewModel {
         mBitmapBytesArray = new ArrayList<>();
     }
 
+    public void onClickDeleteButton(int position) {
+        ArrayList<Uri> data = mUriList.getValue();
+        data.remove(position);
+        mUriList.postValue(data);
+    }
+
     public void gallerySelectionResult(ArrayList<Uri> uriList) {
         ArrayList<Uri> data;
 
