@@ -18,7 +18,7 @@ import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIG
 
 public class AppAPIManager implements APIManager {
 
-    private static class SINGLETON {
+    private static class Singleton {
         private static AppAPIManager INSTANCE = new AppAPIManager();
     }
 
@@ -26,7 +26,7 @@ public class AppAPIManager implements APIManager {
     }
 
     public static AppAPIManager getInstance() {
-        return SINGLETON.INSTANCE;
+        return Singleton.INSTANCE;
     }
 
     @Override

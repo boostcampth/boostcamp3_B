@@ -28,6 +28,8 @@ import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
+import java.io.IOException;
+
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
@@ -150,8 +152,18 @@ public class UserViewModel extends ReactiveViewModel {
             setUser(uuid, user, SIGN_UP_SUCCESS);
             return;
         }
+
+        byte[] profileByteArray;
+        try {
+            profileByteArray = DataConverter.getByteArray(DataConverter.getScaledBitmap(mProfile.getValue()));
+        } catch (IOException e) {
+            mListener.onError(e);
+            e.printStackTrace();
+            return;
+        }
+
         getDataManager()
-                .setProfile(uuid, DataConverter.getByteArray(DataConverter.getScaledBitmap(mProfile.getValue())),
+                .setProfile(uuid, profileByteArray,
                         uri -> {
                             user.setProfile(uri.toString());
                             setUser(uuid, user, SIGN_UP_SUCCESS);
@@ -170,6 +182,7 @@ public class UserViewModel extends ReactiveViewModel {
             return;
         }
         mListener.isWorking();
+
         getDataManager()
                 .firebaseSignIn(mEmail.getValue(), mPassword.getValue(), authResult -> mListener.onSuccess(SIGN_IN_SUCCESS), mListener::onError);
     }

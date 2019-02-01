@@ -110,7 +110,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 break;
             case Constants.UserStatus.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
-                Toast.makeText(this, Objects.requireNonNull(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getProviders()).toString(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

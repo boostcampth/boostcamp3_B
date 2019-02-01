@@ -28,12 +28,12 @@ public class AppUserDataManager implements UserDataManager {
     private DatabaseReference db;
     private StorageReference fs;
 
-    private static class UserRemoteDataHelper {
+    private static class Singleton {
         private static final AppUserDataManager INSTANCE = new AppUserDataManager();
     }
 
     public static AppUserDataManager getInstance() {
-        return UserRemoteDataHelper.INSTANCE;
+        return Singleton.INSTANCE;
     }
 
     private AppUserDataManager() {
