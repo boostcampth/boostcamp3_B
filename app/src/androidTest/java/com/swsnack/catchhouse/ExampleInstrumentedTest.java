@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.swsnack.catchhouse", appContext.getPackageName());
+        assertEquals("com.boostcampa2.catchhouse", appContext.getPackageName());
     }
 }

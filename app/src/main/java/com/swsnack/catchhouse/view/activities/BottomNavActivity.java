@@ -28,6 +28,8 @@ import com.swsnack.catchhouse.view.fragments.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
+import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
+import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.InSufficientException;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
@@ -143,7 +145,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()),
                 this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
-
+        createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
     }
 
     private void onNavItemSelected(MenuItem item) {

@@ -80,5 +80,4 @@ public class SearchViewModel extends ReactiveViewModel {
                 ));
         Log.v("csh", "key:"+getKeyword());
     }
-
 }

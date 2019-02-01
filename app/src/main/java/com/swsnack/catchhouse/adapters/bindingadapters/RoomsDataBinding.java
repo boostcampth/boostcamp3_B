@@ -19,4 +19,8 @@ public class RoomsDataBinding {
         adapter.notifyDataSetChanged();
 
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> develop
