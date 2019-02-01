@@ -19,6 +19,8 @@ import com.swsnack.catchhouse.view.fragments.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
+import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
+import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 import com.bumptech.glide.load.engine.GlideException;
@@ -110,7 +112,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(), UserRepository.getInstance(), this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
-
+        createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
     }
 
     private void onNavItemSelected(MenuItem item) {

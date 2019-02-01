@@ -5,7 +5,7 @@
     <data>
         <variable
             name="handler"
-            type="com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel"/>
+            type="com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -64,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="56dp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/fl_bottom_nav_container"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout"/>
 
