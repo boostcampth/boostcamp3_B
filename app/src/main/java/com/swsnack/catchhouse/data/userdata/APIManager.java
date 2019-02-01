@@ -3,30 +3,21 @@ package com.swsnack.catchhouse.data.userdata;
 import android.support.annotation.NonNull;
 
 import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
-
-import io.reactivex.Completable;
-import io.reactivex.Single;
 
 public interface APIManager {
 
-    @NonNull
-    Single<String> firebaseSignUp(@NonNull AuthCredential authCredential);
+    void firebaseSignUp(@NonNull AuthCredential authCredential, @NonNull OnSuccessListener onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    @NonNull
-    Single<String> firebaseSignUp(@NonNull String email, @NonNull String password);
+    void firebaseSignUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    @NonNull
-    Single<User> facebookUserProfile(@NonNull AccessToken accessToken);
+    void facebookUserProfile(@NonNull AccessToken accessToken, GraphRequest.GraphJSONObjectCallback facebookUserDataCallback);
 
-    @NonNull
-    Completable firebaseSignIn(@NonNull String email, @NonNull String password);
+    void firebaseSignIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    @NonNull
-    Completable firebaseDeleteUser(@NonNull String uuid);
-
-    @NonNull
-    Completable firebaseDeleteStorage(@NonNull String uuid);
+    void firebaseDeleteUser(@NonNull OnSuccessListener onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
 }
