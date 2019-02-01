@@ -9,4 +9,6 @@
     <dimen name="write_tv_height">32dp</dimen>
     <dimen name="write_tv_text_size">12sp</dimen>
 
+    <dimen name="map_name_size">15sp</dimen>
+    <dimen name="map_address_size">10sp</dimen>
 </resources>
