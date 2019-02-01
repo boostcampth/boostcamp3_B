@@ -12,6 +12,14 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/aller_bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="tv.round">
         <item name="android:background">@drawable/round_corner</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/aller_default</item>
@@ -43,12 +51,21 @@
         <item name="android:textSize">@dimen/write_tv_text_size</item>
     </style>
 
-    <style name="tv">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/aller_bold</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@android:color/black</item>
+    <style name="tv.menu">
+        <item name="android:layout_height">32dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:background">@drawable/tv_background_menu</item>
+        <item name="android:textColor">@color/colorMenu</item>
+    </style>
+
+    <style name="iv">
+        <item name="android:layout_width">150dp</item>
+        <item name="android:layout_height">150dp</item>
+    </style>
+
+    <style name="iv.round">
+        <item name="android:background">@drawable/circular_image_view</item>
     </style>
 
 </resources>

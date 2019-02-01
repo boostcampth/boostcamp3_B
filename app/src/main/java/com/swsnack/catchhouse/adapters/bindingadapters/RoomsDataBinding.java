@@ -17,6 +17,5 @@ public class RoomsDataBinding {
         adapter = (ImageSlideAdapter) viewPager.getAdapter();
         adapter.setUri(items);
         adapter.notifyDataSetChanged();
-
     }
 }

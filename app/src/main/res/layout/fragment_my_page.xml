@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:fitsSystemWindows="true">
+
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/ctl_my_page"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/main_background">
+
+                    <ImageView
+                        android:id="@+id/iv_my_page_profile"
+                        style="@style/iv_round"
+                        android:layout_marginTop="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_nick_name"
+                        style="@style/tv"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_my_page_profile" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_change_user_info"
+                        style="@style/tv.menu"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@android:color/white"
+                        android:text="@string/my_page_change_member_info"
+                        app:layout_constraintEnd_toEndOf="@id/gl_my_page_right"
+                        app:layout_constraintStart_toStartOf="@id/gl_my_page_left"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_nick_name" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_show_sell_room"
+                        style="@style/tv.menu"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="1dp"
+                        android:backgroundTint="@android:color/white"
+                        android:text="@string/my_page_sell_room"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_my_page_sign_out"
+                        app:layout_constraintEnd_toEndOf="@id/gl_my_page_right"
+                        app:layout_constraintStart_toStartOf="@id/gl_my_page_left"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_change_user_info" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_sign_out"
+                        style="@style/tv.menu"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="1dp"
+                        android:backgroundTint="@android:color/white"
+                        android:text="@string/my_page_log_out"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_my_page_delete_user"
+                        app:layout_constraintEnd_toEndOf="@id/gl_my_page_right"
+                        app:layout_constraintStart_toStartOf="@id/gl_my_page_left"
+                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_show_sell_room"
+                        app:layout_goneMarginTop="8dp" />
+
+                    <TextView
+                        android:id="@+id/tv_my_page_delete_user"
+                        style="@style/tv.menu"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:backgroundTint="@android:color/white"
+                        android:text="@string/my_page_delete_user"
+                        app:layout_constraintBottom_toTopOf="@+id/gl_my_page_bottom"
+                        app:layout_constraintEnd_toEndOf="@id/gl_my_page_right"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@id/gl_my_page_left"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_my_page_sign_out" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/gl_my_page_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.1" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/gl_my_page_right"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.9" />
+
+                    <android.support.constraint.Guideline
+                        android:id="@+id/gl_my_page_bottom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_end="24dp"/>
+
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tb_my_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin" />
+
+            </android.support.design.widget.CollapsingToolbarLayout>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <include
+            layout="@layout/bottom_my_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

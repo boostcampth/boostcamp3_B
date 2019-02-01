@@ -6,4 +6,5 @@
     <color name="colorBottomNavDefault">#8c8c8c</color>
     <color name="colorDefaultGray">#D5D5D5</color>
     <color name="colorDividerGray">#1f000000</color>
+    <color name="colorMenu">#64B5F6</color>
 </resources>
