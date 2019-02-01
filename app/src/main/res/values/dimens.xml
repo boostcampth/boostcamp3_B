@@ -11,4 +11,9 @@
 
     <dimen name="map_name_size">15sp</dimen>
     <dimen name="map_address_size">10sp</dimen>
+
+    <dimen name="text_size_H5">24sp</dimen>
+    <dimen name="text_size_H6">20sp</dimen>
+    <dimen name="text_size_m">16sp</dimen>
+    <dimen name="text_size_s">14sp</dimen>
 </resources>

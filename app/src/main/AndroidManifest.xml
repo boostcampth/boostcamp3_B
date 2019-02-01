@@ -38,7 +38,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.swsnack.catchhouse.view.activities.WriteActivity"/>
+        <activity
+            android:name="com.swsnack.catchhouse.view.activities.WriteActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+
     </application>
 
 </manifest>
