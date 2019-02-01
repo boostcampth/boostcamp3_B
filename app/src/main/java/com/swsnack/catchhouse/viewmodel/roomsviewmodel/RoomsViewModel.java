@@ -34,8 +34,6 @@ public class RoomsViewModel extends ReactiveViewModel {
     private ViewModelListener mListener;
     public final MutableLiveData<ArrayList<Uri>> mUriList;
     public List<byte[]> mBitmapBytesArray;
-    private MutableLiveData<List<Address>> mAddressList;
-    public MutableLiveData<String> mKeyword;
 
     // private List<Room> mRoomList;
     RoomsViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
@@ -45,13 +43,6 @@ public class RoomsViewModel extends ReactiveViewModel {
         mListener = listener;
         mUriList = new MutableLiveData<>();
         mBitmapBytesArray = new ArrayList<>();
-        mAddressList = new MutableLiveData<>();
-        mKeyword = new MutableLiveData<>();
-        mKeyword.setValue("");
-
-        List<Address> list = new ArrayList<>();
-
-        mAddressList.postValue(list);
     }
 
     public void onClickDeleteButton(int position) {
@@ -82,46 +73,6 @@ public class RoomsViewModel extends ReactiveViewModel {
         mUriList.postValue(data);
     }
 
-    public MutableLiveData<List<Address>> getAddressList() {
-        return mAddressList;
-    }
-
-    public Address getAddress(int position) {
-        if(mAddressList.getValue() == null) {
-            return new Address();
-        }
-        return mAddressList.getValue().get(position);
-    }
-
-    public String getKeyword() {
-        if(mKeyword.getValue() == null) {
-            return "";
-        }
-        return mKeyword.getValue();
-    }
-
-
-    public void searchAddress() {
-
-        mListener.isWorking();
-        getCompositeDisposable().add(mRepository.getPOIFromRemote(mKeyword.getValue())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(tMapPOIItems -> {
-                    List<Address> tempList = new ArrayList<>();
-                    for(int i = 0; i < tMapPOIItems.size(); i++) {
-                        TMapPOIItem item = tMapPOIItems.get(i);
-                        tempList.add(new Address(item.name, item.getPOIAddress().replace("null", ""), item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()));
-                    }
-                    mAddressList.postValue(tempList);
-                    mListener.isFinished();
-                }, throwable -> {
-                    Log.d("csh", "Error:" + throwable.getMessage());
-                    mListener.isFinished();
-                }
-        ));
-        Log.v("csh", "key:"+getKeyword());
-    }
 
     private void getByteArrayListFromUri(ArrayList<Uri> uris) {
         mListener.isWorking();

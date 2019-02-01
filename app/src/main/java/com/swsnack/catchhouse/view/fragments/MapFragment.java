@@ -24,12 +24,13 @@ import com.swsnack.catchhouse.view.SimpleDividerItemDecoration;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.skt.Tmap.TMapView;
+import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import io.reactivex.annotations.Nullable;
 
-public class MapFragment extends BaseFragment<FragmentMapBinding, RoomsViewModel> {
+public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewModel> {
     public FragmentManager mFragmentManager;
 
     @Override
@@ -39,7 +40,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, RoomsViewModel
 
     @Override
     protected Class setViewModel() {
-        return RoomsViewModel.class;
+        return SearchViewModel.class;
     }
 
     @Nullable
@@ -82,6 +83,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, RoomsViewModel
         getBinding().etMapSearch.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                 getViewModel().searchAddress();
+                getBinding().rvMapAddress.setVisibility(View.VISIBLE);
                 return true;
             }
             return false;
