@@ -12,8 +12,11 @@ import android.view.View;
 
 import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
+import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
+import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
+import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -37,7 +40,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     // private List<Room> mRoomList;
     RoomsViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
-        super();
+        super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()));
         mAppContext = application;
         mRepository = repository;
         mListener = listener;

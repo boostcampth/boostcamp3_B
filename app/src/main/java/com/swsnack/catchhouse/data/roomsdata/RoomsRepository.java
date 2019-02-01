@@ -1,14 +1,13 @@
 package com.swsnack.catchhouse.data.roomsdata;
 
+import android.support.annotation.NonNull;
+
 import com.skt.Tmap.TMapPOIItem;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.roomsdata.remote.RoomsRemoteData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.annotations.NonNull;
 
 public class RoomsRepository {
 

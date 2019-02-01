@@ -1,81 +1,85 @@
 package com.swsnack.catchhouse.viewmodel.userviewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import com.swsnack.catchhouse.constants.Constants;
-import com.swsnack.catchhouse.data.userdata.UserRepository;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
-import com.swsnack.catchhouse.util.DataConverter;
-import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import android.support.annotation.Nullable;
+import android.view.View;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.storage.FirebaseStorage;
+import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.util.DataConverter;
+import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
+import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import java.io.IOException;
+
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
+import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
+import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
-    private UserRepository mRepository;
     private ViewModelListener mListener;
-    private byte[] mProfileByteArray;
+    private MutableLiveData<String> mGender;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
     public MutableLiveData<String> mNickName;
-    private MutableLiveData<String> mGender;
     public MutableLiveData<Bitmap> mProfile;
 
-    UserViewModel(Application application, UserRepository repository, ViewModelListener listener) {
-        super();
+    UserViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
+        super(dataManager);
         this.mAppContext = application;
-        this.mRepository = repository;
         this.mListener = listener;
+        this.mGender = new MutableLiveData<>();
         this.mEmail = new MutableLiveData<>();
         this.mPassword = new MutableLiveData<>();
         this.mNickName = new MutableLiveData<>();
-        this.mGender = new MutableLiveData<>();
         this.mProfile = new MutableLiveData<>();
     }
 
-    public void getBitmapAndByteArrayFromUri(Uri uri) {
-        mListener.isWorking();
-        getCompositeDisposable().add(
-                Single.create(subscriber -> {
-                    Bitmap bitmap = Glide.with(mAppContext)
-                            .asBitmap()
-                            .load(uri)
-                            .submit()
-                            .get();
-                    mProfile.postValue(bitmap);
-                    subscriber.onSuccess(DataConverter.getScaledBitmap(bitmap));
-                })
-                        .subscribeOn(Schedulers.newThread())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(bitmap -> getCompositeDisposable().add(DataConverter.getByteArray((Bitmap) bitmap)
-                                        .subscribeOn(Schedulers.computation())
-                                        .observeOn(AndroidSchedulers.mainThread())
-                                        .subscribe(byteArray -> {
-                                                    mProfileByteArray = byteArray;
-                                                    mListener.isFinished();
-                                                },
-                                                error -> mListener.onError(error))),
-                                error -> mListener.onError(error)));
+    public void setGender(String gender) {
+        mGender.setValue(gender);
     }
 
+    public void setProfile(Uri uri) {
+        mListener.isWorking();
+        Glide.with(mAppContext).asBitmap().load(uri).listener(new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                mListener.onError(e);
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                mListener.isFinished();
+                mProfile.postValue(resource);
+                return true;
+            }
+        }).submit();
+    }
 
     public void signInWithGoogle(Intent data) {
         mListener.isWorking();
@@ -85,87 +89,112 @@ public class UserViewModel extends ReactiveViewModel {
         if (account.getPhotoUrl() != null) {
             user.setProfile(account.getPhotoUrl().toString());
         }
-        authWithCredential(GoogleAuthProvider.getCredential(account.getIdToken(), null), user);
+        signUpWithCredential(GoogleAuthProvider.getCredential(account.getIdToken(), null), user);
     }
 
     public void signInWithFacebook(LoginResult loginResult, Uri uri) {
         mListener.isWorking();
-        getCompositeDisposable()
-                .add(mRepository.getDetailInfoFromRemote(loginResult.getAccessToken())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(user -> {
-                            user.setProfile(uri.toString());
-                            authWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()), user);
-                        }));
-    }
-
-    private void authWithCredential(AuthCredential credential, User user) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        auth.signInWithCredential(credential)
-                .addOnSuccessListener(success -> {
-                    String uuid = auth.getCurrentUser().getUid();
-                    setUserToRemote(uuid, user, Constants.UserStatus.SIGN_IN_SUCCESS);
-                })
-                .addOnFailureListener(error -> mListener.onError(error));
-    }
-
-    private void setUserToRemote(String uid, User user, String userStatusFlag) {
-        getCompositeDisposable().add(mRepository.setUserToRemote(uid, user)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> mListener.onSuccess(userStatusFlag),
-                        error -> {
-                            FirebaseAuth.getInstance().getCurrentUser().delete();
-                            FirebaseStorage.getInstance().getReference().child(uid).delete();
-                            mListener.onError(error);
-                        }));
-    }
-
-    private void setProfileAndWriteToRemote(String uid, User user) {
-        getCompositeDisposable().add(
-                mRepository.saveProfileAndGetUrl(uid, mProfileByteArray)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(path -> {
-                                    user.setProfile(path.toString());
-                                    setUserToRemote(uid, user, Constants.UserStatus.SIGN_UP_SUCCESS);
-                                },
-                                error -> {
-                                    mListener.onError(error);
-                                    FirebaseAuth.getInstance().getCurrentUser().delete();
-                                }));
-    }
-
-    public void signUpWithEmail() {
-        mListener.isWorking();
-        FirebaseAuth.getInstance()
-                .createUserWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
-                .addOnSuccessListener(authResult -> {
-                    String uid = authResult.getUser().getUid();
-                    User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
-                    if (mProfile.getValue() != null) {
-                        //Firebase 인증 성공시, profile image가 있는지 확인,
-                        //확인 후, storage 저장, 그 후 storage의 경로와 함께 유저 정보 db 저장
-                        setProfileAndWriteToRemote(uid, user);
-                    } else {
-                        //profile image 가 없다면, db에 바로 유저 정보 저장
-                        setUserToRemote(uid, user, Constants.UserStatus.SIGN_UP_SUCCESS);
+        getDataManager().facebookUserProfile(loginResult.getAccessToken(),
+                (result, response) -> {
+                    if (result == null) {
+                        mListener.onError(response.getError().getException());
+                        return;
                     }
-                }).addOnFailureListener(error -> mListener.onError(error));
+                    User user = new User(result.optString(NAME), result.optString(GENDER));
+                    user.setProfile(uri.toString());
+                    signUpWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()), user);
+                });
     }
 
-    public void signInWithEmail() {
+    private void signUpWithCredential(AuthCredential authCredential, User user) {
+        getDataManager()
+                .firebaseSignUp(authCredential, result -> setUser(result.getUser().getUid(), user, SIGN_IN_SUCCESS), mListener::onError);
+    }
+
+    public void signUpWithEmail(View v) {
+        if (mPassword.getValue() == null || mPassword.getValue().length() < 6) {
+            mListener.onError(new InSufficientException(SHORT_PASSWORD));
+            return;
+        }
+        if (mEmail.getValue() == null || mPassword.getValue() == null ||
+                mNickName.getValue() == null || mGender.getValue() == null ||
+                mEmail.getValue().trim().equals("") || mPassword.getValue().trim().equals("") ||
+                mNickName.getValue().trim().equals("") || mGender.getValue() == null) {
+            mListener.onError(new InSufficientException(IN_SUFFICIENT_INFO));
+            return;
+        }
         mListener.isWorking();
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(mEmail.getValue(), mPassword.getValue())
-                .addOnSuccessListener(authResult -> mListener.onSuccess(Constants.UserStatus.SIGN_IN_SUCCESS))
-                .addOnFailureListener(error -> mListener.onError(error));
+        getDataManager()
+                .firebaseSignUp(mEmail.getValue(), mPassword.getValue()
+                        , result -> {
+                            User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
+                            if (mProfile.getValue() != null) {
+                                setProfile(result.getUser().getUid(), user);
+                                return;
+                            }
+                            setUser(result.getUser().getUid(), user, SIGN_UP_SUCCESS);
+                        }, mListener::onError);
     }
 
-    public void setGender(String gender) {
-        mGender.setValue(gender);
+    private void setUser(String uuid, User user, String userStatusFlag) {
+        getDataManager()
+                .setUser(uuid, user, result -> mListener.onSuccess(userStatusFlag), error -> {
+                    if (mProfile.getValue() != null) {
+                        getDataManager().firebaseDeleteUser(result -> {
+                        }, mListener::onError);
+                    }
+                    getDataManager().deleteProfile(uuid, result -> mListener.isFinished(), mListener::onError);
+                });
     }
 
-    public LiveData<String> getGender() {
-        return mGender;
+    private void setProfile(String uuid, User user) {
+        if (mProfile.getValue() == null) {
+            setUser(uuid, user, SIGN_UP_SUCCESS);
+            return;
+        }
+
+        byte[] profileByteArray;
+        try {
+            profileByteArray = DataConverter.getByteArray(DataConverter.getScaledBitmap(mProfile.getValue()));
+        } catch (IOException e) {
+            mListener.onError(e);
+            e.printStackTrace();
+            return;
+        }
+
+        getDataManager()
+                .setProfile(uuid, profileByteArray,
+                        uri -> {
+                            user.setProfile(uri.toString());
+                            setUser(uuid, user, SIGN_UP_SUCCESS);
+                        }, mListener::onError);
+    }
+
+    public void signInWithEmail(View v) {
+        if (mEmail.getValue() == null || mPassword.getValue() == null
+                || mEmail.getValue().trim().equals("") || mPassword.getValue().trim().equals("")) {
+            mListener.onError(new InSufficientException(IN_SUFFICIENT_INFO));
+            return;
+        }
+
+        if (mPassword.getValue() == null || mPassword.getValue().length() < 6) {
+            mListener.onError(new InSufficientException(SHORT_PASSWORD));
+            return;
+        }
+        mListener.isWorking();
+
+        getDataManager()
+                .firebaseSignIn(mEmail.getValue(), mPassword.getValue(), authResult -> mListener.onSuccess(SIGN_IN_SUCCESS), mListener::onError);
+    }
+
+    public void deleteUser() {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            mListener.onError(new FirebaseException(NOT_SIGNED_USER));
+            return;
+        }
+        mListener.isWorking();
+        String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        getDataManager()
+                .deleteUser(uuid, deleteResult -> mListener.isFinished(), mListener::onError);
     }
 }

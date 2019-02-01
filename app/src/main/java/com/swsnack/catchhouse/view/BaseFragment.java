@@ -20,7 +20,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, setLayout(), container, false);
+        mBinding = DataBindingUtil.inflate(inflater, getLayout(), container, false);
         return mBinding.getRoot();
     }
 
@@ -35,7 +35,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
         }
     }
 
-    protected abstract int setLayout();
+    protected abstract int getLayout();
 
     protected abstract Class<V> setViewModel();
 
@@ -46,4 +46,5 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
     protected V getViewModel() {
         return mViewModel;
     }
+
 }

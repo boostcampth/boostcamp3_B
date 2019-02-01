@@ -12,7 +12,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.databinding.ItemMapAddressBinding;
 
-public class AddressBindingAdapter extends BaseRecyclerViewAdapter<Address, AddressBindingAdapter.AddressViewHolder> {
+public class AddressBindingAdapter extends com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter<Address, AddressBindingAdapter.AddressViewHolder> {
 
     public AddressBindingAdapter(Context context) {
         super(context);

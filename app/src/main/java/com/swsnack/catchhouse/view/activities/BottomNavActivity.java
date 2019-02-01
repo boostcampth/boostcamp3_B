@@ -6,32 +6,43 @@ import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
-import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.constants.Constants;
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.userdata.UserRepository;
-import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
-import com.swsnack.catchhouse.view.BaseActivity;
-import com.swsnack.catchhouse.view.fragments.MapFragment;
-import com.swsnack.catchhouse.view.fragments.HomeFragment;
-import com.swsnack.catchhouse.view.fragments.SignInFragment;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
-import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
-import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
-import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
-import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModelFactory;
-import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
-import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 import com.bumptech.glide.load.engine.GlideException;
 import com.facebook.FacebookException;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
+import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
+import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
+import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
+import com.swsnack.catchhouse.view.BaseActivity;
+import com.swsnack.catchhouse.view.fragments.HomeFragment;
+import com.swsnack.catchhouse.view.fragments.MapFragment;
+import com.swsnack.catchhouse.view.fragments.SignInFragment;
+import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
+import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
+import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
+import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModelFactory;
+import com.swsnack.catchhouse.viewmodel.userviewmodel.InSufficientException;
+import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
+import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
+
+import java.util.Objects;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
+
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_UP_EXCEPTION;
 
 public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener, HomeFragment.OnSearchButtonListener {
 
@@ -39,7 +50,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     private CompositeDisposable mDisposable;
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.activity_bottom_nav;
     }
 
@@ -66,8 +77,28 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             return;
         }
 
-        Snackbar.make(getBinding().getRoot(), R.string.snack_failed_sign_up, Snackbar.LENGTH_SHORT).show();
+        if (throwable instanceof InSufficientException) {
+            switch (((InSufficientException) throwable).getReason()) {
+                case IN_SUFFICIENT_INFO:
+                    Snackbar.make(getBinding().getRoot(), R.string.snack_fill_info, Snackbar.LENGTH_SHORT).show();
+                    break;
+                case SHORT_PASSWORD:
+                    Snackbar.make(getBinding().getRoot(), R.string.snack_short_password, Snackbar.LENGTH_SHORT).show();
+                    break;
+            }
+            return;
+        }
 
+        switch (throwable.getMessage()) {
+            case SIGN_UP_EXCEPTION:
+                Snackbar.make(getBinding().getRoot(), R.string.snack_fb_sign_up_failed, Snackbar.LENGTH_SHORT).show();
+                break;
+            case NOT_SIGNED_USER:
+                Snackbar.make(getBinding().getRoot(), R.string.snack_fb_not_signed_user, Snackbar.LENGTH_SHORT).show();
+                break;
+            default:
+                Snackbar.make(getBinding().getRoot(), R.string.snack_error_occured, Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -79,7 +110,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 break;
             case Constants.UserStatus.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
-                Snackbar.make(getBinding().getRoot(), "로그인 성공", Snackbar.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -110,7 +140,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     }
 
     private void createViewModels() {
-        createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(), UserRepository.getInstance(), this));
+        createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
+                AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()),
+                this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
         createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
     }

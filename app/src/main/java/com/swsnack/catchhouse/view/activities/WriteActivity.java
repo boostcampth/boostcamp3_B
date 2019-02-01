@@ -25,7 +25,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     private RoomsViewModel mViewModel;
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.activity_write;
     }
 
