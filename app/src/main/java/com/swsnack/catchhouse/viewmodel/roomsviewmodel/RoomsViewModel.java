@@ -45,6 +45,13 @@ public class RoomsViewModel extends ReactiveViewModel {
         mListener = listener;
         mUriList = new MutableLiveData<>();
         mBitmapBytesArray = new ArrayList<>();
+        mAddressList = new MutableLiveData<>();
+        mKeyword = new MutableLiveData<>();
+        mKeyword.setValue("");
+
+        List<Address> list = new ArrayList<>();
+
+        mAddressList.postValue(list);
     }
 
     public void onClickDeleteButton(int position) {
@@ -73,13 +80,6 @@ public class RoomsViewModel extends ReactiveViewModel {
 
         getByteArrayListFromUri(data);
         mUriList.postValue(data);
-        mAddressList = new MutableLiveData<>();
-        mKeyword = new MutableLiveData<>();
-        mKeyword.setValue("");
-
-        List<Address> list = new ArrayList<>();
-
-        mAddressList.postValue(list);
     }
 
     public MutableLiveData<List<Address>> getAddressList() {
