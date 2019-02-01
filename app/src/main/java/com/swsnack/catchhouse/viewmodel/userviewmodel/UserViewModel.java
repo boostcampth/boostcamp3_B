@@ -138,7 +138,8 @@ public class UserViewModel extends ReactiveViewModel {
         getDataManager()
                 .setUser(uuid, user, result -> mListener.onSuccess(userStatusFlag), error -> {
                     if (mProfile.getValue() != null) {
-                        getDataManager().firebaseDeleteUser(result -> {}, mListener::onError);
+                        getDataManager().firebaseDeleteUser(result -> {
+                        }, mListener::onError);
                     }
                     getDataManager().deleteProfile(uuid, result -> mListener.isFinished(), mListener::onError);
                 });
@@ -169,6 +170,8 @@ public class UserViewModel extends ReactiveViewModel {
             return;
         }
         mListener.isWorking();
+        getDataManager()
+                .firebaseSignIn(mEmail.getValue(), mPassword.getValue(), authResult -> mListener.onSuccess(SIGN_IN_SUCCESS), mListener::onError);
     }
 
     public void deleteUser() {
@@ -176,13 +179,9 @@ public class UserViewModel extends ReactiveViewModel {
             mListener.onError(new FirebaseException(NOT_SIGNED_USER));
             return;
         }
+        mListener.isWorking();
         String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getDataManager()
-                .firebaseDeleteUser(result ->
-                                getDataManager().deleteProfile(uuid, deleteUserResult ->
-                                                getDataManager().deleteProfile(uuid, deleteProfileResult -> mListener.isFinished(), mListener::onError),
-                                        mListener::onError),
-                        mListener::onError);
-//        );
+                .deleteUser(uuid, deleteResult -> mListener.isFinished(), mListener::onError);
     }
 }

@@ -28,6 +28,9 @@ import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import java.util.Arrays;
 
+import static com.swsnack.catchhouse.constants.Constants.FacebookData.E_MAIL;
+import static com.swsnack.catchhouse.constants.Constants.FacebookData.PROFILE;
+
 public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel> {
 
     private CallbackManager mCallbackManager;
@@ -70,7 +73,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         });
 
         getBinding().ivSignInFacebook.setOnClickListener(__ ->
-                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(Constants.FacebookData.E_MAIL, Constants.FacebookData.PROFILE)));
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(E_MAIL, PROFILE)));
 
         getBinding().ivSignInEmail.setOnClickListener(__ ->
                 mFragmentManager

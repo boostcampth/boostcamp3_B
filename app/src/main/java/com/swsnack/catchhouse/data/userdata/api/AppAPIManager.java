@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+
 public class AppAPIManager implements APIManager {
 
     private static class SINGLETON {
@@ -60,7 +62,7 @@ public class AppAPIManager implements APIManager {
     @Override
     public void firebaseDeleteUser(@NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            onFailureListener.onFailure(new FirebaseException("user is not signIn"));
+            onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;
         }
         FirebaseAuth.getInstance().getCurrentUser()

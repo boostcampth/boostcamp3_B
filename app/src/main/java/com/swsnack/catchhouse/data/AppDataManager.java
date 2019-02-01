@@ -94,6 +94,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void deleteUser(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.deleteUser(uuid, onSuccessListener, onFailureListener);
+    }
+
+    @Override
     public void setProfile(@NonNull String uuid, @NonNull byte[] profile, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mUserDataManager.setProfile(uuid, profile, onSuccessListener, onFailureListener);
     }

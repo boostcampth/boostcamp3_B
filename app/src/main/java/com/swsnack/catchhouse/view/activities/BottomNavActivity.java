@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.GlideException;
 import com.facebook.FacebookException;
@@ -30,6 +31,8 @@ import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.InSufficientException;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
+
+import java.util.Objects;
 
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
@@ -105,6 +108,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 break;
             case Constants.UserStatus.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
+                Toast.makeText(this, Objects.requireNonNull(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getProviders()).toString(), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

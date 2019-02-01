@@ -2,9 +2,14 @@ package com.swsnack.catchhouse.data.userdata.remote;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -14,6 +19,7 @@ import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_UP_EXCEPTION;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
@@ -38,7 +44,7 @@ public class AppUserDataManager implements UserDataManager {
 
     @Override
     public void getUser(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        db.addListenerForSingleValueEvent(valueEventListener);
+        db.child(uuid).addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override
@@ -81,5 +87,35 @@ public class AppUserDataManager implements UserDataManager {
                 .delete()
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
+    }
+
+    @Override
+    public void deleteUser(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
+            return;
+        }
+        getUser(uuid, new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user == null) {
+                    onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
+                    return;
+                }
+                deleteUserData(uuid, deleteDBResult ->
+                        deleteProfile(uuid, deleteProfileResult ->
+                                        FirebaseAuth.getInstance().getCurrentUser()
+                                                .delete()
+                                                .addOnSuccessListener(onSuccessListener)
+                                                .addOnFailureListener(onFailureListener),
+                                error -> setUser(uuid, user, failedToDeleteData -> onFailureListener.onFailure(error), onFailureListener)), onFailureListener);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onFailureListener.onFailure(databaseError.toException());
+            }
+        });
     }
 }
