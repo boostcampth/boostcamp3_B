@@ -35,7 +35,12 @@
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
 
+    <style name="tv.accent.small">
+        <item name="android:layout_width">@dimen/write_tv_width</item>
+        <item name="android:layout_height">@dimen/write_tv_height</item>
+        <item name="android:textSize">@dimen/write_tv_text_size</item>
     </style>
 
     <style name="tv">

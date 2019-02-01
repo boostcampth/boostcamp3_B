@@ -38,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.swsnack.catchhouse.view.activities.WriteActivity"/>
     </application>
 
 </manifest>

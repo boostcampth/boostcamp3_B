@@ -45,7 +45,6 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
 
         getBinding().setHandler(getViewModel());
         getBinding().setLifecycleOwner(getActivity());
-
         getBinding().ivSignUpProfile.setOnClickListener(__ -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");

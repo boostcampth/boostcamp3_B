@@ -4,6 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -30,5 +31,4 @@ public class RoomsViewModelFactory extends ViewModelProvider.NewInstanceFactory 
         }
         throw new Fragment.InstantiationException("not viewModel class", null);
     }
-
 }

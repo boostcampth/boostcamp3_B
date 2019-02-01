@@ -59,7 +59,6 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
 
         getBinding().setHandler(getViewModel());
         getBinding().setLifecycleOwner(getActivity());
-
         getBinding().ivSignInGoogle.setOnClickListener(__ -> {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
@@ -86,7 +85,6 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
             }
             mViewModel.signInWithEmail();
         });
-
     }
 
     @Override
@@ -125,5 +123,4 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         return getBinding().etSignInEmail.getText().toString().trim().equals("") &&
                 getBinding().etSignInPassword.getText().toString().trim().equals("");
     }
-
 }

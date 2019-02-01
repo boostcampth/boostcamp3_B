@@ -6,7 +6,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-
 import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.data.userdata.UserRepository;
 import com.swsnack.catchhouse.data.userdata.pojo.User;

@@ -81,7 +81,6 @@ public class UserRemoteData implements UserDataSource {
                     request.executeAsync();
                 }));
     }
-
     public Single<Uri> saveProfileAndGetUrl(String uuid, byte[] profileByreArray) {
         return Single.defer(() ->
                 Single.create(subscriber -> {
