@@ -21,7 +21,7 @@ import static android.app.Activity.RESULT_OK;
 public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserViewModel> {
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.fragment_sign_up;
     }
 
@@ -70,7 +70,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.GALLERY) {
             if (resultCode == RESULT_OK) {
-                getViewModel().getBitmapAndByteArrayFromUri(data.getData());
+                getViewModel().setProfile(data.getData());
                 return;
             }
             Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);

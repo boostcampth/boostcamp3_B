@@ -21,12 +21,12 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, RoomsViewModel
     public FragmentManager mFragmentManager;
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.fragment_map;
     }
 
     @Override
-    protected Class setViewModel() {
+    protected Class<RoomsViewModel> setViewModel() {
         return RoomsViewModel.class;
     }
 

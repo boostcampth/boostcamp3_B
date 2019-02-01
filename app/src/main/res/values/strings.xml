@@ -24,6 +24,8 @@
     <string name="snack_already_exist_email">이미 존재하는 이메일 입니다.</string>
     <string name="snack_wrong_password_length">비밀번호를 6자리 이상 설정해주세요</string>
     <string name="snack_fb_sign_in_failed">로그인에 실패했습니다.</string>
+    <string name="snack_fb_sign_up_failed">회원가입에 실패했습니다.</string>
+    <string name="snack_fb_not_signed_user">회원 정보가 없습니다.</string>
     <string name="snack_error_occured">오류가 발생했습니다.</string>
     <string name="snack_invalid_user">아이디 비밀번호를 확인하세요</string>
     <string name="snack_short_password">비밀번호를 6자리 이상 입력해주세요</string>

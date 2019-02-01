@@ -34,7 +34,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     private FragmentManager mFragmentManager;
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.fragment_sign_in;
     }
 

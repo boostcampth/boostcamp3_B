@@ -1,25 +1,23 @@
 package com.swsnack.catchhouse.data.userdata;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
-
-import io.reactivex.Completable;
-import io.reactivex.Single;
 
 public interface UserDataManager {
 
-    @NonNull
-    Single<User> getUser(@NonNull String uuid);
+    void getUser(@NonNull String uuid, @NonNull ValueEventListener valueEventListener);
 
-    @NonNull
-    Single<String> setProfile(@NonNull String uuid, @NonNull byte[] profile);
+    void setProfile(@NonNull String uuid, @NonNull byte[] profile, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    @NonNull
-    Completable setUser(@NonNull String uuid, @NonNull User user);
+    void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    @NonNull
-    Completable deleteUser(@NonNull String uuid);
+    void deleteUserData(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
+    void deleteProfile(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
 }

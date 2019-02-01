@@ -1,9 +1,15 @@
 package com.swsnack.catchhouse.data;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
@@ -42,66 +48,53 @@ public class AppDataManager implements DataManager {
         return mUserDataManager;
     }
 
-    @NonNull
     @Override
-    public Single<String> firebaseSignUp(@NonNull AuthCredential authCredential) {
-        return mApiManager.firebaseSignUp(authCredential);
+    public void firebaseSignUp(@NonNull AuthCredential authCredential, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.firebaseSignUp(authCredential, onSuccessListener, onFailureListener);
     }
 
-    @NonNull
     @Override
-    public Single<String> firebaseSignUp(@NonNull String email, @NonNull String password) {
-        return mApiManager.firebaseSignUp(email, password);
+    public void firebaseSignUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.firebaseSignUp(email, password, onSuccessListener, onFailureListener);
     }
 
-    @NonNull
     @Override
-    public Completable firebaseSignIn(@NonNull String email, @NonNull String password) {
-        return mApiManager.firebaseSignIn(email, password);
+    public void firebaseSignIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.firebaseSignIn(email, password, onSuccessListener, onFailureListener);
     }
 
-    @NonNull
     @Override
-    public Completable firebaseDeleteUser(@NonNull String uuid) {
-        return mApiManager.firebaseDeleteUser(uuid)
-                .andThen(deleteUser(uuid))
-                .andThen(firebaseDeleteStorage(uuid));
+    public void firebaseDeleteUser(@NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.firebaseDeleteUser(onSuccessListener, onFailureListener);
     }
 
-    @NonNull
     @Override
-    public Completable firebaseDeleteStorage(@NonNull String uuid) {
-        return mApiManager.firebaseDeleteStorage(uuid);
+    public void facebookUserProfile(@NonNull AccessToken accessToken, @NonNull GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
+        mApiManager.facebookUserProfile(accessToken, facebookUserDataCallback);
     }
 
-    @NonNull
     @Override
-    public Single<User> facebookUserProfile(@NonNull AccessToken accessToken) {
-        return mApiManager.facebookUserProfile(accessToken);
+    public void getUser(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
+        mUserDataManager.getUser(uuid, valueEventListener);
     }
 
-    @NonNull
     @Override
-    public Single<User> getUser(@NonNull String uuid) {
-        return mUserDataManager.getUser(uuid);
+    public void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.setUser(uuid, user, onSuccessListener, onFailureListener);
     }
 
-    @NonNull
     @Override
-    public Completable setUser(@NonNull String uuid, @NonNull User user) {
-        return mUserDataManager.setUser(uuid, user);
+    public void deleteUserData(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.deleteUserData(uuid, onSuccessListener, onFailureListener);
     }
 
-    @NonNull
     @Override
-    public Completable deleteUser(@NonNull String uuid) {
-        return mApiManager.firebaseDeleteUser(uuid)
-                .andThen(mUserDataManager.deleteUser(uuid));
+    public void deleteProfile(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.deleteProfile(uuid, onSuccessListener, onFailureListener);
     }
 
-    @NonNull
     @Override
-    public Single<String> setProfile(@NonNull String uuid, @NonNull byte[] profile) {
-        return mUserDataManager.setProfile(uuid, profile);
+    public void setProfile(@NonNull String uuid, @NonNull byte[] profile, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.setProfile(uuid, profile, onSuccessListener, onFailureListener);
     }
 }

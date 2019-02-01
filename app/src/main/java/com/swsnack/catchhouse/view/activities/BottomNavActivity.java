@@ -35,7 +35,9 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_UP_EXCEPTION;
 
 public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener, HomeFragment.OnSearchButtonListener {
 
@@ -43,7 +45,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     private CompositeDisposable mDisposable;
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.activity_bottom_nav;
     }
 
@@ -82,7 +84,16 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             return;
         }
 
-        Snackbar.make(getBinding().getRoot(), R.string.snack_error_occured, Snackbar.LENGTH_SHORT).show();
+        switch (throwable.getMessage()) {
+            case SIGN_UP_EXCEPTION:
+                Snackbar.make(getBinding().getRoot(), R.string.snack_fb_sign_up_failed, Snackbar.LENGTH_SHORT).show();
+                break;
+            case NOT_SIGNED_USER:
+                Snackbar.make(getBinding().getRoot(), R.string.snack_fb_not_signed_user, Snackbar.LENGTH_SHORT).show();
+                break;
+            default:
+                Snackbar.make(getBinding().getRoot(), R.string.snack_error_occured, Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     @Override

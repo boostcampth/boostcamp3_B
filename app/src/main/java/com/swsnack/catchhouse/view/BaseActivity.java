@@ -9,8 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.DataManager;
 
 public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatActivity {
 
@@ -19,10 +17,10 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatA
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, setLayout());
+        mBinding = DataBindingUtil.setContentView(this, getLayout());
     }
 
-    protected abstract int setLayout();
+    protected abstract int getLayout();
 
     protected B getBinding() {
         return mBinding;
