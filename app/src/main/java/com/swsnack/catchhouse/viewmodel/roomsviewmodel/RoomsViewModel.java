@@ -32,6 +32,7 @@ public class RoomsViewModel extends ReactiveViewModel {
         mListener = listener;
         mAddressList = new MutableLiveData<>();
         mKeyword = new MutableLiveData<>();
+        mKeyword.setValue("");
 
         List<Address> list = new ArrayList<>();
 
@@ -40,6 +41,20 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     public MutableLiveData<List<Address>> getAddressList() {
         return mAddressList;
+    }
+
+    public Address getAddress(int position) {
+        if(mAddressList.getValue() == null) {
+            return new Address();
+        }
+        return mAddressList.getValue().get(position);
+    }
+
+    public String getKeyword() {
+        if(mKeyword.getValue() == null) {
+            return "";
+        }
+        return mKeyword.getValue();
     }
 
 
@@ -62,7 +77,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                     mListener.isFinished();
                 }
         ));
-        Log.v("csh", "key:"+mKeyword.getValue().toString());
+        Log.v("csh", "key:"+getKeyword());
     }
 
 }
