@@ -15,12 +15,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPoint;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.AddressBindingAdapter;
 import com.swsnack.catchhouse.databinding.FragmentMapBinding;
 import com.swsnack.catchhouse.databinding.ItemMapAddressBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.SimpleDividerItemDecoration;
+import com.swsnack.catchhouse.view.activities.FilterPopUpActivity;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.skt.Tmap.TMapView;
@@ -32,6 +35,7 @@ import io.reactivex.annotations.Nullable;
 
 public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewModel> {
     public FragmentManager mFragmentManager;
+    private TMapView tMapView;
 
     @Override
     protected int setLayout() {
@@ -66,10 +70,10 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         adapter.updateItems(getViewModel().getAddressList().getValue());
 
         /* Tmap 연동 */
-        TMapView tmapview = new TMapView(getContext());
-        tmapview.setSKTMapApiKey(getResources().getString(R.string.tmap_api_key));
+        tMapView = new TMapView(getContext());
+        tMapView.setSKTMapApiKey(getResources().getString(R.string.tmap_api_key));
         ConstraintLayout mapLayout = getBinding().clMap;
-        mapLayout.addView(tmapview);
+        mapLayout.addView(tMapView);
 
         getBinding().rvMapAddress.bringToFront();
 
@@ -90,8 +94,29 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         });
 
         adapter.setOnItemClickListener(((v, position) -> {
-
+            getBinding().rvMapAddress.setVisibility(View.GONE);
+            Address address = getViewModel().getAddress(position);
+            moveMap(address);
         }));
+        getBinding().btFilter.setOnClickListener(__ -> {
+            Intent intent = new Intent(getContext(), FilterPopUpActivity.class);
+            startActivityForResult(intent, 1000);
+        });
+
+    }
+
+    private void moveMap(Address address) {
+        tMapView.setCenterPoint(address.getLongitude(), address.getLatitude(), true);
+
+        TMapMarkerItem markerItem = new TMapMarkerItem();
+        TMapPoint point = new TMapPoint(address.getLatitude(), address.getLongitude());
+        markerItem.setTMapPoint(point);
+        markerItem.setPosition(0.5f, 1.0f);
+        markerItem.setCanShowCallout(true);
+        markerItem.setCalloutTitle("제목");
+        markerItem.setCalloutSubTitle("부제목");
+        markerItem.setAutoCalloutVisible(true);
+        tMapView.addMarkerItem("1", markerItem);
     }
 
 
@@ -99,6 +124,13 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode==1000) {
+            Log.d("csh", "옴!"+data.toString());
+
+        }
+
+
     }
 
     @Override
