@@ -14,9 +14,6 @@ import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
-import io.reactivex.Completable;
-import io.reactivex.Single;
-
 public class AppDataManager implements DataManager {
 
     private APIManager mApiManager;

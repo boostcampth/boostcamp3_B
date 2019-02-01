@@ -2,7 +2,6 @@ package com.swsnack.catchhouse.data.userdata.remote;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
