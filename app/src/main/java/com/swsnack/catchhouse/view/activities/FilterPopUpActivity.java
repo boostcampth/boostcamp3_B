@@ -16,7 +16,7 @@ import com.swsnack.catchhouse.view.BaseActivity;
 public class FilterPopUpActivity extends BaseActivity<ActivityFilterPopUpBinding> {
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.activity_filter_pop_up;
     }
 
