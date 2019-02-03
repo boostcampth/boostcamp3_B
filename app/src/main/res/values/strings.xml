@@ -54,5 +54,9 @@
     <string name="dialog_input_change_nick_name">변경할 닉네임을 입력하세요</string>
     <string name="cancel">취소</string>
     <string name="change">변경하기</string>
+    <string name="dialog_change_password_title">비밀번호 변경</string>
+    <string name="dialog_input_ex_password">이전 비밀번호를 입력하세요</string>
+    <string name="dialog_new_password">새로운 비밀번호를 입력하세요</string>
+    <string name="dialog_new_password_again">새로운 비밀번호를 다시 입력하세요</string>
 
 </resources>

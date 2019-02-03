@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.DialogChangeNickNameBinding;
+import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
@@ -58,6 +59,17 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
             Dialog dialog = new Dialog(getContext());
             dialog.setContentView(dialogBinding.getRoot());
             dialog.show();
+
+            dialogBinding.tvDialogChangeNickNameNegative.setOnClickListener(negative -> dialog.dismiss());
+        });
+
+        getBinding().tvMyPageChangePassword.setOnClickListener(v -> {
+            DialogChangePasswordBinding dialogBinding = DialogChangePasswordBinding.inflate(getLayoutInflater());
+            Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(dialogBinding.getRoot());
+            dialog.show();
+
+            dialogBinding.tvDialogChangePasswordNegative.setOnClickListener(negative -> dialog.dismiss());
         });
 
         getBinding().tvMyPageDelete.setOnClickListener(v -> getViewModel().deleteUser());
