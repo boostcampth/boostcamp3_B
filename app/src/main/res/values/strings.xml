@@ -38,11 +38,15 @@
     <string name="tv_home_post">우리집 내놓기</string>
 
     /*fragment_my_page*/
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_page_sell_room">판매중인 글 보기</string>
     <string name="my_page_change_member_info">회원 정보 변경</string>
-    <string name="my_page_log_out">로그 아웃</string>
+    <string name="my_page_sign_out">로그 아웃</string>
     <string name="my_page_delete_user">회원 탈퇴</string>
+    <string name="my_page_nick_name">닉네임</string>
+    <string name="my_page_gender">(성별)</string>
+    <string name="my_page_change_nick_name">닉네임 변경</string>
+    <string name="my_page_change_password">비밀번호 변경</string>
+    <string name="my_page_change_profile">프로필 이미지 변경</string>
 
     /* activity_write */
     <string name="tv_write_gallery">사진 선택</string>

@@ -16,7 +16,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="300dp"
             android:fitsSystemWindows="true">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -25,8 +25,6 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="48dp"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                 <android.support.constraint.ConstraintLayout
@@ -36,92 +34,32 @@
 
                     <ImageView
                         android:id="@+id/iv_my_page_profile"
-                        style="@style/iv_round"
+                        style="@style/iv.round"
                         android:layout_marginTop="40dp"
+                        android:layout_marginBottom="8dp"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_my_page_nick_name"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_my_page_nick_name"
-                        style="@style/tv"
-                        android:layout_marginTop="16dp"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        style="@style/tv.title"
+                        android:paddingTop="12dp"
+                        android:text="@string/my_page_nick_name"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_my_page_gender"
+                        app:layout_constraintHorizontal_chainStyle="packed"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_my_page_profile" />
+                        app:layout_constraintTop_toBottomOf="@+id/iv_my_page_profile" />
 
                     <TextView
-                        android:id="@+id/tv_my_page_change_user_info"
-                        style="@style/tv.menu"
-                        android:layout_width="0dp"
-                        android:layout_marginTop="16dp"
-                        android:backgroundTint="@android:color/white"
-                        android:text="@string/my_page_change_member_info"
-                        app:layout_constraintEnd_toEndOf="@id/gl_my_page_right"
-                        app:layout_constraintStart_toStartOf="@id/gl_my_page_left"
-                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_nick_name" />
-
-                    <TextView
-                        android:id="@+id/tv_my_page_show_sell_room"
-                        style="@style/tv.menu"
-                        android:layout_width="0dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="1dp"
-                        android:backgroundTint="@android:color/white"
-                        android:text="@string/my_page_sell_room"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_my_page_sign_out"
-                        app:layout_constraintEnd_toEndOf="@id/gl_my_page_right"
-                        app:layout_constraintStart_toStartOf="@id/gl_my_page_left"
-                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_change_user_info" />
-
-                    <TextView
-                        android:id="@+id/tv_my_page_sign_out"
-                        style="@style/tv.menu"
-                        android:layout_width="0dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="1dp"
-                        android:backgroundTint="@android:color/white"
-                        android:text="@string/my_page_log_out"
-                        app:layout_constraintBottom_toTopOf="@+id/tv_my_page_delete_user"
-                        app:layout_constraintEnd_toEndOf="@id/gl_my_page_right"
-                        app:layout_constraintStart_toStartOf="@id/gl_my_page_left"
-                        app:layout_constraintTop_toBottomOf="@id/tv_my_page_show_sell_room"
-                        app:layout_goneMarginTop="8dp" />
-
-                    <TextView
-                        android:id="@+id/tv_my_page_delete_user"
-                        style="@style/tv.menu"
-                        android:layout_width="0dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:backgroundTint="@android:color/white"
-                        android:text="@string/my_page_delete_user"
-                        app:layout_constraintBottom_toTopOf="@+id/gl_my_page_bottom"
-                        app:layout_constraintEnd_toEndOf="@id/gl_my_page_right"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@id/gl_my_page_left"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_my_page_sign_out" />
-
-                    <android.support.constraint.Guideline
-                        android:id="@+id/gl_my_page_left"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.1" />
-
-                    <android.support.constraint.Guideline
-                        android:id="@+id/gl_my_page_right"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        app:layout_constraintGuide_percent="0.9" />
-
-                    <android.support.constraint.Guideline
-                        android:id="@+id/gl_my_page_bottom"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintGuide_end="24dp"/>
+                        android:id="@+id/tv_my_page_gender"
+                        style="@style/tv.title.sub"
+                        android:text="@string/my_page_gender"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_my_page_nick_name"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_chainStyle="packed"
+                        app:layout_constraintStart_toEndOf="@id/tv_my_page_nick_name" />
 
 
                 </android.support.constraint.ConstraintLayout>
@@ -136,11 +74,156 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <include
-            layout="@layout/bottom_my_page"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/ly_my_page_include"
+                    layout="@layout/bottom_my_page"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv_my_page_user"
+                    style="@style/cd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintBottom_toTopOf="@id/cd_my_page_delete"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ly_my_page_include">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/tv.body"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_page_change_member_info"
+                            android:textAlignment="textStart" />
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                style="@style/tv.title.sub"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="@string/my_page_change_nick_name"
+                                android:textAlignment="textStart" />
+
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp">
+
+                            <TextView
+                                style="@style/tv.title.sub"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="@string/my_page_change_password"
+                                android:textAlignment="textStart" />
+
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/tv.title.sub"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="@string/my_page_change_profile"
+                                android:textAlignment="textStart" />
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cd_my_page_delete"
+                    style="@style/cd"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
+                    android:paddingBottom="4dp"
+                    app:cardElevation="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cv_my_page_user">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_my_page_delete"
+                            style="@style/tv.body"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_page_delete_user"
+                            android:textAlignment="center"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/tv_my_page_sign_out"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:layout_width="1dp"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:src="@drawable/divider"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tv_my_page_delete"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_my_page_sign_out"
+                            style="@style/tv.body"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="@string/my_page_sign_out"
+                            android:textAlignment="center"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_my_page_delete"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v4.widget.NestedScrollView>
 
     </android.support.design.widget.CoordinatorLayout>
 

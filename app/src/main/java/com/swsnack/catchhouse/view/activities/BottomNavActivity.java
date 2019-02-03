@@ -24,6 +24,7 @@ import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragments.HomeFragment;
 import com.swsnack.catchhouse.view.fragments.MapFragment;
+import com.swsnack.catchhouse.view.fragments.MyPageFragment;
 import com.swsnack.catchhouse.view.fragments.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
@@ -163,7 +164,11 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                             /* handle here: replace fragment on message btn Clicked */
                             break;
                         case R.id.action_my_page:
-                            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                            if(FirebaseAuth.getInstance().getCurrentUser() == null){
+                                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                                return;
+                            }
+                            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new MyPageFragment(), MyPageFragment.class.getName()).commit();
                             break;
                     }
                 }));
