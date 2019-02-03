@@ -13,13 +13,13 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.ItemViewpagerBinding;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 
 public class ImageSlideAdapter extends PagerAdapter {
 
-    private ArrayList<Uri> mUri;
+    private List<Uri> mUri;
     private LayoutInflater inflater;
     private ItemViewpagerBinding mBinding;
     private RoomsViewModel mViewModel;
@@ -28,11 +28,11 @@ public class ImageSlideAdapter extends PagerAdapter {
         mViewModel = viewModel;
     }
 
-    public void setUri(ArrayList<Uri> uri) {
+    public void setUri(List<Uri> uri) {
         mUri = uri;
     }
 
-    public ArrayList<Uri> getUri() {
+    public List<Uri> getUri() {
         return mUri;
     }
 
@@ -70,6 +70,7 @@ public class ImageSlideAdapter extends PagerAdapter {
             container.addView(mBinding.getRoot());
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return mBinding.getRoot();

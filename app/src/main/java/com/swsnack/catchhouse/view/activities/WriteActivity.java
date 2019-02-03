@@ -19,18 +19,20 @@ import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements ViewModelListener {
 
-    private static final String TAG = WriteActivity.class.getName();
+    private static final String TAG = WriteActivity.class.getSimpleName();
     final int PICK_IMAGE_MULTIPLE = 1;
     private RoomsViewModel mViewModel;
     private Calendar currentDate;
@@ -53,7 +55,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
 
     @Override
     public void isFinished() {
-        Log.d(TAG, "Finished");
+        Log.d(TAG, "finished");
     }
 
     @Override
@@ -86,13 +88,14 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
         currentDate = new GregorianCalendar(Locale.KOREA);
         getBinding().tvWriteDateFrom.setOnClickListener(v -> createDatePicker((TextView) v));
         getBinding().tvWriteDateTo.setOnClickListener(v -> createDatePicker((TextView) v));
+        mViewModel.mRoomValue.observe(this, __ ->
+                getBinding().tvWriteExpectedValue.setText(calExpectedValue()));
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ArrayList<Uri> uriList = new ArrayList<>();
+        List<Uri> uriList = new ArrayList<>();
 
         if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
                 && null != data) {
@@ -119,30 +122,51 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     }
 
     private void createDatePicker(TextView view) {
-        DatePickerDialog dialog = new DatePickerDialog(this, (__, y, m, d) ->
-                view.setText(y + "-" + m + "-" + d),
+        DatePickerDialog dialog = new DatePickerDialog(this, (__, y, m, d) -> {
+            view.setText(y + "-" + (m + 1) + "-" + d);
+            getBinding().tvWriteExpectedValue.setText(calExpectedValue());
+        },
                 currentDate.get(Calendar.YEAR),
                 currentDate.get(Calendar.MONTH),
                 currentDate.get(Calendar.DAY_OF_MONTH));
         dialog.show();
     }
 
-    public int doDiffOfDate(String from, String to) {
-
-        int diffDays = -1;
+    private int calcDiffDate(String from, String to) {
+        int diffDay = -1;
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date beginDate = formatter.parse(from);
             Date endDate = formatter.parse(to);
 
             long diff = endDate.getTime() - beginDate.getTime();
-            diffDays = (int) (diff / (24 * 60 * 60 * 1000));
+            diffDay = (int) (diff / (24 * 60 * 60 * 1000));
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return diffDays;
+        return diffDay;
     }
 
+    private String calExpectedValue() {
+        String from = (String) getBinding().tvWriteDateFrom.getText();
+        String to = (String) getBinding().tvWriteDateTo.getText();
+        String defaultStr = getString(R.string.tv_write_date);
+        String value = getBinding().etWriteValue.getText().toString();
+
+        if (defaultStr.equals(from) | defaultStr.equals(to)
+                | value.equals("")) {
+            return "";
+        } else {
+            int oneDayValue = Integer.parseInt(getBinding().etWriteValue.getText().toString());
+            int diffDay = calcDiffDate(from, to);
+
+            if (diffDay < 0) {
+                return "";
+            }
+            DecimalFormat myFormatter = new DecimalFormat("###,###");
+            return myFormatter.format(oneDayValue * diffDay) + "원" + "  (" + diffDay + "박)";
+        }
+    }
 }

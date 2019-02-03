@@ -22,7 +22,8 @@ public class RoomsViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private RoomsRepository mRepository;
     private ViewModelListener mListener;
-    public final MutableLiveData<ArrayList<Uri>> mUriList;
+    public final MutableLiveData<List<Uri>> mUriList;
+    public final MutableLiveData<String> mRoomValue;
     public List<byte[]> mBitmapBytesArray;
 
     // private List<Room> mRoomList;
@@ -32,17 +33,18 @@ public class RoomsViewModel extends ReactiveViewModel {
         mRepository = repository;
         mListener = listener;
         mUriList = new MutableLiveData<>();
+        mRoomValue = new MutableLiveData<>();
         mBitmapBytesArray = new ArrayList<>();
     }
 
     public void onClickDeleteButton(int position) {
-        ArrayList<Uri> data = mUriList.getValue();
+        List<Uri> data = mUriList.getValue();
         data.remove(position);
         mUriList.postValue(data);
     }
 
-    public void gallerySelectionResult(ArrayList<Uri> uriList) {
-        ArrayList<Uri> data;
+    public void gallerySelectionResult(List<Uri> uriList) {
+        List<Uri> data;
 
         if (mUriList.getValue() == null) {
             data = uriList;
@@ -59,12 +61,12 @@ public class RoomsViewModel extends ReactiveViewModel {
             data.remove(i - 1);
         }
 
-        getByteArrayListFromUri(data);
+        getByteListFromUri(data);
         mUriList.postValue(data);
     }
 
 
-    private void getByteArrayListFromUri(ArrayList<Uri> uris) {
+    private void getByteListFromUri(List<Uri> uris) {
         mListener.isWorking();
 
         getCompositeDisposable().add(

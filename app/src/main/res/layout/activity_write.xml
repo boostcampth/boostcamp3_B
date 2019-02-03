@@ -61,6 +61,7 @@
                     style="@style/Basic_EditText"
                     android:hint="@string/et_write_value_hint"
                     android:inputType="number"
+                    android:text="@={handler.mRoomValue}"
                     android:textAlignment="textStart" />
 
                 <TextView
