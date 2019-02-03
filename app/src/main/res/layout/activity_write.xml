@@ -75,7 +75,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_write_date_to"
+                        android:id="@+id/tv_write_date_from"
                         style="@style/TextStyle.Regular.Small"
                         android:text="@string/tv_write_date"
                         android:textColor="@color/colorBottomNavDefault" />
@@ -86,7 +86,7 @@
                         android:textColor="@color/colorBottomNavDefault" />
 
                     <TextView
-                        android:id="@+id/tv_write_date_from"
+                        android:id="@+id/tv_write_date_to"
                         style="@style/TextStyle.Regular.Small"
                         android:text="@string/tv_write_date"
                         android:textColor="@color/colorBottomNavDefault" />
