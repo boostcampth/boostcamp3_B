@@ -1,10 +1,12 @@
 package com.swsnack.catchhouse.viewmodel.userviewmodel;
 
 import android.app.Application;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -22,6 +24,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 import com.swsnack.catchhouse.util.DataConverter;
@@ -30,6 +35,7 @@ import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.io.IOException;
 
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
@@ -63,7 +69,11 @@ public class UserViewModel extends ReactiveViewModel {
         mGender.setValue(gender);
     }
 
-    public void setProfile(Uri uri) {
+    public LiveData getGender() {
+        return mGender;
+    }
+
+    public void getProfileFromUri(Uri uri) {
         mListener.isWorking();
         Glide.with(mAppContext).asBitmap().load(uri).listener(new RequestListener<Bitmap>() {
             @Override
@@ -75,10 +85,39 @@ public class UserViewModel extends ReactiveViewModel {
             @Override
             public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                 mListener.isFinished();
-                mProfile.postValue(resource);
+                mProfile.setValue(resource);
                 return true;
             }
         }).submit();
+    }
+
+    public void getUser() {
+        mListener.isWorking();
+
+        getDataManager()
+                .getUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+
+                        if (user == null) {
+                            mListener.onError(new RuntimeException(DELETED_USER));
+                            return;
+                        }
+
+                        mEmail.setValue(user.geteMail());
+                        mNickName.setValue(user.getNickName());
+                        mGender.setValue(user.getGender());
+                        if (user.getProfile() != null) {
+                            getProfileFromUri(Uri.parse(user.getProfile()));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        mListener.onError(new RuntimeException(DELETED_USER));
+                    }
+                });
     }
 
     public void signInWithGoogle(Intent data) {
@@ -116,6 +155,7 @@ public class UserViewModel extends ReactiveViewModel {
             mListener.onError(new InSufficientException(SHORT_PASSWORD));
             return;
         }
+
         if (mEmail.getValue() == null || mPassword.getValue() == null ||
                 mNickName.getValue() == null || mGender.getValue() == null ||
                 mEmail.getValue().trim().equals("") || mPassword.getValue().trim().equals("") ||
@@ -123,13 +163,14 @@ public class UserViewModel extends ReactiveViewModel {
             mListener.onError(new InSufficientException(IN_SUFFICIENT_INFO));
             return;
         }
+
         mListener.isWorking();
         getDataManager()
                 .firebaseSignUp(mEmail.getValue(), mPassword.getValue()
                         , result -> {
                             User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
                             if (mProfile.getValue() != null) {
-                                setProfile(result.getUser().getUid(), user);
+                                saveProfile(result.getUser().getUid(), user);
                                 return;
                             }
                             setUser(result.getUser().getUid(), user, SIGN_UP_SUCCESS);
@@ -138,16 +179,20 @@ public class UserViewModel extends ReactiveViewModel {
 
     private void setUser(String uuid, User user, String userStatusFlag) {
         getDataManager()
-                .setUser(uuid, user, result -> mListener.onSuccess(userStatusFlag), error -> {
-                    if (mProfile.getValue() != null) {
-                        getDataManager().firebaseDeleteUser(result -> {
-                        }, mListener::onError);
-                    }
-                    getDataManager().deleteProfile(uuid, result -> mListener.isFinished(), mListener::onError);
-                });
+                .setUser(uuid, user,
+                        result -> mListener.onSuccess(userStatusFlag),
+                        error -> {
+                            if (mProfile.getValue() != null) {
+                                getDataManager()
+                                        .firebaseDeleteUser(result -> {
+                                                },
+                                                mListener::onError);
+                            }
+                            getDataManager().deleteProfile(uuid, result -> mListener.isFinished(), mListener::onError);
+                        });
     }
 
-    private void setProfile(String uuid, User user) {
+    private void saveProfile(String uuid, User user) {
         if (mProfile.getValue() == null) {
             setUser(uuid, user, SIGN_UP_SUCCESS);
             return;

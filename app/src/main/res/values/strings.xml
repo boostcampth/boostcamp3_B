@@ -42,7 +42,6 @@
     <string name="my_page_change_member_info">회원 정보 변경</string>
     <string name="my_page_sign_out">로그 아웃</string>
     <string name="my_page_delete_user">회원 탈퇴</string>
-    <string name="my_page_nick_name">닉네임</string>
     <string name="my_page_gender">(성별)</string>
     <string name="my_page_change_nick_name">닉네임 변경</string>
     <string name="my_page_change_password">비밀번호 변경</string>
@@ -51,5 +50,6 @@
     /* activity_write */
     <string name="tv_write_gallery">사진 선택</string>
     <string name="tb_write">매물 올리기</string>
+    <string name="my_page_not_singed">로그인 후 이용 가능합니다.</string>
 
 </resources>

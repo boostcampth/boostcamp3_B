@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="handler"
+            type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -13,9 +16,9 @@
         <android.support.v7.widget.CardView
             android:id="@+id/cd_my_page_recent_room"
             style="@style/cd"
-            app:cardElevation="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
+            app:cardElevation="4dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -31,6 +34,14 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    style="@style/tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:text="@string/my_page_not_singed" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_my_page_recently_visit"
                     android:layout_width="match_parent"
@@ -39,6 +50,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_my_page_recently_visit_title" />
@@ -70,6 +82,15 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_my_page_recently_visit" />
 
+
+                <TextView
+                    style="@style/tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="20dp"
+                    android:text="@string/my_page_not_singed" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_my_page_my_favorite"
                     android:layout_width="match_parent"
@@ -78,6 +99,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="8dp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_my_page_my_favorite_title" />
 

@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.bumptech.glide.load.engine.GlideException;
 import com.facebook.FacebookException;
@@ -35,11 +34,10 @@ import com.swsnack.catchhouse.viewmodel.userviewmodel.InSufficientException;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 
-import java.util.Objects;
-
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
@@ -97,6 +95,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             case NOT_SIGNED_USER:
                 Snackbar.make(getBinding().getRoot(), R.string.snack_fb_not_signed_user, Snackbar.LENGTH_SHORT).show();
                 break;
+            case DELETED_USER:
+                Snackbar.make(getBinding().getRoot(), R.string.snack_fb_not_signed_user, Snackbar.LENGTH_SHORT).show();
+                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                break;
             default:
                 Snackbar.make(getBinding().getRoot(), R.string.snack_error_occured, Snackbar.LENGTH_SHORT).show();
         }
@@ -111,6 +113,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 break;
             case Constants.UserStatus.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
+                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new MyPageFragment(), MyPageFragment.class.getName()).commit();
                 break;
         }
     }
@@ -164,7 +167,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                             /* handle here: replace fragment on message btn Clicked */
                             break;
                         case R.id.action_my_page:
-                            if(FirebaseAuth.getInstance().getCurrentUser() == null){
+                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                                 mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                                 return;
                             }

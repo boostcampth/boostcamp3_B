@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
@@ -30,7 +31,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         return getBinding().getRoot();
     }
@@ -38,6 +39,13 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getBinding().setHandler(getViewModel());
+        getBinding().setLifecycleOwner(getActivity());
+
+        getViewModel().getUser();
+
+        getBinding().tvMyPageSignOut.setOnClickListener(v -> FirebaseAuth.getInstance().signOut());
 
     }
 }
