@@ -6,8 +6,12 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.skt.Tmap.TMapPOIItem;
+import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
+import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
+import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -25,7 +29,7 @@ public class SearchViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mKeyword;
 
     SearchViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
-        super();
+        super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()));
         mAppContext = application;
         mRepository = repository;
         mListener = listener;
@@ -76,5 +80,4 @@ public class SearchViewModel extends ReactiveViewModel {
                 ));
         Log.v("csh", "key:"+getKeyword());
     }
-
 }

@@ -132,6 +132,4 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
 
         public void onItemLongClick(View view, int position);
     }
-
-
 }

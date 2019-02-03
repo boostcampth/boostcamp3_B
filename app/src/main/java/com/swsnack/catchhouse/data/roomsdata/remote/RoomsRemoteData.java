@@ -41,5 +41,4 @@ public class RoomsRemoteData implements RoomsDataSource {
             }
         })));
     }
-
 }

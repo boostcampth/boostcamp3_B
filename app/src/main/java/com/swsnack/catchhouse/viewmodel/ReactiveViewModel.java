@@ -2,14 +2,19 @@ package com.swsnack.catchhouse.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 
+import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.DataManager;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ReactiveViewModel extends ViewModel {
 
     private CompositeDisposable mDisposables;
+    private DataManager mDataManager;
 
-    public ReactiveViewModel() {
+    public ReactiveViewModel(DataManager dataManager) {
         mDisposables = new CompositeDisposable();
+        mDataManager = dataManager;
     }
 
     @Override
@@ -20,5 +25,9 @@ public class ReactiveViewModel extends ViewModel {
 
     protected CompositeDisposable getCompositeDisposable() {
         return mDisposables;
+    }
+
+    protected DataManager getDataManager() {
+        return mDataManager;
     }
 }

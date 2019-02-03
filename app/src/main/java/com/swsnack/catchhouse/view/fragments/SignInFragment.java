@@ -12,11 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.constants.Constants;
-import com.swsnack.catchhouse.databinding.FragmentSignInBinding;
-import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -25,8 +20,16 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.databinding.FragmentSignInBinding;
+import com.swsnack.catchhouse.view.BaseFragment;
+import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import java.util.Arrays;
+
+import static com.swsnack.catchhouse.constants.Constants.FacebookData.E_MAIL;
+import static com.swsnack.catchhouse.constants.Constants.FacebookData.PROFILE;
 
 public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel> {
 
@@ -34,7 +37,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     private FragmentManager mFragmentManager;
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.fragment_sign_in;
     }
 
@@ -69,7 +72,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         });
 
         getBinding().ivSignInFacebook.setOnClickListener(__ ->
-                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(Constants.FacebookData.E_MAIL, Constants.FacebookData.PROFILE)));
+                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(E_MAIL, PROFILE)));
 
         getBinding().ivSignInEmail.setOnClickListener(__ ->
                 mFragmentManager
@@ -77,14 +80,6 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                         .replace(R.id.fl_bottom_nav_container, new SignUpFragment())
                         .addToBackStack(SignUpFragment.class.getName())
                         .commit());
-
-        getBinding().tvSignInLogin.setOnClickListener(v -> {
-            if (inSufficientInfo()) {
-                Snackbar.make(v, R.string.snack_fill_info, Snackbar.LENGTH_SHORT);
-                return;
-            }
-            mViewModel.signInWithEmail();
-        });
     }
 
     @Override
@@ -114,13 +109,8 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
 
             @Override
             public void onError(FacebookException error) {
-
+                Snackbar.make(getBinding().getRoot(), R.string.snack_occured_error, Snackbar.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private boolean inSufficientInfo() {
-        return getBinding().etSignInEmail.getText().toString().trim().equals("") &&
-                getBinding().etSignInPassword.getText().toString().trim().equals("");
     }
 }

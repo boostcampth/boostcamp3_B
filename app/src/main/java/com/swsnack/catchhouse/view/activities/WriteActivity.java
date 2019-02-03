@@ -38,7 +38,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     private Calendar currentDate;
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.activity_write;
     }
 

@@ -6,18 +6,18 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
-import com.swsnack.catchhouse.data.userdata.UserRepository;
+import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 public class UserViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private Application mApplication;
-    private UserRepository mRepository;
+    private DataManager mDatamanager;
     private ViewModelListener mListener;
 
-    public UserViewModelFactory(@NonNull Application application, UserRepository repository, ViewModelListener listener) {
+    public UserViewModelFactory(@NonNull Application application, DataManager dataManager, ViewModelListener listener) {
         this.mApplication = application;
-        this.mRepository = repository;
+        this.mDatamanager = dataManager;
         this.mListener = listener;
     }
 
@@ -25,7 +25,7 @@ public class UserViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(UserViewModel.class)) {
-            return (T) new UserViewModel(mApplication, mRepository, mListener);
+            return (T) new UserViewModel(mApplication, mDatamanager, mListener);
         }
         throw new Fragment.InstantiationException("not viewModel class", null);
     }

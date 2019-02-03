@@ -34,7 +34,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     public FragmentManager mFragmentManager;
 
     @Override
-    protected int setLayout() {
+    protected int getLayout() {
         return R.layout.fragment_map;
     }
 
