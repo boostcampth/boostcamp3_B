@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toolbar;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements ViewModelListener {
 
+    private static final String TAG = WriteActivity.class.getName();
     final int PICK_IMAGE_MULTIPLE = 1;
     private RoomsViewModel mViewModel;
 
@@ -31,23 +33,23 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
 
     @Override
     public void onError(Throwable throwable) {
-        Log.d("Tag__write_activity", "error");
-        Log.e("Tag__write_activity", "error", throwable);
+        Log.d(TAG, "error");
+        Log.e(TAG, "error", throwable);
     }
 
     @Override
     public void isWorking() {
-        Log.d("Tag__write_activity", "working...");
+        Log.d(TAG, "working...");
     }
 
     @Override
     public void isFinished() {
-        Log.d("Tag__write_activity", "Finished");
+        Log.d(TAG, "Finished");
     }
 
     @Override
     public void onSuccess(String success) {
-        Log.d("Tag__write_activity", "success__" + success);
+        Log.d(TAG, "success__" + success);
     }
 
     @Override
@@ -58,7 +60,11 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
         mViewModel = ViewModelProviders.of(this).get(RoomsViewModel.class);
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
+
         getBinding().vpWrite.setAdapter(new ImageSlideAdapter(mViewModel));
+
+        getBinding().tbWrite.setNavigationIcon(R.drawable.action_back);
+        getBinding().tbWrite.setNavigationOnClickListener(__ -> finish());
 
         getBinding().tvWriteGallery.setOnClickListener(__ -> {
             Intent intent = new Intent();

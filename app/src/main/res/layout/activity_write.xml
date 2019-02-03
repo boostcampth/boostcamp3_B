@@ -182,6 +182,7 @@
                     android:layout_height="160dp"
                     android:background="@drawable/et_round_background"
                     android:backgroundTint="@android:color/white"
+                    android:elevation="4dp"
                     android:gravity="top"
                     android:inputType="textMultiLine"
                     android:scrollHorizontally="false"

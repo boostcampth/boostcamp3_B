@@ -7,13 +7,7 @@ import android.net.Uri;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import android.util.Log;
-import android.view.View;
-
-import com.skt.Tmap.TMapPOIItem;
-import com.skt.Tmap.TMapPoint;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -22,10 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class RoomsViewModel extends ReactiveViewModel {
@@ -65,7 +55,7 @@ public class RoomsViewModel extends ReactiveViewModel {
             }
         }
 
-        for(int i = data.size(); i > 9; i--) {
+        for (int i = data.size(); i > 9; i--) {
             data.remove(i - 1);
         }
 
