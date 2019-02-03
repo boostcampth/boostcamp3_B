@@ -51,5 +51,8 @@
     <string name="tv_write_gallery">사진 선택</string>
     <string name="tb_write">매물 올리기</string>
     <string name="my_page_not_singed">로그인 후 이용 가능합니다.</string>
+    <string name="dialog_input_change_nick_name">변경할 닉네임을 입력하세요</string>
+    <string name="cancel">취소</string>
+    <string name="change">변경하기</string>
 
 </resources>
