@@ -115,6 +115,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 /*handle here : when sign in success replace fragment to my page*/
                 mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new MyPageFragment(), MyPageFragment.class.getName()).commit();
                 break;
+            case Constants.UserStatus.DELETE_USER_SUCCESS:
+                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                break;
         }
     }
 
@@ -180,9 +183,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     protected void onStart() {
         super.onStart();
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            /* User is logined. hadle here*/
-        }
     }
 
     @Override

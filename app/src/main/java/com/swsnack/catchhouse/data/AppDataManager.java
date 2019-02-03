@@ -96,6 +96,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void queryUserBy(@NonNull String queryString, @NonNull ValueEventListener valueEventListener) {
+        mUserDataManager.queryUserBy(queryString, valueEventListener);
+    }
+
+    @Override
     public void setProfile(@NonNull String uuid, @NonNull byte[] profile, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mUserDataManager.setProfile(uuid, profile, onSuccessListener, onFailureListener);
     }

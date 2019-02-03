@@ -117,4 +117,9 @@ public class AppUserDataManager implements UserDataManager {
             }
         });
     }
+
+    @Override
+    public void queryUserBy(@NonNull String queryString, @NonNull ValueEventListener valueEventListener) {
+        db.orderByChild(queryString).addListenerForSingleValueEvent(valueEventListener);
+    }
 }

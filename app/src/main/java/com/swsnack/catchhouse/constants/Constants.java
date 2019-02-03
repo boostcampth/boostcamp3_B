@@ -35,6 +35,7 @@ public class Constants {
     public @interface UserStatus {
         String SIGN_IN_SUCCESS = "singInSuccess";
         String SIGN_UP_SUCCESS = "signUpSuccess";
+        String DELETE_USER_SUCCESS = "deleteSuccess";
     }
 
     //magic constant

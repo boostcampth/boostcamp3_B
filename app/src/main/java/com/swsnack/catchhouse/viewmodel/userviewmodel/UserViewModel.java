@@ -41,6 +41,7 @@ import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIG
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
 
@@ -49,6 +50,7 @@ public class UserViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private ViewModelListener mListener;
     private MutableLiveData<String> mGender;
+    public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
     public MutableLiveData<String> mNickName;
@@ -59,10 +61,12 @@ public class UserViewModel extends ReactiveViewModel {
         this.mAppContext = application;
         this.mListener = listener;
         this.mGender = new MutableLiveData<>();
+        this.mIsSigned = new MutableLiveData<>();
         this.mEmail = new MutableLiveData<>();
         this.mPassword = new MutableLiveData<>();
         this.mNickName = new MutableLiveData<>();
         this.mProfile = new MutableLiveData<>();
+        mIsSigned.setValue(false);
     }
 
     public void setGender(String gender) {
@@ -94,6 +98,7 @@ public class UserViewModel extends ReactiveViewModel {
     public void getUser() {
         mListener.isWorking();
 
+        mIsSigned.setValue(true);
         getDataManager()
                 .getUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ValueEventListener() {
                     @Override
@@ -147,7 +152,10 @@ public class UserViewModel extends ReactiveViewModel {
 
     private void signUpWithCredential(AuthCredential authCredential, User user) {
         getDataManager()
-                .firebaseSignUp(authCredential, result -> setUser(result.getUser().getUid(), user, SIGN_IN_SUCCESS), mListener::onError);
+                .firebaseSignUp(authCredential, result -> {
+                    setUser(result.getUser().getUid(), user, SIGN_IN_SUCCESS);
+                    mIsSigned.setValue(true);
+                }, mListener::onError);
     }
 
     public void signUpWithEmail(View v) {
@@ -229,7 +237,10 @@ public class UserViewModel extends ReactiveViewModel {
         mListener.isWorking();
 
         getDataManager()
-                .firebaseSignIn(mEmail.getValue(), mPassword.getValue(), authResult -> mListener.onSuccess(SIGN_IN_SUCCESS), mListener::onError);
+                .firebaseSignIn(mEmail.getValue(), mPassword.getValue(), authResult -> {
+                    mListener.onSuccess(SIGN_IN_SUCCESS);
+                    mIsSigned.setValue(true);
+                }, mListener::onError);
     }
 
     public void deleteUser() {
@@ -240,6 +251,9 @@ public class UserViewModel extends ReactiveViewModel {
         mListener.isWorking();
         String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getDataManager()
-                .deleteUser(uuid, deleteResult -> mListener.isFinished(), mListener::onError);
+                .deleteUser(uuid, deleteResult -> {
+                    mListener.onSuccess(DELETE_USER_SUCCESS);
+                    mIsSigned.setValue(false);
+                }, mListener::onError);
     }
 }

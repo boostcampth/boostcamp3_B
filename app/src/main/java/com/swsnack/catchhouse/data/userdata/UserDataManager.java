@@ -22,4 +22,6 @@ public interface UserDataManager {
 
     void deleteUser(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
+    void queryUserBy(@NonNull String queryString, @NonNull ValueEventListener valueEventListener);
+
 }

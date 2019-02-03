@@ -3,6 +3,7 @@ package com.swsnack.catchhouse.view.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
+
+    private FragmentManager mFragmentManager;
 
     @Override
     protected int getLayout() {
@@ -33,6 +36,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        mFragmentManager = getActivity().getSupportFragmentManager();
         return getBinding().getRoot();
     }
 
@@ -45,7 +49,11 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getViewModel().getUser();
 
-        getBinding().tvMyPageSignOut.setOnClickListener(v -> FirebaseAuth.getInstance().signOut());
+        getBinding().tvMyPageDelete.setOnClickListener(v -> getViewModel().deleteUser());
+        getBinding().tvMyPageSignOut.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+        });
 
     }
 }
