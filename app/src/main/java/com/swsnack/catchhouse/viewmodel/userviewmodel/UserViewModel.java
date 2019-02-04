@@ -51,6 +51,7 @@ import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PASSWORD_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PROFILE_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
@@ -87,20 +88,21 @@ public class UserViewModel extends ReactiveViewModel {
 
     public void getProfileFromUri(Uri uri) {
         mListener.isWorking();
-        Glide.with(mAppContext).asBitmap().load(uri).listener(new RequestListener<Bitmap>() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                mListener.onError(e);
-                return false;
-            }
+        getDataManager()
+                .getProfile(uri, new RequestListener<Bitmap>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                        mListener.onError(e);
+                        return false;
+                    }
 
-            @Override
-            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                mListener.isFinished();
-                mProfile.setValue(resource);
-                return true;
-            }
-        }).submit();
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                        mListener.isFinished();
+                        mProfile.setValue(resource);
+                        return true;
+                    }
+                });
     }
 
     public void getUser() {
@@ -295,16 +297,19 @@ public class UserViewModel extends ReactiveViewModel {
     public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword) {
         getDataManager()
                 .firebaseUpdatePassword(oldPassword, newPassword,
-                        result -> mListener.onSuccess(UPDATE_PASSWORD_SUCCESS),
-                        error -> {
-                            mListener.onError(error);
-                            Log.d("에러", "updatePassword: " + error);
-                        });
+                        result -> mListener.onSuccess(UPDATE_PASSWORD_SUCCESS), mListener::onError);
     }
 
     private void updateUser(Map<String, Object> fields) {
         getDataManager()
                 .updateUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), fields,
                         result -> mListener.onSuccess(UPDATE_SUCCESS), mListener::onError);
+    }
+
+    public void updateProfile(Uri uri) {
+        Log.d("프로필 변경 3. 뷰모델에서 처리", "뷰모델");
+        mListener.isWorking();
+        getDataManager().
+                updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri, result -> mListener.onSuccess(UPDATE_PROFILE_SUCCESS), mListener::onError);
     }
 }

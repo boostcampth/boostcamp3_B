@@ -1,8 +1,12 @@
 package com.swsnack.catchhouse.data.userdata.remote;
 
+import android.app.Application;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
@@ -29,18 +33,21 @@ public class AppUserDataManager implements UserDataManager {
 
     private DatabaseReference db;
     private StorageReference fs;
+    private Application mAppContext;
 
-    private static class Singleton {
-        private static final AppUserDataManager INSTANCE = new AppUserDataManager();
+    private static AppUserDataManager INSTANCE;
+
+    public static synchronized AppUserDataManager getInstance(Application application) {
+        if (INSTANCE == null) {
+            INSTANCE = new AppUserDataManager(application);
+        }
+        return INSTANCE;
     }
 
-    public static AppUserDataManager getInstance() {
-        return Singleton.INSTANCE;
-    }
-
-    private AppUserDataManager() {
+    private AppUserDataManager(Application application) {
         db = FirebaseDatabase.getInstance().getReference().child(DB_USER);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_PROFILE);
+        mAppContext = application;
     }
 
     @Override
@@ -60,6 +67,11 @@ public class AppUserDataManager implements UserDataManager {
         })
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
+    }
+
+    @Override
+    public void getProfile(@NonNull Uri uri, RequestListener<Bitmap> requestListener) {
+        Glide.with(mAppContext).asBitmap().load(uri).listener(requestListener).submit();
     }
 
 

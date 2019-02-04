@@ -1,11 +1,14 @@
 package com.swsnack.catchhouse.view.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +21,7 @@ import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
+import static com.swsnack.catchhouse.constants.Constants.GALLERY;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
@@ -89,9 +93,17 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
                     Snackbar.make(getBinding().getRoot(), R.string.snack_wrong_password, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
+
                 getViewModel().updatePassword(dialogBinding.etDialogChangePasswordExPassword.getText().toString(),
                         dialogBinding.etDialogChangePasswordNewPassword.getText().toString());
+
+                dialogChangePassword.dismiss();
             });
+        });
+
+        getBinding().tvMyPageChangeProfile.setOnClickListener(v -> {
+            Log.d("프로필 변경 1. 시작", "intent 보내기");
+            startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY);
         });
 
         getBinding().tvMyPageDelete.setOnClickListener(v -> getViewModel().deleteUser());
@@ -101,5 +113,18 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
             mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
         });
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY) {
+            Log.d("프로필 변경 2. 인텐트 받는 곳", "intent 받기");
+            if (resultCode == Activity.RESULT_OK) {
+                getViewModel().updateProfile(data.getData());
+                return;
+            }
+            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT).show();
+        }
     }
 }

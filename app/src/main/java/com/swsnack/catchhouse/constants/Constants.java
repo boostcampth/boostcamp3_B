@@ -28,8 +28,12 @@ import static com.swsnack.catchhouse.constants.Constants.Gender.MALE;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PASSWORD_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PROFILE_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_SUCCESS;
 
 public class Constants {
 
@@ -37,13 +41,15 @@ public class Constants {
     public static final int GOOGLE_SIGN_IN = 1000;
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS})
+    @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, DELETE_USER_SUCCESS, UPDATE_SUCCESS,
+            UPDATE_PASSWORD_SUCCESS, UPDATE_PROFILE_SUCCESS})
     public @interface UserStatus {
         String SIGN_IN_SUCCESS = "singInSuccess";
         String SIGN_UP_SUCCESS = "signUpSuccess";
         String DELETE_USER_SUCCESS = "deleteSuccess";
         String UPDATE_SUCCESS = "updateSuccess";
         String UPDATE_PASSWORD_SUCCESS = "updatePasswordSuccess";
+        String UPDATE_PROFILE_SUCCESS = "updateProfileSuccess";
     }
 
     //magic constant

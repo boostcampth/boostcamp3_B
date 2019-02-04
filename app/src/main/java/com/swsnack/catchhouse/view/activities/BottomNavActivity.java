@@ -138,6 +138,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 Snackbar.make(getBinding().getRoot(), getString(R.string.snack_re_sign_in), Snackbar.LENGTH_SHORT).show();
                 mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                 break;
+            case Constants.UserStatus.UPDATE_PROFILE_SUCCESS:
+                Snackbar.make(getBinding().getRoot(), R.string.snack_update_profile_success, Snackbar.LENGTH_SHORT).show();
+                break;
         }
     }
 
@@ -168,7 +171,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
-                AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()),
+                AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance(getApplication())),
                 this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
         createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));

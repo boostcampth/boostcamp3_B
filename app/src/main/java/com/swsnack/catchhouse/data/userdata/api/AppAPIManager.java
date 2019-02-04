@@ -82,7 +82,6 @@ public class AppAPIManager implements APIManager {
             onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;
         }
-
         FirebaseAuth.getInstance().getCurrentUser()
                 .reauthenticate(EmailAuthProvider.getCredential(FirebaseAuth.getInstance().getCurrentUser().getEmail(), oldPassword))
                 .addOnSuccessListener(result -> FirebaseAuth.getInstance().getCurrentUser()
