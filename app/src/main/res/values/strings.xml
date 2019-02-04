@@ -58,5 +58,7 @@
     <string name="dialog_input_ex_password">이전 비밀번호를 입력하세요</string>
     <string name="dialog_new_password">새로운 비밀번호를 입력하세요</string>
     <string name="dialog_new_password_again">새로운 비밀번호를 다시 입력하세요</string>
+    <string name="snack_same_nick_name">같은 닉네임을 입력했습니다.</string>
+    <string name="snack_duplicate_nick_name">이미 존재하는 닉네임 입니다.</string>
 
 </resources>

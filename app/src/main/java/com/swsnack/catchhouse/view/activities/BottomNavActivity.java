@@ -38,8 +38,10 @@ import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SAME_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_UP_EXCEPTION;
 
@@ -98,6 +100,12 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             case DELETED_USER:
                 Snackbar.make(getBinding().getRoot(), R.string.snack_fb_not_signed_user, Snackbar.LENGTH_SHORT).show();
                 mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                break;
+            case SAME_NICK_NAME:
+                Snackbar.make(getBinding().getRoot(), getString(R.string.snack_same_nick_name), Snackbar.LENGTH_SHORT).show();
+                break;
+            case DUPLICATE_NICK_NAME:
+                Snackbar.make(getBinding().getRoot(), getString(R.string.snack_duplicate_nick_name), Snackbar.LENGTH_SHORT).show();
                 break;
             default:
                 Snackbar.make(getBinding().getRoot(), R.string.snack_error_occured, Snackbar.LENGTH_SHORT).show();

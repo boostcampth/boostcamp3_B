@@ -61,10 +61,12 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
             dialog.show();
 
             dialogBinding.tvDialogChangeNickNameNegative.setOnClickListener(negative -> dialog.dismiss());
+            dialogBinding.tvDialogChangeNickNamePositive.setOnClickListener(view1 -> getViewModel().changeNickName(dialogBinding.etDialogChangeNickName.getText().toString()));
         });
 
         getBinding().tvMyPageChangePassword.setOnClickListener(v -> {
             DialogChangePasswordBinding dialogBinding = DialogChangePasswordBinding.inflate(getLayoutInflater());
+            dialogBinding.setHandler(getViewModel());
             Dialog dialog = new Dialog(getContext());
             dialog.setContentView(dialogBinding.getRoot());
             dialog.show();

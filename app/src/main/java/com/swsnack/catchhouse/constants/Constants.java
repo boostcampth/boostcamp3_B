@@ -7,10 +7,12 @@ import java.lang.annotation.RetentionPolicy;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_EMAIL;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.FAILED_LOAD_IMAGE;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.MISMATCH_USER_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SAME_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_IN_EXCEPTION;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_UP_EXCEPTION;
@@ -19,6 +21,7 @@ import static com.swsnack.catchhouse.constants.Constants.FacebookData.KEY;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.VALUE;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
+import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
 import static com.swsnack.catchhouse.constants.Constants.Gender.FEMALE;
 import static com.swsnack.catchhouse.constants.Constants.Gender.MALE;
@@ -58,15 +61,17 @@ public class Constants {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({DB_USER, STORAGE_PROFILE})
+    @StringDef({DB_USER, STORAGE_PROFILE, NICK_NAME})
     public @interface FirebaseKey {
         String DB_USER = "users";
         String STORAGE_PROFILE = "profile";
+        String NICK_NAME = "nickName";
     }
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({IN_SUFFICIENT_INFO, SHORT_PASSWORD, DUPLICATE_EMAIL, MISMATCH_USER_INFO,
-            FAILED_LOAD_IMAGE, SIGN_IN_EXCEPTION, SIGN_UP_EXCEPTION, NOT_SIGNED_USER, DELETED_USER})
+            FAILED_LOAD_IMAGE, SIGN_IN_EXCEPTION, SIGN_UP_EXCEPTION, NOT_SIGNED_USER, DELETED_USER,
+            SAME_NICK_NAME, DUPLICATE_NICK_NAME})
     public @interface ExceptionReason {
         String IN_SUFFICIENT_INFO = "InSufficientInfo";
         String SHORT_PASSWORD = "shortPassword";
@@ -77,5 +82,7 @@ public class Constants {
         String SIGN_IN_EXCEPTION = "signInException";
         String SIGN_UP_EXCEPTION = "signUpException";
         String DELETED_USER = "deletedUser";
+        String SAME_NICK_NAME = "sameNickName";
+        String DUPLICATE_NICK_NAME = "duplicateNickName";
     }
 }

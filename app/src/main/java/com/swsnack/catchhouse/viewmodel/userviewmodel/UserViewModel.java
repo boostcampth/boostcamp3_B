@@ -36,11 +36,14 @@ import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import java.io.IOException;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SAME_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
+import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
@@ -255,5 +258,33 @@ public class UserViewModel extends ReactiveViewModel {
                     mListener.onSuccess(DELETE_USER_SUCCESS);
                     mIsSigned.setValue(false);
                 }, mListener::onError);
+    }
+
+    public void changeNickName(String changeNickName) {
+        if (changeNickName.equals(mNickName.getValue())) {
+            mListener.onError(new RuntimeException(SAME_NICK_NAME));
+            return;
+        }
+
+        getDataManager()
+                .queryUserBy(NICK_NAME, changeNickName, new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            User user = dataSnapshot1.getValue(User.class);
+                            if (user != null && user.getNickName().equals(changeNickName)) {
+                                /* handle here when user NickName is duplicated*/
+                                mListener.onError(new RuntimeException(DUPLICATE_NICK_NAME));
+                            } else {
+                                /* handle here when user NickName is Unique*/
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
     }
 }
