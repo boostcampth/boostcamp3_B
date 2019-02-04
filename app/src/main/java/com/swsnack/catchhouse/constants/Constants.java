@@ -30,6 +30,8 @@ public class Constants {
     public static final int GOOGLE_SIGN_IN = 1000;
     public static final int FILTER = 1005;
 
+    public static final String MSG_ERROR_GET_ADDRESS = "주소를 찾을 수 없습니다.";
+
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS})
     public @interface UserStatus {
