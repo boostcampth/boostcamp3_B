@@ -19,6 +19,7 @@ import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.AddressBindingAdapter;
+import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.databinding.FragmentMapBinding;
 import com.swsnack.catchhouse.databinding.ItemMapAddressBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
@@ -125,7 +126,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode==1000) {
+        if (resultCode == Constants.FILTER) {
             // TODO: 2019-02-02 팝업에 대한 result 처리 추가 필요
         }
 

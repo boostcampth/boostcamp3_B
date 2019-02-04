@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.databinding.ActivityFilterPopUpBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 
@@ -33,7 +34,7 @@ public class FilterPopUpActivity extends BaseActivity<ActivityFilterPopUpBinding
         setFinishOnTouchOutside(false);
         Intent intent = new Intent();
         intent.putExtra("data1","dd");
-        setResult(1000, intent);
+        setResult(Constants.FILTER, intent);
         Log.d("csh","onStop");
     }
 
