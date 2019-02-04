@@ -32,6 +32,9 @@ public class FilterPopUpActivity extends BaseActivity<ActivityFilterPopUpBinding
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setFinishOnTouchOutside(false);
+
+
+        // TODO: 2019-02-02 팝업에 대한 result 처리 추가 필요
         Intent intent = new Intent();
         intent.putExtra("data1","dd");
         setResult(Constants.FILTER, intent);
