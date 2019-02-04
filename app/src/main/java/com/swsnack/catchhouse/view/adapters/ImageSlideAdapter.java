@@ -10,29 +10,29 @@ import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.databinding.SliderBinding;
+import com.swsnack.catchhouse.databinding.ItemViewpagerBinding;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.annotations.NonNull;
 
 public class ImageSlideAdapter extends PagerAdapter {
 
-    ArrayList<Uri> mUri;
+    private List<Uri> mUri;
     private LayoutInflater inflater;
-    SliderBinding mBinding;
-    RoomsViewModel mViewModel;
+    private ItemViewpagerBinding mBinding;
+    private RoomsViewModel mViewModel;
 
     public ImageSlideAdapter(RoomsViewModel viewModel) {
         mViewModel = viewModel;
     }
 
-    public void setUri(ArrayList<Uri> uri) {
+    public void setUri(List<Uri> uri) {
         mUri = uri;
     }
 
-    public ArrayList<Uri> getUri() {
+    public List<Uri> getUri() {
         return mUri;
     }
 
@@ -54,9 +54,9 @@ public class ImageSlideAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         inflater = LayoutInflater.from(container.getContext());
-        mBinding = DataBindingUtil.bind(inflater.inflate(R.layout.slider, container, false));
+        mBinding = DataBindingUtil.bind(inflater.inflate(R.layout.item_viewpager, container, false));
 
-        mBinding.imageView2.setOnClickListener(__ ->
+        mBinding.ivVpDelete.setOnClickListener(__ ->
                 mViewModel.onClickDeleteButton(position)
         );
 
@@ -64,12 +64,13 @@ public class ImageSlideAdapter extends PagerAdapter {
             Glide.with(container.getContext())
                     .load(mUri.get(position))
                     .apply(new RequestOptions().override(340, 324))
-                    .into(mBinding.imageView);
-            String text = (position + 1) + "/" + Integer.toString(getCount());
-            mBinding.textView.setText(text);
+                    .into(mBinding.ivVpImage);
+            String text = (position + 1) + "/" + getCount() + "";
+            mBinding.tvVpNumber.setText(text);
             container.addView(mBinding.getRoot());
 
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return mBinding.getRoot();
