@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp">
+
+        <EditText
+            android:id="@+id/et_address_keyword"
+            style="@style/Basic_EditText"
+            android:layout_width="196dp"
+            android:layout_margin="4dp"
+            android:hint="@string/et_address_keyword_hint"
+            android:inputType="text"
+            android:text="@={handler.mKeyword}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_address_search"
+            style="@style/tv.accent.small"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_margin="4dp"
+            android:onClick="@{handler::getAddressList}"
+            android:text="@string/tv_address_search"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/et_address_keyword"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_address"
+            android:layout_width="match_parent"
+            android:layout_height="252dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_address_keyword"
+            app:recycler_item="@{handler.mAddressList}" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
+

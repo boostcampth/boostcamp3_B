@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.databinding.ItemMapAddressBinding;

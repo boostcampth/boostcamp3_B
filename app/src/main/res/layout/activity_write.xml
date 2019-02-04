@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="360dp"
                     android:layout_margin="32dp"
-                    app:items="@{handler.mUriList}" />
+                    app:viewpager_item="@{handler.mUriList}" />
 
                 <TextView
                     android:id="@+id/tv_write_gallery"
@@ -139,8 +139,10 @@
                     <EditText
                         android:id="@+id/et_write_address"
                         style="@style/Basic_EditText"
+                        android:focusable="false"
                         android:hint="@string/et_write_address_hint"
                         android:inputType="text"
+                        android:text="@{handler.mAddress}"
                         android:textAlignment="textStart" />
                 </LinearLayout>
 

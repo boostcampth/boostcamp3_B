@@ -15,6 +15,7 @@ import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.adapters.ImageSlideAdapter;
+import com.swsnack.catchhouse.view.fragments.AddressSearchFragment;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
@@ -67,29 +68,39 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /* create & bind view model */
         createViewModels();
         mViewModel = ViewModelProviders.of(this).get(RoomsViewModel.class);
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
 
+        /* set image slider */
         getBinding().vpWrite.setAdapter(new ImageSlideAdapter(mViewModel));
 
+        /* set back button */
         getBinding().tbWrite.setNavigationIcon(R.drawable.action_back);
         getBinding().tbWrite.setNavigationOnClickListener(__ -> finish());
 
+        /* set gallery open button */
         getBinding().tvWriteGallery.setOnClickListener(__ -> {
             Intent intent = new Intent();
             intent.setType("image/*");
             intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
             intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+                    PICK_IMAGE_MULTIPLE);
         });
 
+        /* set date picker */
         currentDate = new GregorianCalendar(Locale.KOREA);
         getBinding().tvWriteDateFrom.setOnClickListener(v -> createDatePicker((TextView) v));
         getBinding().tvWriteDateTo.setOnClickListener(v -> createDatePicker((TextView) v));
         mViewModel.mRoomValue.observe(this, __ ->
                 getBinding().tvWriteExpectedValue.setText(calExpectedValue()));
+
+        getBinding().etWriteAddress.setOnClickListener(__ ->
+                new AddressSearchFragment().show(getSupportFragmentManager(), "address selection")
+        );
     }
 
     @Override
@@ -118,7 +129,8 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     }
 
     private void createViewModels() {
-        createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
+        createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(),
+                RoomsRepository.getInstance(), this));
     }
 
     private void createDatePicker(TextView view) {
