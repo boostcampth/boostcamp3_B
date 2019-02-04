@@ -6,6 +6,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="popupTheme" parent="Theme.AppCompat.DayNight.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
     <style name="noActionBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -96,5 +102,43 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    /* Text Style Base */
+    <style name="TextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextStyle.Regular">
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="TextStyle.Bold">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextStyle.Regular.Title"><item name="android:textSize">@dimen/text_size_H5</item></style>
+    <style name="TextStyle.Regular.SubTitle"><item name="android:textSize">@dimen/text_size_H6</item></style>
+    <style name="TextStyle.Regular.Medium"><item name="android:textSize">@dimen/text_size_m</item></style>
+    <style name="TextStyle.Regular.Small"><item name="android:textSize">@dimen/text_size_s</item></style>
+
+    <style name="TextStyle.Bold.Title"><item name="android:textSize">@dimen/text_size_H5</item></style>
+    <style name="TextStyle.Bold.SubTitle"><item name="android:textSize">@dimen/text_size_H6</item></style>
+    <style name="TextStyle.Bold.Medium"><item name="android:textSize">@dimen/text_size_m</item></style>
+    <style name="TextStyle.Bold.Small"><item name="android:textSize">@dimen/text_size_s</item></style>
+
+    /* Edit Text */
+    <style name="Basic_EditText" parent="TextStyle.Regular.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:backgroundTint">@color/colorAccent</item>
+    </style>
 
 </resources>

@@ -7,14 +7,8 @@ import android.net.Uri;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import android.util.Log;
-import android.view.View;
-
-import com.skt.Tmap.TMapPOIItem;
-import com.skt.Tmap.TMapPoint;
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
@@ -25,17 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class RoomsViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private RoomsRepository mRepository;
     private ViewModelListener mListener;
-    public final MutableLiveData<ArrayList<Uri>> mUriList;
+    public final MutableLiveData<List<Uri>> mUriList;
+    public final MutableLiveData<String> mRoomValue;
     public List<byte[]> mBitmapBytesArray;
 
     // private List<Room> mRoomList;
@@ -45,17 +36,18 @@ public class RoomsViewModel extends ReactiveViewModel {
         mRepository = repository;
         mListener = listener;
         mUriList = new MutableLiveData<>();
+        mRoomValue = new MutableLiveData<>();
         mBitmapBytesArray = new ArrayList<>();
     }
 
     public void onClickDeleteButton(int position) {
-        ArrayList<Uri> data = mUriList.getValue();
+        List<Uri> data = mUriList.getValue();
         data.remove(position);
         mUriList.postValue(data);
     }
 
-    public void gallerySelectionResult(ArrayList<Uri> uriList) {
-        ArrayList<Uri> data;
+    public void gallerySelectionResult(List<Uri> uriList) {
+        List<Uri> data;
 
         if (mUriList.getValue() == null) {
             data = uriList;
@@ -68,16 +60,16 @@ public class RoomsViewModel extends ReactiveViewModel {
             }
         }
 
-        for(int i = data.size(); i > 9; i--) {
+        for (int i = data.size(); i > 9; i--) {
             data.remove(i - 1);
         }
 
-        getByteArrayListFromUri(data);
+        getByteListFromUri(data);
         mUriList.postValue(data);
     }
 
 
-    private void getByteArrayListFromUri(ArrayList<Uri> uris) {
+    private void getByteListFromUri(List<Uri> uris) {
         mListener.isWorking();
 
         getCompositeDisposable().add(

@@ -18,7 +18,7 @@ public class Room {
     /** 작성자 **/
     private String UUID;
     /** 주소 **/
-    private String address;
+    private Address address;
 
     /* 옵션
      * 선택하지 않을경우 false */
@@ -38,7 +38,7 @@ public class Room {
                 String content,
                 List<String> images,
                 String UUID,
-                String address,
+                Address address,
                 boolean optionStandard,
                 boolean optionGender,
                 boolean optionPet,
@@ -113,11 +113,11 @@ public class Room {
         this.UUID = UUID;
     }
 
-    public String getAddress() {
+    public Address getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

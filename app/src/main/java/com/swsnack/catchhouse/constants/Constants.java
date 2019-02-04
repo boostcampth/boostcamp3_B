@@ -40,6 +40,7 @@ public class Constants {
 
     public static final int GALLERY = 1003;
     public static final int GOOGLE_SIGN_IN = 1000;
+    public static final int FILTER = 1005;
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, DELETE_USER_SUCCESS, UPDATE_NICK_NAME_SUCCESS,

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handler"
+            type="com.swsnack.catchhouse.view.activities.FilterPopUpActivity" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="30dp"
+        tools:context=".view.activities.FilterPopUpActivity">
+
+        <TextView
+            android:id="@+id/tv_filter_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_price"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_filter_price_from"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_filter_price" />
+
+        <TextView
+            android:id="@+id/tv_filter_price_between"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_between"
+            app:layout_constraintBottom_toBottomOf="@+id/et_filter_price_from"
+            app:layout_constraintLeft_toRightOf="@+id/et_filter_price_from"
+            app:layout_constraintTop_toTopOf="@+id/et_filter_price_from" />
+
+        <EditText
+            android:id="@+id/et_filter_price_to"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_filter_price_between"
+            app:layout_constraintLeft_toRightOf="@+id/tv_filter_price_between"
+            app:layout_constraintTop_toTopOf="@+id/tv_filter_price_between" />
+
+        <TextView
+            android:id="@+id/tv_filter_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_filter_price_from" />
+
+
+        <EditText
+            android:id="@+id/et_filter_date_from"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_filter_date" />
+
+        <TextView
+            android:id="@+id/tv_filter_date_between"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_between"
+            app:layout_constraintBottom_toBottomOf="@+id/et_filter_date_from"
+            app:layout_constraintLeft_toRightOf="@id/et_filter_date_from"
+            app:layout_constraintTop_toTopOf="@+id/et_filter_date_from" />
+
+
+        <EditText
+            android:id="@+id/et_filter_date_to"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_filter_date_between"
+            app:layout_constraintLeft_toRightOf="@id/tv_filter_date_between"
+            app:layout_constraintTop_toTopOf="@+id/tv_filter_date_between" />
+
+
+        <TextView
+            android:id="@+id/tv_filter_option"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_option"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_filter_date_from" />
+
+        <CheckBox
+            android:id="@+id/cb_filter_standard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_filter_option" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_option_standard"
+            app:layout_constraintBottom_toBottomOf="@+id/cb_filter_standard"
+            app:layout_constraintLeft_toRightOf="@id/cb_filter_standard"
+            app:layout_constraintTop_toTopOf="@+id/cb_filter_standard" />
+
+
+        <CheckBox
+            android:id="@+id/cb_filter_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cb_filter_standard" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_option_gender"
+            app:layout_constraintBottom_toBottomOf="@+id/cb_filter_gender"
+            app:layout_constraintLeft_toRightOf="@id/cb_filter_gender"
+            app:layout_constraintTop_toTopOf="@+id/cb_filter_gender" />
+
+
+        <CheckBox
+            android:id="@+id/cb_filter_pet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cb_filter_gender" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_option_pet"
+            app:layout_constraintBottom_toBottomOf="@+id/cb_filter_pet"
+            app:layout_constraintLeft_toRightOf="@id/cb_filter_pet"
+            app:layout_constraintTop_toTopOf="@+id/cb_filter_pet" />
+
+        <CheckBox
+            android:id="@+id/cb_filter_smoking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cb_filter_pet" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_option_smoking"
+            app:layout_constraintBottom_toBottomOf="@+id/cb_filter_smoking"
+            app:layout_constraintLeft_toRightOf="@id/cb_filter_smoking"
+            app:layout_constraintTop_toTopOf="@+id/cb_filter_smoking" />
+
+        <Button
+            android:id="@+id/bt_filter_apply"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/bt_filter_apply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cb_filter_smoking" />
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

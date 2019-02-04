@@ -66,4 +66,35 @@
     <string name="tv_write_gallery">사진 선택</string>
     <string name="tb_write">매물 올리기</string>
 
+    <string name="tv_write_value">가격</string>
+    <string name="et_write_value_hint">1박 가격을 적어주세요.</string>
+    <string name="tv_write_from_to">기간</string>
+    <string name="tv_write_date">YYYY-MM-DD</string>
+    <string name="tv_write_ripple">~</string>
+    <string name="tv_write_expected_value">예상 가격</string>
+    <string name="tv_write_expected_value_default">0 원</string>
+    <string name="cb_write_standard">기본옵션(냉장고, 에어컨, 인덕션)</string>
+    <string name="cb_write_pet">반려동물 허용</string>
+    <string name="cb_write_gender">동일성별</string>
+    <string name="cb_write_smoking">실내 흡연 가능</string>
+    <string name="tv_write_room_info">매물 정보</string>
+    <string name="tv_write_address">주소</string>
+    <string name="et_write_address_hint">주소를 입력해주세요.</string>
+    <string name="tv_write_room_size">방 크기</string>
+    <string name="et_write_room_size_hint">평수를 입력해주세요.</string>
+    <string name="tv_write_title">제목</string>
+    <string name="tv_write_content">내용</string>
+    <string name="tv_write_preview">미리 보기</string>
+    <string name="tv_write_post">확인</string>
+
+    /* activity_filter_pop_up */
+    <string name="tv_filter_price">가격</string>
+    <string name="tv_filter_between">~</string>
+    <string name="tv_filter_date">기간</string>
+    <string name="tv_filter_option">옵션</string>
+    <string name="tv_filter_option_standard">기본 옵션</string>
+    <string name="tv_filter_option_gender">동일 성별</string>
+    <string name="tv_filter_option_pet">반려동물 허용</string>
+    <string name="tv_filter_option_smoking">실내흡연 허용</string>
+    <string name="bt_filter_apply">적용</string>
 </resources>
