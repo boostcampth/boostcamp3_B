@@ -126,8 +126,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode==1000) {
-            Log.d("csh", "옴!"+data.toString());
-
+            // TODO: 2019-02-02 팝업에 대한 result 처리 추가 필요
         }
 
 
