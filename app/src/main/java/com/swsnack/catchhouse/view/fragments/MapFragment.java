@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
@@ -32,7 +33,10 @@ import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.Nullable;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewModel> {
     public FragmentManager mFragmentManager;
@@ -68,7 +72,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         getBinding().rvMapAddress.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         AddressBindingAdapter adapter = new AddressBindingAdapter(getContext());
         getBinding().rvMapAddress.setAdapter(adapter);
-        adapter.updateItems(getViewModel().getAddressList().getValue());
+        //adapter.updateItems(getViewModel().getAddressList().getValue());
 
         /* Tmap 연동 */
         mTMapView = new TMapView(getContext());
@@ -78,17 +82,16 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
 
         getBinding().rvMapAddress.bringToFront();
 
-        final Observer<List<Address>> addressObserver = (__ -> {
-            Log.v("csh","addressList is Changed");
-            adapter.updateItems(getViewModel().getAddressList().getValue());
-        });
-
-        getViewModel().getAddressList().observe(this, addressObserver);
-
         getBinding().etMapSearch.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                getViewModel().searchAddress();
-                getBinding().rvMapAddress.setVisibility(View.VISIBLE);
+                getViewModel().searchAddress()
+                        .subscribe(addressList -> {
+                            adapter.updateItems(addressList);
+                            getBinding().rvMapAddress.setVisibility(View.VISIBLE);
+                        }, exception -> {
+                            Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+                            getBinding().rvMapAddress.setVisibility(View.GONE);
+                        });
                 return true;
             }
             return false;
@@ -96,8 +99,8 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
 
         adapter.setOnItemClickListener(((v, position) -> {
             getBinding().rvMapAddress.setVisibility(View.GONE);
-            Address address = getViewModel().getAddress(position);
-            moveMap(address);
+            getViewModel().setKeyword(adapter.getItem(position).getName());
+            moveMap(adapter.getItem(position));
         }));
         getBinding().btFilter.setOnClickListener(__ -> {
             Intent intent = new Intent(getContext(), FilterPopUpActivity.class);
@@ -121,7 +124,6 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -129,7 +131,6 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         if (resultCode == Constants.FILTER) {
             // TODO: 2019-02-02 팝업에 대한 result 처리 추가 필요
         }
-
 
     }
 
