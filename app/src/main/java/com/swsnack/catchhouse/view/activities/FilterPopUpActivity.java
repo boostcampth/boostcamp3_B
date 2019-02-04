@@ -42,12 +42,6 @@ public class FilterPopUpActivity extends BaseActivity<ActivityFilterPopUpBinding
     }
 
     @Override
-    protected void onStop() {
-
-        super.onStop();
-    }
-
-    @Override
     protected void createViewModel(@NonNull Class viewModelClass) {
         super.createViewModel(viewModelClass);
     }

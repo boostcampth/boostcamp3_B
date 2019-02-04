@@ -36,7 +36,7 @@ import io.reactivex.annotations.Nullable;
 
 public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewModel> {
     public FragmentManager mFragmentManager;
-    private TMapView tMapView;
+    private TMapView mTMapView;
 
     @Override
     protected int getLayout() {
@@ -71,10 +71,10 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         adapter.updateItems(getViewModel().getAddressList().getValue());
 
         /* Tmap 연동 */
-        tMapView = new TMapView(getContext());
-        tMapView.setSKTMapApiKey(getResources().getString(R.string.tmap_api_key));
+        mTMapView = new TMapView(getContext());
+        mTMapView.setSKTMapApiKey(getResources().getString(R.string.tmap_api_key));
         ConstraintLayout mapLayout = getBinding().clMap;
-        mapLayout.addView(tMapView);
+        mapLayout.addView(mTMapView);
 
         getBinding().rvMapAddress.bringToFront();
 
@@ -101,13 +101,13 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         }));
         getBinding().btFilter.setOnClickListener(__ -> {
             Intent intent = new Intent(getContext(), FilterPopUpActivity.class);
-            startActivityForResult(intent, 1000);
+            startActivityForResult(intent, Constants.FILTER);
         });
 
     }
 
     private void moveMap(Address address) {
-        tMapView.setCenterPoint(address.getLongitude(), address.getLatitude(), true);
+        mTMapView.setCenterPoint(address.getLongitude(), address.getLatitude(), true);
 
         TMapMarkerItem markerItem = new TMapMarkerItem();
         TMapPoint point = new TMapPoint(address.getLatitude(), address.getLongitude());
@@ -117,7 +117,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         markerItem.setCalloutTitle("제목");
         markerItem.setCalloutSubTitle("부제목");
         markerItem.setAutoCalloutVisible(true);
-        tMapView.addMarkerItem("1", markerItem);
+        mTMapView.addMarkerItem("1", markerItem);
     }
 
 
