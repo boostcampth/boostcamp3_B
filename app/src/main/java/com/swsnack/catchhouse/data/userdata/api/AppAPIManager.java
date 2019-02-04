@@ -72,13 +72,16 @@ public class AppAPIManager implements APIManager {
         }
         FirebaseAuth.getInstance().getCurrentUser()
                 .delete()
-                .addOnSuccessListener(onSuccessListener)
+                .addOnSuccessListener(result -> {
+                    FirebaseAuth.getInstance().signOut();
+                    onSuccessListener.onSuccess(null);
+                })
                 .addOnFailureListener(onFailureListener);
     }
 
     @Override
     public void firebaseUpdatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;
         }

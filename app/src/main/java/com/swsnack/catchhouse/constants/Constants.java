@@ -6,6 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETE_EXCEPTION;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_EMAIL;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.FAILED_LOAD_IMAGE;
@@ -31,9 +32,9 @@ import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PASSWORD_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PROFILE_SUCCESS;
-import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_SUCCESS;
 
 public class Constants {
 
@@ -41,13 +42,13 @@ public class Constants {
     public static final int GOOGLE_SIGN_IN = 1000;
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, DELETE_USER_SUCCESS, UPDATE_SUCCESS,
+    @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, DELETE_USER_SUCCESS, UPDATE_NICK_NAME_SUCCESS,
             UPDATE_PASSWORD_SUCCESS, UPDATE_PROFILE_SUCCESS})
     public @interface UserStatus {
         String SIGN_IN_SUCCESS = "singInSuccess";
         String SIGN_UP_SUCCESS = "signUpSuccess";
         String DELETE_USER_SUCCESS = "deleteSuccess";
-        String UPDATE_SUCCESS = "updateSuccess";
+        String UPDATE_NICK_NAME_SUCCESS = "updateNickNameSuccess";
         String UPDATE_PASSWORD_SUCCESS = "updatePasswordSuccess";
         String UPDATE_PROFILE_SUCCESS = "updateProfileSuccess";
     }
@@ -82,7 +83,7 @@ public class Constants {
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({IN_SUFFICIENT_INFO, SHORT_PASSWORD, DUPLICATE_EMAIL, MISMATCH_USER_INFO,
             FAILED_LOAD_IMAGE, SIGN_IN_EXCEPTION, SIGN_UP_EXCEPTION, NOT_SIGNED_USER, DELETED_USER,
-            SAME_NICK_NAME, DUPLICATE_NICK_NAME})
+            SAME_NICK_NAME, DUPLICATE_NICK_NAME, DELETE_EXCEPTION})
     public @interface ExceptionReason {
         String IN_SUFFICIENT_INFO = "InSufficientInfo";
         String SHORT_PASSWORD = "shortPassword";
@@ -92,6 +93,7 @@ public class Constants {
         String FAILED_LOAD_IMAGE = "failedLoadImage";
         String SIGN_IN_EXCEPTION = "signInException";
         String SIGN_UP_EXCEPTION = "signUpException";
+        String DELETE_EXCEPTION = "deleteException";
         String DELETED_USER = "deletedUser";
         String SAME_NICK_NAME = "sameNickName";
         String DUPLICATE_NICK_NAME = "duplicateNickName";

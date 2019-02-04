@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,10 +100,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
             });
         });
 
-        getBinding().tvMyPageChangeProfile.setOnClickListener(v -> {
-            Log.d("프로필 변경 1. 시작", "intent 보내기");
-            startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY);
-        });
+        getBinding().tvMyPageChangeProfile.setOnClickListener(v -> startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY));
 
         getBinding().tvMyPageDelete.setOnClickListener(v -> getViewModel().deleteUser());
 
@@ -119,7 +115,6 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY) {
-            Log.d("프로필 변경 2. 인텐트 받는 곳", "intent 받기");
             if (resultCode == Activity.RESULT_OK) {
                 getViewModel().updateProfile(data.getData());
                 return;

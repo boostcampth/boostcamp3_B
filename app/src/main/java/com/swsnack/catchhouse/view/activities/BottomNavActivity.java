@@ -3,7 +3,6 @@ package com.swsnack.catchhouse.view.activities;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,6 +12,7 @@ import com.facebook.FacebookException;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.database.DatabaseException;
 import com.swsnack.catchhouse.R;
@@ -59,9 +59,8 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     @Override
     public void onError(Throwable throwable) {
-        Log.d("에러처리", "onError: " + throwable.getMessage());
         unFreezeUI();
-        if (throwable instanceof FirebaseAuthInvalidCredentialsException) {
+        if (throwable instanceof FirebaseAuthInvalidCredentialsException || throwable instanceof FirebaseAuthInvalidUserException) {
             Snackbar.make(getBinding().getRoot(), R.string.snack_invalid_user, Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -140,6 +139,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 break;
             case Constants.UserStatus.UPDATE_PROFILE_SUCCESS:
                 Snackbar.make(getBinding().getRoot(), R.string.snack_update_profile_success, Snackbar.LENGTH_SHORT).show();
+                break;
+            case Constants.UserStatus.UPDATE_NICK_NAME_SUCCESS:
+                Snackbar.make(getBinding().getRoot(), getString(R.string.snack_change_nick_name_success), Snackbar.LENGTH_SHORT).show();
                 break;
         }
     }
