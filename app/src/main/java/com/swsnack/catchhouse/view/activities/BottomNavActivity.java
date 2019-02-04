@@ -3,6 +3,7 @@ package com.swsnack.catchhouse.view.activities;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,6 +14,7 @@ import com.google.android.gms.auth.GoogleAuthException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.database.DatabaseException;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.data.AppDataManager;
@@ -57,6 +59,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     @Override
     public void onError(Throwable throwable) {
+        Log.d("에러처리", "onError: " + throwable.getMessage());
         unFreezeUI();
         if (throwable instanceof FirebaseAuthInvalidCredentialsException) {
             Snackbar.make(getBinding().getRoot(), R.string.snack_invalid_user, Snackbar.LENGTH_SHORT).show();
@@ -75,6 +78,11 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
         if (throwable instanceof FacebookException || throwable instanceof GoogleAuthException) {
             Snackbar.make(getBinding().getRoot(), R.string.snack_fb_sign_in_failed, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (throwable instanceof DatabaseException) {
+            Snackbar.make(getBinding().getRoot(), R.string.snack_database_exception, Snackbar.LENGTH_SHORT).show();
             return;
         }
 
@@ -102,10 +110,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                 break;
             case SAME_NICK_NAME:
-                Snackbar.make(getBinding().getRoot(), getString(R.string.snack_same_nick_name), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getBinding().getRoot(), R.string.snack_same_nick_name, Snackbar.LENGTH_SHORT).show();
                 break;
             case DUPLICATE_NICK_NAME:
-                Snackbar.make(getBinding().getRoot(), getString(R.string.snack_duplicate_nick_name), Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getBinding().getRoot(), R.string.snack_duplicate_nick_name, Snackbar.LENGTH_SHORT).show();
                 break;
             default:
                 Snackbar.make(getBinding().getRoot(), R.string.snack_error_occured, Snackbar.LENGTH_SHORT).show();
@@ -124,6 +132,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new MyPageFragment(), MyPageFragment.class.getName()).commit();
                 break;
             case Constants.UserStatus.DELETE_USER_SUCCESS:
+                mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                break;
+            case Constants.UserStatus.UPDATE_PASSWORD_SUCCESS:
+                Snackbar.make(getBinding().getRoot(), getString(R.string.snack_re_sign_in), Snackbar.LENGTH_SHORT).show();
                 mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                 break;
         }

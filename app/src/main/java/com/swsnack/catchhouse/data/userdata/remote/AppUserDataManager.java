@@ -18,6 +18,8 @@ import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
+import java.util.Map;
+
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_UP_EXCEPTION;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
@@ -43,7 +45,7 @@ public class AppUserDataManager implements UserDataManager {
 
     @Override
     public void getUser(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        db.child(uuid).addListenerForSingleValueEvent(valueEventListener);
+        db.child(uuid).addValueEventListener(valueEventListener);
     }
 
     @Override
@@ -122,4 +124,13 @@ public class AppUserDataManager implements UserDataManager {
     public void queryUserBy(@NonNull String queryBy, @NonNull String findValue, @NonNull ValueEventListener valueEventListener) {
         db.orderByChild(queryBy).equalTo(findValue).addListenerForSingleValueEvent(valueEventListener);
     }
+
+    @Override
+    public void updateUser(@NonNull String uuid, @NonNull Map<String, Object> updateFields, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        db.child(uuid)
+                .updateChildren(updateFields)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
+    }
+
 }

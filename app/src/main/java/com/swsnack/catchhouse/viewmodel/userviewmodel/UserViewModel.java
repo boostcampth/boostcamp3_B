@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +35,8 @@ import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
@@ -47,6 +50,8 @@ import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PASSWORD_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
 
@@ -270,21 +275,36 @@ public class UserViewModel extends ReactiveViewModel {
                 .queryUserBy(NICK_NAME, changeNickName, new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                            User user = dataSnapshot1.getValue(User.class);
-                            if (user != null && user.getNickName().equals(changeNickName)) {
-                                /* handle here when user NickName is duplicated*/
-                                mListener.onError(new RuntimeException(DUPLICATE_NICK_NAME));
-                            } else {
-                                /* handle here when user NickName is Unique*/
-                            }
+                        if (dataSnapshot.getValue() == null) {
+                            /* in this block, no one has same nickName*/
+                            Map<String, Object> updateFields = new HashMap<>();
+                            updateFields.put(NICK_NAME, changeNickName);
+                            updateUser(updateFields);
+                        } else {
+                            mListener.onError(new RuntimeException(DUPLICATE_NICK_NAME));
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        mListener.onError(databaseError.toException());
                     }
                 });
+    }
+
+    public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword) {
+        getDataManager()
+                .firebaseUpdatePassword(oldPassword, newPassword,
+                        result -> mListener.onSuccess(UPDATE_PASSWORD_SUCCESS),
+                        error -> {
+                            mListener.onError(error);
+                            Log.d("에러", "updatePassword: " + error);
+                        });
+    }
+
+    private void updateUser(Map<String, Object> fields) {
+        getDataManager()
+                .updateUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), fields,
+                        result -> mListener.onSuccess(UPDATE_SUCCESS), mListener::onError);
     }
 }

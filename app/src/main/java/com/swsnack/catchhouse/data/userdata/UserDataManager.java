@@ -8,6 +8,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
+import java.util.Map;
+
 public interface UserDataManager {
 
     void getUser(@NonNull String uuid, @NonNull ValueEventListener valueEventListener);
@@ -23,5 +25,7 @@ public interface UserDataManager {
     void deleteUser(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
     void queryUserBy(@NonNull String queryBy, @NonNull String findValue, @NonNull ValueEventListener valueEventListener);
+
+    void updateUser(@NonNull String uuid, @NonNull Map<String, Object> updateFields, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
 }

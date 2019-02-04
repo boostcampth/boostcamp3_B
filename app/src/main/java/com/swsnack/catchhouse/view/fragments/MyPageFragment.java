@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
+
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
 
@@ -52,26 +55,43 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getViewModel().getUser();
 
+        if (!FirebaseAuth.getInstance().getCurrentUser().getProviders().get(0).equals(E_MAIL)) {
+            getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
+        }
 
         getBinding().tvMyPageChangeNickName.setOnClickListener(v -> {
             DialogChangeNickNameBinding dialogBinding = DialogChangeNickNameBinding.inflate(getLayoutInflater());
             dialogBinding.setHandler(getViewModel());
-            Dialog dialog = new Dialog(getContext());
-            dialog.setContentView(dialogBinding.getRoot());
-            dialog.show();
 
-            dialogBinding.tvDialogChangeNickNameNegative.setOnClickListener(negative -> dialog.dismiss());
-            dialogBinding.tvDialogChangeNickNamePositive.setOnClickListener(view1 -> getViewModel().changeNickName(dialogBinding.etDialogChangeNickName.getText().toString()));
+            Dialog dialogChangeNickName = new Dialog(getContext());
+            dialogChangeNickName.setContentView(dialogBinding.getRoot());
+            dialogChangeNickName.show();
+
+            dialogBinding.tvDialogChangeNickNameNegative.setOnClickListener(negative -> dialogChangeNickName.dismiss());
+            dialogBinding.tvDialogChangeNickNamePositive.setOnClickListener(positive -> {
+                getViewModel().changeNickName(dialogBinding.etDialogChangeNickName.getText().toString());
+                dialogChangeNickName.dismiss();
+            });
         });
 
         getBinding().tvMyPageChangePassword.setOnClickListener(v -> {
             DialogChangePasswordBinding dialogBinding = DialogChangePasswordBinding.inflate(getLayoutInflater());
             dialogBinding.setHandler(getViewModel());
-            Dialog dialog = new Dialog(getContext());
-            dialog.setContentView(dialogBinding.getRoot());
-            dialog.show();
 
-            dialogBinding.tvDialogChangePasswordNegative.setOnClickListener(negative -> dialog.dismiss());
+            Dialog dialogChangePassword = new Dialog(getContext());
+            dialogChangePassword.setContentView(dialogBinding.getRoot());
+            dialogChangePassword.show();
+
+            dialogBinding.tvDialogChangePasswordNegative.setOnClickListener(negative -> dialogChangePassword.dismiss());
+            dialogBinding.tvDialogChangePasswordPositive.setOnClickListener(positive -> {
+                if (!dialogBinding.etDialogChangePasswordNewPassword.getText().toString()
+                        .equals(dialogBinding.etDialogChangePasswordNewPasswordConfirm.getText().toString())) {
+                    Snackbar.make(getBinding().getRoot(), R.string.snack_wrong_password, Snackbar.LENGTH_SHORT).show();
+                    return;
+                }
+                getViewModel().updatePassword(dialogBinding.etDialogChangePasswordExPassword.getText().toString(),
+                        dialogBinding.etDialogChangePasswordNewPassword.getText().toString());
+            });
         });
 
         getBinding().tvMyPageDelete.setOnClickListener(v -> getViewModel().deleteUser());

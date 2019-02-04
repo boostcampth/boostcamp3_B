@@ -14,6 +14,8 @@ import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
+import java.util.Map;
+
 public class AppDataManager implements DataManager {
 
     private APIManager mApiManager;
@@ -66,6 +68,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void firebaseUpdatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.firebaseUpdatePassword(oldPassword, newPassword, onSuccessListener, onFailureListener);
+    }
+
+    @Override
     public void facebookUserProfile(@NonNull AccessToken accessToken, @NonNull GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
         mApiManager.facebookUserProfile(accessToken, facebookUserDataCallback);
     }
@@ -96,8 +103,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void queryUserBy(@NonNull String queryString, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.queryUserBy(queryString, valueEventListener);
+    public void queryUserBy(@NonNull String queryBy, @NonNull String findValue, @NonNull ValueEventListener valueEventListener) {
+        mUserDataManager.queryUserBy(queryBy, findValue, valueEventListener);
+    }
+
+    @Override
+    public void updateUser(@NonNull String uuid, @NonNull Map<String, Object> updateFields, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.updateUser(uuid, updateFields, onSuccessListener, onFailureListener);
     }
 
     @Override

@@ -25,6 +25,9 @@ import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
 import static com.swsnack.catchhouse.constants.Constants.Gender.FEMALE;
 import static com.swsnack.catchhouse.constants.Constants.Gender.MALE;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.FACEBOOK;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
 
@@ -39,6 +42,8 @@ public class Constants {
         String SIGN_IN_SUCCESS = "singInSuccess";
         String SIGN_UP_SUCCESS = "signUpSuccess";
         String DELETE_USER_SUCCESS = "deleteSuccess";
+        String UPDATE_SUCCESS = "updateSuccess";
+        String UPDATE_PASSWORD_SUCCESS = "updatePasswordSuccess";
     }
 
     //magic constant
@@ -84,5 +89,13 @@ public class Constants {
         String DELETED_USER = "deletedUser";
         String SAME_NICK_NAME = "sameNickName";
         String DUPLICATE_NICK_NAME = "duplicateNickName";
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({FACEBOOK, GOOGLE, E_MAIL})
+    public @interface SignInMethod {
+        String FACEBOOK = "facebook.com";
+        String GOOGLE = "google.com";
+        String E_MAIL = "password";
     }
 }
