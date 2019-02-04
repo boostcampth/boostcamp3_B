@@ -60,4 +60,14 @@
     <string name="tv_write_preview">미리 보기</string>
     <string name="tv_write_post">확인</string>
 
+    /* activity_filter_pop_up */
+    <string name="tv_filter_price">가격</string>
+    <string name="tv_filter_between">~</string>
+    <string name="tv_filter_date">기간</string>
+    <string name="tv_filter_option">옵션</string>
+    <string name="tv_filter_option_standard">기본 옵션</string>
+    <string name="tv_filter_option_gender">동일 성별</string>
+    <string name="tv_filter_option_pet">반려동물 허용</string>
+    <string name="tv_filter_option_smoking">실내흡연 허용</string>
+    <string name="bt_filter_apply">적용</string>
 </resources>

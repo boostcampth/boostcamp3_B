@@ -21,7 +21,7 @@
             android:id="@+id/tv_filter_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="가격"
+            android:text="@string/tv_filter_price"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +36,7 @@
             android:id="@+id/tv_filter_price_between"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="~"
+            android:text="@string/tv_filter_between"
             app:layout_constraintBottom_toBottomOf="@+id/et_filter_price_from"
             app:layout_constraintLeft_toRightOf="@+id/et_filter_price_from"
             app:layout_constraintTop_toTopOf="@+id/et_filter_price_from" />
@@ -53,7 +53,7 @@
             android:id="@+id/tv_filter_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="기간"
+            android:text="@string/tv_filter_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_filter_price_from" />
 
@@ -69,7 +69,7 @@
             android:id="@+id/tv_filter_date_between"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="~"
+            android:text="@string/tv_filter_between"
             app:layout_constraintBottom_toBottomOf="@+id/et_filter_date_from"
             app:layout_constraintLeft_toRightOf="@id/et_filter_date_from"
             app:layout_constraintTop_toTopOf="@+id/et_filter_date_from" />
@@ -88,7 +88,7 @@
             android:id="@+id/tv_filter_option"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="옵션"
+            android:text="@string/tv_filter_option"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_filter_date_from" />
 
@@ -102,7 +102,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="기본 옵션"
+            android:text="@string/tv_filter_option_standard"
             app:layout_constraintBottom_toBottomOf="@+id/cb_filter_standard"
             app:layout_constraintLeft_toRightOf="@id/cb_filter_standard"
             app:layout_constraintTop_toTopOf="@+id/cb_filter_standard" />
@@ -118,7 +118,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="동일 성별"
+            android:text="@string/tv_filter_option_gender"
             app:layout_constraintBottom_toBottomOf="@+id/cb_filter_gender"
             app:layout_constraintLeft_toRightOf="@id/cb_filter_gender"
             app:layout_constraintTop_toTopOf="@+id/cb_filter_gender" />
@@ -133,7 +133,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="반려동물 허용"
+            android:text="@string/tv_filter_option_pet"
             app:layout_constraintBottom_toBottomOf="@+id/cb_filter_pet"
             app:layout_constraintLeft_toRightOf="@id/cb_filter_pet"
             app:layout_constraintTop_toTopOf="@+id/cb_filter_pet" />
@@ -148,7 +148,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="실내흡연 허용"
+            android:text="@string/tv_filter_option_smoking"
             app:layout_constraintBottom_toBottomOf="@+id/cb_filter_smoking"
             app:layout_constraintLeft_toRightOf="@id/cb_filter_smoking"
             app:layout_constraintTop_toTopOf="@+id/cb_filter_smoking" />
@@ -157,7 +157,7 @@
             android:id="@+id/bt_filter_apply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="적용"
+            android:text="@string/bt_filter_apply"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cb_filter_smoking" />
