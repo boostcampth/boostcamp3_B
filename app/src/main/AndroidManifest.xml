@@ -38,10 +38,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.swsnack.catchhouse.view.activities.WriteActivity"/>
         <activity
-            android:name="com.swsnack.catchhouse.view.activities.WriteActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
+            android:name=".view.activities.FilterPopUpActivity"
+            android:theme="@style/popupTheme" android:screenOrientation="unspecified"></activity>
     </application>
 
 </manifest>
