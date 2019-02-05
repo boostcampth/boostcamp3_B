@@ -35,10 +35,8 @@
 
             <ImageView
                 android:id="@+id/iv_sign_up_profile"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                style="@style/iv.round"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/circular_image_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

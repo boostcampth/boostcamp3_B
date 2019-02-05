@@ -1,4 +1,5 @@
 <resources>
+    /*Sign Fragment*/
     <string name="app_name">CatchHouse</string>
     <string name="bottom_nav_home">home</string>
     <string name="bottom_nav_map">map</string>
@@ -36,9 +37,35 @@
     <string name="tv_home_search">내놓은 방 검색</string>
     <string name="tv_home_post">우리집 내놓기</string>
 
+    /*fragment_my_page*/
+    <string name="my_page_sell_room">판매중인 글 보기</string>
+    <string name="my_page_change_member_info">회원 정보 변경</string>
+    <string name="my_page_sign_out">로그 아웃</string>
+    <string name="my_page_delete_user">회원 탈퇴</string>
+    <string name="my_page_gender">(성별)</string>
+    <string name="my_page_change_nick_name">닉네임 변경</string>
+    <string name="my_page_change_password">비밀번호 변경</string>
+    <string name="my_page_change_profile">프로필 이미지 변경</string>
+    <string name="my_page_not_singed">로그인 후 이용 가능합니다.</string>
+    <string name="dialog_input_change_nick_name">변경할 닉네임을 입력하세요</string>
+    <string name="cancel">취소</string>
+    <string name="change">변경하기</string>
+    <string name="dialog_change_password_title">비밀번호 변경</string>
+    <string name="dialog_input_ex_password">이전 비밀번호를 입력하세요</string>
+    <string name="dialog_new_password">새로운 비밀번호를 입력하세요</string>
+    <string name="dialog_new_password_again">새로운 비밀번호를 다시 입력하세요</string>
+    <string name="snack_same_nick_name">같은 닉네임을 입력했습니다.</string>
+    <string name="snack_duplicate_nick_name">이미 존재하는 닉네임 입니다.</string>
+    <string name="snack_database_exception">정보 조회중 오류가 발생했습니다.</string>
+    <string name="snack_wrong_password">비밀번호를 확인해주세요</string>
+    <string name="snack_re_sign_in">비밀번호가 변경되었습니다. 다시 로그인 해주세요</string>
+    <string name="snack_update_profile_success">프로필 사진이 변경되었습니다.</string>
+    <string name="snack_change_nick_name_success">닉네임이 변경되었습니다.</string>
+
     /* activity_write */
     <string name="tv_write_gallery">사진 선택</string>
     <string name="tb_write">매물 올리기</string>
+
     <string name="tv_write_value">가격</string>
     <string name="et_write_value_hint">1박 가격을 적어주세요.</string>
     <string name="tv_write_from_to">기간</string>
