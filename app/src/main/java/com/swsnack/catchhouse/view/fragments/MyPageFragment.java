@@ -21,7 +21,8 @@ import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import static com.swsnack.catchhouse.constants.Constants.GALLERY;
-import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.FACEBOOK;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
 
@@ -58,10 +59,11 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getViewModel().getUser();
 
-        // FIXME 사용자가 여러 방법으로 인증을 완료한 상태라면 Email로그인한 정보가 0번째에 들어 있지 않을 수도 있습니다.
-        // for문으로 provider list를 검삭해서 email 정보가 있는경우에 작업을 처리하도록 해주세요
-        if (!FirebaseAuth.getInstance().getCurrentUser().getProviders().get(0).equals(E_MAIL)) {
-            getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
+        for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
+            if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
+                getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
+                break;
+            }
         }
 
         getBinding().tvMyPageChangeNickName.setOnClickListener(v -> {
