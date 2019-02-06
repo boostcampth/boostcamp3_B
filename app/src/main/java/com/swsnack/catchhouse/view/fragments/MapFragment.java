@@ -44,7 +44,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     }
 
     @Override
-    protected Class setViewModel() {
+    protected Class<SearchViewModel> getViewModelClass() {
         return SearchViewModel.class;
     }
 

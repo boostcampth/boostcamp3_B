@@ -42,7 +42,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     }
 
     @Override
-    protected Class<UserViewModel> setViewModel() {
+    protected Class<UserViewModel> getViewModelClass() {
         return UserViewModel.class;
     }
 
