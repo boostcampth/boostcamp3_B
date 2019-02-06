@@ -2,144 +2,133 @@ package com.swsnack.catchhouse.viewmodel.roomsviewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.view.View;
+import android.text.TextUtils;
+import android.util.Log;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.skt.Tmap.TMapPOIItem;
-import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
-import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
-import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
+import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import java.util.Locale;
 
 public class RoomsViewModel extends ReactiveViewModel {
+
+    private static final String TAG = RoomsViewModel.class.getSimpleName();
+
     private Application mAppContext;
-    private RoomsRepository mRepository;
     private ViewModelListener mListener;
-    public List<byte[]> mBitmapBytesArray;
+    public final MutableLiveData<List<Uri>> mImageList = new MutableLiveData<>();
+    public final MutableLiveData<String> mPrice = new MutableLiveData<>();
+    public final MutableLiveData<String> mFromDate = new MutableLiveData<>();
+    public final MutableLiveData<String> mToDate = new MutableLiveData<>();
+    public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionStandard = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionPet = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionGender = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionSmoking = new MutableLiveData<>();
+    // public final MutableLiveData<Address> mAddress = new MutableLiveData<>();
+    public final MutableLiveData<String> mTitle = new MutableLiveData<>();
+    public final MutableLiveData<String> mContent = new MutableLiveData<>();
 
-    public final MutableLiveData<List<Uri>> mUriList = new MutableLiveData<>();
-    public final MutableLiveData<String> mRoomValue = new MutableLiveData<>();
-    public final MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
-    public final MutableLiveData<String> mKeyword = new MutableLiveData<>();
-    public final MutableLiveData<String> mAddress = new MutableLiveData<>();
-
-
-    RoomsViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
-        super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()));
+    RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
+        super(dataManager);
         mAppContext = application;
-        mRepository = repository;
         mListener = listener;
-        mBitmapBytesArray = new ArrayList<>();
+
+        init();
     }
 
     public void onClickDeleteButton(int position) {
-        List<Uri> data = mUriList.getValue();
-        data.remove(position);
-        mUriList.postValue(data);
+        List<Uri> data = mImageList.getValue();
+
+        if (data != null) {
+            data.remove(position);
+            mImageList.setValue(data);
+        }
     }
 
-    public void gallerySelectionResult(List<Uri> uriList) {
-        List<Uri> data;
+    public void onSelectFromDate(int year, int month, int day) {
+        mFromDate.setValue(year + "-" +
+                DateCalculator.refineDate(month) + "-" +
+                DateCalculator.refineDate(day)
+        );
+        onChangePriceAndInterval();
+    }
 
-        if (mUriList.getValue() == null) {
-            data = uriList;
-        } else {
-            data = mUriList.getValue();
-            for (Uri uri : uriList) {
-                if (!data.contains(uri)) {
-                    data.add(uri);
-                }
+    public void onSelectToDate(int year, int month, int day) {
+        mToDate.setValue(year + "-" +
+                DateCalculator.refineDate(month) + "-" +
+                DateCalculator.refineDate(day)
+        );
+        onChangePriceAndInterval();
+    }
+
+    public void onChangePriceAndInterval() {
+        int diffDay;
+
+        if (isPriceAndDateValid()) {
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                Date fromDate = formatter.parse(mFromDate.getValue());
+                Date toDate = formatter.parse(mToDate.getValue());
+                diffDay = DateCalculator.getDiffDate(fromDate, toDate);
+
+                DecimalFormat myFormatter = new DecimalFormat("###,###");
+                mExpectedPrice.setValue(
+                        myFormatter.format(Integer.parseInt(mPrice.getValue()) * diffDay) +
+                                "원" + "  (" + diffDay + "박)"
+                );
+            } catch (Exception e) {
+                Log.e(TAG, "parse error", e);
+            }
+        }
+    }
+
+    public void onSelectImage(List<Uri> uriList) {
+        List<Uri> currentList = mImageList.getValue();
+
+        mListener.isWorking();
+        for (Uri uri : uriList) {
+            if (currentList != null && !currentList.contains(uri)) {
+                currentList.add(uri);
             }
         }
 
-        for (int i = data.size(); i > 9; i--) {
-            data.remove(i - 1);
-        }
-
-        getByteListFromUri(data);
-        mUriList.postValue(data);
+        mImageList.setValue(currentList);
     }
 
-    public void getAddressList(View v) {
-        searchAddress();
+    public void onSearchAddress() {
+        return;
+    }
+    private void init() {
+        mPrice.setValue("");
+        mFromDate.setValue(mAppContext.getString(R.string.tv_write_date));
+        mToDate.setValue(mAppContext.getString(R.string.tv_write_date));
+        mExpectedPrice.setValue(mAppContext.getString(R.string.tv_write_expected_value_default));
+        mOptionStandard.setValue(false);
+        mOptionPet.setValue(false);
+        mOptionGender.setValue(false);
+        mOptionSmoking.setValue(false);
+        mTitle.setValue("");
+        mContent.setValue("");
+
+        mImageList.setValue(new ArrayList<>());
     }
 
-    public void setAddress(int position) {
-        mAddress.setValue(mAddressList.getValue().get(position).getName());
-        mKeyword.setValue("");
-        mAddressList.setValue(null);
-    }
+    private boolean isPriceAndDateValid() {
+        String defaultDate = mAppContext.getString(R.string.tv_write_date);
 
-    private void getByteListFromUri(List<Uri> uris) {
-        mListener.isWorking();
-
-        getCompositeDisposable().add(
-                Observable.fromIterable(uris)
-                        .map(uri -> {
-                                    Bitmap bitmap = Glide
-                                            .with(mAppContext)
-                                            .asBitmap()
-                                            .apply(new RequestOptions().override(340, 324))
-                                            .load(uri)
-                                            .submit()
-                                            .get();
-                                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
-
-                                    return outputStream.toByteArray();
-                                }
-                        )
-                        .collect(() ->
-                                new ArrayList<byte[]>(), (bytes, bt) -> bytes.add(bt)
-                        )
-                        .subscribeOn(Schedulers.newThread())
-                        .subscribe(bitmapBytes -> {
-                                    mBitmapBytesArray = bitmapBytes;
-                                    mListener.onSuccess("success__" + Integer.toString(mBitmapBytesArray.size()));
-                                }
-                                , error -> mListener.onError(error)
-                        )
+        return (!TextUtils.equals(mFromDate.getValue(), defaultDate) &&
+                !TextUtils.equals(mToDate.getValue(), defaultDate) &&
+                !TextUtils.isEmpty(mPrice.getValue())
         );
-    }
-
-    private void searchAddress() {
-        String keyword;
-
-        mListener.isWorking();
-        keyword = mKeyword.getValue();
-        try {
-            getCompositeDisposable().add(mRepository.getPOIFromRemote(keyword)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(tMapPOIItems -> {
-                                List<Address> tempList = new ArrayList<>();
-                                for (int i = 0; i < tMapPOIItems.size(); i++) {
-                                    TMapPOIItem item = tMapPOIItems.get(i);
-                                    tempList.add(new Address(item.name, item.getPOIAddress().replace("null", ""), item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()));
-                                }
-                                mAddressList.postValue(tempList);
-                                mListener.isFinished();
-                            }, throwable -> {
-                                mListener.isFinished();
-                                mListener.onError(throwable);
-                            }
-                    ));
-        } catch (Exception e) {
-            mListener.onError(e);
-        }
     }
 }

@@ -30,19 +30,23 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical"
+                tools:ignore="AutoFill">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/vp_write"
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:layout_margin="32dp"
-                    app:viewpager_item="@{handler.mUriList}" />
+                    android:layout_height="320dp"
+                    android:layout_margin="8dp"
+                    app:adapter="@{handler.mImageList}" />
 
                 <TextView
                     android:id="@+id/tv_write_gallery"
@@ -61,7 +65,7 @@
                     style="@style/Basic_EditText"
                     android:hint="@string/et_write_value_hint"
                     android:inputType="number"
-                    android:text="@={handler.mRoomValue}"
+                    android:text="@={handler.mPrice}"
                     android:textAlignment="textStart" />
 
                 <TextView
@@ -78,7 +82,7 @@
                     <TextView
                         android:id="@+id/tv_write_date_from"
                         style="@style/TextStyle.Regular.Small"
-                        android:text="@string/tv_write_date"
+                        android:text="@{handler.mFromDate}"
                         android:textColor="@color/colorBottomNavDefault" />
 
                     <TextView
@@ -89,7 +93,7 @@
                     <TextView
                         android:id="@+id/tv_write_date_to"
                         style="@style/TextStyle.Regular.Small"
-                        android:text="@string/tv_write_date"
+                        android:text="@{handler.mToDate}"
                         android:textColor="@color/colorBottomNavDefault" />
                 </LinearLayout>
 
@@ -100,26 +104,30 @@
                 <TextView
                     android:id="@+id/tv_write_expected_value"
                     style="@style/TextStyle.Regular.Title"
-                    android:text="@string/tv_write_expected_value_default" />
+                    android:text="@{handler.mExpectedPrice}" />
 
                 <CheckBox
                     android:id="@+id/cb_write_standard"
                     style="@style/TextStyle.Regular.Small"
+                    android:checked="@={handler.mOptionStandard}"
                     android:text="@string/cb_write_standard" />
 
                 <CheckBox
                     android:id="@+id/cb_write_gender"
                     style="@style/TextStyle.Regular.Small"
+                    android:checked="@={handler.mOptionGender}"
                     android:text="@string/cb_write_gender" />
 
                 <CheckBox
                     android:id="@+id/cb_write_pet"
                     style="@style/TextStyle.Regular.Small"
+                    android:checked="@={handler.mOptionPet}"
                     android:text="@string/cb_write_pet" />
 
                 <CheckBox
                     android:id="@+id/cb_write_smoking"
                     style="@style/TextStyle.Regular.Small"
+                    android:checked="@={handler.mOptionSmoking}"
                     android:text="@string/cb_write_smoking" />
 
                 <TextView
@@ -139,10 +147,8 @@
                     <EditText
                         android:id="@+id/et_write_address"
                         style="@style/Basic_EditText"
-                        android:focusable="false"
                         android:hint="@string/et_write_address_hint"
                         android:inputType="text"
-                        android:text="@{handler.mAddress}"
                         android:textAlignment="textStart" />
                 </LinearLayout>
 
@@ -173,6 +179,7 @@
                     android:id="@+id/et_write_title"
                     style="@style/Basic_EditText"
                     android:inputType="text"
+                    android:text="@={handler.mTitle}"
                     android:textAlignment="textStart" />
 
                 <TextView
@@ -189,6 +196,7 @@
                     android:gravity="top"
                     android:inputType="textMultiLine"
                     android:scrollHorizontally="false"
+                    android:text="@={handler.mContent}"
                     android:textSize="16sp" />
 
                 <LinearLayout

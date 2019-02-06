@@ -69,7 +69,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.GALLERY) {
             if (resultCode == RESULT_OK) {
-                getViewModel().setProfile(data.getData());
+                getViewModel().getProfileFromUri(data.getData());
                 return;
             }
             Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);

@@ -8,11 +8,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
+import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
+import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
+import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.adapters.ImageSlideAdapter;
 import com.swsnack.catchhouse.view.fragments.AddressSearchFragment;
@@ -20,15 +22,8 @@ import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements ViewModelListener {
@@ -36,7 +31,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     private static final String TAG = WriteActivity.class.getSimpleName();
     final int PICK_IMAGE_MULTIPLE = 1;
     private RoomsViewModel mViewModel;
-    private Calendar currentDate;
 
     @Override
     protected int getLayout() {
@@ -68,35 +62,42 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        /* create & bind view model */
         createViewModels();
         mViewModel = ViewModelProviders.of(this).get(RoomsViewModel.class);
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
 
-        /* set image slider */
-        getBinding().vpWrite.setAdapter(new ImageSlideAdapter(mViewModel));
+        getBinding().vpWrite.setAdapter(new ImageSlideAdapter(mViewModel, mViewModel.mImageList.getValue()));
 
-        /* set back button */
         getBinding().tbWrite.setNavigationIcon(R.drawable.action_back);
-        getBinding().tbWrite.setNavigationOnClickListener(__ -> finish());
+        getBinding().tbWrite.setNavigationOnClickListener(__ ->
+                finish()
+        );
 
-        /* set gallery open button */
         getBinding().tvWriteGallery.setOnClickListener(__ -> {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select Picture"),
-                    PICK_IMAGE_MULTIPLE);
-        });
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
+                }
+        );
 
-        /* set date picker */
-        currentDate = new GregorianCalendar(Locale.KOREA);
-        getBinding().tvWriteDateFrom.setOnClickListener(v -> createDatePicker((TextView) v));
-        getBinding().tvWriteDateTo.setOnClickListener(v -> createDatePicker((TextView) v));
-        mViewModel.mRoomValue.observe(this, __ ->
-                getBinding().tvWriteExpectedValue.setText(calExpectedValue()));
+        getBinding().tvWriteDateFrom.setOnClickListener(__ ->
+                createDatePicker((___, y, m, d) ->
+                        mViewModel.onSelectFromDate(y, m, d)
+                )
+        );
+
+        getBinding().tvWriteDateTo.setOnClickListener(__ ->
+                createDatePicker((___, y, m, d) ->
+                        mViewModel.onSelectToDate(y, m, d)
+                )
+        );
+
+        mViewModel.mPrice.observe(this, __ ->
+                mViewModel.onChangePriceAndInterval()
+        );
 
         getBinding().etWriteAddress.setOnClickListener(__ ->
                 new AddressSearchFragment().show(getSupportFragmentManager(), "address selection")
@@ -104,15 +105,19 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         List<Uri> uriList = new ArrayList<>();
 
-        if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK
-                && null != data) {
+        if (requestCode == PICK_IMAGE_MULTIPLE && resultCode == RESULT_OK && null != data) {
             if (data.getData() != null) {
                 uriList.add(data.getData());
-            } else {
+            } else if (data.getClipData() != null) {
                 ClipData clipData = data.getClipData();
 
                 for (int i = 0; i < clipData.getItemCount(); i++) {
@@ -120,65 +125,24 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
                 }
             }
         }
-        mViewModel.gallerySelectionResult(uriList);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
+        mViewModel.onSelectImage(uriList);
     }
 
     private void createViewModels() {
-        createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(),
-                RoomsRepository.getInstance(), this));
+        createViewModel(
+                RoomsViewModel.class,
+                new RoomsViewModelFactory(getApplication(),
+                        AppDataManager.getInstance(AppAPIManager.getInstance(),
+                                AppUserDataManager.getInstance(getApplication())), this));
     }
 
-    private void createDatePicker(TextView view) {
-        DatePickerDialog dialog = new DatePickerDialog(this, (__, y, m, d) -> {
-            view.setText(y + "-" + (m + 1) + "-" + d);
-            getBinding().tvWriteExpectedValue.setText(calExpectedValue());
-        },
-                currentDate.get(Calendar.YEAR),
-                currentDate.get(Calendar.MONTH),
-                currentDate.get(Calendar.DAY_OF_MONTH));
+    private void createDatePicker(DatePickerDialog.OnDateSetListener listener) {
+        DatePickerDialog dialog = new DatePickerDialog(this, listener,
+                DateCalculator.getYear(),
+                DateCalculator.getMonth(),
+                DateCalculator.getDay()
+        );
+
         dialog.show();
-    }
-
-    private int calcDiffDate(String from, String to) {
-        int diffDay = -1;
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date beginDate = formatter.parse(from);
-            Date endDate = formatter.parse(to);
-
-            long diff = endDate.getTime() - beginDate.getTime();
-            diffDay = (int) (diff / (24 * 60 * 60 * 1000));
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return diffDay;
-    }
-
-    private String calExpectedValue() {
-        String from = (String) getBinding().tvWriteDateFrom.getText();
-        String to = (String) getBinding().tvWriteDateTo.getText();
-        String defaultStr = getString(R.string.tv_write_date);
-        String value = getBinding().etWriteValue.getText().toString();
-
-        if (defaultStr.equals(from) | defaultStr.equals(to)
-                | value.equals("")) {
-            return "";
-        } else {
-            int oneDayValue = Integer.parseInt(getBinding().etWriteValue.getText().toString());
-            int diffDay = calcDiffDate(from, to);
-
-            if (diffDay < 0) {
-                return "";
-            }
-            DecimalFormat myFormatter = new DecimalFormat("###,###");
-            return myFormatter.format(oneDayValue * diffDay) + "원" + "  (" + diffDay + "박)";
-        }
     }
 }

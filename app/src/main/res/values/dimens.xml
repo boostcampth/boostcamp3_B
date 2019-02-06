@@ -4,13 +4,18 @@
     <dimen name="sign_in_et_width">248dp</dimen>
     <dimen name="sign_in_et_height">40dp</dimen>
     <dimen name="sign_in_et_text_size">20sp</dimen>
-
     <dimen name="write_tv_width">80dp</dimen>
     <dimen name="write_tv_height">32dp</dimen>
     <dimen name="write_tv_text_size">12sp</dimen>
-
     <dimen name="map_name_size">15sp</dimen>
     <dimen name="map_address_size">10sp</dimen>
+    <dimen name="margin_default">8dp</dimen>
+
+    <dimen name="header">96sp</dimen>
+    <dimen name="sub_header">48sp</dimen>
+    <dimen name="title">34sp</dimen>
+    <dimen name="body">28dp</dimen>
+    <dimen name="sub_title">16sp</dimen>
 
     <dimen name="text_size_H5">24sp</dimen>
     <dimen name="text_size_H6">20sp</dimen>

@@ -2,6 +2,7 @@ package com.swsnack.catchhouse.view.adapters;
 
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,34 +16,23 @@ import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 
 import java.util.List;
 
-import io.reactivex.annotations.NonNull;
-
 public class ImageSlideAdapter extends PagerAdapter {
 
-    private List<Uri> mUri;
-    private LayoutInflater inflater;
-    private ItemViewpagerBinding mBinding;
+    private List<Uri> mImageUriList;
     private RoomsViewModel mViewModel;
 
-    public ImageSlideAdapter(RoomsViewModel viewModel) {
+    public ImageSlideAdapter(RoomsViewModel viewModel, List<Uri> uriList) {
         mViewModel = viewModel;
+        mImageUriList = uriList;
     }
 
-    public void setUri(List<Uri> uri) {
-        mUri = uri;
-    }
-
-    public List<Uri> getUri() {
-        return mUri;
+    public void setItem(List<Uri> item) {
+        mImageUriList = item;
     }
 
     @Override
     public int getCount() {
-        if (mUri == null) {
-            return 0;
-        } else {
-            return mUri.size();
-        }
+        return mImageUriList.size();
     }
 
     @Override
@@ -53,38 +43,43 @@ public class ImageSlideAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        inflater = LayoutInflater.from(container.getContext());
-        mBinding = DataBindingUtil.bind(inflater.inflate(R.layout.item_viewpager, container, false));
+        LayoutInflater inflater = LayoutInflater.from(container.getContext());
+        ItemViewpagerBinding binding =
+                DataBindingUtil.bind(inflater.inflate(R.layout.item_viewpager, container, false));
 
-        mBinding.ivVpDelete.setOnClickListener(__ ->
-                mViewModel.onClickDeleteButton(position)
-        );
+        if(binding != null) {
+            binding.ivVpDelete.setOnClickListener(__ ->
+                    mViewModel.onClickDeleteButton(position)
+            );
 
-        try {
-            Glide.with(container.getContext())
-                    .load(mUri.get(position))
-                    .apply(new RequestOptions().override(340, 324))
-                    .into(mBinding.ivVpImage);
-            String text = (position + 1) + "/" + getCount() + "";
-            mBinding.tvVpNumber.setText(text);
-            container.addView(mBinding.getRoot());
+            try {
+                Glide.with(container.getContext())
+                        .load(mImageUriList.get(position))
+                        .apply(new RequestOptions().override(340, 324))
+                        .into(binding.ivVpImage);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+                String text = (position + 1) + "/" + getCount() + "";
+                binding.tvVpNumber.setText(text);
+
+                container.addView(binding.getRoot());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return binding.getRoot();
         }
-
-        return mBinding.getRoot();
+        return container;
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         View view = (View) object;
         container.removeView(view);
         container.invalidate();
     }
 
     @Override
-    public int getItemPosition(@android.support.annotation.NonNull Object object) {
+    public int getItemPosition(@NonNull Object object) {
         super.getItemPosition(object);
         return POSITION_NONE;
     }

@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.adapters.bindingadapters;
 
 import android.databinding.BindingAdapter;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
@@ -9,27 +10,27 @@ import com.swsnack.catchhouse.adapters.AddressBindingAdapter;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.view.adapters.ImageSlideAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RoomsDataBinding {
 
-    @BindingAdapter("viewpager_item")
-    public static void setViewpagerItem(ViewPager viewPager, List<Uri> items) {
-        ImageSlideAdapter adapter;
+    @BindingAdapter("adapter")
+    public static void setItems(ViewPager viewPager, List<Uri> items) {
+        ImageSlideAdapter adapter = (ImageSlideAdapter) viewPager.getAdapter();
 
-        if (items != null) {
-            adapter = (ImageSlideAdapter) viewPager.getAdapter();
-            adapter.setUri(items);
+        if (adapter != null && items != null) {
+            adapter.setItem(items);
             adapter.notifyDataSetChanged();
         }
     }
 
-    @BindingAdapter("recycler_item")
+    @BindingAdapter("adapter")
     public static void setRecyclerItem(RecyclerView recyclerview, List<Address> items) {
-        AddressBindingAdapter adapter;
+        AddressBindingAdapter adapter = (AddressBindingAdapter) recyclerview.getAdapter();
 
-        if (items != null) {
-            adapter = (AddressBindingAdapter) recyclerview.getAdapter();
+        if (adapter != null && items != null) {
             adapter.updateItems(items);
         }
     }

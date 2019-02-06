@@ -52,7 +52,6 @@ public class AddressSearchFragment extends DialogFragment {
 
         ((AddressBindingAdapter) mBinding.rvAddress.getAdapter())
                 .setOnItemClickListener((__, i) -> {
-                    mViewModel.setAddress(i);
                     this.dismiss();
                 });
     }
