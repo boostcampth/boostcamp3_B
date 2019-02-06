@@ -90,6 +90,7 @@ public class AppDataManager implements DataManager {
             onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;
         }
+        // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
         getUserForSingle(uuid, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

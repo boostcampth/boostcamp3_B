@@ -13,8 +13,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -55,6 +53,8 @@ public class AppUserDataManager implements UserDataManager {
         return INSTANCE;
     }
 
+    // FIXME 생성자에서 Application을 가져올 필요가 없습니다.
+    // Application클래스를 생성하고 singleton으로 만들고 해당 Context를 사용하면 인자로 받을 필요 없습니다.
     private AppUserDataManager(Application application) {
         db = FirebaseDatabase.getInstance().getReference().child(DB_USER);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_PROFILE);
@@ -74,6 +74,9 @@ public class AppUserDataManager implements UserDataManager {
     @Override
     public void setProfile(@NonNull String uuid, @NonNull byte[] profile, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         StorageReference reference = fs.child(uuid);
+        // FIXME 근본적인 Profile 이미지 set하는 로직을 대대적으로 수정해야할것 같습니다.
+        // 이미지데이터를 byte 스트림으로 계속 넘겨주는것이 아니라 이미지의 uri만 넘겨주어 실제 업로드할때는 이 uri를 가지고 업로드 하도록 해주세요
+        // reference.putFile(profileUri) 와 같은 방식으로 사용할 수 있습니다.
         UploadTask uploadTask = reference.putBytes(profile);
         uploadTask.continueWithTask(task -> {
             if (!task.isSuccessful()) {

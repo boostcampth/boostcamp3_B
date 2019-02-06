@@ -57,6 +57,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         return R.layout.activity_bottom_nav;
     }
 
+    // FIXME 좋은 설계가 아닌것 같습니다. onError()에서 하는일은 Throwable case에 따라서 토스트 메세지를 호출하는것뿐이고 아래와 같은 문제가 있습니다.
+    // 1. 비슷한 코드가 복붙되어 간결하지 않은 코드
+    // 2. View에서 이미 ViewModel에서 일어날 에러에 대해서 알고 instanceof로 handling한다는것 자체가 독립적이지 않음
+    // 각 에러에 대한 별도의 처리는 자체적으로 하고 showErrorMessage(String message)와 같은 패턴으로 하는게 더 좋아보입니다.
     @Override
     public void onError(Throwable throwable) {
         unFreezeUI();
@@ -185,6 +189,8 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 .subscribe(id -> {
                     switch (id) {
                         case R.id.action_home:
+                            // FIXME FragmentManager로 fragment를 replace하는것보다는 ViewPager를 활용해서 index를 변경하는 패턴으로 수정해주세요
+                            // 이러한 방식으로 하는경우 버튼을 누를때마다 Fragment가 새로 만들어집니다.
                             /* handle here: replace fragment on home btn Clicked */
                             mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new HomeFragment()).commit();
                             break;

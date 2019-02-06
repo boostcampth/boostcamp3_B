@@ -51,6 +51,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
             startActivityForResult(intent, Constants.GALLERY);
         });
 
+        // FIXME getBinding().rgSignUpGender.setOnCheckedChangeListener를 사용해서 check된 id에 따라서 MALE, FEMALE을 설정해주는게 더 좋습니다.
         getBinding().rbSignUpMale.setOnCheckedChangeListener((__, isChecked) -> {
             if (isChecked) {
                 mViewModel.setGender(Constants.Gender.MALE);
@@ -72,6 +73,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
                 getViewModel().getProfileFromUri(data.getData());
                 return;
             }
+            // FIXME MyPageFragment::onActivityResult 와 같은 이유로 수정해주세요
             Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);
         }
     }

@@ -10,6 +10,7 @@ import java.util.List;
 
 public class RoomsDataBinding {
 
+    // FIXME 특정케이스에 대한 items 세팅 함수인데 items보다는 더 명확한 이름으로 수정해주세요
     @BindingAdapter("items")
     public static void setItems(ViewPager viewPager, List<Uri> items) {
         ImageSlideAdapter adapter;
