@@ -17,6 +17,8 @@ import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import static android.app.Activity.RESULT_OK;
+import static com.swsnack.catchhouse.constants.Constants.Gender.FEMALE;
+import static com.swsnack.catchhouse.constants.Constants.Gender.MALE;
 
 public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserViewModel> {
 
@@ -51,16 +53,14 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
             startActivityForResult(intent, Constants.GALLERY);
         });
 
-        // FIXME getBinding().rgSignUpGender.setOnCheckedChangeListener를 사용해서 check된 id에 따라서 MALE, FEMALE을 설정해주는게 더 좋습니다.
-        getBinding().rbSignUpMale.setOnCheckedChangeListener((__, isChecked) -> {
-            if (isChecked) {
-                mViewModel.setGender(Constants.Gender.MALE);
-            }
-        });
-
-        getBinding().rbSignUpFemale.setOnCheckedChangeListener((__, isChecked) -> {
-            if (isChecked) {
-                mViewModel.setGender(Constants.Gender.FEMALE);
+        getBinding().rgSignUpGender.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rb_sign_up_male:
+                    mViewModel.setGender(MALE);
+                    break;
+                case R.id.rb_sign_up_female:
+                    mViewModel.setGender(FEMALE);
+                    break;
             }
         });
     }
