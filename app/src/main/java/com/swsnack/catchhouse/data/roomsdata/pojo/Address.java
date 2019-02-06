@@ -6,6 +6,7 @@ public class Address {
     private double longitude;
     private double latitude;
 
+    // FIXME 이 생성자는 불필요합니다.
     public Address() {
         this.name = "";
         this.address = "";
@@ -24,6 +25,7 @@ public class Address {
         return name;
     }
 
+    // FIXME pojo클래스에서 setter가 필요한 경우는 없을것 같습니다. 이 클래스뿐만 아니라 다른 코드도 불필요한 setter는 모두 제거해주세요
     public void setName(String name) {
         this.name = name;
     }
