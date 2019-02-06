@@ -42,5 +42,5 @@ ext {
     facebookAuthVersion = '4.39.0'
     glideVersion = '4.8.0'
     glideTransformVersion = '4.0.0'
-
+    multidexVersion = '1.0.3'
 }

@@ -10,7 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -62,5 +62,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
     implementation "jp.wasabeef:glide-transformations:$rootProject.ext.glideTransformVersion"
+    //multidex
+    implementation "com.android.support:multidex:$rootProject.ext.multidexVersion"
     implementation files('libs/com.skt.Tmap_1.58.jar')
 }
