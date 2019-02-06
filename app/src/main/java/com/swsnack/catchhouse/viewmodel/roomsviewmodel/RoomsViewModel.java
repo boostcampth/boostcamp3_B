@@ -96,7 +96,8 @@ public class RoomsViewModel extends ReactiveViewModel {
                                     mBitmapBytesArray = bitmapBytes;
                                     mListener.onSuccess("success__" + Integer.toString(mBitmapBytesArray.size()));
                                 }
-                                , error -> mListener.onError(error)
+                                //FIXME onError 파라미터가 throwable -> string으로 변경되었습니다.
+                                , error -> mListener.onError("input error message")
                         )
         );
     }

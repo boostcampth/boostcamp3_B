@@ -30,7 +30,7 @@
     <string name="snack_error_occured">오류가 발생했습니다.</string>
     <string name="snack_invalid_user">아이디 비밀번호를 확인하세요</string>
     <string name="snack_short_password">비밀번호를 6자리 이상 입력해주세요</string>
-    <string name="snack_occured_error">에러가 발생했습니다.</string>
+    <string name="snack_try_again">에러가 발생했습니다. 잠시 후 다시 시도해주세요</string>
 
     /* fragment_home */
     <string name="home_title">Catch House</string>
@@ -55,10 +55,13 @@
     <string name="dialog_new_password">새로운 비밀번호를 입력하세요</string>
     <string name="dialog_new_password_again">새로운 비밀번호를 다시 입력하세요</string>
     <string name="snack_same_nick_name">같은 닉네임을 입력했습니다.</string>
+    <string name="snack_not_found_info">정보를 찾을 수 없습니다.</string>
     <string name="snack_duplicate_nick_name">이미 존재하는 닉네임 입니다.</string>
     <string name="snack_database_exception">정보 조회중 오류가 발생했습니다.</string>
     <string name="snack_wrong_password">비밀번호를 확인해주세요</string>
+    <string name="snack_error_update_password">패스워드 변경에 실패했습니다.</string>
     <string name="snack_re_sign_in">비밀번호가 변경되었습니다. 다시 로그인 해주세요</string>
+    <string name="snack_update_profile_failed">프로필 사진 변경에 실패했습니다.</string>
     <string name="snack_update_profile_success">프로필 사진이 변경되었습니다.</string>
     <string name="snack_change_nick_name_success">닉네임이 변경되었습니다.</string>
 

@@ -43,9 +43,9 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     }
 
     @Override
-    public void onError(Throwable throwable) {
+    public void onError(String errorMessage) {
         Log.d(TAG, "error");
-        Log.e(TAG, "error", throwable);
+//        Log.e(TAG, "error", throwable);
     }
 
     @Override

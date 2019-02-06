@@ -2,7 +2,7 @@ package com.swsnack.catchhouse.viewmodel;
 
 public interface ViewModelListener {
 
-    void onError(Throwable throwable);
+    void onError(String errorMessage);
 
     void onSuccess(String success);
 

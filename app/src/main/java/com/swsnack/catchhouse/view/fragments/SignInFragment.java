@@ -109,7 +109,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
 
             @Override
             public void onError(FacebookException error) {
-                Snackbar.make(getBinding().getRoot(), R.string.snack_occured_error, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(getBinding().getRoot(), R.string.snack_try_again, Snackbar.LENGTH_SHORT).show();
             }
         });
     }
