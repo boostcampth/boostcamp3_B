@@ -121,10 +121,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         if (requestCode == GALLERY) {
             if (resultCode == Activity.RESULT_OK) {
                 getViewModel().updateProfile(data.getData());
-                return;
             }
-            // FIXME 이미지 선택을 하려고 눌렀다가 뒤로가기로 종료했을때 아래 토스트가 발생하는데 맞지않는 상황에 메세지가 출력됩니다.
-            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT).show();
         }
     }
 }
