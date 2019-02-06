@@ -37,6 +37,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
 
     protected abstract int getLayout();
 
+    // FIXME setXXX는 통상적으로 void setXXX()와 같이 쓰입니다. 만약 return값이 있는 함수라면 Class<V> getViewModel()이 더 맞습니다. 사용되는 방식에 따라서 함수이름을 수정하거나 return값을 수정해주세요
     protected abstract Class<V> setViewModel();
 
     protected B getBinding() {

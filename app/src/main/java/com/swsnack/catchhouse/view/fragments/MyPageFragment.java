@@ -58,6 +58,8 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getViewModel().getUser();
 
+        // FIXME 사용자가 여러 방법으로 인증을 완료한 상태라면 Email로그인한 정보가 0번째에 들어 있지 않을 수도 있습니다.
+        // for문으로 provider list를 검삭해서 email 정보가 있는경우에 작업을 처리하도록 해주세요
         if (!FirebaseAuth.getInstance().getCurrentUser().getProviders().get(0).equals(E_MAIL)) {
             getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
         }
@@ -119,6 +121,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
                 getViewModel().updateProfile(data.getData());
                 return;
             }
+            // FIXME 이미지 선택을 하려고 눌렀다가 뒤로가기로 종료했을때 아래 토스트가 발생하는데 맞지않는 상황에 메세지가 출력됩니다.
             Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT).show();
         }
     }
