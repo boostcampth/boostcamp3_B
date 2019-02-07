@@ -107,7 +107,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
-                AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance(getApplication())),
+                AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()),
                 this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
         createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));

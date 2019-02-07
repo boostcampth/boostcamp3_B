@@ -31,11 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
-import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
-
-import java.io.IOException;
 
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
@@ -50,6 +47,7 @@ public class UserViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
+    private Uri mProfileUri;
     private MutableLiveData<String> mGender;
     public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<String> mEmail;
@@ -84,6 +82,7 @@ public class UserViewModel extends ReactiveViewModel {
 
     public void getProfileFromUri(Uri uri) {
         mListener.isWorking();
+        mProfileUri = uri;
         getDataManager()
                 .getProfile(uri, new RequestListener<Bitmap>() {
                     @Override
@@ -104,7 +103,7 @@ public class UserViewModel extends ReactiveViewModel {
     public void getUser() {
         mIsSigned.setValue(true);
         getDataManager()
-                .getUserForListening(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ValueEventListener() {
+                .getUserAndListeningForChanging(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User user = dataSnapshot.getValue(User.class);
@@ -142,7 +141,7 @@ public class UserViewModel extends ReactiveViewModel {
     public void signInWithFacebook(LoginResult loginResult, Uri uri) {
         mListener.isWorking();
         getDataManager()
-                .facebookUserProfile(loginResult.getAccessToken(),
+                .getUserInfoFromFacebook(loginResult.getAccessToken(),
                         (result, response) -> {
                             if (result == null) {
                                 mListener.onError(getStringFromResource(R.string.snack_not_found_info));
@@ -179,21 +178,11 @@ public class UserViewModel extends ReactiveViewModel {
         mListener.isWorking();
 
         User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
-        byte[] profileByteArray = null;
-        try {
-            if (mProfile.getValue() != null) {
-                profileByteArray = DataConverter.getByteArray(DataConverter.getScaledBitmap(mProfile.getValue()));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            mListener.onError(getStringFromResource(R.string.snack_try_again));
-            return;
-        }
 
         getDataManager()
                 .signUpAndSetUser(mPassword.getValue(),
                         user,
-                        profileByteArray,
+                        mProfileUri,
                         result -> mListener.onSuccess(SIGN_UP_SUCCESS),
                         error -> {
                             if (error instanceof FirebaseAuthUserCollisionException) {
@@ -218,7 +207,7 @@ public class UserViewModel extends ReactiveViewModel {
         mListener.isWorking();
 
         getDataManager()
-                .firebaseSignIn(mEmail.getValue(),
+                .signIn(mEmail.getValue(),
                         mPassword.getValue(),
                         authResult -> {
                             mListener.onSuccess(SIGN_IN_SUCCESS);
@@ -262,7 +251,7 @@ public class UserViewModel extends ReactiveViewModel {
 
     public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword) {
         getDataManager()
-                .firebaseUpdatePassword(oldPassword, newPassword,
+                .updatePassword(oldPassword, newPassword,
                         result -> mListener.onSuccess(UPDATE_PASSWORD_SUCCESS),
                         error -> mListener.onError(getStringFromResource(R.string.snack_error_update_password)));
     }

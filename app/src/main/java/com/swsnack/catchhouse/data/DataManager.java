@@ -1,5 +1,6 @@
 package com.swsnack.catchhouse.data;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -16,10 +17,16 @@ public interface DataManager extends APIManager, UserDataManager {
 
     UserDataManager getUserDataManager();
 
-    void signUpAndSetUser(@NonNull String password, @NonNull User user, @Nullable byte[] profile,
-                          @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+    void signUpAndSetUser(@NonNull String password,
+                          @NonNull User user,
+                          @Nullable Uri uri,
+                          @NonNull OnSuccessListener<Void> onSuccessListener,
+                          @NonNull OnFailureListener onFailureListener);
 
-    void signUpAndSetUser(@NonNull AuthCredential credential, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+    void signUpAndSetUser(@NonNull AuthCredential credential,
+                          @NonNull User user,
+                          @NonNull OnSuccessListener<Void> onSuccessListener,
+                          @NonNull OnFailureListener onFailureListener);
 
     void deleteUserAll(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 }
