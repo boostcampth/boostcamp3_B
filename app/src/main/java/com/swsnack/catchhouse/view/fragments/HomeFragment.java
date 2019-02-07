@@ -30,7 +30,6 @@ public class HomeFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-
         return mBinding.getRoot();
     }
 

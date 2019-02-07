@@ -50,6 +50,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         init();
         return getBinding().getRoot();
     }
@@ -77,7 +78,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         getBinding().ivSignInEmail.setOnClickListener(__ ->
                 mFragmentManager
                         .beginTransaction()
-                        .replace(R.id.fl_bottom_nav_container, new SignUpFragment())
+                        .replace(R.id.fl_sign_container, new SignUpFragment())
                         .addToBackStack(SignUpFragment.class.getName())
                         .commit());
     }

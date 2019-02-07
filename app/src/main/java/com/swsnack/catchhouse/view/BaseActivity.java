@@ -19,6 +19,7 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatA
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, getLayout());
+        mBinding.setLifecycleOwner(this);
     }
 
     protected void showSnackMessage(String message) {

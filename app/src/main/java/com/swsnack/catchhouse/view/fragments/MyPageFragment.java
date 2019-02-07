@@ -110,7 +110,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getBinding().tvMyPageSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+            mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
         });
 
     }
