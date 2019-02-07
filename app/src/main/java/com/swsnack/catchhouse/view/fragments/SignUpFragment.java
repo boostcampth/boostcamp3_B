@@ -71,10 +71,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         if (requestCode == Constants.GALLERY) {
             if (resultCode == RESULT_OK) {
                 getViewModel().getProfileFromUri(data.getData());
-                return;
             }
-            // FIXME MyPageFragment::onActivityResult 와 같은 이유로 수정해주세요
-            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);
         }
     }
 }
