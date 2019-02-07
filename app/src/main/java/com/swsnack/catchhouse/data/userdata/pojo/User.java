@@ -26,43 +26,28 @@ public class User {
         this.gender = gender;
     }
 
-    public String geteMail() {
+    public String getEMail() {
         return eMail;
-    }
-
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
     }
 
     public String getNickName() {
         return nickName;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
     public String getGender() {
         return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public String getProfile() {
         return profile;
     }
 
-    public void setProfile(String profile) {
-        this.profile = profile;
-    }
-
     public String getMyRoom() {
         return myRoom;
     }
 
-    public void setMyRoom(String myRoom) {
-        this.myRoom = myRoom;
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
+
 }

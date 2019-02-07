@@ -112,7 +112,7 @@ public class UserViewModel extends ReactiveViewModel {
                             return;
                         }
 
-                        mEmail.setValue(user.geteMail());
+                        mEmail.setValue(user.getEMail());
                         mNickName.setValue(user.getNickName());
                         mGender.setValue(user.getGender());
                         if (user.getProfile() != null) {

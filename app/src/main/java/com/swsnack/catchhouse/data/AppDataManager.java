@@ -60,7 +60,7 @@ public class AppDataManager implements DataManager {
 
     public void signUpAndSetUser(@NonNull String password, @NonNull User user, @Nullable byte[] profile,
                                  @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        firebaseSignUp(user.geteMail(), password, signUpSuccess -> {
+        firebaseSignUp(user.getEMail(), password, signUpSuccess -> {
             if (profile == null) {
                 setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
                 return;
