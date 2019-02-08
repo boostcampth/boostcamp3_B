@@ -1,6 +1,5 @@
 package com.swsnack.catchhouse.view.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -27,16 +26,13 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_chat_list, container, false);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+        super.onCreateView(inflater, container, savedInstanceState);
+        return getBinding().getRoot();
     }
 
     @Override

@@ -16,6 +16,7 @@ import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
+import com.swsnack.catchhouse.view.fragments.ChatListFragment;
 import com.swsnack.catchhouse.view.fragments.HomeFragment;
 import com.swsnack.catchhouse.view.fragments.MapFragment;
 import com.swsnack.catchhouse.view.fragments.MyPageFragment;
@@ -156,7 +157,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         list.add(new HomeFragment());
         //FIXME MapFragment에서 inflating 과정 중, NPE 발생합니다. 수정 부탁드려요
         list.add(new MapFragment());
-        list.add(new HomeFragment());
+        list.add(new ChatListFragment());
         list.add(new SignFragment());
 
         getBinding().vpBottomNav.setAdapter(viewPagerAdapter);
