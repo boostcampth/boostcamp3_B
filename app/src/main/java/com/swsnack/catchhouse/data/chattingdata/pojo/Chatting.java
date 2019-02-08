@@ -2,11 +2,12 @@ package com.swsnack.catchhouse.data.chattingdata.pojo;
 
 import java.util.Map;
 
-public class ChattingUser {
+public class Chatting {
 
     private Map<String, Boolean> users;
+    private Map<String, Message> message;
 
-    public ChattingUser(Map<String, Boolean> users) {
+    public Chatting(Map<String, Boolean> users) {
         this.users = users;
     }
 

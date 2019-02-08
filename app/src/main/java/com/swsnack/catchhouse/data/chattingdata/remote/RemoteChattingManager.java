@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
-import com.swsnack.catchhouse.data.chattingdata.pojo.ChattingUser;
+import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
 
 public class RemoteChattingManager implements ChattingManager {
@@ -20,7 +20,7 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void setChattingRoom(@NonNull ChattingUser chattingUser, @NonNull ValueEventListener valueEventListener) {
+    public void setChattingRoom(@NonNull Chatting chattingUser, @NonNull ValueEventListener valueEventListener) {
 
     }
 
