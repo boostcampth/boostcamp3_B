@@ -100,7 +100,10 @@
     <string name="tv_filter_option_pet">반려동물 허용</string>
     <string name="tv_filter_option_smoking">실내흡연 허용</string>
     <string name="bt_filter_apply">적용</string>
+    <string name="tv_chatting_list_nick_name">판매자</string>
+    <string name="tv_chatting_list_last_message">마지막 메세지</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    /* fragment_chatting_list*/
+
+
 </resources>

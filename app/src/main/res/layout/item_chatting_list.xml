@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="chattingViewModel"
+            type="com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel" />
+
+        <variable
+            name="userViewModel"
+            type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel" />
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:cardElevation="4dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_chatting_list_item_profile"
+                style="@style/iv.round"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_margin="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_chatting_list_item_nick_name"
+                style="@style/tv.body"
+                android:layout_marginStart="24dp"
+                android:text="@string/tv_chatting_list_nick_name"
+                app:layout_constraintStart_toEndOf="@+id/iv_chatting_list_item_profile"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_chatting_list_last_message"
+                style="@style/tv.title.sub"
+                android:layout_marginStart="0dp"
+                android:layout_marginBottom="8dp"
+                android:singleLine="true"
+                android:layout_width="0dp"
+                android:textAlignment="textStart"
+                android:text="@string/tv_chatting_list_last_message"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/tv_chatting_list_item_nick_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_chatting_list_item_nick_name"
+                app:layout_constraintEnd_toEndOf="@id/guideline" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.9" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+</layout>
