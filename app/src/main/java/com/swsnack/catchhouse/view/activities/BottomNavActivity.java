@@ -22,6 +22,8 @@ import com.swsnack.catchhouse.view.fragments.MyPageFragment;
 import com.swsnack.catchhouse.view.fragments.SignFragment;
 import com.swsnack.catchhouse.view.fragments.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
+import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
@@ -111,6 +113,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
         createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
+        createViewModel(ChattingViewModel.class, new ChattingViewModelFactory(this));
     }
 
 
