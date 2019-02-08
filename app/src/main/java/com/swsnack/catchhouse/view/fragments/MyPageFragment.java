@@ -21,7 +21,8 @@ import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import static com.swsnack.catchhouse.constants.Constants.GALLERY;
-import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.FACEBOOK;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
 
@@ -33,7 +34,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     }
 
     @Override
-    protected Class<UserViewModel> setViewModel() {
+    protected Class<UserViewModel> getViewModelClass() {
         return UserViewModel.class;
     }
 
@@ -58,10 +59,11 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getViewModel().getUser();
 
-        // FIXME 사용자가 여러 방법으로 인증을 완료한 상태라면 Email로그인한 정보가 0번째에 들어 있지 않을 수도 있습니다.
-        // for문으로 provider list를 검삭해서 email 정보가 있는경우에 작업을 처리하도록 해주세요
-        if (!FirebaseAuth.getInstance().getCurrentUser().getProviders().get(0).equals(E_MAIL)) {
-            getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
+        for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
+            if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
+                getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
+                break;
+            }
         }
 
         getBinding().tvMyPageChangeNickName.setOnClickListener(v -> {
@@ -108,7 +110,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getBinding().tvMyPageSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+            mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
         });
 
     }
@@ -119,10 +121,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         if (requestCode == GALLERY) {
             if (resultCode == Activity.RESULT_OK) {
                 getViewModel().updateProfile(data.getData());
-                return;
             }
-            // FIXME 이미지 선택을 하려고 눌렀다가 뒤로가기로 종료했을때 아래 토스트가 발생하는데 맞지않는 상황에 메세지가 출력됩니다.
-            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT).show();
         }
     }
 }

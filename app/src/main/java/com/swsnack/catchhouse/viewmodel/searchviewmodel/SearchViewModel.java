@@ -29,7 +29,7 @@ public class SearchViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mKeyword;
 
     SearchViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
-        super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance(application)));
+        super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()));
         mAppContext = application;
         mRepository = repository;
         mListener = listener;

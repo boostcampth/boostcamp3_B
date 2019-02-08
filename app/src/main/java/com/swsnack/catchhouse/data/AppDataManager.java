@@ -58,24 +58,35 @@ public class AppDataManager implements DataManager {
         return mUserDataManager;
     }
 
-    public void signUpAndSetUser(@NonNull String password, @NonNull User user, @Nullable byte[] profile,
-                                 @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        firebaseSignUp(user.geteMail(), password, signUpSuccess -> {
-            if (profile == null) {
+    public void signUpAndSetUser(@NonNull String password,
+                                 @NonNull User user,
+                                 @Nullable Uri uri,
+                                 @NonNull OnSuccessListener<Void> onSuccessListener,
+                                 @NonNull OnFailureListener onFailureListener) {
+        signUp(user.getEMail(), password, signUpSuccess -> {
+            if (uri == null) {
                 setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
                 return;
             }
-            setProfile(signUpSuccess.getUser().getUid(), profile, uri -> {
-                user.setProfile(uri.toString());
-                setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-            }, onFailureListener);
+            uploadProfile(signUpSuccess.getUser().getUid(),
+                    uri,
+                    storageUri -> {
+                        user.setProfile(storageUri.toString());
+                        setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
+                    }, onFailureListener);
         }, onFailureListener);
     }
 
     @Override
-    public void signUpAndSetUser(@NonNull AuthCredential authCredential, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        firebaseSignUp(authCredential, signUpSuccess ->
-                        setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener,
+    public void signUpAndSetUser(@NonNull AuthCredential authCredential,
+                                 @NonNull User user,
+                                 @NonNull OnSuccessListener<Void> onSuccessListener,
+                                 @NonNull OnFailureListener onFailureListener) {
+        signUp(authCredential,
+                signUpSuccess ->
+                        setUser(signUpSuccess.getUser().getUid(),
+                                user,
+                                onSuccessListener,
                                 error -> {
                                     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                                         FirebaseAuth.getInstance().getCurrentUser().delete();
@@ -91,7 +102,7 @@ public class AppDataManager implements DataManager {
             return;
         }
         // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
-        getUserForSingle(uuid, new ValueEventListener() {
+        getUserFromSingleSnapShot(uuid, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -103,7 +114,7 @@ public class AppDataManager implements DataManager {
                 deleteUserData(uuid,
                         deleteDBSuccess -> {
                             if (user.getProfile() == null) {
-                                firebaseDeleteUser(onSuccessListener,
+                                deleteUser(onSuccessListener,
                                         error -> {
                                             onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
                                             setUser(uuid, user, null, null);
@@ -112,14 +123,14 @@ public class AppDataManager implements DataManager {
                             }
                             deleteProfile(uuid,
                                     deleteProfileSuccess ->
-                                            firebaseDeleteUser(onSuccessListener,
+                                            deleteUser(onSuccessListener,
                                                     error -> {
                                                         onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
                                                         setUser(uuid, user, null, null);
                                                     })
                                     , error -> {
                                         if (error instanceof StorageException) {
-                                            firebaseDeleteUser(onSuccessListener, onFailureListener);
+                                            deleteUser(onSuccessListener, onFailureListener);
                                             return;
                                         }
                                         onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
@@ -141,43 +152,43 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void firebaseSignUp(@NonNull AuthCredential authCredential, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.firebaseSignUp(authCredential, onSuccessListener, onFailureListener);
+    public void signUp(@NonNull AuthCredential authCredential, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.signUp(authCredential, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void firebaseSignUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.firebaseSignUp(email, password, onSuccessListener, onFailureListener);
+    public void signUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.signUp(email, password, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void firebaseSignIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.firebaseSignIn(email, password, onSuccessListener, onFailureListener);
+    public void signIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.signIn(email, password, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void firebaseDeleteUser(@NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.firebaseDeleteUser(onSuccessListener, onFailureListener);
+    public void deleteUser(@NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.deleteUser(onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void firebaseUpdatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.firebaseUpdatePassword(oldPassword, newPassword, onSuccessListener, onFailureListener);
+    public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.updatePassword(oldPassword, newPassword, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void facebookUserProfile(@NonNull AccessToken accessToken, @NonNull GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
-        mApiManager.facebookUserProfile(accessToken, facebookUserDataCallback);
+    public void getUserInfoFromFacebook(@NonNull AccessToken accessToken, @NonNull GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
+        mApiManager.getUserInfoFromFacebook(accessToken, facebookUserDataCallback);
     }
 
     @Override
-    public void getUserForListening(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.getUserForListening(uuid, valueEventListener);
+    public void getUserAndListeningForChanging(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
+        mUserDataManager.getUserAndListeningForChanging(uuid, valueEventListener);
     }
 
     @Override
-    public void getUserForSingle(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.getUserForSingle(uuid, valueEventListener);
+    public void getUserFromSingleSnapShot(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
+        mUserDataManager.getUserFromSingleSnapShot(uuid, valueEventListener);
     }
 
     @Override
@@ -196,8 +207,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void queryUserBy(@NonNull String queryBy, @NonNull String findValue, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.queryUserBy(queryBy, findValue, valueEventListener);
+    public void findUserByQueryString(@NonNull String queryString, @NonNull String findValue, @NonNull ValueEventListener valueEventListener) {
+        mUserDataManager.findUserByQueryString(queryString, findValue, valueEventListener);
     }
 
     @Override
@@ -211,8 +222,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setProfile(@NonNull String uuid, @NonNull byte[] profile, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.setProfile(uuid, profile, onSuccessListener, onFailureListener);
+    public void uploadProfile(@NonNull String uuid, @NonNull Uri imageUri, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.uploadProfile(uuid, imageUri, onSuccessListener, onFailureListener);
     }
 
     @Override

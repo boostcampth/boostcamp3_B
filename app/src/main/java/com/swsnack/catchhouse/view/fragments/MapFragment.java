@@ -44,7 +44,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     }
 
     @Override
-    protected Class setViewModel() {
+    protected Class<SearchViewModel> getViewModelClass() {
         return SearchViewModel.class;
     }
 
@@ -68,7 +68,8 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         getBinding().rvMapAddress.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         AddressBindingAdapter adapter = new AddressBindingAdapter(getContext());
         getBinding().rvMapAddress.setAdapter(adapter);
-        adapter.updateItems(getViewModel().getAddressList().getValue());
+        //FIXME NPE 원인입니다. 수정 부탁드려요
+//        adapter.updateItems(getViewModel().getAddressList().getValue());
 
         /* Tmap 연동 */
         mTMapView = new TMapView(getContext());

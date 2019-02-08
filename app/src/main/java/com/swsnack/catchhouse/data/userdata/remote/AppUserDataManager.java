@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 import com.swsnack.catchhouse.util.DataConverter;
@@ -31,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.FAILED_LOAD_IMAGE;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_UP_EXCEPTION;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
@@ -46,46 +46,58 @@ public class AppUserDataManager implements UserDataManager {
 
     private static AppUserDataManager INSTANCE;
 
-    public static synchronized AppUserDataManager getInstance(Application application) {
+    public static synchronized AppUserDataManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new AppUserDataManager(application);
+            INSTANCE = new AppUserDataManager();
         }
         return INSTANCE;
     }
 
-    // FIXME 생성자에서 Application을 가져올 필요가 없습니다.
-    // Application클래스를 생성하고 singleton으로 만들고 해당 Context를 사용하면 인자로 받을 필요 없습니다.
-    private AppUserDataManager(Application application) {
+    private AppUserDataManager() {
         db = FirebaseDatabase.getInstance().getReference().child(DB_USER);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_PROFILE);
-        mAppContext = application;
+        mAppContext = AppApplication.getAppContext();
     }
 
     @Override
-    public void getUserForListening(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
+    public void getUserAndListeningForChanging(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
         db.child(uuid).addValueEventListener(valueEventListener);
     }
 
     @Override
-    public void getUserForSingle(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
+    public void getUserFromSingleSnapShot(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
         db.child(uuid).addListenerForSingleValueEvent(valueEventListener);
     }
 
     @Override
-    public void setProfile(@NonNull String uuid, @NonNull byte[] profile, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void uploadProfile(@NonNull String uuid, @NonNull Uri imageUri, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         StorageReference reference = fs.child(uuid);
-        // FIXME 근본적인 Profile 이미지 set하는 로직을 대대적으로 수정해야할것 같습니다.
-        // 이미지데이터를 byte 스트림으로 계속 넘겨주는것이 아니라 이미지의 uri만 넘겨주어 실제 업로드할때는 이 uri를 가지고 업로드 하도록 해주세요
-        // reference.putFile(profileUri) 와 같은 방식으로 사용할 수 있습니다.
-        UploadTask uploadTask = reference.putBytes(profile);
-        uploadTask.continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                onFailureListener.onFailure(new Exception(SIGN_UP_EXCEPTION));
+        getProfile(imageUri, new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                onFailureListener.onFailure(e);
+                return false;
             }
-            return reference.getDownloadUrl();
-        })
-                .addOnSuccessListener(onSuccessListener)
-                .addOnFailureListener(onFailureListener);
+
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                try {
+                    UploadTask uploadTask = reference.putBytes(DataConverter.getByteArray(DataConverter.getScaledBitmap(resource)));
+                    uploadTask.continueWithTask(task -> {
+                        if (!task.isSuccessful()) {
+                            onFailureListener.onFailure(new Exception(SIGN_UP_EXCEPTION));
+                        }
+                        return reference.getDownloadUrl();
+                    })
+                            .addOnSuccessListener(onSuccessListener)
+                            .addOnFailureListener(onFailureListener);
+                } catch (IOException e) {
+                    onFailureListener.onFailure(e);
+                }
+                return false;
+            }
+        });
+
     }
 
     @Override
@@ -95,7 +107,7 @@ public class AppUserDataManager implements UserDataManager {
 
     @Override
     public void updateProfile(@NonNull String uuid, @NonNull Uri uri, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        getUserForSingle(uuid, new ValueEventListener() {
+        getUserFromSingleSnapShot(uuid, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -103,30 +115,12 @@ public class AppUserDataManager implements UserDataManager {
                     onFailureListener.onFailure(new DatabaseException(NOT_SIGNED_USER));
                     return;
                 }
-                getProfile(uri, new RequestListener<Bitmap>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                        onFailureListener.onFailure(new GlideException(FAILED_LOAD_IMAGE));
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                        try {
-                            setProfile(uuid, DataConverter.getByteArray(DataConverter.getScaledBitmap(resource)),
-                                    uri -> {
-                                        user.setProfile(uri.toString());
-                                        setUser(uuid, user, onSuccessListener, onFailureListener);
-                                    },
-                                    onFailureListener);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            onFailureListener.onFailure(new GlideException(FAILED_LOAD_IMAGE));
-                            return false;
-                        }
-                        return true;
-                    }
-                });
+                uploadProfile(uuid,
+                        uri,
+                        uri -> {
+                            user.setProfile(uri.toString());
+                            setUser(uuid, user, onSuccessListener, onFailureListener);
+                        }, onFailureListener);
             }
 
             @Override
@@ -166,8 +160,8 @@ public class AppUserDataManager implements UserDataManager {
     }
 
     @Override
-    public void queryUserBy(@NonNull String queryBy, @NonNull String findValue, @NonNull ValueEventListener valueEventListener) {
-        db.orderByChild(queryBy)
+    public void findUserByQueryString(@NonNull String queryString, @NonNull String findValue, @NonNull ValueEventListener valueEventListener) {
+        db.orderByChild(queryString)
                 .equalTo(findValue)
                 .addListenerForSingleValueEvent(valueEventListener);
     }
@@ -183,7 +177,7 @@ public class AppUserDataManager implements UserDataManager {
 
     @Override
     public void updateNickName(@NonNull String uuid, @NonNull String changeNickName, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        queryUserBy(NICK_NAME, changeNickName, new ValueEventListener() {
+        findUserByQueryString(NICK_NAME, changeNickName, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null) {
