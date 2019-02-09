@@ -47,6 +47,7 @@ public class RemoteChattingManager implements ChattingManager {
         }
 
         db.orderByChild(DB_USER + "/" + uuid)
+                .equalTo(true)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
