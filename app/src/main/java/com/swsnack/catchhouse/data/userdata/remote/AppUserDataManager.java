@@ -100,7 +100,7 @@ public class AppUserDataManager implements UserDataManager {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                onFailureListener.onFailure(databaseError.toException());
             }
         });
     }

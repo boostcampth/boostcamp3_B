@@ -66,18 +66,21 @@ public class AppDataManager implements DataManager {
                                  @Nullable Uri uri,
                                  @NonNull OnSuccessListener<Void> onSuccessListener,
                                  @NonNull OnFailureListener onFailureListener) {
-        signUp(user.getEMail(), password, signUpSuccess -> {
-            if (uri == null) {
-                setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-                return;
-            }
-            uploadProfile(signUpSuccess.getUser().getUid(),
-                    uri,
-                    storageUri -> {
-                        user.setProfile(storageUri.toString());
+
+        signUp(user.getEMail(), password,
+                signUpSuccess -> {
+                    if (uri == null) {
                         setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-                    }, onFailureListener);
-        }, onFailureListener);
+                        return;
+                    }
+                    uploadProfile(signUpSuccess.getUser().getUid(),
+                            uri,
+                            storageUri -> {
+                                user.setProfile(storageUri.toString());
+                                setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
+                            }, onFailureListener);
+                },
+                onFailureListener);
     }
 
     @Override
@@ -87,15 +90,17 @@ public class AppDataManager implements DataManager {
                                  @NonNull OnFailureListener onFailureListener) {
         signUp(authCredential,
                 signUpSuccess ->
-                        setUser(signUpSuccess.getUser().getUid(),
-                                user,
-                                onSuccessListener,
+                        getUserFromSingleSnapShot(signUpSuccess.getUser().getUid(),
+                                signed -> onSuccessListener.onSuccess(null),
                                 error -> {
-                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                                    if (error.getMessage().equals(NOT_SIGNED_USER)) {
+                                        setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
+                                        return;
                                     }
+                                    onFailureListener.onFailure(error);
                                 })
                 , onFailureListener);
+
     }
 
     @Override
@@ -105,22 +110,28 @@ public class AppDataManager implements DataManager {
             return;
         }
         // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
-        getUserFromSingleSnapShot(uuid, user ->
+        getUserFromSingleSnapShot(uuid,
+                user ->
                         deleteUserData(uuid,
                                 deleteDB -> {
                                     if (user.getProfile() == null) {
                                         deleteUser(onSuccessListener,
                                                 error -> {
                                                     onFailureListener.onFailure(error);
-                                                    setUser(uuid, user, Void ->{}, transactionError -> {});
+                                                    setUser(uuid, user,
+                                                            Void -> {},
+                                                            transactionError -> {});
                                                 });
                                         return;
                                     }
-                                    deleteProfile(uuid, deleteProfile ->
+                                    deleteProfile(uuid,
+                                            deleteProfile ->
                                                     deleteUser(onSuccessListener, onFailureListener),
                                             error -> {
                                                 onFailureListener.onFailure(error);
-                                                setUser(uuid, user, Void ->{}, transactionError ->{});
+                                                setUser(uuid, user,
+                                                        Void -> {},
+                                                        transactionError -> {});
                                             });
                                 },
                                 onFailureListener),
