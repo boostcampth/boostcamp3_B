@@ -8,6 +8,7 @@ import android.net.Uri;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
@@ -31,7 +32,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     // private List<Room> mRoomList;
     RoomsViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
-        super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()));
+        super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance(), RemoteChattingManager.getInstance()));
         mAppContext = application;
         mRepository = repository;
         mListener = listener;

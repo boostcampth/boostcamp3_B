@@ -1,5 +1,6 @@
 package com.swsnack.catchhouse.constants;
 
+import android.support.annotation.IntDef;
 import android.support.annotation.StringDef;
 
 import java.lang.annotation.Retention;
@@ -21,6 +22,7 @@ import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.KEY;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.VALUE;
+import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
@@ -74,11 +76,12 @@ public class Constants {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({DB_USER, STORAGE_PROFILE, NICK_NAME})
+    @StringDef({DB_USER, STORAGE_PROFILE, NICK_NAME, CHATTING})
     public @interface FirebaseKey {
         String DB_USER = "users";
         String STORAGE_PROFILE = "profile";
         String NICK_NAME = "nickName";
+        String CHATTING = "chatting";
     }
 
     @Retention(RetentionPolicy.SOURCE)
@@ -106,5 +109,11 @@ public class Constants {
         String FACEBOOK = "facebook.com";
         String GOOGLE = "google.com";
         String E_MAIL = "password";
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef
+    public @interface Chatting {
+        String NO_CHAT_ROOM = "noChatRoom";
     }
 }

@@ -46,7 +46,7 @@
     <string name="my_page_change_nick_name">닉네임 변경</string>
     <string name="my_page_change_password">비밀번호 변경</string>
     <string name="my_page_change_profile">프로필 이미지 변경</string>
-    <string name="my_page_not_singed">로그인 후 이용 가능합니다.</string>
+    <string name="not_singed">로그인 후 이용 가능합니다.</string>
     <string name="dialog_input_change_nick_name">변경할 닉네임을 입력하세요</string>
     <string name="cancel">취소</string>
     <string name="change">변경하기</string>
@@ -100,7 +100,11 @@
     <string name="tv_filter_option_pet">반려동물 허용</string>
     <string name="tv_filter_option_smoking">실내흡연 허용</string>
     <string name="bt_filter_apply">적용</string>
+    <string name="tv_chatting_list_nick_name">판매자</string>
+    <string name="tv_chatting_list_last_message">마지막 메세지</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    /* fragment_chatting_list*/
+    <string name="snack_failed_make_chattingRoom">채팅방 개설에 실패했습니다.</string>
+
+
 </resources>

@@ -18,10 +18,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageException;
+import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
+import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETE_EXCEPTION;
@@ -31,17 +35,21 @@ public class AppDataManager implements DataManager {
 
     private APIManager mApiManager;
     private UserDataManager mUserDataManager;
+    private ChattingManager mRemoteChattingManager;
 
-    private AppDataManager(APIManager apiManager, UserDataManager userDataManager) {
+    private AppDataManager(APIManager apiManager, UserDataManager userDataManager, ChattingManager remoteChattingManager) {
         mApiManager = apiManager;
         mUserDataManager = userDataManager;
+        mRemoteChattingManager = remoteChattingManager;
     }
 
     private static AppDataManager INSTANCE;
 
-    public static synchronized AppDataManager getInstance(@NonNull APIManager apiManager, @NonNull UserDataManager userDataManager) {
+    public static synchronized AppDataManager getInstance(@NonNull APIManager apiManager,
+                                                          @NonNull UserDataManager userDataManager,
+                                                          @NonNull ChattingManager remoteChattingManager) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataManager(apiManager, userDataManager);
+            INSTANCE = new AppDataManager(apiManager, userDataManager, remoteChattingManager);
         }
         return INSTANCE;
     }
@@ -102,48 +110,48 @@ public class AppDataManager implements DataManager {
             return;
         }
         // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
-        getUserFromSingleSnapShot(uuid, new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user == null) {
-                    onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
-                    return;
-                }
-
-                deleteUserData(uuid,
-                        deleteDBSuccess -> {
-                            if (user.getProfile() == null) {
-                                deleteUser(onSuccessListener,
-                                        error -> {
-                                            onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-                                            setUser(uuid, user, null, null);
-                                        });
-                                return;
-                            }
-                            deleteProfile(uuid,
-                                    deleteProfileSuccess ->
-                                            deleteUser(onSuccessListener,
-                                                    error -> {
-                                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-                                                        setUser(uuid, user, null, null);
-                                                    })
-                                    , error -> {
-                                        if (error instanceof StorageException) {
-                                            deleteUser(onSuccessListener, onFailureListener);
-                                            return;
-                                        }
-                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-                                        setUser(uuid, user, null, null);
-                                    });
-                        }, onFailureListener);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                onFailureListener.onFailure(databaseError.toException());
-            }
-        });
+//        getUserFromSingleSnapShot(uuid, new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                User user = dataSnapshot.getValue(User.class);
+//                if (user == null) {
+//                    onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
+//                    return;
+//                }
+//
+//                deleteUserData(uuid,
+//                        deleteDBSuccess -> {
+//                            if (user.getProfile() == null) {
+//                                deleteUser(onSuccessListener,
+//                                        error -> {
+//                                            onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
+//                                            setUser(uuid, user, null, null);
+//                                        });
+//                                return;
+//                            }
+//                            deleteProfile(uuid,
+//                                    deleteProfileSuccess ->
+//                                            deleteUser(onSuccessListener,
+//                                                    error -> {
+//                                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
+//                                                        setUser(uuid, user, null, null);
+//                                                    })
+//                                    , error -> {
+//                                        if (error instanceof StorageException) {
+//                                            deleteUser(onSuccessListener, onFailureListener);
+//                                            return;
+//                                        }
+//                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
+//                                        setUser(uuid, user, null, null);
+//                                    });
+//                        }, onFailureListener);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                onFailureListener.onFailure(databaseError.toException());
+//            }
+//        });
     }
 
     @Override
@@ -182,13 +190,17 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getUserAndListeningForChanging(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.getUserAndListeningForChanging(uuid, valueEventListener);
+    public void getUserAndListeningForChanging(@NonNull String uuid,
+                                               @NonNull OnSuccessListener<User> onSuccessListener,
+                                               @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.getUserAndListeningForChanging(uuid, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void getUserFromSingleSnapShot(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.getUserFromSingleSnapShot(uuid, valueEventListener);
+    public void getUserFromSingleSnapShot(@NonNull String uuid,
+                                          @NonNull OnSuccessListener<User> onSuccessListener,
+                                          @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.getUserFromSingleSnapShot(uuid, onSuccessListener, onFailureListener);
     }
 
     @Override
@@ -229,5 +241,30 @@ public class AppDataManager implements DataManager {
     @Override
     public void getProfile(@NonNull Uri uri, RequestListener<Bitmap> requestListener) {
         mUserDataManager.getProfile(uri, requestListener);
+    }
+
+    @Override
+    public void getChattingRoom(@NonNull String uuid, @NonNull String destinationUuid, @NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mRemoteChattingManager.getChattingRoom(uuid, destinationUuid, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mRemoteChattingManager.getChattingList(uuid, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void getChatMessage(@NonNull String chatRoomId, @NonNull ValueEventListener valueEventListener) {
+
+    }
+
+    @Override
+    public void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mRemoteChattingManager.setChattingRoom(chattingUser, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void setChatMessage(@NonNull Message message, @NonNull ValueEventListener valueEventListener) {
+
     }
 }

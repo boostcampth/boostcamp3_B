@@ -60,13 +60,47 @@ public class AppUserDataManager implements UserDataManager {
     }
 
     @Override
-    public void getUserAndListeningForChanging(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        db.child(uuid).addValueEventListener(valueEventListener);
+    public void getUserAndListeningForChanging(@NonNull String uuid,
+                                               @NonNull OnSuccessListener<User> onSuccessListener,
+                                               @NonNull OnFailureListener onFailureListener) {
+        db.child(uuid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user == null) {
+                    onSuccessListener.onSuccess(null);
+                    return;
+                }
+                onSuccessListener.onSuccess(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onFailureListener.onFailure(databaseError.toException());
+            }
+        });
     }
 
     @Override
-    public void getUserFromSingleSnapShot(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        db.child(uuid).addListenerForSingleValueEvent(valueEventListener);
+    public void getUserFromSingleSnapShot(@NonNull String uuid,
+                                          @NonNull OnSuccessListener<User> onSuccessListener,
+                                          @NonNull OnFailureListener onFailureListener) {
+        db.child(uuid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user == null) {
+                    onFailureListener.onFailure(new DatabaseException(NOT_SIGNED_USER));
+                    return;
+                }
+                onSuccessListener.onSuccess(user);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -107,27 +141,13 @@ public class AppUserDataManager implements UserDataManager {
 
     @Override
     public void updateProfile(@NonNull String uuid, @NonNull Uri uri, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        getUserFromSingleSnapShot(uuid, new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user == null) {
-                    onFailureListener.onFailure(new DatabaseException(NOT_SIGNED_USER));
-                    return;
-                }
-                uploadProfile(uuid,
-                        uri,
-                        uri -> {
-                            user.setProfile(uri.toString());
+        getUserFromSingleSnapShot(uuid,
+                user -> uploadProfile(uuid, uri,
+                        remoteUrl -> {
+                            user.setProfile(remoteUrl.toString());
                             setUser(uuid, user, onSuccessListener, onFailureListener);
-                        }, onFailureListener);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                onFailureListener.onFailure(new DatabaseException(NOT_SIGNED_USER));
-            }
-        });
+                        }, onFailureListener),
+                onFailureListener);
     }
 
 
