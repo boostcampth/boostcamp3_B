@@ -6,8 +6,8 @@ import java.util.List;
 
 public abstract class BaseDiffUtil<T> extends DiffUtil.Callback {
 
-    private final List<T> mOldList;
-    private final List<T> mNewList;
+    protected final List<T> mOldList;
+    protected final List<T> mNewList;
 
     public BaseDiffUtil(List<T> mOldList, List<T> mNewList) {
         this.mOldList = mOldList;

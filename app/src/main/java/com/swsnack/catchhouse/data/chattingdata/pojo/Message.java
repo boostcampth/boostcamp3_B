@@ -8,6 +8,9 @@ public class Message {
     private String sendUuid;
     private String content;
 
+    public Message() {
+    }
+
     public Message(String sendUuid, String content) {
         this.sendUuid = sendUuid;
         this.content = content;

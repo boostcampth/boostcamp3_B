@@ -18,10 +18,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageException;
+import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
+import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETE_EXCEPTION;
@@ -31,17 +35,21 @@ public class AppDataManager implements DataManager {
 
     private APIManager mApiManager;
     private UserDataManager mUserDataManager;
+    private ChattingManager mRemoteChattingManager;
 
-    private AppDataManager(APIManager apiManager, UserDataManager userDataManager) {
+    private AppDataManager(APIManager apiManager, UserDataManager userDataManager, ChattingManager remoteChattingManager) {
         mApiManager = apiManager;
         mUserDataManager = userDataManager;
+        mRemoteChattingManager = remoteChattingManager;
     }
 
     private static AppDataManager INSTANCE;
 
-    public static synchronized AppDataManager getInstance(@NonNull APIManager apiManager, @NonNull UserDataManager userDataManager) {
+    public static synchronized AppDataManager getInstance(@NonNull APIManager apiManager,
+                                                          @NonNull UserDataManager userDataManager,
+                                                          @NonNull ChattingManager remoteChattingManager) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataManager(apiManager, userDataManager);
+            INSTANCE = new AppDataManager(apiManager, userDataManager, remoteChattingManager);
         }
         return INSTANCE;
     }
@@ -229,5 +237,30 @@ public class AppDataManager implements DataManager {
     @Override
     public void getProfile(@NonNull Uri uri, RequestListener<Bitmap> requestListener) {
         mUserDataManager.getProfile(uri, requestListener);
+    }
+
+    @Override
+    public void getChattingRoom(@NonNull String uuid, @NonNull String destinationUuid, @NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mRemoteChattingManager.getChattingRoom(uuid, destinationUuid, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mRemoteChattingManager.getChattingList(uuid, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void getChatMessage(@NonNull String chatRoomId, @NonNull ValueEventListener valueEventListener) {
+
+    }
+
+    @Override
+    public void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mRemoteChattingManager.setChattingRoom(chattingUser, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void setChatMessage(@NonNull Message message, @NonNull ValueEventListener valueEventListener) {
+
     }
 }

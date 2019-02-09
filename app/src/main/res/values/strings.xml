@@ -104,6 +104,7 @@
     <string name="tv_chatting_list_last_message">마지막 메세지</string>
 
     /* fragment_chatting_list*/
+    <string name="snack_failed_make_chattingRoom">채팅방 개설에 실패했습니다.</string>
 
 
 </resources>

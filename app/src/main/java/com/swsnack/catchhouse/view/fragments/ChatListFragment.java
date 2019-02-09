@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapters.ChattingListAdapter;
+import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
 import com.swsnack.catchhouse.databinding.FragmentChatListBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
@@ -46,6 +46,8 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
         ChattingListAdapter chattingListAdapter = new ChattingListAdapter(getContext(), getViewModel());
         getBinding().rvChatList.setAdapter(chattingListAdapter);
         getBinding().rvChatList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+
+        getViewModel().setChattingList();
 
     }
 

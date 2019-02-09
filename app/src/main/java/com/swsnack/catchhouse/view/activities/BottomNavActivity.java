@@ -11,6 +11,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.ViewPagerAdapter;
 import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
@@ -110,7 +111,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
-                AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance()),
+                AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance(), RemoteChattingManager.getInstance()),
                 this));
         createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
         createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
