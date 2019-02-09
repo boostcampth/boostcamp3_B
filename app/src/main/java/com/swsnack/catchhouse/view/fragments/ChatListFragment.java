@@ -61,6 +61,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
         }
         /* set dummy data*/
         getViewModel().getList();
+        getViewModel().setChattingList();
     }
 
     @Override

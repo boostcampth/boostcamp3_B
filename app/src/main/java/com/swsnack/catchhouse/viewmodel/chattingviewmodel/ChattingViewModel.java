@@ -53,7 +53,7 @@ public class ChattingViewModel extends ReactiveViewModel {
 
         /* dummy data for testing*/
         users.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
-        users.put("BkhNTh50J1diyDPj14HSpRhlxBH3", true);
+        users.put("RvXHEN2wXAMDQRvjQkgrfL0rWOC3", true);
 
         Chatting chatting = new Chatting(users);
         getDataManager()
@@ -68,7 +68,7 @@ public class ChattingViewModel extends ReactiveViewModel {
             if (!uuid.equals(FirebaseAuth.getInstance().getCurrentUser().toString())) {
                 getDataManager()
                         .getUserFromSingleSnapShot(uuid,
-                                onSuccessListener::onSuccess,
+                                onSuccessListener,
                                 onFailureListener);
                 return;
             }

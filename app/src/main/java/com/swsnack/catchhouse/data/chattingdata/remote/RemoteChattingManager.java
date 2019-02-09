@@ -40,7 +40,11 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void getChattingRoom(@NonNull String uuid, @NonNull String destinationUuid, @NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void getChattingRoom(@NonNull String uuid,
+                                @NonNull String destinationUuid,
+                                @NonNull OnSuccessListener<String> onSuccessListener,
+                                @NonNull OnFailureListener onFailureListener) {
+
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new RuntimeException(NOT_SIGNED_USER));
             return;
@@ -80,6 +84,7 @@ public class RemoteChattingManager implements ChattingManager {
         }
 
         db.orderByChild(DB_USER + "/" + uuid)
+                .equalTo(true)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

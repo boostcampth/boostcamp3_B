@@ -31,9 +31,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.FAILED_UPDATE;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SIGN_UP_EXCEPTION;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
@@ -63,6 +64,7 @@ public class AppUserDataManager implements UserDataManager {
     public void getUserAndListeningForChanging(@NonNull String uuid,
                                                @NonNull OnSuccessListener<User> onSuccessListener,
                                                @NonNull OnFailureListener onFailureListener) {
+
         db.child(uuid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -106,37 +108,43 @@ public class AppUserDataManager implements UserDataManager {
     @Override
     public void uploadProfile(@NonNull String uuid, @NonNull Uri imageUri, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         StorageReference reference = fs.child(uuid);
-        getProfile(imageUri, new RequestListener<Bitmap>() {
-            @Override
-            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                onFailureListener.onFailure(e);
-                return false;
-            }
-
-            @Override
-            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                try {
-                    UploadTask uploadTask = reference.putBytes(DataConverter.getByteArray(DataConverter.getScaledBitmap(resource)));
-                    uploadTask.continueWithTask(task -> {
-                        if (!task.isSuccessful()) {
-                            onFailureListener.onFailure(new Exception(SIGN_UP_EXCEPTION));
-                        }
-                        return reference.getDownloadUrl();
-                    })
-                            .addOnSuccessListener(onSuccessListener)
-                            .addOnFailureListener(onFailureListener);
-                } catch (IOException e) {
-                    onFailureListener.onFailure(e);
-                }
-                return false;
-            }
-        });
-
+        getProfile(imageUri,
+                bitmap -> {
+                    try {
+                        UploadTask uploadTask = reference.putBytes(DataConverter.getByteArray(DataConverter.getScaledBitmap(bitmap)));
+                        uploadTask.continueWithTask(task -> {
+                            if (!task.isSuccessful()) {
+                                onFailureListener.onFailure(new Exception(FAILED_UPDATE));
+                                return null;
+                            }
+                            return reference.getDownloadUrl();
+                        }).addOnSuccessListener(onSuccessListener)
+                                .addOnFailureListener(onFailureListener);
+                    } catch (IOException e) {
+                        onFailureListener.onFailure(e);
+                    }
+                },
+                onFailureListener);
     }
 
     @Override
-    public void getProfile(@NonNull Uri uri, RequestListener<Bitmap> requestListener) {
-        Glide.with(mAppContext).asBitmap().load(uri).listener(requestListener).submit();
+    public void getProfile(@NonNull Uri uri, @NonNull OnSuccessListener<Bitmap> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        Glide.with(mAppContext)
+                .asBitmap()
+                .load(uri)
+                .listener(new RequestListener<Bitmap>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                        onFailureListener.onFailure(e);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                        onSuccessListener.onSuccess(resource);
+                        return true;
+                    }
+                }).submit();
     }
 
     @Override
@@ -145,14 +153,16 @@ public class AppUserDataManager implements UserDataManager {
                 user -> uploadProfile(uuid, uri,
                         remoteUrl -> {
                             user.setProfile(remoteUrl.toString());
-                            setUser(uuid, user, onSuccessListener, onFailureListener);
+                            setUser(uuid, user,
+                                    onSuccessListener,
+                                    onFailureListener);
                         }, onFailureListener),
                 onFailureListener);
     }
 
 
     @Override
-    public void setUser(@NonNull String uuid, @NonNull User user, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailureListener onFailureListener) {
+    public void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         db.child(uuid)
                 .setValue(user)
                 .addOnSuccessListener(onSuccessListener)
@@ -180,15 +190,37 @@ public class AppUserDataManager implements UserDataManager {
     }
 
     @Override
-    public void findUserByQueryString(@NonNull String queryString, @NonNull String findValue, @NonNull ValueEventListener valueEventListener) {
+    public void findUserByQueryString(@NonNull String queryString,
+                                      @NonNull String findValue,
+                                      @NonNull OnSuccessListener<String> onSuccessListener,
+                                      @NonNull OnFailureListener onFailureListener) {
+
         db.orderByChild(queryString)
                 .equalTo(findValue)
-                .addListenerForSingleValueEvent(valueEventListener);
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getValue() == null) {
+                            onSuccessListener.onSuccess(null);
+                            return;
+                        }
+                        onSuccessListener.onSuccess(DUPLICATE);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onFailureListener.onFailure(databaseError.toException());
+                    }
+                });
     }
 
 
     @Override
-    public void updateUser(@NonNull String uuid, @NonNull Map<String, Object> updateFields, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void updateUser(@NonNull String uuid,
+                           @NonNull Map<String, Object> updateFields,
+                           @NonNull OnSuccessListener<Void> onSuccessListener,
+                           @NonNull OnFailureListener onFailureListener) {
+
         db.child(uuid)
                 .updateChildren(updateFields)
                 .addOnSuccessListener(onSuccessListener)
@@ -196,24 +228,22 @@ public class AppUserDataManager implements UserDataManager {
     }
 
     @Override
-    public void updateNickName(@NonNull String uuid, @NonNull String changeNickName, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        findUserByQueryString(NICK_NAME, changeNickName, new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue() == null) {
-                    /* in this block, no one has same nickName*/
-                    Map<String, Object> updateFields = new HashMap<>();
-                    updateFields.put(NICK_NAME, changeNickName);
-                    updateUser(uuid, updateFields, onSuccessListener, onFailureListener);
-                } else {
-                    onFailureListener.onFailure(new RuntimeException(DUPLICATE_NICK_NAME));
-                }
-            }
+    public void updateNickName(@NonNull String uuid,
+                               @NonNull String changeNickName,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                onFailureListener.onFailure(databaseError.toException());
-            }
-        });
+        findUserByQueryString(NICK_NAME,
+                changeNickName,
+                result -> {
+                    if (result == null) {
+                        Map<String, Object> updateFields = new HashMap<>();
+                        updateFields.put(NICK_NAME, changeNickName);
+                        updateUser(uuid, updateFields, onSuccessListener, onFailureListener);
+                        return;
+                    }
+                    onFailureListener.onFailure(new RuntimeException(DUPLICATE_NICK_NAME));
+                },
+                onFailureListener);
     }
 }
