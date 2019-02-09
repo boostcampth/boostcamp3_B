@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.EditText;
 
 import com.swsnack.catchhouse.adapters.AddressBindingAdapter;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
@@ -32,6 +33,14 @@ public class RoomsDataBinding {
 
         if (adapter != null && items != null) {
             adapter.updateItems(items);
+        }
+    }
+
+    @BindingAdapter("address")
+    public static void setAddressText(EditText editText, Address address) {
+
+        if(editText != null && address != null) {
+            editText.setText(address.getAddress());
         }
     }
 }

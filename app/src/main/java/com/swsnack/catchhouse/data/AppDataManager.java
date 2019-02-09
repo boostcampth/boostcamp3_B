@@ -18,10 +18,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageException;
+import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETE_EXCEPTION;
@@ -217,5 +219,25 @@ public class AppDataManager implements DataManager {
     @Override
     public void getProfile(@NonNull Uri uri, RequestListener<Bitmap> requestListener) {
         mUserDataManager.getProfile(uri, requestListener);
+    }
+
+    @Override
+    public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
+                          @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.createKey(onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
+                                @NonNull OnSuccessListener<List<String>> onSuccessListener,
+                                @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
     }
 }

@@ -9,8 +9,10 @@ import com.bumptech.glide.request.RequestListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ValueEventListener;
+import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserDataManager {
@@ -37,4 +39,9 @@ public interface UserDataManager {
 
     void queryUserBy(@NonNull String queryBy, @NonNull String findValue, @NonNull ValueEventListener valueEventListener);
 
+    void createKey(@NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+
+    void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList, @NonNull OnSuccessListener<List<String>> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+
+    void uploadRoomData(@NonNull String uuid, @NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 }

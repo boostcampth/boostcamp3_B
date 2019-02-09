@@ -1,13 +1,17 @@
 package com.swsnack.catchhouse.view.activities;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.AppDataManager;
@@ -39,23 +43,38 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
 
     @Override
     public void onError(Throwable throwable) {
-        Log.d(TAG, "error");
-        Log.e(TAG, "error", throwable);
+        Snackbar.make(getBinding().getRoot(), "error", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void isWorking() {
-        Log.d(TAG, "working...");
+        getBinding().pgWrite.setVisibility(View.VISIBLE);
+        getBinding().getRoot().setAlpha(0.6f);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
     }
 
     @Override
     public void isFinished() {
-        Log.d(TAG, "finished");
+        getBinding().pgWrite.setVisibility(View.INVISIBLE);
+        getBinding().getRoot().setAlpha(1.0f);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     @Override
     public void onSuccess(String success) {
-        Log.d(TAG, "success__" + success);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder
+                .setMessage(getString(R.string.dl_write_finish))
+                .setOnDismissListener(__ -> finish())
+                .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) -> finish());
+
+        AlertDialog alert = builder.create();
+
+        if(!isFinishing()) {
+            alert.show();
+        }
     }
 
     @Override

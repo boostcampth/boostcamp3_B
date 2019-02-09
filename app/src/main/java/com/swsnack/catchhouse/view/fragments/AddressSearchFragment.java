@@ -49,9 +49,9 @@ public class AddressSearchFragment extends DialogFragment {
         mBinding.rvAddress.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         mBinding.rvAddress.setAdapter(new AddressBindingAdapter(getActivity()));
 
-
         ((AddressBindingAdapter) mBinding.rvAddress.getAdapter())
                 .setOnItemClickListener((__, i) -> {
+                    mViewModel.onSelectAddress(i);
                     this.dismiss();
                 });
     }
