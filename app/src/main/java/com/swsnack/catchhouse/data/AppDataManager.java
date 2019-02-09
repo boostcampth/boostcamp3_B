@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
@@ -169,8 +168,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getUserInfoFromFacebook(@NonNull AccessToken accessToken, @NonNull GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
-        mApiManager.getUserInfoFromFacebook(accessToken, facebookUserDataCallback);
+    public void getUserInfoFromFacebook(@NonNull AccessToken accessToken, @NonNull OnSuccessListener<User> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.getUserInfoFromFacebook(accessToken, onSuccessListener, onFailureListener);
     }
 
     @Override

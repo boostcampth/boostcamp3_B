@@ -87,6 +87,7 @@ public class AppUserDataManager implements UserDataManager {
     public void getUserFromSingleSnapShot(@NonNull String uuid,
                                           @NonNull OnSuccessListener<User> onSuccessListener,
                                           @NonNull OnFailureListener onFailureListener) {
+
         db.child(uuid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -106,7 +107,11 @@ public class AppUserDataManager implements UserDataManager {
     }
 
     @Override
-    public void uploadProfile(@NonNull String uuid, @NonNull Uri imageUri, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void uploadProfile(@NonNull String uuid,
+                              @NonNull Uri imageUri,
+                              @NonNull OnSuccessListener<Uri> onSuccessListener,
+                              @NonNull OnFailureListener onFailureListener) {
+
         StorageReference reference = fs.child(uuid);
         getProfile(imageUri,
                 bitmap -> {
@@ -156,7 +161,8 @@ public class AppUserDataManager implements UserDataManager {
                             setUser(uuid, user,
                                     onSuccessListener,
                                     onFailureListener);
-                        }, onFailureListener),
+                        },
+                        onFailureListener),
                 onFailureListener);
     }
 

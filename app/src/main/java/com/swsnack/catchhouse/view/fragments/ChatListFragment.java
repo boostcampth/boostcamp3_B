@@ -1,5 +1,6 @@
 package com.swsnack.catchhouse.view.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +15,11 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
 import com.swsnack.catchhouse.databinding.FragmentChatListBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
+import com.swsnack.catchhouse.view.activities.BottomNavActivity;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class ChatListFragment extends BaseFragment<FragmentChatListBinding, ChattingViewModel> {
 
@@ -26,6 +31,14 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     @Override
     protected Class<ChattingViewModel> getViewModelClass() {
         return ChattingViewModel.class;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(context instanceof BottomNavActivity) {
+            ((BottomNavActivity) Objects.requireNonNull(getActivity())).setViewPagerListener(this::getChattingList);
+        }
     }
 
     @Override
@@ -53,20 +66,16 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    public void getChattingList() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             getBinding().tvChatListNotSigned.setVisibility(View.VISIBLE);
+        } else {
+            getBinding().tvChatListNotSigned.setVisibility(View.GONE);
         }
         /* set dummy data*/
-        getViewModel().getList();
+        getViewModel().setChattingList(new ArrayList<>());
+        getViewModel().getChattingRoomList();
         getViewModel().setChattingList();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
     }
 
 }

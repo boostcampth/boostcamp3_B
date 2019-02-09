@@ -119,15 +119,11 @@ public class UserViewModel extends ReactiveViewModel {
         mListener.isWorking();
         getDataManager()
                 .getUserInfoFromFacebook(loginResult.getAccessToken(),
-                        (result, response) -> {
-                            if (result == null) {
-                                mListener.onError(getStringFromResource(R.string.snack_not_found_info));
-                                return;
-                            }
-                            User user = new User(result.optString(NAME), result.optString(GENDER));
+                        user -> {
                             user.setProfile(uri.toString());
                             signUpWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()), user);
-                        });
+                        },
+                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_not_found_info)));
     }
 
     private void signUpWithCredential(AuthCredential authCredential, User user) {
