@@ -44,7 +44,7 @@ public class ChattingViewModel extends ReactiveViewModel {
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
     }
 
-    public void setChattingList() {
+    public void setChattingRoom() {
         Map<String, Boolean> users = new HashMap<>();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;

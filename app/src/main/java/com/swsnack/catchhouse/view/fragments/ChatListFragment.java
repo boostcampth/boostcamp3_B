@@ -69,13 +69,13 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     public void getChattingList() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             getBinding().tvChatListNotSigned.setVisibility(View.VISIBLE);
+            getViewModel().setChattingList(new ArrayList<>());
         } else {
             getBinding().tvChatListNotSigned.setVisibility(View.GONE);
+            /* set dummy data*/
+            getViewModel().getChattingRoomList();
+            getViewModel().setChattingRoom();
         }
-        /* set dummy data*/
-        getViewModel().setChattingList(new ArrayList<>());
-        getViewModel().getChattingRoomList();
-        getViewModel().setChattingList();
     }
 
 }
