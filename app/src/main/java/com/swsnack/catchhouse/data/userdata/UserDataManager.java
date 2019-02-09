@@ -15,9 +15,13 @@ import java.util.Map;
 
 public interface UserDataManager {
 
-    void getUserAndListeningForChanging(@NonNull String uuid, @NonNull ValueEventListener valueEventListener);
+    void getUserAndListeningForChanging(@NonNull String uuid,
+                                        @NonNull OnSuccessListener<User> onSuccessListener,
+                                        @NonNull OnFailureListener onFailureListener);
 
-    void getUserFromSingleSnapShot(@NonNull String uuid, @NonNull ValueEventListener valueEventListener);
+    void getUserFromSingleSnapShot(@NonNull String uuid,
+                                   @NonNull OnSuccessListener<User> onSuccessListener,
+                                   @NonNull OnFailureListener onFailureListener);
 
     void setUser(@NonNull String uuid, @NonNull User user, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailureListener onFailureListener);
 

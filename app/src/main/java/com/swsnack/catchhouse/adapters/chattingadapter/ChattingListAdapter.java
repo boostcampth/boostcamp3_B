@@ -20,7 +20,6 @@ import java.util.List;
 public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, ChattingListAdapter.ChattingItemHolder> {
 
     private ChattingViewModel mChattingViewModel;
-    private List<Chatting> chattingList;
 
     public ChattingListAdapter(Context context, ChattingViewModel chattingViewModel) {
         super(context);
@@ -29,35 +28,44 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
 
     @Override
     public void onBindView(ChattingItemHolder holder, int position) {
-        holder.mBinding.setLifecycleOwner(holder);
-        holder.mBinding.setHandler(mChattingViewModel);
     }
 
     @Override
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
-        ((ChattingItemHolder)holder).onAttachHolder();
+        ((ChattingItemHolder) holder).onAttachHolder();
+
     }
 
     @Override
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
-        ((ChattingItemHolder)holder).onDetachHolder();
+        ((ChattingItemHolder) holder).onDetachHolder();
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        return new ChattingItemHolder(ItemChattingListBinding.inflate(LayoutInflater.from(viewGroup.getContext())));
+        ItemChattingListBinding binding = ItemChattingListBinding.inflate(LayoutInflater.from(viewGroup.getContext()), viewGroup, false);
+
+        ChattingItemHolder viewHolder = new ChattingItemHolder(binding);
+
+        binding.setLifecycleOwner(viewHolder);
+        binding.setHandler(mChattingViewModel);
+        mChattingViewModel.getUser(i,
+                binding::setData,
+                error -> {
+                });
+        return viewHolder;
     }
 
     class ChattingItemHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
 
-        ItemChattingListBinding mBinding;
         LifecycleRegistry mLifeCycle = new LifecycleRegistry(this);
 
         ChattingItemHolder(@NonNull ItemChattingListBinding binding) {
             super(binding.getRoot());
+            mLifeCycle.markState(Lifecycle.State.INITIALIZED);
         }
 
         void onAttachHolder() {
@@ -75,15 +83,16 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
         }
     }
 
-    public void setItem(List<Chatting> newChattingList) {
-        if(chattingList == null) {
-            chattingList = newChattingList;
+    public void setList(List<Chatting> newChattingList) {
+        if (arrayList == null) {
+            arrayList = newChattingList;
+            notifyDataSetChanged();
             return;
         }
 
-        ChattingDiffUtil diffCallback = new ChattingDiffUtil(this.chattingList, newChattingList);
+        ChattingDiffUtil diffCallback = new ChattingDiffUtil(this.arrayList, newChattingList);
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback);
-        this.chattingList = newChattingList;
+        this.arrayList = newChattingList;
         result.dispatchUpdatesTo(this);
     }
 }

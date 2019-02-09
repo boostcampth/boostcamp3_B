@@ -113,7 +113,6 @@ public class RemoteChattingManager implements ChattingManager {
                 .setValue(chattingUser)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
-
     }
 
     @Override

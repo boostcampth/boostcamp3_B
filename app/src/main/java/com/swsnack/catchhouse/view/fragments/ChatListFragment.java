@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
 import com.swsnack.catchhouse.databinding.FragmentChatListBinding;
@@ -43,12 +44,23 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getBinding().setHandler(getViewModel());
+        getBinding().setLifecycleOwner(this);
+
         ChattingListAdapter chattingListAdapter = new ChattingListAdapter(getContext(), getViewModel());
         getBinding().rvChatList.setAdapter(chattingListAdapter);
         getBinding().rvChatList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
 
-        getViewModel().setChattingList();
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            getBinding().tvChatListNotSigned.setVisibility(View.VISIBLE);
+        }
+        /* set dummy data*/
+        getViewModel().getList();
     }
 
     @Override

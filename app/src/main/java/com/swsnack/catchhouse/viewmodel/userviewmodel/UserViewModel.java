@@ -103,28 +103,20 @@ public class UserViewModel extends ReactiveViewModel {
     public void getUser() {
         mIsSigned.setValue(true);
         getDataManager()
-                .getUserAndListeningForChanging(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user == null) {
-                            return;
-                        }
-
-                        mEmail.setValue(user.getEMail());
-                        mNickName.setValue(user.getNickName());
-                        mGender.setValue(user.getGender());
-                        if (user.getProfile() != null) {
-                            getProfileFromUri(Uri.parse(user.getProfile()));
-                        }
-                        mIsSigned.setValue(true);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        mListener.onError(getStringFromResource(R.string.snack_database_exception));
-                    }
-                });
+                .getUserAndListeningForChanging(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                        user -> {
+                            if (user == null) {
+                                return;
+                            }
+                            mEmail.setValue(user.getEMail());
+                            mNickName.setValue(user.getNickName());
+                            mGender.setValue(user.getGender());
+                            if (user.getProfile() != null) {
+                                getProfileFromUri(Uri.parse(user.getProfile()));
+                            }
+                            mIsSigned.setValue(true);
+                        },
+                        error -> mListener.onError(getStringFromResource(R.string.snack_database_exception)));
     }
 
     public void signInWithGoogle(Intent data) {

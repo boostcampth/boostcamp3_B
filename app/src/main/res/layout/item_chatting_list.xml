@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
+        <variable
+            name="data"
+            type="com.swsnack.catchhouse.data.userdata.pojo.User" />
 
         <variable
             name="handler"
@@ -10,57 +15,60 @@
 
     </data>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardElevation="4dp">
-
-        <android.support.constraint.ConstraintLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            app:cardElevation="4dp">
 
-            <ImageView
-                android:id="@+id/iv_chatting_list_item_profile"
-                style="@style/iv.round"
-                android:layout_width="72dp"
-                android:layout_height="72dp"
-                android:layout_margin="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_chatting_list_item_nick_name"
-                style="@style/tv.body"
-                android:layout_marginStart="24dp"
-                android:text="@string/tv_chatting_list_nick_name"
-                app:layout_constraintStart_toEndOf="@+id/iv_chatting_list_item_profile"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/iv_chatting_list_item_profile"
+                    style="@style/iv.round"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_margin="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    bind:setChattingListProfile="@{data}" />
 
-            <TextView
-                android:id="@+id/tv_chatting_list_last_message"
-                style="@style/tv.title.sub"
-                android:layout_marginStart="0dp"
-                android:layout_marginBottom="8dp"
-                android:singleLine="true"
-                android:layout_width="0dp"
-                android:textAlignment="textStart"
-                android:text="@string/tv_chatting_list_last_message"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="@id/tv_chatting_list_item_nick_name"
-                app:layout_constraintTop_toBottomOf="@id/tv_chatting_list_item_nick_name"
-                app:layout_constraintEnd_toEndOf="@id/guideline" />
+                <TextView
+                    android:id="@+id/tv_chatting_list_item_nick_name"
+                    style="@style/tv.body"
+                    android:layout_marginStart="24dp"
+                    android:text="@{data.nickName}"
+                    app:layout_constraintStart_toEndOf="@+id/iv_chatting_list_item_profile"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <android.support.constraint.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.9" />
+                <TextView
+                    android:id="@+id/tv_chatting_list_last_message"
+                    style="@style/tv.title.sub"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginBottom="8dp"
+                    android:singleLine="true"
+                    android:textAlignment="textStart"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline"
+                    app:layout_constraintStart_toStartOf="@id/tv_chatting_list_item_nick_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_chatting_list_item_nick_name" />
 
-        </android.support.constraint.ConstraintLayout>
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.9" />
 
-    </android.support.v7.widget.CardView>
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
 
 </layout>

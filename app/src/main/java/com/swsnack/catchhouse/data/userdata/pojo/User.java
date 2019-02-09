@@ -5,7 +5,7 @@ public class User {
     private String eMail;
     private String nickName;
     private String gender;
-    private String profile;
+    public String profile;
     private String myRoom;
 
     public User() {

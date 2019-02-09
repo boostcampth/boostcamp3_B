@@ -110,48 +110,48 @@ public class AppDataManager implements DataManager {
             return;
         }
         // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
-        getUserFromSingleSnapShot(uuid, new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user == null) {
-                    onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
-                    return;
-                }
-
-                deleteUserData(uuid,
-                        deleteDBSuccess -> {
-                            if (user.getProfile() == null) {
-                                deleteUser(onSuccessListener,
-                                        error -> {
-                                            onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-                                            setUser(uuid, user, null, null);
-                                        });
-                                return;
-                            }
-                            deleteProfile(uuid,
-                                    deleteProfileSuccess ->
-                                            deleteUser(onSuccessListener,
-                                                    error -> {
-                                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-                                                        setUser(uuid, user, null, null);
-                                                    })
-                                    , error -> {
-                                        if (error instanceof StorageException) {
-                                            deleteUser(onSuccessListener, onFailureListener);
-                                            return;
-                                        }
-                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-                                        setUser(uuid, user, null, null);
-                                    });
-                        }, onFailureListener);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                onFailureListener.onFailure(databaseError.toException());
-            }
-        });
+//        getUserFromSingleSnapShot(uuid, new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                User user = dataSnapshot.getValue(User.class);
+//                if (user == null) {
+//                    onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
+//                    return;
+//                }
+//
+//                deleteUserData(uuid,
+//                        deleteDBSuccess -> {
+//                            if (user.getProfile() == null) {
+//                                deleteUser(onSuccessListener,
+//                                        error -> {
+//                                            onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
+//                                            setUser(uuid, user, null, null);
+//                                        });
+//                                return;
+//                            }
+//                            deleteProfile(uuid,
+//                                    deleteProfileSuccess ->
+//                                            deleteUser(onSuccessListener,
+//                                                    error -> {
+//                                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
+//                                                        setUser(uuid, user, null, null);
+//                                                    })
+//                                    , error -> {
+//                                        if (error instanceof StorageException) {
+//                                            deleteUser(onSuccessListener, onFailureListener);
+//                                            return;
+//                                        }
+//                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
+//                                        setUser(uuid, user, null, null);
+//                                    });
+//                        }, onFailureListener);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                onFailureListener.onFailure(databaseError.toException());
+//            }
+//        });
     }
 
     @Override
@@ -190,13 +190,17 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getUserAndListeningForChanging(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.getUserAndListeningForChanging(uuid, valueEventListener);
+    public void getUserAndListeningForChanging(@NonNull String uuid,
+                                               @NonNull OnSuccessListener<User> onSuccessListener,
+                                               @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.getUserAndListeningForChanging(uuid, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void getUserFromSingleSnapShot(@NonNull String uuid, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.getUserFromSingleSnapShot(uuid, valueEventListener);
+    public void getUserFromSingleSnapShot(@NonNull String uuid,
+                                          @NonNull OnSuccessListener<User> onSuccessListener,
+                                          @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.getUserFromSingleSnapShot(uuid, onSuccessListener, onFailureListener);
     }
 
     @Override
