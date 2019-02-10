@@ -21,7 +21,8 @@ import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import static com.swsnack.catchhouse.constants.Constants.GALLERY;
-import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.FACEBOOK;
+import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
 
@@ -33,7 +34,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     }
 
     @Override
-    protected Class<UserViewModel> setViewModel() {
+    protected Class<UserViewModel> getViewModelClass() {
         return UserViewModel.class;
     }
 
@@ -58,8 +59,11 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getViewModel().getUser();
 
-        if (!FirebaseAuth.getInstance().getCurrentUser().getProviders().get(0).equals(E_MAIL)) {
-            getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
+        for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
+            if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
+                getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
+                break;
+            }
         }
 
         getBinding().tvMyPageChangeNickName.setOnClickListener(v -> {
@@ -106,7 +110,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getBinding().tvMyPageSignOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            mFragmentManager.beginTransaction().replace(R.id.fl_bottom_nav_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+            mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
         });
 
     }
@@ -117,9 +121,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         if (requestCode == GALLERY) {
             if (resultCode == Activity.RESULT_OK) {
                 getViewModel().updateProfile(data.getData());
-                return;
             }
-            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT).show();
         }
     }
 }

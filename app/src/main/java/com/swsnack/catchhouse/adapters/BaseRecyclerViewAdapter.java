@@ -9,6 +9,7 @@ import java.util.List;
 
 public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    // FIXME 복붙코드의 냄새가 납니다. lint warning으로 뜨는 내용들을 다 없애서 반영해주세요. 접근자, lambda식, unchecked 등
     protected List<T> arrayList;
     OnItemClickListener onItemClickListener;
     OnItemLongClickListener onItemLongClickListener;

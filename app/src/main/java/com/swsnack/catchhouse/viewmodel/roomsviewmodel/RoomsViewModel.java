@@ -58,6 +58,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
         super(dataManager);
+
         mAppContext = application;
         mListener = listener;
         mDataManager = dataManager;
@@ -152,7 +153,7 @@ public class RoomsViewModel extends ReactiveViewModel {
         String validResult = isRoomDataValid();
 
         if (!TextUtils.isEmpty(validResult)) {
-            mListener.onError(new RuntimeException(validResult));
+            mListener.onError("error");
             return;
         }
 
@@ -160,7 +161,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
         OnFailureListener errorHandler = error -> {
             mListener.isFinished();
-            mListener.onError(error);
+            mListener.onError("error");
         };
 
         mDataManager.createKey(

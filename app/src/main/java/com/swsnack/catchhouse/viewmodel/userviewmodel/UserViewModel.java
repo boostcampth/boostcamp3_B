@@ -18,41 +18,33 @@ import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
-import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import java.io.IOException;
-import java.util.Map;
-
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SAME_NICK_NAME;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.SHORT_PASSWORD;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
+import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PASSWORD_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PROFILE_SUCCESS;
-import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_NICK_NAME_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
+    private Uri mProfileUri;
     private MutableLiveData<String> mGender;
     public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<String> mEmail;
@@ -81,13 +73,18 @@ public class UserViewModel extends ReactiveViewModel {
         return mGender;
     }
 
+    private String getStringFromResource(int stringResource) {
+        return mAppContext.getString(stringResource);
+    }
+
     public void getProfileFromUri(Uri uri) {
         mListener.isWorking();
+        mProfileUri = uri;
         getDataManager()
                 .getProfile(uri, new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                        mListener.onError(e);
+                        mListener.onError(getStringFromResource(R.string.snack_failed_load_image));
                         return false;
                     }
 
@@ -101,35 +98,22 @@ public class UserViewModel extends ReactiveViewModel {
     }
 
     public void getUser() {
-        mListener.isWorking();
-
         mIsSigned.setValue(true);
         getDataManager()
-                .getUserForListening(FirebaseAuth.getInstance().getCurrentUser().getUid(), new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-
-                        if (user == null) {
-                            mListener.onError(new RuntimeException(DELETED_USER));
-                            return;
-                        }
-
-                        mEmail.setValue(user.geteMail());
-                        mNickName.setValue(user.getNickName());
-                        mGender.setValue(user.getGender());
-                        if (user.getProfile() != null) {
-                            getProfileFromUri(Uri.parse(user.getProfile()));
-                        }
-                        mIsSigned.setValue(true);
-                        mListener.isFinished();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        mListener.onError(new RuntimeException(DELETED_USER));
-                    }
-                });
+                .getUserAndListeningForChanging(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                        user -> {
+                            if (user == null) {
+                                return;
+                            }
+                            mEmail.setValue(user.getEMail());
+                            mNickName.setValue(user.getNickName());
+                            mGender.setValue(user.getGender());
+                            if (user.getProfile() != null) {
+                                getProfileFromUri(Uri.parse(user.getProfile()));
+                            }
+                            mIsSigned.setValue(true);
+                        },
+                        error -> mListener.onError(getStringFromResource(R.string.snack_database_exception)));
     }
 
     public void signInWithGoogle(Intent data) {
@@ -146,10 +130,10 @@ public class UserViewModel extends ReactiveViewModel {
     public void signInWithFacebook(LoginResult loginResult, Uri uri) {
         mListener.isWorking();
         getDataManager()
-                .facebookUserProfile(loginResult.getAccessToken(),
+                .getUserInfoFromFacebook(loginResult.getAccessToken(),
                         (result, response) -> {
                             if (result == null) {
-                                mListener.onError(response.getError().getException());
+                                mListener.onError(getStringFromResource(R.string.snack_not_found_info));
                                 return;
                             }
                             User user = new User(result.optString(NAME), result.optString(GENDER));
@@ -163,12 +147,12 @@ public class UserViewModel extends ReactiveViewModel {
                 .signUpAndSetUser(authCredential,
                         user,
                         result -> mListener.onSuccess(SIGN_IN_SUCCESS),
-                        mListener::onError);
+                        error -> mListener.onError(getStringFromResource(R.string.snack_fb_sign_up_failed)));
     }
 
     public void signUpWithEmail(View v) {
         if (mPassword.getValue() == null || mPassword.getValue().length() < 6) {
-            mListener.onError(new InSufficientException(SHORT_PASSWORD));
+            mListener.onError(getStringFromResource(R.string.snack_short_password));
             return;
         }
 
@@ -176,90 +160,96 @@ public class UserViewModel extends ReactiveViewModel {
                 mNickName.getValue() == null || mGender.getValue() == null ||
                 mEmail.getValue().trim().equals("") || mPassword.getValue().trim().equals("") ||
                 mNickName.getValue().trim().equals("") || mGender.getValue() == null) {
-            mListener.onError(new InSufficientException(IN_SUFFICIENT_INFO));
+            mListener.onError(getStringFromResource(R.string.snack_fill_info));
             return;
         }
 
         mListener.isWorking();
 
         User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
-        byte[] profileByteArray = null;
-        try {
-            if (mProfile.getValue() != null) {
-                profileByteArray = DataConverter.getByteArray(DataConverter.getScaledBitmap(mProfile.getValue()));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            mListener.onError(e);
-            return;
-        }
 
         getDataManager()
                 .signUpAndSetUser(mPassword.getValue(),
                         user,
-                        profileByteArray,
+                        mProfileUri,
                         result -> mListener.onSuccess(SIGN_UP_SUCCESS),
-                        mListener::onError);
+                        error -> {
+                            if (error instanceof FirebaseAuthUserCollisionException) {
+                                mListener.onError(getStringFromResource(R.string.snack_already_exist_email));
+                                return;
+                            }
+                            mListener.onError(getStringFromResource(R.string.snack_error_occured));
+                        });
     }
 
     public void signInWithEmail(View v) {
         if (mEmail.getValue() == null || mPassword.getValue() == null
                 || mEmail.getValue().trim().equals("") || mPassword.getValue().trim().equals("")) {
-            mListener.onError(new InSufficientException(IN_SUFFICIENT_INFO));
+            mListener.onError(getStringFromResource(R.string.snack_fill_info));
             return;
         }
 
         if (mPassword.getValue() == null || mPassword.getValue().length() < 6) {
-            mListener.onError(new InSufficientException(SHORT_PASSWORD));
+            mListener.onError(getStringFromResource(R.string.snack_short_password));
             return;
         }
         mListener.isWorking();
 
         getDataManager()
-                .firebaseSignIn(mEmail.getValue(),
+                .signIn(mEmail.getValue(),
                         mPassword.getValue(),
                         authResult -> {
                             mListener.onSuccess(SIGN_IN_SUCCESS);
                             mIsSigned.setValue(true);
                         },
-                        mListener::onError);
+                        error -> {
+                            if (error instanceof FirebaseAuthInvalidUserException
+                                    || error instanceof FirebaseAuthInvalidCredentialsException) {
+                                mListener.onError(getStringFromResource(R.string.snack_invalid_user));
+                            }
+                        });
     }
 
     public void deleteUser() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            mListener.onError(new FirebaseException(NOT_SIGNED_USER));
+            mListener.onError(getStringFromResource(R.string.snack_fb_not_signed_user));
             return;
         }
         mListener.isWorking();
+
         String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getDataManager()
                 .deleteUserAll(uuid, deleteResult -> {
                     mListener.onSuccess(DELETE_USER_SUCCESS);
                     mIsSigned.setValue(false);
-                }, mListener::onError);
+                }, error -> mListener.onError(getStringFromResource(R.string.snack_error_occured)));
     }
 
     public void changeNickName(String changeNickName) {
         if (changeNickName.equals(mNickName.getValue())) {
-            mListener.onError(new RuntimeException(SAME_NICK_NAME));
+            mListener.onError(getStringFromResource(R.string.snack_same_nick_name));
             return;
         }
 
         getDataManager()
                 .updateNickName(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         changeNickName,
-                        success -> mListener.onSuccess(UPDATE_NICK_NAME_SUCCESS), mListener::onError);
+                        success -> mListener.onSuccess(UPDATE_NICK_NAME_SUCCESS),
+                        error -> mListener.onError(getStringFromResource(R.string.snack_duplicate_nick_name)));
     }
 
     public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword) {
         getDataManager()
-                .firebaseUpdatePassword(oldPassword, newPassword,
-                        result -> mListener.onSuccess(UPDATE_PASSWORD_SUCCESS), mListener::onError);
+                .updatePassword(oldPassword, newPassword,
+                        result -> mListener.onSuccess(UPDATE_PASSWORD_SUCCESS),
+                        error -> mListener.onError(getStringFromResource(R.string.snack_error_update_password)));
     }
 
     public void updateProfile(Uri uri) {
         mListener.isWorking();
         getDataManager().
-                updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri, result -> mListener.onSuccess(UPDATE_PROFILE_SUCCESS), mListener::onError);
+                updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri,
+                        result -> mListener.onSuccess(UPDATE_PROFILE_SUCCESS),
+                        error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
     }
 }

@@ -17,6 +17,8 @@ import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import static android.app.Activity.RESULT_OK;
+import static com.swsnack.catchhouse.constants.Constants.Gender.FEMALE;
+import static com.swsnack.catchhouse.constants.Constants.Gender.MALE;
 
 public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserViewModel> {
 
@@ -26,7 +28,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
     }
 
     @Override
-    protected Class<UserViewModel> setViewModel() {
+    protected Class<UserViewModel> getViewModelClass() {
         return UserViewModel.class;
     }
 
@@ -51,15 +53,14 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
             startActivityForResult(intent, Constants.GALLERY);
         });
 
-        getBinding().rbSignUpMale.setOnCheckedChangeListener((__, isChecked) -> {
-            if (isChecked) {
-                mViewModel.setGender(Constants.Gender.MALE);
-            }
-        });
-
-        getBinding().rbSignUpFemale.setOnCheckedChangeListener((__, isChecked) -> {
-            if (isChecked) {
-                mViewModel.setGender(Constants.Gender.FEMALE);
+        getBinding().rgSignUpGender.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rb_sign_up_male:
+                    mViewModel.setGender(MALE);
+                    break;
+                case R.id.rb_sign_up_female:
+                    mViewModel.setGender(FEMALE);
+                    break;
             }
         });
     }
@@ -70,9 +71,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         if (requestCode == Constants.GALLERY) {
             if (resultCode == RESULT_OK) {
                 getViewModel().getProfileFromUri(data.getData());
-                return;
             }
-            Snackbar.make(getBinding().getRoot(), R.string.snack_failed_load_image, Snackbar.LENGTH_SHORT);
         }
     }
 }

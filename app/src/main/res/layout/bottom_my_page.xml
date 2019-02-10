@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="20dp"
-                    android:text="@string/my_page_not_singed" />
+                    android:text="@string/not_singed" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_my_page_recently_visit"
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="20dp"
-                    android:text="@string/my_page_not_singed" />
+                    android:text="@string/not_singed" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_my_page_my_favorite"

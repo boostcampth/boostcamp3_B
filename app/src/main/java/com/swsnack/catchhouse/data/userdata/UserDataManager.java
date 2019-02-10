@@ -17,9 +17,13 @@ import java.util.Map;
 
 public interface UserDataManager {
 
-    void getUserForListening(@NonNull String uuid, @NonNull ValueEventListener valueEventListener);
+    void getUserAndListeningForChanging(@NonNull String uuid,
+                                        @NonNull OnSuccessListener<User> onSuccessListener,
+                                        @NonNull OnFailureListener onFailureListener);
 
-    void getUserForSingle(@NonNull String uuid, @NonNull ValueEventListener valueEventListener);
+    void getUserFromSingleSnapShot(@NonNull String uuid,
+                                   @NonNull OnSuccessListener<User> onSuccessListener,
+                                   @NonNull OnFailureListener onFailureListener);
 
     void setUser(@NonNull String uuid, @NonNull User user, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailureListener onFailureListener);
 
@@ -29,7 +33,7 @@ public interface UserDataManager {
 
     void deleteUserData(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    void setProfile(@NonNull String uuid, @NonNull byte[] profile, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+    void uploadProfile(@NonNull String uuid, @NonNull Uri imageUri, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
     void getProfile(@NonNull Uri uri, RequestListener<Bitmap> requestListener);
 
@@ -37,11 +41,12 @@ public interface UserDataManager {
 
     void deleteProfile(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    void queryUserBy(@NonNull String queryBy, @NonNull String findValue, @NonNull ValueEventListener valueEventListener);
-
     void createKey(@NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
     void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList, @NonNull OnSuccessListener<List<String>> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
     void uploadRoomData(@NonNull String uuid, @NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+
+    void findUserByQueryString(@NonNull String queryString, @NonNull String findValue, @NonNull ValueEventListener valueEventListener);
+
 }

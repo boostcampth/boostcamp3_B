@@ -15,6 +15,8 @@ import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
+import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
@@ -29,7 +31,6 @@ import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements ViewModelListener {
 
     private static final String TAG = WriteActivity.class.getSimpleName();
@@ -42,7 +43,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     }
 
     @Override
-    public void onError(Throwable throwable) {
+    public void onError(String errorMessage) {
         Snackbar.make(getBinding().getRoot(), "error", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -72,7 +73,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
 
         AlertDialog alert = builder.create();
 
-        if(!isFinishing()) {
+        if (!isFinishing()) {
             alert.show();
         }
     }
@@ -150,9 +151,16 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     private void createViewModels() {
         createViewModel(
                 RoomsViewModel.class,
-                new RoomsViewModelFactory(getApplication(),
-                        AppDataManager.getInstance(AppAPIManager.getInstance(),
-                                AppUserDataManager.getInstance(getApplication())), this));
+                new RoomsViewModelFactory(
+                        getApplication(),
+                        AppDataManager.getInstance(
+                                AppAPIManager.getInstance(),
+                                AppUserDataManager.getInstance(),
+                                RemoteChattingManager.getInstance()
+                        ),
+                        this
+                )
+        );
     }
 
     private void createDatePicker(DatePickerDialog.OnDateSetListener listener) {

@@ -32,7 +32,7 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void firebaseSignUp(@NonNull AuthCredential authCredential, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void signUp(@NonNull AuthCredential authCredential, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         FirebaseAuth.getInstance()
                 .signInWithCredential(authCredential)
                 .addOnSuccessListener(onSuccessListener)
@@ -40,7 +40,7 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void firebaseSignUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void signUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(onSuccessListener)
@@ -48,7 +48,7 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void facebookUserProfile(@NonNull AccessToken token, GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
+    public void getUserInfoFromFacebook(@NonNull AccessToken token, GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
         GraphRequest request = GraphRequest.newMeRequest(token, facebookUserDataCallback);
         Bundle parameter = new Bundle();
         parameter.putString(Constants.FacebookData.KEY, Constants.FacebookData.VALUE);
@@ -57,7 +57,7 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void firebaseSignIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void signIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(onSuccessListener)
@@ -65,7 +65,7 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void firebaseDeleteUser(@NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void deleteUser(@NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;
@@ -80,7 +80,7 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void firebaseUpdatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;

@@ -10,7 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        multiDexEnabled true
     }
     buildTypes {
         debug {
@@ -39,6 +39,7 @@ dependencies {
     implementation "com.android.support:support-v4:$rootProject.ext.supportVersion"
     implementation "com.android.support:design:$rootProject.ext.supportVersion"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintVersion"
+    implementation 'com.android.support:support-v4:28.0.0'
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
     androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
@@ -62,5 +63,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
     implementation "jp.wasabeef:glide-transformations:$rootProject.ext.glideTransformVersion"
+    //multidex
+    implementation "com.android.support:multidex:$rootProject.ext.multidexVersion"
     implementation files('libs/com.skt.Tmap_1.58.jar')
 }
