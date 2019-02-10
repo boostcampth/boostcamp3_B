@@ -33,18 +33,18 @@ public class ChattingViewModel extends ReactiveViewModel {
         this.mChattingList = new MutableLiveData<>();
     }
 
-    public void getList() {
+    public void getChattingRoomList() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            mListener.onError(StringUtil.getStringFromResource(R.string.snack_fb_not_signed_user));
             return;
         }
 
-        getDataManager().getChattingList(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                list -> mChattingList.setValue(list),
-                error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
+        getDataManager()
+                .getChattingList(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                        list -> mChattingList.setValue(list),
+                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
     }
 
-    public void setChattingList() {
+    public void setChattingRoom() {
         Map<String, Boolean> users = new HashMap<>();
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
@@ -53,7 +53,7 @@ public class ChattingViewModel extends ReactiveViewModel {
 
         /* dummy data for testing*/
         users.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
-        users.put("BkhNTh50J1diyDPj14HSpRhlxBH3", true);
+        users.put("RvXHEN2wXAMDQRvjQkgrfL0rWOC3", true);
 
         Chatting chatting = new Chatting(users);
         getDataManager()
@@ -68,7 +68,7 @@ public class ChattingViewModel extends ReactiveViewModel {
             if (!uuid.equals(FirebaseAuth.getInstance().getCurrentUser().toString())) {
                 getDataManager()
                         .getUserFromSingleSnapShot(uuid,
-                                onSuccessListener::onSuccess,
+                                onSuccessListener,
                                 onFailureListener);
                 return;
             }
@@ -76,7 +76,11 @@ public class ChattingViewModel extends ReactiveViewModel {
 
     }
 
-    public LiveData<List<Chatting>> chattingList() {
+    public LiveData<List<Chatting>> getChattingList() {
         return this.mChattingList;
+    }
+
+    public void setChattingList(List<Chatting> list) {
+        this.mChattingList.setValue(list);
     }
 }

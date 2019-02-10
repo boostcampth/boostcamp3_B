@@ -34,7 +34,6 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         ((ChattingItemHolder) holder).onAttachHolder();
-
     }
 
     @Override
