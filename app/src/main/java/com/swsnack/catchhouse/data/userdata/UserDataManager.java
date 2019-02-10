@@ -27,7 +27,7 @@ public interface UserDataManager {
                                    @NonNull OnSuccessListener<User> onSuccessListener,
                                    @NonNull OnFailureListener onFailureListener);
 
-    void setUser(@NonNull String uuid, @NonNull User user, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailureListener onFailureListener);
+    void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
     void updateUser(@NonNull String uuid, @NonNull Map<String, Object> updateFields, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 

@@ -190,7 +190,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setUser(@NonNull String uuid, @NonNull User user, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailureListener onFailureListener) {
+    public void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mUserDataManager.setUser(uuid, user, onSuccessListener, onFailureListener);
     }
 
