@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+
+        <ImageView
+            android:id="@+id/iv_item_message_profile"
+            style="@style/iv.round"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:id="@+id/tv_item_message_destination"
+            style="@style/tv"
+            android:layout_width="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/tv_message_destination"
+            android:fontFamily="@font/aller_default"
+            android:padding="3dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_item_message_profile"
+            app:layout_constraintWidth_max="wrap"
+            app:layout_constraintWidth_percent="0.7" />
+
+        <TextView
+            android:id="@+id/tv_item_message"
+            style="@style/tv"
+            android:layout_width="0dp"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/tv_message"
+            android:fontFamily="@font/aller_default"
+            android:padding="3dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_max="wrap"
+            app:layout_constraintWidth_percent="0.7" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
