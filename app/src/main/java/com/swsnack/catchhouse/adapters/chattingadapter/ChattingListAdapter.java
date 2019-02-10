@@ -1,28 +1,25 @@
 package com.swsnack.catchhouse.adapters.chattingadapter;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LifecycleRegistry;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
+import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.databinding.ItemChattingListBinding;
 import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 
 import java.util.List;
 
-public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, ChattingListAdapter.ChattingItemHolder> {
+public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, ChattingItemHolder> {
 
     private ChattingViewModel mChattingViewModel;
-    private List<Message> messages;
 
     public ChattingListAdapter(Context context, ChattingViewModel chattingViewModel) {
         super(context);
@@ -57,8 +54,7 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
         binding.setChattingData(arrayList.get(i));
         mChattingViewModel.getUser(i,
                 binding::setUserData,
-                error -> {
-                });
+                error -> Snackbar.make(viewGroup, R.string.snack_failed_load_list, Snackbar.LENGTH_SHORT));
         return viewHolder;
     }
 
@@ -70,38 +66,6 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
             ((ChattingItemHolder) holder).getBinding()
                     .tvChattingListLastMessage.setText(
                     DataConverter.sortByValueFromMapToList(arrayList.get(position).getMessage()).get(0).getContent());
-        }
-    }
-
-    class ChattingItemHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
-
-        ItemChattingListBinding mBinding;
-
-        LifecycleRegistry mLifeCycle = new LifecycleRegistry(this);
-
-        ChattingItemHolder(@NonNull ItemChattingListBinding binding) {
-            super(binding.getRoot());
-            mBinding = binding;
-            mLifeCycle.markState(Lifecycle.State.INITIALIZED);
-        }
-
-        void onAttachHolder() {
-            mLifeCycle.markState(Lifecycle.State.STARTED);
-        }
-
-        void onDetachHolder() {
-            mLifeCycle.markState(Lifecycle.State.DESTROYED);
-        }
-
-        @NonNull
-        @Override
-        public Lifecycle getLifecycle() {
-            return mLifeCycle;
-        }
-
-        @NonNull
-        public ItemChattingListBinding getBinding() {
-            return mBinding;
         }
     }
 

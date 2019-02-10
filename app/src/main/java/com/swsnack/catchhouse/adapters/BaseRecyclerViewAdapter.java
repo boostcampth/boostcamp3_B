@@ -89,7 +89,7 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
             public void onClick(View view) {
 
                 if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(holder.itemView, position);
+                    onItemClickListener.onItemClick(holder, position);
                 }
 
             }
@@ -98,7 +98,7 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
             @Override
             public boolean onLongClick(View view) {
                 if (onItemLongClickListener != null) {
-                    onItemLongClickListener.onItemLongClick(holder.itemView, position);
+                    onItemLongClickListener.onItemLongClick(holder, position);
                 }
 
                 return false;
@@ -125,12 +125,12 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
 
     public interface OnItemClickListener {
 
-        public void onItemClick(View view, int position);
+        public void onItemClick(RecyclerView.ViewHolder viewHolder, int position);
     }
 
 
     public interface OnItemLongClickListener {
 
-        public void onItemLongClick(View view, int position);
+        public void onItemLongClick(RecyclerView.ViewHolder viewHolder, int position);
     }
 }

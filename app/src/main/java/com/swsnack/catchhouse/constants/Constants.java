@@ -29,6 +29,8 @@ import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
 import static com.swsnack.catchhouse.constants.Constants.Gender.FEMALE;
 import static com.swsnack.catchhouse.constants.Constants.Gender.MALE;
+import static com.swsnack.catchhouse.constants.Constants.ParcelableData.CHATTING_DATA;
+import static com.swsnack.catchhouse.constants.Constants.ParcelableData.USER_DATA;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
@@ -118,5 +120,12 @@ public class Constants {
     @StringDef
     public @interface Chatting {
         String NO_CHAT_ROOM = "noChatRoom";
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({USER_DATA, CHATTING_DATA})
+    public @interface ParcelableData {
+        String USER_DATA = "userData";
+        String CHATTING_DATA = "chattingData";
     }
 }

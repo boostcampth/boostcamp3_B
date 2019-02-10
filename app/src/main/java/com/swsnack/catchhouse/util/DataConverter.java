@@ -2,7 +2,7 @@ package com.swsnack.catchhouse.util;
 
 import android.graphics.Bitmap;
 
-import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
+import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

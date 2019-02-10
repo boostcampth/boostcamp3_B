@@ -22,13 +22,11 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
-import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;

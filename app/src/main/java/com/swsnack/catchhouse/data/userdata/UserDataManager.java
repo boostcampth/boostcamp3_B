@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 
 import java.util.Map;
 

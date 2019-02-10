@@ -7,11 +7,11 @@
 
         <variable
             name="userData"
-            type="com.swsnack.catchhouse.data.userdata.pojo.User" />
+            type="com.swsnack.catchhouse.data.userdata.model.User" />
 
         <variable
             name="chattingData"
-            type="com.swsnack.catchhouse.data.chattingdata.pojo.Chatting"/>
+            type="com.swsnack.catchhouse.data.chattingdata.model.Chatting"/>
 
         <variable
             name="handler"

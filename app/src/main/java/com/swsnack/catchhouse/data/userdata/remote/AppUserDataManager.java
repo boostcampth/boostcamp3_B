@@ -24,7 +24,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.util.DataConverter;
 
 import java.io.IOException;

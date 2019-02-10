@@ -1,8 +1,9 @@
-package com.swsnack.catchhouse.data.chattingdata.pojo;
+package com.swsnack.catchhouse.data.chattingdata.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Message {
+public class Message implements Serializable {
 
     private String timestamp;
     private String sendUuid;
@@ -29,13 +30,4 @@ public class Message {
         return content;
     }
 
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (!(obj instanceof Message)) {
-//            return false;
-//        }
-//
-//        Message compareObj = (Message) obj;
-//        return this.timestamp.equals(compareObj.getTimestamp()) && this.content.equals(compareObj.getContent());
-//    }
 }

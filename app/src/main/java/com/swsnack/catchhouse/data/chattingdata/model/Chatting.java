@@ -1,11 +1,11 @@
-package com.swsnack.catchhouse.data.chattingdata.pojo;
+package com.swsnack.catchhouse.data.chattingdata.model;
 
 import android.support.annotation.Nullable;
 
-import java.util.Iterator;
+import java.io.Serializable;
 import java.util.Map;
 
-public class Chatting {
+public class Chatting implements Serializable {
 
     private String roomUid;
     private Map<String, Boolean> users;

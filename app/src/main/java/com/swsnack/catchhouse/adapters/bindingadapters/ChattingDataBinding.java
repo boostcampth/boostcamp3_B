@@ -9,8 +9,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.userdata.model.User;
 
 import java.util.List;
 

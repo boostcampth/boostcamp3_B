@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,15 +13,21 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.adapters.chattingadapter.ChattingItemHolder;
 import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.databinding.FragmentChatListBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activities.BottomNavActivity;
+import com.swsnack.catchhouse.view.activities.ChattingMessageActivity;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static com.swsnack.catchhouse.constants.Constants.ParcelableData.CHATTING_DATA;
+import static com.swsnack.catchhouse.constants.Constants.ParcelableData.USER_DATA;
 
 public class ChatListFragment extends BaseFragment<FragmentChatListBinding, ChattingViewModel> {
 
@@ -67,6 +74,13 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
 
         chattingListAdapter.setOnItemClickListener((v, position) -> {
             Chatting chatting = chattingListAdapter.getItem(position);
+            User user = ((ChattingItemHolder) v).getBinding().getUserData();
+
+            getActivity().startActivity(
+                    new Intent(getContext(),
+                            ChattingMessageActivity.class)
+                            .putExtra(CHATTING_DATA, chatting)
+                            .putExtra(USER_DATA, user));
         });
 
     }

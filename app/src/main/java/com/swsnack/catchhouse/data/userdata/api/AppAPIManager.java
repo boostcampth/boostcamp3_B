@@ -14,7 +14,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.data.userdata.APIManager;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
