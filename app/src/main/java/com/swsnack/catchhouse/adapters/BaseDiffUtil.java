@@ -26,6 +26,6 @@ public abstract class BaseDiffUtil<T> extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int i, int i1) {
-        return mOldList.get(i) == mNewList.get(i1);
+        return mOldList.get(i).equals(mNewList.get(i1));
     }
 }
