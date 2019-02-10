@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.adapters;
 
 import android.support.v7.util.DiffUtil;
+import android.util.Log;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public abstract class BaseDiffUtil<T> extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int i, int i1) {
+        Log.d("디프", "i : " + i + "i1 : " + i1 + "   " + mOldList.get(i).equals(mNewList.get(i1)));
         return mOldList.get(i).equals(mNewList.get(i1));
     }
 }

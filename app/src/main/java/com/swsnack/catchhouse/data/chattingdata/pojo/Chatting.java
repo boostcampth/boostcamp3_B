@@ -2,6 +2,7 @@ package com.swsnack.catchhouse.data.chattingdata.pojo;
 
 import android.support.annotation.Nullable;
 
+import java.util.Iterator;
 import java.util.Map;
 
 public class Chatting {
@@ -45,9 +46,11 @@ public class Chatting {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Chatting)) {
+        if (!(obj instanceof Chatting)) {
             return false;
         }
+
         return this.roomUid.equals(((Chatting) obj).getRoomUid());
     }
 }
+
