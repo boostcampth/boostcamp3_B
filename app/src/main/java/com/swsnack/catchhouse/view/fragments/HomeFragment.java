@@ -2,46 +2,40 @@ package com.swsnack.catchhouse.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentHomeBinding;
+import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activities.WriteActivity;
+import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
 
-// FIXME HomeFragment도 BaseFragment를 상속받도록 해주세요
-public class HomeFragment extends Fragment {
-
+public class HomeFragment extends BaseFragment<FragmentHomeBinding, SearchViewModel> {
     public static final String TAG = HomeFragment.class.getName();
 
-    private FragmentHomeBinding mBinding;
     private OnSearchButtonListener mListener;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+    protected int getLayout() {
+        return R.layout.fragment_home;
+    }
 
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-        return mBinding.getRoot();
+    @Override
+    protected Class<SearchViewModel> getViewModelClass() {
+        return SearchViewModel.class;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        mBinding.tvHomeSearch.setOnClickListener(__ ->
+        getBinding().tvHomeSearch.setOnClickListener(__ ->
                 mListener.onClicked()
         );
-        
-        mBinding.tvHomePost.setOnClickListener(__ ->
+
+        getBinding().tvHomePost.setOnClickListener(__ ->
                 startActivity(new Intent(getActivity(), WriteActivity.class))
         );
     }
