@@ -1,6 +1,6 @@
-package com.swsnack.catchhouse.viewmodel;
+package com.swsnack.catchhouse.view.activities;
 
-public interface ViewModelListener {
+public interface WriteListener {
 
     void onError(String errorMessage);
 
@@ -9,5 +9,4 @@ public interface ViewModelListener {
     void isWorking();
 
     void isFinished();
-
 }

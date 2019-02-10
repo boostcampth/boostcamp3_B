@@ -25,7 +25,7 @@ import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.view.activities.BottomNavListener;
 
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
@@ -37,7 +37,7 @@ import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PROFI
 public class UserViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
-    private ViewModelListener mListener;
+    private BottomNavListener mListener;
     private Uri mProfileUri;
     private MutableLiveData<String> mGender;
     public MutableLiveData<Boolean> mIsSigned;
@@ -46,7 +46,7 @@ public class UserViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mNickName;
     public MutableLiveData<Bitmap> mProfile;
 
-    UserViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
+    UserViewModel(Application application, DataManager dataManager, BottomNavListener listener) {
         super(dataManager);
         this.mAppContext = application;
         this.mListener = listener;

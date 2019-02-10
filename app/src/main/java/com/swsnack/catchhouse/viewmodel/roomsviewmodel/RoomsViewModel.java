@@ -16,8 +16,8 @@ import com.swsnack.catchhouse.data.asynctask.ConvertImageTask;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.util.DateCalculator;
+import com.swsnack.catchhouse.view.activities.WriteListener;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -36,7 +36,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     private static final String TAG = RoomsViewModel.class.getSimpleName();
 
     private Application mAppContext;
-    private ViewModelListener mListener;
+    private WriteListener mListener;
     private DataManager mDataManager;
 
     public final MutableLiveData<List<Address>> mSearchResultList = new MutableLiveData<>();
@@ -56,7 +56,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
     public final MutableLiveData<String> mContent = new MutableLiveData<>();
 
-    RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
+    RoomsViewModel(Application application, DataManager dataManager, WriteListener listener) {
         super(dataManager);
         mAppContext = application;
         mListener = listener;

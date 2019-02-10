@@ -4,11 +4,10 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.view.activities.BottomNavListener;
+import com.swsnack.catchhouse.view.activities.WriteListener;
 
 import io.reactivex.annotations.NonNull;
 
@@ -16,9 +15,9 @@ public class RoomsViewModelFactory extends ViewModelProvider.NewInstanceFactory 
 
     private Application mApplication;
     private DataManager mDataManager;
-    private ViewModelListener mListener;
+    private WriteListener mListener;
 
-    public RoomsViewModelFactory(@NonNull Application application, DataManager dataManager, ViewModelListener listener) {
+    public RoomsViewModelFactory(@NonNull Application application, DataManager dataManager, WriteListener listener) {
         this.mApplication = application;
         this.mDataManager = dataManager;
         this.mListener = listener;

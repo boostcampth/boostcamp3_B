@@ -2,19 +2,17 @@ package com.swsnack.catchhouse.viewmodel.searchviewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
-import android.net.Uri;
 import android.util.Log;
 
 import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.view.activities.BottomNavListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +23,11 @@ import io.reactivex.schedulers.Schedulers;
 public class SearchViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private RoomsRepository mRepository;
-    private ViewModelListener mListener;
+    private BottomNavListener mListener;
     private MutableLiveData<List<Address>> mAddressList;
     public MutableLiveData<String> mKeyword;
 
-    SearchViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
+    SearchViewModel(Application application, RoomsRepository repository, BottomNavListener listener) {
         super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance(), RemoteChattingManager.getInstance()));
         mAppContext = application;
         mRepository = repository;

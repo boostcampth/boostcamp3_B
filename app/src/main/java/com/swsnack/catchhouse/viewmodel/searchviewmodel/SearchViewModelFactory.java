@@ -7,15 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.view.activities.BottomNavListener;
 
 public class SearchViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private Application mApplication;
     private RoomsRepository mRepository;
-    private ViewModelListener mListener;
+    private BottomNavListener mListener;
 
-    public SearchViewModelFactory(@NonNull Application application, RoomsRepository repository, ViewModelListener listener) {
+    public SearchViewModelFactory(@NonNull Application application, RoomsRepository repository, BottomNavListener listener) {
         this.mApplication = application;
         this.mRepository = repository;
         this.mListener = listener;
