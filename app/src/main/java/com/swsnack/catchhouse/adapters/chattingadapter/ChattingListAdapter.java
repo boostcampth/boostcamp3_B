@@ -51,8 +51,9 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
 
         binding.setLifecycleOwner(viewHolder);
         binding.setHandler(mChattingViewModel);
+        binding.setChattingData(arrayList.get(i));
         mChattingViewModel.getUser(i,
-                binding::setData,
+                binding::setUserData,
                 error -> {
                 });
         return viewHolder;

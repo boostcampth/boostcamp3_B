@@ -93,9 +93,10 @@ public class RemoteChattingManager implements ChattingManager {
                             onSuccessListener.onSuccess(chattingList);
                             return;
                         }
-
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            chattingList.add(snapshot.getValue(Chatting.class));
+                            Chatting chatting = snapshot.getValue(Chatting.class);
+                            chatting.setRoomUid(snapshot.getKey());
+                            chattingList.add(chatting);
                         }
                         onSuccessListener.onSuccess(chattingList);
                     }

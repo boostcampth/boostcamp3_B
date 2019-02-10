@@ -1,16 +1,15 @@
 package com.swsnack.catchhouse.data.chattingdata.pojo;
 
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import java.util.Map;
 
 public class Chatting {
 
+    private String roomUid;
     private Map<String, Boolean> users;
-
     @Nullable
-    private Message message;
+    private Map<String,Message> message;
 
     public Chatting() {
     }
@@ -28,11 +27,19 @@ public class Chatting {
     }
 
     @Nullable
-    public Message getMessage() {
+    public Map<String, Message> getMessage() {
         return message;
     }
 
-    public void setMessage(@NonNull Message message) {
+    public void setMessage(@Nullable Map<String, Message> message) {
         this.message = message;
+    }
+
+    public String getRoomUid() {
+        return roomUid;
+    }
+
+    public void setRoomUid(String roomUid) {
+        this.roomUid = roomUid;
     }
 }

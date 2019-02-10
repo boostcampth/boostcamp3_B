@@ -12,7 +12,9 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter;
 import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
+import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
 import com.swsnack.catchhouse.databinding.FragmentChatListBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activities.BottomNavActivity;
@@ -36,7 +38,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof BottomNavActivity) {
+        if (context instanceof BottomNavActivity) {
             ((BottomNavActivity) Objects.requireNonNull(getActivity())).setViewPagerListener(this::getChattingList);
         }
     }
@@ -63,6 +65,9 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
         ChattingListAdapter chattingListAdapter = new ChattingListAdapter(getContext(), getViewModel());
         getBinding().rvChatList.setAdapter(chattingListAdapter);
         getBinding().rvChatList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        chattingListAdapter.setOnItemClickListener((v, position) -> {
+            Chatting chatting = chattingListAdapter.getItem(position);
+        });
 
     }
 
@@ -74,7 +79,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
             getBinding().tvChatListNotSigned.setVisibility(View.GONE);
             /* set dummy data*/
             getViewModel().getChattingRoomList();
-            getViewModel().setChattingRoom();
+//            getViewModel().setChattingRoom();
         }
     }
 
