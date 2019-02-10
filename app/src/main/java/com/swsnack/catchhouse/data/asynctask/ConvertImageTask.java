@@ -14,7 +14,7 @@ import com.swsnack.catchhouse.util.DataConverter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConvertImageTask extends AsyncTask<List<Uri>, Void, List<byte[]>> {
+public class ConvertImageTask extends AsyncTask<Uri, Void, List<byte[]>> {
 
     private OnSuccessListener<List<byte[]>> successListener;
     private OnFailureListener failureListener;
@@ -29,11 +29,11 @@ public class ConvertImageTask extends AsyncTask<List<Uri>, Void, List<byte[]>> {
     }
 
     @Override
-    protected List<byte[]> doInBackground(List<Uri>... uris) {
+    protected List<byte[]> doInBackground(Uri... uris) {
         List<byte[]> result = new ArrayList<>();
 
         try {
-            for(Uri uri : uris[0]) {
+            for(Uri uri : uris) {
                 Bitmap bitmap = Glide
                         .with(mAppContext)
                         .asBitmap()

@@ -223,9 +223,10 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     private void convert(OnSuccessListener<List<byte[]>> onSuccessListener,
                          OnFailureListener onFailureListener) {
-        AsyncTask<List<Uri>, Void, List<byte[]>> mTask;
+        AsyncTask<Uri, Void, List<byte[]>> mTask;
         mTask = new ConvertImageTask(mAppContext, onSuccessListener, onFailureListener);
-        mTask.execute(mImageList.getValue());
+        List<Uri> u = mImageList.getValue();
+        mTask.execute(u.toArray(new Uri[0]));
     }
 
     private void push(String key, List<String> urls,

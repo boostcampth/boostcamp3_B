@@ -267,7 +267,7 @@ public class AppUserDataManager implements UserDataManager {
     @Override
     public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
                           @NonNull OnFailureListener onFailureListener) {
-        dbRooms.push().addValueEventListener(new ValueEventListener() {
+        dbRooms.push().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String key = dataSnapshot.getKey();
