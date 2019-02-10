@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.ClipData;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +14,6 @@ import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
@@ -24,14 +22,13 @@ import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.adapters.ImageSlideAdapter;
 import com.swsnack.catchhouse.view.fragments.AddressSearchFragment;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements ViewModelListener {
+public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements WriteListener {
 
     private static final String TAG = WriteActivity.class.getSimpleName();
     final int PICK_IMAGE_MULTIPLE = 1;

@@ -1,5 +1,6 @@
 package com.swsnack.catchhouse.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +25,6 @@ import com.swsnack.catchhouse.view.fragments.MapFragment;
 import com.swsnack.catchhouse.view.fragments.MyPageFragment;
 import com.swsnack.catchhouse.view.fragments.SignFragment;
 import com.swsnack.catchhouse.view.fragments.SignInFragment;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.homeviewmodel.HomeViewModel;
@@ -40,7 +40,7 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener, HomeFragment.OnSearchButtonListener {
+public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements BottomNavListener {
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
@@ -92,6 +92,16 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     public void isFinished() {
         unFreezeUI();
+    }
+
+    @Override
+    public void openMapFragment() {
+        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
+    }
+
+    @Override
+    public void openWriteActivity() {
+        startActivity(new Intent(this, WriteActivity.class));
     }
 
     @Override
@@ -207,11 +217,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         getBinding().pgBottomNav.setVisibility(View.GONE);
         getBinding().getRoot().setAlpha(1.0f);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-
-    @Override
-    public void onClicked() {
-        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
     }
 
     public void setViewPagerListener(OnViewPagerChangedListener onViewPagerChangedListener) {

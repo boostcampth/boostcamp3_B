@@ -9,16 +9,16 @@ import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.view.activities.BottomNavListener;
 
 import io.reactivex.annotations.NonNull;
 
 public class HomeViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private ViewModelListener mViewModelListener;
+    private BottomNavListener mBottomNavListener;
 
-    public HomeViewModelFactory(ViewModelListener viewModelListener) {
-        this.mViewModelListener = viewModelListener;
+    public HomeViewModelFactory(BottomNavListener bottomNavListener) {
+        this.mBottomNavListener = bottomNavListener;
     }
 
     @NonNull
@@ -30,7 +30,7 @@ public class HomeViewModelFactory extends ViewModelProvider.NewInstanceFactory {
                     AppAPIManager.getInstance(),
                     AppUserDataManager.getInstance(),
                     RemoteChattingManager.getInstance()),
-                    mViewModelListener
+                    mBottomNavListener
                     );
         }
         throw new Fragment.InstantiationException("not viewModel class", null);
