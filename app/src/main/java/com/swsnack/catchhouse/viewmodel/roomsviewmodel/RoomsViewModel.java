@@ -58,7 +58,6 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
         super(dataManager);
-
         mAppContext = application;
         mListener = listener;
         mDataManager = dataManager;

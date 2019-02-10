@@ -13,6 +13,8 @@ import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
 
 import java.util.List;
+import com.swsnack.catchhouse.data.userdata.pojo.User;
+
 import java.util.Map;
 
 public interface UserDataManager {
@@ -35,7 +37,7 @@ public interface UserDataManager {
 
     void uploadProfile(@NonNull String uuid, @NonNull Uri imageUri, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    void getProfile(@NonNull Uri uri, RequestListener<Bitmap> requestListener);
+    void getProfile(@NonNull Uri uri, @NonNull OnSuccessListener<Bitmap> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
     void updateProfile(@NonNull String uuid, @NonNull Uri uri, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
@@ -47,6 +49,9 @@ public interface UserDataManager {
 
     void uploadRoomData(@NonNull String uuid, @NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    void findUserByQueryString(@NonNull String queryString, @NonNull String findValue, @NonNull ValueEventListener valueEventListener);
+    void findUserByQueryString(@NonNull String queryString,
+                               @NonNull String findValue,
+                               @NonNull OnSuccessListener<String> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener);
 
 }

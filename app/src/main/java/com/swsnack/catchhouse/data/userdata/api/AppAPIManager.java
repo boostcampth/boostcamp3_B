@@ -15,8 +15,11 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.constants.Constants;
 import com.swsnack.catchhouse.data.userdata.APIManager;
+import com.swsnack.catchhouse.data.userdata.pojo.User;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.constants.Constants.FacebookData.GENDER;
+import static com.swsnack.catchhouse.constants.Constants.FacebookData.NAME;
 
 public class AppAPIManager implements APIManager {
 
@@ -40,7 +43,11 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void signUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void signUp(@NonNull String email,
+                       @NonNull String password,
+                       @NonNull OnSuccessListener<AuthResult> onSuccessListener,
+                       @NonNull OnFailureListener onFailureListener) {
+
         FirebaseAuth.getInstance()
                 .createUserWithEmailAndPassword(email, password)
                 .addOnSuccessListener(onSuccessListener)
@@ -48,8 +55,16 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void getUserInfoFromFacebook(@NonNull AccessToken token, GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
-        GraphRequest request = GraphRequest.newMeRequest(token, facebookUserDataCallback);
+    public void getUserInfoFromFacebook(@NonNull AccessToken token, @NonNull OnSuccessListener<User> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        GraphRequest request = GraphRequest
+                .newMeRequest(token,
+                        (result, response) -> {
+                            if (result == null) {
+                                onFailureListener.onFailure(new RuntimeException());
+                                return;
+                            }
+                            onSuccessListener.onSuccess(new User(result.optString(NAME), result.optString(GENDER)));
+                        });
         Bundle parameter = new Bundle();
         parameter.putString(Constants.FacebookData.KEY, Constants.FacebookData.VALUE);
         request.setParameters(parameter);
@@ -57,7 +72,11 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void signIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void signIn(@NonNull String email,
+                       @NonNull String password,
+                       @NonNull OnSuccessListener<AuthResult> onSuccessListener,
+                       @NonNull OnFailureListener onFailureListener) {
+
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(email, password)
                 .addOnSuccessListener(onSuccessListener)
@@ -80,7 +99,11 @@ public class AppAPIManager implements APIManager {
     }
 
     @Override
-    public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void updatePassword(@NonNull String oldPassword,
+                               @NonNull String newPassword,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;

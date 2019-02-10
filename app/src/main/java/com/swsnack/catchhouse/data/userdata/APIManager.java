@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.swsnack.catchhouse.data.userdata.pojo.User;
 
 public interface APIManager {
 
@@ -18,7 +19,7 @@ public interface APIManager {
 
     void signUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    void getUserInfoFromFacebook(@NonNull AccessToken accessToken, GraphRequest.GraphJSONObjectCallback facebookUserDataCallback);
+    void getUserInfoFromFacebook(@NonNull AccessToken accessToken, @NonNull OnSuccessListener<User> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
     void signIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 

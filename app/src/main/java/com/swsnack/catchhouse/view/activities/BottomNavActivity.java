@@ -3,6 +3,7 @@ package com.swsnack.catchhouse.view.activities;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -26,12 +27,11 @@ import com.swsnack.catchhouse.view.fragments.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
-import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
-import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +42,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
+    private OnViewPagerChangedListener mViewPagerListener;
 
     @Override
     protected int getLayout() {
@@ -160,6 +161,36 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         list.add(new SignFragment());
 
         getBinding().vpBottomNav.setAdapter(viewPagerAdapter);
+        getBinding().vpBottomNav.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                switch (i) {
+                    case 0:
+                        getBinding().bottomNav.setSelectedItemId(R.id.action_home);
+                        break;
+                    case 1:
+                        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
+                        break;
+                    case 2:
+                        getBinding().bottomNav.setSelectedItemId(R.id.action_message);
+                        mViewPagerListener.onViewPagerChanged();
+                        break;
+                    case 3:
+                        getBinding().bottomNav.setSelectedItemId(R.id.action_my_page);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
         viewPagerAdapter.setItems(list);
     }
 
@@ -178,5 +209,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     public void onClicked() {
         getBinding().bottomNav.setSelectedItemId(R.id.action_map);
+    }
+
+    public void setViewPagerListener(OnViewPagerChangedListener onViewPagerChangedListener) {
+        this.mViewPagerListener = onViewPagerChangedListener;
     }
 }

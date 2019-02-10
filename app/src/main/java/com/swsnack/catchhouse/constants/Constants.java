@@ -8,9 +8,11 @@ import java.lang.annotation.RetentionPolicy;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETED_USER;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETE_EXCEPTION;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_EMAIL;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.FAILED_LOAD_IMAGE;
+import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.FAILED_UPDATE;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.IN_SUFFICIENT_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.MISMATCH_USER_INFO;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
@@ -83,7 +85,7 @@ public class Constants {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({DB_USER, DB_ROOM, STORAGE_PROFILE, STORAGE_ROOM_IMAGE, NICK_NAME, CHATTING})
+    @StringDef({DB_USER, STORAGE_PROFILE, STORAGE_ROOM_IMAGE, NICK_NAME, CHATTING})
     public @interface FirebaseKey {
         String DB_USER = "users";
         String DB_ROOM = "rooms";
@@ -96,7 +98,7 @@ public class Constants {
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({IN_SUFFICIENT_INFO, SHORT_PASSWORD, DUPLICATE_EMAIL, MISMATCH_USER_INFO,
             FAILED_LOAD_IMAGE, SIGN_IN_EXCEPTION, SIGN_UP_EXCEPTION, NOT_SIGNED_USER, DELETED_USER,
-            SAME_NICK_NAME, DUPLICATE_NICK_NAME, DELETE_EXCEPTION})
+            SAME_NICK_NAME, DUPLICATE_NICK_NAME, DELETE_EXCEPTION, DUPLICATE, FAILED_UPDATE})
     public @interface ExceptionReason {
         String IN_SUFFICIENT_INFO = "InSufficientInfo";
         String SHORT_PASSWORD = "shortPassword";
@@ -109,7 +111,9 @@ public class Constants {
         String DELETE_EXCEPTION = "deleteException";
         String DELETED_USER = "deletedUser";
         String SAME_NICK_NAME = "sameNickName";
+        String DUPLICATE = "duplicate";
         String DUPLICATE_NICK_NAME = "duplicateNickName";
+        String FAILED_UPDATE = "failedUpdate";
     }
 
     @Retention(RetentionPolicy.SOURCE)
@@ -122,7 +126,7 @@ public class Constants {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({EMPTY_ROOM_IMAGE, EMPTY_PRICE_FIELD, NOT_SELECTION_DATE, EMPTY_TITLE_FIELD,
-    NETWORK_ERROR})
+            NETWORK_ERROR})
     public @interface PostException {
         String EMPTY_ROOM_IMAGE = "EmptyRoomImage";
         String EMPTY_PRICE_FIELD = "EmptyPriceField";

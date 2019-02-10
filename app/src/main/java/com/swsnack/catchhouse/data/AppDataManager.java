@@ -5,23 +5,18 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.bumptech.glide.request.RequestListener;
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageException;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
 import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
+import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.pojo.User;
@@ -29,7 +24,6 @@ import com.swsnack.catchhouse.data.userdata.pojo.User;
 import java.util.List;
 import java.util.Map;
 
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DELETE_EXCEPTION;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
 
 public class AppDataManager implements DataManager {
@@ -72,18 +66,20 @@ public class AppDataManager implements DataManager {
                                  @Nullable Uri uri,
                                  @NonNull OnSuccessListener<Void> onSuccessListener,
                                  @NonNull OnFailureListener onFailureListener) {
-        signUp(user.getEMail(), password, signUpSuccess -> {
-            if (uri == null) {
-                setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-                return;
-            }
-            uploadProfile(signUpSuccess.getUser().getUid(),
-                    uri,
-                    storageUri -> {
-                        user.setProfile(storageUri.toString());
+        signUp(user.getEMail(), password,
+                signUpSuccess -> {
+                    if (uri == null) {
                         setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-                    }, onFailureListener);
-        }, onFailureListener);
+                        return;
+                    }
+                    uploadProfile(signUpSuccess.getUser().getUid(),
+                            uri,
+                            storageUri -> {
+                                user.setProfile(storageUri.toString());
+                                setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
+                            }, onFailureListener);
+                },
+                onFailureListener);
     }
 
     @Override
@@ -93,13 +89,14 @@ public class AppDataManager implements DataManager {
                                  @NonNull OnFailureListener onFailureListener) {
         signUp(authCredential,
                 signUpSuccess ->
-                        setUser(signUpSuccess.getUser().getUid(),
-                                user,
-                                onSuccessListener,
+                        getUserFromSingleSnapShot(signUpSuccess.getUser().getUid(),
+                                signed -> onSuccessListener.onSuccess(null),
                                 error -> {
-                                    if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                                    if (error.getMessage().equals(NOT_SIGNED_USER)) {
+                                        setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
+                                        return;
                                     }
+                                    onFailureListener.onFailure(error);
                                 })
                 , onFailureListener);
     }
@@ -111,48 +108,36 @@ public class AppDataManager implements DataManager {
             return;
         }
         // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
-//        getUserFromSingleSnapShot(uuid, new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                User user = dataSnapshot.getValue(User.class);
-//                if (user == null) {
-//                    onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
-//                    return;
-//                }
-//
-//                deleteUserData(uuid,
-//                        deleteDBSuccess -> {
-//                            if (user.getProfile() == null) {
-//                                deleteUser(onSuccessListener,
-//                                        error -> {
-//                                            onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-//                                            setUser(uuid, user, null, null);
-//                                        });
-//                                return;
-//                            }
-//                            deleteProfile(uuid,
-//                                    deleteProfileSuccess ->
-//                                            deleteUser(onSuccessListener,
-//                                                    error -> {
-//                                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-//                                                        setUser(uuid, user, null, null);
-//                                                    })
-//                                    , error -> {
-//                                        if (error instanceof StorageException) {
-//                                            deleteUser(onSuccessListener, onFailureListener);
-//                                            return;
-//                                        }
-//                                        onFailureListener.onFailure(new FirebaseException(DELETE_EXCEPTION));
-//                                        setUser(uuid, user, null, null);
-//                                    });
-//                        }, onFailureListener);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                onFailureListener.onFailure(databaseError.toException());
-//            }
-//        });
+        getUserFromSingleSnapShot(uuid,
+                user ->
+                        deleteUserData(uuid,
+                                deleteDB -> {
+                                    if (user.getProfile() == null) {
+                                        deleteUser(onSuccessListener,
+                                                error -> {
+                                                    onFailureListener.onFailure(error);
+                                                    setUser(uuid, user,
+                                                            Void -> {
+                                                            },
+                                                            transactionError -> {
+                                                            });
+                                                });
+                                        return;
+                                    }
+                                    deleteProfile(uuid,
+                                            deleteProfile ->
+                                                    deleteUser(onSuccessListener, onFailureListener),
+                                            error -> {
+                                                onFailureListener.onFailure(error);
+                                                setUser(uuid, user,
+                                                        Void -> {
+                                                        },
+                                                        transactionError -> {
+                                                        });
+                                            });
+                                },
+                                onFailureListener),
+                onFailureListener);
     }
 
     @Override
@@ -186,8 +171,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getUserInfoFromFacebook(@NonNull AccessToken accessToken, @NonNull GraphRequest.GraphJSONObjectCallback facebookUserDataCallback) {
-        mApiManager.getUserInfoFromFacebook(accessToken, facebookUserDataCallback);
+    public void getUserInfoFromFacebook(@NonNull AccessToken accessToken, @NonNull OnSuccessListener<User> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mApiManager.getUserInfoFromFacebook(accessToken, onSuccessListener, onFailureListener);
     }
 
     @Override
@@ -220,8 +205,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void findUserByQueryString(@NonNull String queryString, @NonNull String findValue, @NonNull ValueEventListener valueEventListener) {
-        mUserDataManager.findUserByQueryString(queryString, findValue, valueEventListener);
+    public void findUserByQueryString(@NonNull String queryString,
+                                      @NonNull String findValue,
+                                      @NonNull OnSuccessListener<String> onSuccessListener,
+                                      @NonNull OnFailureListener onFailureListener) {
+
+        mUserDataManager.findUserByQueryString(queryString, findValue, onSuccessListener, onFailureListener);
     }
 
     @Override
@@ -240,8 +229,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getProfile(@NonNull Uri uri, RequestListener<Bitmap> requestListener) {
-        mUserDataManager.getProfile(uri, requestListener);
+    public void getProfile(@NonNull Uri uri, @NonNull OnSuccessListener<Bitmap> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        mUserDataManager.getProfile(uri, onSuccessListener, onFailureListener);
     }
 
     @Override

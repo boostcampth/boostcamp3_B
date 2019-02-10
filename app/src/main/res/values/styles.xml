@@ -26,7 +26,10 @@
         <item name="android:fontFamily">@font/aller_bold</item>
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@android:color/black</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
     </style>
 
     <style name="tv.header">
