@@ -36,7 +36,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(context instanceof BottomNavActivity) {
+        if (context instanceof BottomNavActivity) {
             ((BottomNavActivity) Objects.requireNonNull(getActivity())).setViewPagerListener(this::getChattingList);
         }
     }

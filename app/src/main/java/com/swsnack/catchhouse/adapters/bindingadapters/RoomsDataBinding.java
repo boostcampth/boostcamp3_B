@@ -1,22 +1,46 @@
 package com.swsnack.catchhouse.adapters.bindingadapters;
 
 import android.databinding.BindingAdapter;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.RecyclerView;
+import android.widget.EditText;
 
+import com.swsnack.catchhouse.adapters.AddressBindingAdapter;
+import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.view.adapters.ImageSlideAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RoomsDataBinding {
 
-    // FIXME 특정케이스에 대한 items 세팅 함수인데 items보다는 더 명확한 이름으로 수정해주세요
-    @BindingAdapter("items")
+    @BindingAdapter("adapter")
     public static void setItems(ViewPager viewPager, List<Uri> items) {
-        ImageSlideAdapter adapter;
+        ImageSlideAdapter adapter = (ImageSlideAdapter) viewPager.getAdapter();
 
-        adapter = (ImageSlideAdapter) viewPager.getAdapter();
-        adapter.setUri(items);
-        adapter.notifyDataSetChanged();
+        if (adapter != null && items != null) {
+            adapter.setItem(items);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @BindingAdapter("adapter")
+    public static void setRecyclerItem(RecyclerView recyclerview, List<Address> items) {
+        AddressBindingAdapter adapter = (AddressBindingAdapter) recyclerview.getAdapter();
+
+        if (adapter != null && items != null) {
+            adapter.updateItems(items);
+        }
+    }
+
+    @BindingAdapter("address")
+    public static void setAddressText(EditText editText, Address address) {
+
+        if(editText != null && address != null) {
+            editText.setText(address.getAddress());
+        }
     }
 }

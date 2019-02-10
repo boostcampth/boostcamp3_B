@@ -2,6 +2,7 @@ package com.swsnack.catchhouse.data.userdata.api;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
