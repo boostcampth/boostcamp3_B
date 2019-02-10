@@ -85,7 +85,7 @@ public class RemoteChattingManager implements ChattingManager {
 
         db.orderByChild(DB_USER + "/" + uuid)
                 .equalTo(true)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<Chatting> chattingList = new ArrayList<>();

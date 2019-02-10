@@ -5,6 +5,7 @@ import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
 
 import java.util.List;
+import java.util.Map;
 
 public class ChattingDiffUtil extends BaseDiffUtil<Chatting> {
 
@@ -15,9 +16,9 @@ public class ChattingDiffUtil extends BaseDiffUtil<Chatting> {
     @Override
     public boolean areContentsTheSame(int i, int i1) {
         if (mOldList.get(i).getMessage() != null && mNewList.get(i1).getMessage() != null) {
-            Message[] oldTimeStamp = (Message[]) mOldList.get(i).getMessage().values().toArray();
-            Message[] newTimeStamp = (Message[]) mOldList.get(i).getMessage().values().toArray();
-            return oldTimeStamp[i].equals(newTimeStamp[i]);
+            Map<String, Message> oldMessages = mOldList.get(i).getMessage();
+            Map<String, Message> newMessages = mOldList.get(i1).getMessage();
+            return oldMessages.equals(newMessages);
         }
         return false;
     }

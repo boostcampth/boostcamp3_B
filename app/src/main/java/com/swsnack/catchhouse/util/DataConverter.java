@@ -2,8 +2,14 @@ package com.swsnack.catchhouse.util;
 
 import android.graphics.Bitmap;
 
+import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class DataConverter {
 
@@ -17,5 +23,23 @@ public class DataConverter {
         byte[] byteArrayFromBitmap = outputStream.toByteArray();
         outputStream.close();
         return byteArrayFromBitmap;
+    }
+
+    public static List<Message> sortByValueFromMapToList(Map<String, Message> map) {
+        List<String> keys = new ArrayList<>(map.keySet());
+        List<Message> messages = new ArrayList<>();
+
+        Collections.sort(keys, (key1, key2) -> {
+            Message message1 = map.get(key1);
+            Message message2 = map.get(key2);
+            return message1.getTimestamp().compareTo(message2.getTimestamp());
+        });
+
+        Collections.reverse(keys);
+
+        for (String key : keys) {
+            messages.add(map.get(key));
+        }
+        return messages;
     }
 }

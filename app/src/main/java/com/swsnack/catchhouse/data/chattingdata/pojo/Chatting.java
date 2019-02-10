@@ -9,7 +9,7 @@ public class Chatting {
     private String roomUid;
     private Map<String, Boolean> users;
     @Nullable
-    private Map<String,Message> message;
+    private Map<String, Message> message;
 
     public Chatting() {
     }
@@ -41,5 +41,13 @@ public class Chatting {
 
     public void setRoomUid(String roomUid) {
         this.roomUid = roomUid;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Chatting)) {
+            return false;
+        }
+        return this.roomUid.equals(((Chatting) obj).getRoomUid());
     }
 }

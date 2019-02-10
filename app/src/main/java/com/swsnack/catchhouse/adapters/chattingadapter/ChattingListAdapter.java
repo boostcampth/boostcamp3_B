@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 
 import com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter;
 import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
 import com.swsnack.catchhouse.databinding.ItemChattingListBinding;
+import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import java.util.List;
 public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, ChattingListAdapter.ChattingItemHolder> {
 
     private ChattingViewModel mChattingViewModel;
+    private List<Message> messages;
 
     public ChattingListAdapter(Context context, ChattingViewModel chattingViewModel) {
         super(context);
@@ -59,12 +62,26 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
         return viewHolder;
     }
 
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+
+        if (arrayList.get(position).getMessage() != null) {
+            ((ChattingItemHolder) holder).getBinding()
+                    .tvChattingListLastMessage.setText(
+                    DataConverter.sortByValueFromMapToList(arrayList.get(position).getMessage()).get(0).getContent());
+        }
+    }
+
     class ChattingItemHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
+
+        ItemChattingListBinding mBinding;
 
         LifecycleRegistry mLifeCycle = new LifecycleRegistry(this);
 
         ChattingItemHolder(@NonNull ItemChattingListBinding binding) {
             super(binding.getRoot());
+            mBinding = binding;
             mLifeCycle.markState(Lifecycle.State.INITIALIZED);
         }
 
@@ -80,6 +97,11 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
         @Override
         public Lifecycle getLifecycle() {
             return mLifeCycle;
+        }
+
+        @NonNull
+        public ItemChattingListBinding getBinding() {
+            return mBinding;
         }
     }
 
