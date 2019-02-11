@@ -130,18 +130,14 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     public void onSearchAddress() {
-        List<Address> addressList = mSearchResultList.getValue();
 
         getCompositeDisposable().add(searchAddress()
-                .subscribe(list -> {
-                            addressList.addAll(list);
-                            mSearchResultList.postValue(addressList);
-                        }, exception ->
+                .subscribe(list ->
+                                mSearchResultList.postValue(list)
+                        , exception ->
                                 mListener.onError("error")
                 )
         );
-
-        mSearchResultList.setValue(addressList);
     }
 
     public void onSelectAddress(int position) {
