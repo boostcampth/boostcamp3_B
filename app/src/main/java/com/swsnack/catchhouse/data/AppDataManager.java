@@ -119,8 +119,10 @@ public class AppDataManager implements DataManager {
                                                 error -> {
                                                     onFailureListener.onFailure(error);
                                                     setUser(uuid, user,
-                                                            Void -> {},
-                                                            transactionError -> {});
+                                                            Void -> {
+                                                            },
+                                                            transactionError -> {
+                                                            });
                                                 });
                                         return;
                                     }
@@ -130,8 +132,10 @@ public class AppDataManager implements DataManager {
                                             error -> {
                                                 onFailureListener.onFailure(error);
                                                 setUser(uuid, user,
-                                                        Void -> {},
-                                                        transactionError -> {});
+                                                        Void -> {
+                                                        },
+                                                        transactionError -> {
+                                                        });
                                             });
                                 },
                                 onFailureListener),
@@ -242,7 +246,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getChatMessage(@NonNull String chatRoomId, @NonNull ValueEventListener valueEventListener) {
+    public void getChatMessage(@NonNull String chatRoomId,
+                               @NonNull OnSuccessListener<Map<String, Message>> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+
+        mRemoteChattingManager.getChatMessage(chatRoomId, onSuccessListener, onFailureListener);
 
     }
 
@@ -252,7 +260,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setChatMessage(@NonNull Message message, @NonNull ValueEventListener valueEventListener) {
+    public void setChatMessage(@NonNull Message message,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+
+        mRemoteChattingManager.setChatMessage(message, onSuccessListener, onFailureListener);
 
     }
 

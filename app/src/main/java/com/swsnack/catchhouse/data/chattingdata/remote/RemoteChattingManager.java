@@ -1,10 +1,12 @@
 package com.swsnack.catchhouse.data.chattingdata.remote;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -15,12 +17,15 @@ import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.swsnack.catchhouse.Constant.Chatting.NO_CHAT_ROOM;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 
 public class RemoteChattingManager implements ChattingManager {
 
@@ -109,8 +114,41 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void getChatMessage(@NonNull String chatRoomId, @NonNull ValueEventListener valueEventListener) {
+    public void getChatMessage(@NonNull String chatRoomId,
+                               @NonNull OnSuccessListener<Map<String, Message>> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+        db.child(chatRoomId)
+                .child(MESSAGE)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        if (dataSnapshot.getValue() != null) {
+                            Map<String, Message> newMessage = new HashMap<>();
+                            newMessage.put(dataSnapshot.getKey(), dataSnapshot.getValue(Message.class));
+                            onSuccessListener.onSuccess(newMessage);
+                        }
+                    }
 
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        //채팅 메세지 수정기능을 추가하게 될 시, 구현
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                        //채팅 메세지 수정기능을 추가하게 될 시, 구현
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                        //채팅 메세지 수정기능을 추가하게 될 시, 구현
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        onFailureListener.onFailure(databaseError.toException());
+                    }
+                });
     }
 
     @Override
@@ -123,7 +161,9 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void setChatMessage(@NonNull Message message, @NonNull ValueEventListener valueEventListener) {
+    public void setChatMessage(@NonNull Message message,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
 
     }
 }

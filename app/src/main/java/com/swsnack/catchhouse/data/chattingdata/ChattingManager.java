@@ -9,6 +9,7 @@ import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ChattingManager {
 
@@ -16,9 +17,13 @@ public interface ChattingManager {
 
     void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    void getChatMessage(@NonNull String chatRoomId, @NonNull ValueEventListener valueEventListener);
+    void getChatMessage(@NonNull String chatRoomId,
+                        @NonNull OnSuccessListener<Map<String, Message>> onSuccessListener,
+                        @NonNull OnFailureListener onFailureListener);
 
     void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    void setChatMessage(@NonNull Message message, @NonNull ValueEventListener valueEventListener);
+    void setChatMessage(@NonNull Message message,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailureListener onFailureListener);
 }

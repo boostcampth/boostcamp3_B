@@ -25,6 +25,7 @@ import static com.swsnack.catchhouse.Constant.FacebookData.NAME;
 import static com.swsnack.catchhouse.Constant.FacebookData.VALUE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_PROFILE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
@@ -87,7 +88,8 @@ public class Constant {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({DB_USER, STORAGE_PROFILE, STORAGE_ROOM_IMAGE, NICK_NAME, CHATTING})
+    @StringDef({DB_USER, STORAGE_PROFILE, STORAGE_ROOM_IMAGE, NICK_NAME, CHATTING,
+            MESSAGE})
     public @interface FirebaseKey {
         String DB_USER = "users";
         String DB_ROOM = "rooms";
@@ -95,6 +97,7 @@ public class Constant {
         String STORAGE_ROOM_IMAGE = "roomImage";
         String NICK_NAME = "nickName";
         String CHATTING = "chatting";
+        String MESSAGE = "message";
     }
 
     @Retention(RetentionPolicy.SOURCE)

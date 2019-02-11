@@ -68,4 +68,11 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mViewModel.setDestinationUserData(null);
+        mViewModel.setChattingMessage(null);
+    }
 }
