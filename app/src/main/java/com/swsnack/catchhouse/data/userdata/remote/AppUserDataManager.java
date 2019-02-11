@@ -27,7 +27,7 @@ import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.util.DataConverter;
 
 import java.io.IOException;
@@ -36,16 +36,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.FAILED_UPDATE;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_ROOM;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_ROOM_IMAGE;
-import static com.swsnack.catchhouse.constants.Constants.PostException.NETWORK_ERROR;
+import static com.swsnack.catchhouse.Constant.ExceptionReason.DUPLICATE;
+import static com.swsnack.catchhouse.Constant.ExceptionReason.DUPLICATE_NICK_NAME;
+import static com.swsnack.catchhouse.Constant.ExceptionReason.FAILED_UPDATE;
+import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.NICK_NAME;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_PROFILE;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
+import static com.swsnack.catchhouse.Constant.PostException.NETWORK_ERROR;
 
 public class AppUserDataManager implements UserDataManager {
 

@@ -1,21 +1,20 @@
 package com.swsnack.catchhouse.viewmodel.postviewmodel;
 
-import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.v4.app.Fragment;
 
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.view.activities.PostListener;
+import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import io.reactivex.annotations.NonNull;
 
 public class PostViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private DataManager mDataManager;
-    private PostListener mListener;
+    private ViewModelListener mListener;
 
-    public PostViewModelFactory(DataManager dataManager, PostListener listener) {
+    public PostViewModelFactory(DataManager dataManager, ViewModelListener listener) {
         this.mDataManager = dataManager;
         this.mListener = listener;
     }

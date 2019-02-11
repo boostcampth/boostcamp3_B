@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ValueEventListener;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
+import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.util.List;
 

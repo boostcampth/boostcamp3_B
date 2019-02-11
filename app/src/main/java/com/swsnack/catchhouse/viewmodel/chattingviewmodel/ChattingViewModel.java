@@ -10,11 +10,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
-import com.swsnack.catchhouse.view.activities.BottomNavListener;
+import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +23,18 @@ import java.util.Map;
 public class ChattingViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
-    private BottomNavListener mListener;
+    private ViewModelListener mListener;
     private MutableLiveData<List<Chatting>> mChattingList;
+    private MutableLiveData<Chatting> mChattingMessage;
+    private MutableLiveData<User> mDestinationUserData;
 
-    ChattingViewModel(DataManager dataManager, BottomNavListener bottomNavListener) {
+    ChattingViewModel(DataManager dataManager, ViewModelListener bottomNavListener) {
         super(dataManager);
         this.mAppContext = AppApplication.getAppContext();
         this.mListener = bottomNavListener;
         this.mChattingList = new MutableLiveData<>();
+        this.mChattingMessage = new MutableLiveData<>();
+        this.mDestinationUserData = new MutableLiveData<>();
     }
 
     public void getChattingRoomList() {
@@ -82,5 +86,21 @@ public class ChattingViewModel extends ReactiveViewModel {
 
     public void setChattingList(List<Chatting> list) {
         this.mChattingList.setValue(list);
+    }
+
+    public LiveData<Chatting> getChattingMessage() {
+        return mChattingMessage;
+    }
+
+    public void setChattingMessage(Chatting chattingMessage) {
+        this.mChattingMessage.setValue(chattingMessage);
+    }
+
+    public LiveData<User> getDestinationUserData() {
+        return mDestinationUserData;
+    }
+
+    public void setDestinationUserData(User user) {
+        this.mDestinationUserData.setValue(user);
     }
 }

@@ -3,18 +3,13 @@ package com.swsnack.catchhouse.data.userdata;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
-import com.bumptech.glide.request.RequestListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 
 import java.util.List;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
-
 import java.util.Map;
 
 public interface UserDataManager {

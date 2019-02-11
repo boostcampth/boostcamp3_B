@@ -2,10 +2,9 @@ package com.swsnack.catchhouse.data.roomsdata.remote;
 
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapPOIItem;
-import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.roomsdata.RoomsDataSource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -33,7 +32,7 @@ public class RoomsRemoteData implements RoomsDataSource {
             if(arrayList.size() > 0) {
                 subscribe.onSuccess(arrayList);
             } else {
-                subscribe.onError(new RuntimeException(Constants.MSG_ERROR_GET_ADDRESS));
+                subscribe.onError(new RuntimeException(Constant.MSG_ERROR_GET_ADDRESS));
             }
         }));
     }

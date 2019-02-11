@@ -14,17 +14,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
+import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 
 public class AppDataManager implements DataManager {
 
@@ -66,6 +66,7 @@ public class AppDataManager implements DataManager {
                                  @Nullable Uri uri,
                                  @NonNull OnSuccessListener<Void> onSuccessListener,
                                  @NonNull OnFailureListener onFailureListener) {
+
         signUp(user.getEMail(), password,
                 signUpSuccess -> {
                     if (uri == null) {
@@ -99,6 +100,7 @@ public class AppDataManager implements DataManager {
                                     onFailureListener.onFailure(error);
                                 })
                 , onFailureListener);
+
     }
 
     @Override
@@ -117,10 +119,8 @@ public class AppDataManager implements DataManager {
                                                 error -> {
                                                     onFailureListener.onFailure(error);
                                                     setUser(uuid, user,
-                                                            Void -> {
-                                                            },
-                                                            transactionError -> {
-                                                            });
+                                                            Void -> {},
+                                                            transactionError -> {});
                                                 });
                                         return;
                                     }
@@ -130,10 +130,8 @@ public class AppDataManager implements DataManager {
                                             error -> {
                                                 onFailureListener.onFailure(error);
                                                 setUser(uuid, user,
-                                                        Void -> {
-                                                        },
-                                                        transactionError -> {
-                                                        });
+                                                        Void -> {},
+                                                        transactionError -> {});
                                             });
                                 },
                                 onFailureListener),

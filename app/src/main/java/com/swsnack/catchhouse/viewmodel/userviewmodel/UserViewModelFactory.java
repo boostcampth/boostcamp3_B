@@ -7,15 +7,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.view.activities.BottomNavListener;
+import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 public class UserViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private Application mApplication;
     private DataManager mDatamanager;
-    private BottomNavListener mListener;
+    private ViewModelListener mListener;
 
-    public UserViewModelFactory(@NonNull Application application, DataManager dataManager, BottomNavListener listener) {
+    public UserViewModelFactory(@NonNull Application application, DataManager dataManager, ViewModelListener listener) {
         this.mApplication = application;
         this.mDatamanager = dataManager;
         this.mListener = listener;

@@ -22,22 +22,22 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
-import com.swsnack.catchhouse.view.activities.BottomNavListener;
+import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import static com.swsnack.catchhouse.constants.Constants.UserStatus.DELETE_USER_SUCCESS;
-import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_IN_SUCCESS;
-import static com.swsnack.catchhouse.constants.Constants.UserStatus.SIGN_UP_SUCCESS;
-import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_NICK_NAME_SUCCESS;
-import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PASSWORD_SUCCESS;
-import static com.swsnack.catchhouse.constants.Constants.UserStatus.UPDATE_PROFILE_SUCCESS;
+import static com.swsnack.catchhouse.Constant.UserStatus.DELETE_USER_SUCCESS;
+import static com.swsnack.catchhouse.Constant.UserStatus.SIGN_IN_SUCCESS;
+import static com.swsnack.catchhouse.Constant.UserStatus.SIGN_UP_SUCCESS;
+import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_NICK_NAME_SUCCESS;
+import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_PASSWORD_SUCCESS;
+import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_PROFILE_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
-    private BottomNavListener mListener;
+    private ViewModelListener mListener;
     private Uri mProfileUri;
     private MutableLiveData<String> mGender;
     public MutableLiveData<Boolean> mIsSigned;
@@ -46,7 +46,7 @@ public class UserViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mNickName;
     public MutableLiveData<Bitmap> mProfile;
 
-    UserViewModel(Application application, DataManager dataManager, BottomNavListener listener) {
+    UserViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
         super(dataManager);
         this.mAppContext = application;
         this.mListener = listener;

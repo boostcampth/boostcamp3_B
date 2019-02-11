@@ -10,7 +10,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
-import com.swsnack.catchhouse.data.userdata.pojo.User;
+import com.swsnack.catchhouse.data.userdata.model.User;
 
 public interface DataManager extends APIManager, UserDataManager, ChattingManager {
 

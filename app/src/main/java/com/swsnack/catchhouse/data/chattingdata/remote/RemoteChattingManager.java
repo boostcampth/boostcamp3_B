@@ -11,16 +11,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.pojo.Message;
+import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.swsnack.catchhouse.constants.Constants.Chatting.NO_CHAT_ROOM;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.CHATTING;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
+import static com.swsnack.catchhouse.Constant.Chatting.NO_CHAT_ROOM;
+import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
 
 public class RemoteChattingManager implements ChattingManager {
 
@@ -85,7 +85,7 @@ public class RemoteChattingManager implements ChattingManager {
 
         db.orderByChild(DB_USER + "/" + uuid)
                 .equalTo(true)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<Chatting> chattingList = new ArrayList<>();
@@ -93,9 +93,10 @@ public class RemoteChattingManager implements ChattingManager {
                             onSuccessListener.onSuccess(chattingList);
                             return;
                         }
-
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            chattingList.add(snapshot.getValue(Chatting.class));
+                            Chatting chatting = snapshot.getValue(Chatting.class);
+                            chatting.setRoomUid(snapshot.getKey());
+                            chattingList.add(chatting);
                         }
                         onSuccessListener.onSuccess(chattingList);
                     }
