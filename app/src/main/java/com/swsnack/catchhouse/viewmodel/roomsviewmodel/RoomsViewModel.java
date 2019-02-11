@@ -145,7 +145,9 @@ public class RoomsViewModel extends ReactiveViewModel {
             List<Address> addressList = mSearchResultList.getValue();
 
             mAddress.setValue(addressList.get(position));
+
             addressList.clear();
+            mKeyword.setValue("");
             mSearchResultList.setValue(addressList);
         }
     }
