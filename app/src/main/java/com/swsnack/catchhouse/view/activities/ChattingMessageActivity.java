@@ -14,8 +14,6 @@ import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
 
-import java.util.List;
-
 import static com.swsnack.catchhouse.constants.Constants.ParcelableData.CHATTING_DATA;
 import static com.swsnack.catchhouse.constants.Constants.ParcelableData.USER_DATA;
 
@@ -56,10 +54,10 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
         if (getIntent().getParcelableExtra(USER_DATA) != null
                 && getIntent().getSerializableExtra(CHATTING_DATA) != null) {
             mViewModel.setChattingMessage((Chatting) getIntent().getSerializableExtra(CHATTING_DATA));
-            mViewModel.setmDestinationUserData(getIntent().getParcelableExtra(USER_DATA));
+            mViewModel.setDestinationUserData(getIntent().getParcelableExtra(USER_DATA));
         }
 
-        ChattingMessageAdapter messageAdapter = new ChattingMessageAdapter(getApplicationContext());
+        ChattingMessageAdapter messageAdapter = new ChattingMessageAdapter(getApplicationContext(), mViewModel);
         getBinding().rvChattingMessage.setAdapter(messageAdapter);
         getBinding().rvChattingMessage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
 

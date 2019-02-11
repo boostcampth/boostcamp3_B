@@ -15,15 +15,18 @@ import com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.databinding.ItemChattingMessageBinding;
+import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 
 import java.util.List;
 
 public class ChattingMessageAdapter extends BaseRecyclerViewAdapter<Message, ChattingMessageItemHolder> {
 
     private User mUserData;
+    private ChattingViewModel mChattingViewModel;
 
-    public ChattingMessageAdapter(Context context) {
+    public ChattingMessageAdapter(Context context, ChattingViewModel chattingViewModel) {
         super(context);
+        this.mChattingViewModel = chattingViewModel;
     }
 
     @Override
@@ -60,6 +63,8 @@ public class ChattingMessageAdapter extends BaseRecyclerViewAdapter<Message, Cha
                 DataBindingUtil.inflate(LayoutInflater.from(viewGroup.getContext()), R.layout.item_chatting_message, viewGroup, false);
 
         ChattingMessageItemHolder viewHolder = new ChattingMessageItemHolder(binding);
+        binding.setLifecycleOwner(viewHolder);
+        binding.setHandler(mChattingViewModel);
 
         return viewHolder;
     }

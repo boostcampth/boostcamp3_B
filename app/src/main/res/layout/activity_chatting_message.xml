@@ -39,8 +39,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                bind:setChattingMessage="@{handler.mChattingMessage}"
-                bind:setUserData="@{handler.mDestinationUserData}">
+                bind:setChattingMessage="@{handler.chattingMessage}"
+                bind:setUserData="@{handler.getDestinationUserData}">
 
             </android.support.v7.widget.RecyclerView>
 

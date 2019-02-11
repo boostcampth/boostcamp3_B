@@ -25,8 +25,8 @@ public class ChattingViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private ViewModelListener mListener;
     private MutableLiveData<List<Chatting>> mChattingList;
-    public MutableLiveData<Chatting> mChattingMessage;
-    public MutableLiveData<User> mDestinationUserData;
+    private MutableLiveData<Chatting> mChattingMessage;
+    private MutableLiveData<User> mDestinationUserData;
 
     ChattingViewModel(DataManager dataManager, ViewModelListener viewModelListener) {
         super(dataManager);
@@ -96,11 +96,11 @@ public class ChattingViewModel extends ReactiveViewModel {
         this.mChattingMessage.setValue(chattingMessage);
     }
 
-    public LiveData<User> getmDestinationUserData() {
+    public LiveData<User> getDestinationUserData() {
         return mDestinationUserData;
     }
 
-    public void setmDestinationUserData(User user) {
+    public void setDestinationUserData(User user) {
         this.mDestinationUserData.setValue(user);
     }
 }
