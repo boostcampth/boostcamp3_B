@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.activities;
+package com.swsnack.catchhouse.view.activitity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -20,8 +20,8 @@ import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
-import com.swsnack.catchhouse.view.adapters.ImageSlideAdapter;
-import com.swsnack.catchhouse.view.fragments.AddressSearchFragment;
+import com.swsnack.catchhouse.adapter.slideadapter.ImageSlideAdapter;
+import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 

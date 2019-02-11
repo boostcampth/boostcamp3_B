@@ -17,10 +17,10 @@ import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.swsnack.catchhouse.constants.Constants.Chatting.NO_CHAT_ROOM;
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.CHATTING;
-import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
+import static com.swsnack.catchhouse.Constant.Chatting.NO_CHAT_ROOM;
+import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
 
 public class RemoteChattingManager implements ChattingManager {
 

@@ -1,18 +1,18 @@
-package com.swsnack.catchhouse.adapters;
+package com.swsnack.catchhouse.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.databinding.ItemMapAddressBinding;
 
-public class AddressBindingAdapter extends com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter<Address, AddressBindingAdapter.AddressViewHolder> {
+public class AddressBindingAdapter extends com.swsnack.catchhouse.adapter.BaseRecyclerViewAdapter<Address, AddressBindingAdapter.AddressViewHolder> {
 
     public AddressBindingAdapter(Context context) {
         super(context);
@@ -25,8 +25,9 @@ public class AddressBindingAdapter extends com.swsnack.catchhouse.adapters.BaseR
     }
 
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_map_address, parent, false);
         return new AddressViewHolder(view);
     }

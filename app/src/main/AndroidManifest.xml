@@ -32,20 +32,20 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activities.BottomNavActivity">
+        <activity android:name=".view.activitity.BottomNavActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.swsnack.catchhouse.view.activities.WriteActivity" />
-        <activity android:name="com.swsnack.catchhouse.view.activities.PostActivity" />
+        <activity android:name="com.swsnack.catchhouse.view.activitity.WriteActivity" />
+        <activity android:name="com.swsnack.catchhouse.view.activitity.PostActivity" />
         <activity
-            android:name=".view.activities.FilterPopUpActivity"
+            android:name=".view.activitity.FilterPopUpActivity"
             android:screenOrientation="unspecified"
             android:theme="@style/popupTheme" />
-        <activity android:name=".view.activities.ChattingMessageActivity"/>
+        <activity android:name=".view.activitity.ChattingMessageActivity"/>
     </application>
 
 </manifest>

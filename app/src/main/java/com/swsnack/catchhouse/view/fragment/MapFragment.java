@@ -1,15 +1,11 @@
-package com.swsnack.catchhouse.view.fragments;
+package com.swsnack.catchhouse.view.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,22 +16,16 @@ import android.widget.Toast;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapters.AddressBindingAdapter;
-import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
+import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.databinding.FragmentMapBinding;
-import com.swsnack.catchhouse.databinding.ItemMapAddressBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.view.SimpleDividerItemDecoration;
-import com.swsnack.catchhouse.view.activities.FilterPopUpActivity;
-import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
+import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
+import com.swsnack.catchhouse.view.activitity.FilterPopUpActivity;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -104,7 +94,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         }));
         getBinding().btFilter.setOnClickListener(__ -> {
             Intent intent = new Intent(getContext(), FilterPopUpActivity.class);
-            startActivityForResult(intent, Constants.FILTER);
+            startActivityForResult(intent, Constant.FILTER);
         });
 
     }
@@ -133,7 +123,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Constants.FILTER) {
+        if (resultCode == Constant.FILTER) {
             // TODO: 2019-02-02 팝업에 대한 result 처리 추가 필요
         }
 

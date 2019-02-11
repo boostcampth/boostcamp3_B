@@ -29,7 +29,9 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
         super.onViewCreated(view, savedInstanceState);
 
         if (getActivity() != null) {
-            mViewModel = ViewModelProviders.of(getActivity()).get(getViewModelClass());
+            if (getViewModelClass() != null) {
+                mViewModel = ViewModelProviders.of(getActivity()).get(getViewModelClass());
+            }
         } else {
             throw new RuntimeException(this.getClass().getName() + "has null activity");
         }

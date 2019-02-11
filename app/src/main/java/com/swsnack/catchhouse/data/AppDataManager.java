@@ -24,7 +24,7 @@ import com.swsnack.catchhouse.data.userdata.model.User;
 import java.util.List;
 import java.util.Map;
 
-import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 
 public class AppDataManager implements DataManager {
 

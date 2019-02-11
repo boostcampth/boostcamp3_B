@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.fragments;
+package com.swsnack.catchhouse.view.fragment;
 
 import android.arch.lifecycle.ViewModel;
 import android.os.Bundle;
@@ -13,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentSignBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 public class SignFragment extends BaseFragment<FragmentSignBinding, ViewModel> {
 

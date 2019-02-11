@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.activities;
+package com.swsnack.catchhouse.view.activitity;
 
 public interface OnViewPagerChangedListener {
     void onViewPagerChanged();

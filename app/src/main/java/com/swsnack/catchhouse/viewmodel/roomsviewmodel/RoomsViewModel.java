@@ -16,8 +16,8 @@ import com.swsnack.catchhouse.data.asynctask.ConvertImageTask;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.util.DateCalculator;
-import com.swsnack.catchhouse.view.activities.WriteListener;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
+import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -26,17 +26,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.swsnack.catchhouse.constants.Constants.PostException.EMPTY_PRICE_FIELD;
-import static com.swsnack.catchhouse.constants.Constants.PostException.EMPTY_ROOM_IMAGE;
-import static com.swsnack.catchhouse.constants.Constants.PostException.EMPTY_TITLE_FIELD;
-import static com.swsnack.catchhouse.constants.Constants.PostException.NOT_SELECTION_DATE;
+import static com.swsnack.catchhouse.Constant.PostException.EMPTY_PRICE_FIELD;
+import static com.swsnack.catchhouse.Constant.PostException.EMPTY_ROOM_IMAGE;
+import static com.swsnack.catchhouse.Constant.PostException.EMPTY_TITLE_FIELD;
+import static com.swsnack.catchhouse.Constant.PostException.NOT_SELECTION_DATE;
 
 public class RoomsViewModel extends ReactiveViewModel {
 
     private static final String TAG = RoomsViewModel.class.getSimpleName();
 
     private Application mAppContext;
-    private WriteListener mListener;
+    private ViewModelListener mListener;
     private DataManager mDataManager;
 
     public final MutableLiveData<List<Address>> mSearchResultList = new MutableLiveData<>();
@@ -56,7 +56,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
     public final MutableLiveData<String> mContent = new MutableLiveData<>();
 
-    RoomsViewModel(Application application, DataManager dataManager, WriteListener listener) {
+    RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
         super(dataManager);
         mAppContext = application;
         mListener = listener;

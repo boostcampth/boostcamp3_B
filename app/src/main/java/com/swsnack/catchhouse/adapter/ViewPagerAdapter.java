@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.adapters;
+package com.swsnack.catchhouse.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

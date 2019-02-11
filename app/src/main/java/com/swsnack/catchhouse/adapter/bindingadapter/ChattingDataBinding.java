@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.adapters.bindingadapters;
+package com.swsnack.catchhouse.adapter.bindingadapter;
 
 import android.databinding.BindingAdapter;
 import android.net.Uri;
@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.AppApplication;
-import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
-import com.swsnack.catchhouse.adapters.chattingadapter.ChattingMessageAdapter;
+import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListAdapter;
+import com.swsnack.catchhouse.adapter.chattingadapter.ChattingMessageAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.data.userdata.model.User;

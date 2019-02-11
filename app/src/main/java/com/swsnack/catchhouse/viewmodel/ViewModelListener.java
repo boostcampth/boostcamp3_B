@@ -1,6 +1,6 @@
-package com.swsnack.catchhouse.view.activities;
+package com.swsnack.catchhouse.viewmodel;
 
-public interface BottomNavListener {
+public interface ViewModelListener {
 
     void onError(String errorMessage);
 
@@ -9,9 +9,5 @@ public interface BottomNavListener {
     void isWorking();
 
     void isFinished();
-
-    void openMapFragment();
-
-    void openWriteActivity();
 
 }

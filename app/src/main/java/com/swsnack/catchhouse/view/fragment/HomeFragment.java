@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.fragments;
+package com.swsnack.catchhouse.view.fragment;
 
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
@@ -11,8 +11,8 @@ import android.view.View;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentHomeBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.view.activities.BottomNavActivity;
-import com.swsnack.catchhouse.view.activities.WriteActivity;
+import com.swsnack.catchhouse.view.activitity.BottomNavActivity;
+import com.swsnack.catchhouse.view.activitity.WriteActivity;
 
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, ViewModel>  {
 
@@ -41,9 +41,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, ViewModel>  
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getBinding().tvHomePost.setOnClickListener(v -> {
-            getActivity().startActivity(new Intent(getContext(), WriteActivity.class));
-        });
+        getBinding().tvHomePost.setOnClickListener(v -> getActivity().startActivity(new Intent(getContext(), WriteActivity.class)));
         getBinding().tvHomeSearch.setOnClickListener(v -> mListener.openMapFragment());
     }
 

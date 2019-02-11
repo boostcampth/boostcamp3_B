@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.adapters.chattingadapter;
+package com.swsnack.catchhouse.adapter.chattingadapter;
 
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;

@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.fragments;
+package com.swsnack.catchhouse.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,21 +13,21 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListItemHolder;
-import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
+import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListItemHolder;
+import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.databinding.FragmentChatListBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.view.activities.BottomNavActivity;
-import com.swsnack.catchhouse.view.activities.ChattingMessageActivity;
+import com.swsnack.catchhouse.view.activitity.BottomNavActivity;
+import com.swsnack.catchhouse.view.activitity.ChattingMessageActivity;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.swsnack.catchhouse.constants.Constants.ParcelableData.CHATTING_DATA;
-import static com.swsnack.catchhouse.constants.Constants.ParcelableData.USER_DATA;
+import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
+import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
 
 public class ChatListFragment extends BaseFragment<FragmentChatListBinding, ChattingViewModel> {
 

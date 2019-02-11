@@ -1,6 +1,6 @@
-package com.swsnack.catchhouse.adapters.chattingadapter;
+package com.swsnack.catchhouse.adapter.chattingadapter;
 
-import com.swsnack.catchhouse.adapters.BaseDiffUtil;
+import com.swsnack.catchhouse.adapter.BaseDiffUtil;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 

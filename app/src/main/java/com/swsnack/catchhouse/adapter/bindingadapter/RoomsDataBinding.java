@@ -1,19 +1,16 @@
-package com.swsnack.catchhouse.adapters.bindingadapters;
+package com.swsnack.catchhouse.adapter.bindingadapter;
 
 import android.databinding.BindingAdapter;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 
-import com.swsnack.catchhouse.adapters.AddressBindingAdapter;
+import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
-import com.swsnack.catchhouse.view.adapters.ImageSlideAdapter;
+import com.swsnack.catchhouse.adapter.slideadapter.ImageSlideAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class RoomsDataBinding {
 

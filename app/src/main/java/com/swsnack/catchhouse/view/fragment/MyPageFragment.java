@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.fragments;
+package com.swsnack.catchhouse.view.fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -20,9 +20,9 @@ import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
-import static com.swsnack.catchhouse.constants.Constants.GALLERY;
-import static com.swsnack.catchhouse.constants.Constants.SignInMethod.FACEBOOK;
-import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
+import static com.swsnack.catchhouse.Constant.GALLERY;
+import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
+import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
 

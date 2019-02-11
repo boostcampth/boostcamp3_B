@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.activities;
+package com.swsnack.catchhouse.view.activitity;
 
 
 import android.arch.lifecycle.ViewModelProvider;
@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.databinding.ActivityFilterPopUpBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 
@@ -38,7 +38,7 @@ public class FilterPopUpActivity extends BaseActivity<ActivityFilterPopUpBinding
         // TODO: 2019-02-02 팝업에 대한 result 처리 추가 필요
         Intent intent = new Intent();
         intent.putExtra("data1","dd");
-        setResult(Constants.FILTER, intent);
+        setResult(Constant.FILTER, intent);
         Log.d("csh","onStop");
     }
 

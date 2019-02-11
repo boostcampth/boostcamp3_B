@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.activities;
+package com.swsnack.catchhouse.view.activitity;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;

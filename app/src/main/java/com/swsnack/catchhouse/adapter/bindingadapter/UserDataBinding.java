@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.adapters.bindingadapters;
+package com.swsnack.catchhouse.adapter.bindingadapter;
 
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;

@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.adapters.chattingadapter;
+package com.swsnack.catchhouse.adapter.chattingadapter;
 
 import android.arch.lifecycle.Lifecycle;
 import android.arch.lifecycle.LifecycleOwner;
@@ -13,7 +13,7 @@ public class ChattingMessageItemHolder extends RecyclerView.ViewHolder implement
     private ItemChattingMessageBinding mBinding;
     private LifecycleRegistry mLifeCycle = new LifecycleRegistry(this);
 
-    public ChattingMessageItemHolder(@NonNull ItemChattingMessageBinding binding) {
+    ChattingMessageItemHolder(@NonNull ItemChattingMessageBinding binding) {
         super(binding.getRoot());
         this.mBinding = binding;
         this.mLifeCycle.markState(Lifecycle.State.INITIALIZED);

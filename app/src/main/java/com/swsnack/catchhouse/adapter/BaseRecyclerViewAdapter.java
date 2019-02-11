@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.adapters;
+package com.swsnack.catchhouse.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

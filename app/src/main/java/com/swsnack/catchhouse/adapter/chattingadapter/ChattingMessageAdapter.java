@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.adapters.chattingadapter;
+package com.swsnack.catchhouse.adapter.chattingadapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter;
+import com.swsnack.catchhouse.adapter.BaseRecyclerViewAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.databinding.ItemChattingMessageBinding;

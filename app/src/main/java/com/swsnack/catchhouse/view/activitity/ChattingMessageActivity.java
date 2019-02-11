@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.activities;
+package com.swsnack.catchhouse.view.activitity;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.widget.LinearLayout;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapters.chattingadapter.ChattingMessageAdapter;
+import com.swsnack.catchhouse.adapter.chattingadapter.ChattingMessageAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.databinding.ActivityChattingMessageBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
@@ -14,8 +14,8 @@ import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
 
-import static com.swsnack.catchhouse.constants.Constants.ParcelableData.CHATTING_DATA;
-import static com.swsnack.catchhouse.constants.Constants.ParcelableData.USER_DATA;
+import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
+import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
 
 public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessageBinding> implements ViewModelListener {
 

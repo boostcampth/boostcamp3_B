@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view.adapters;
+package com.swsnack.catchhouse.adapter.slideadapter;
 
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -48,7 +48,7 @@ public class ImageSlideAdapter extends PagerAdapter {
                 DataBindingUtil.bind(inflater.inflate(R.layout.item_viewpager, container, false));
 
         if(binding != null) {
-            binding.ivVpDelete.setOnClickListener(__ ->
+            binding.ivVpImage.setOnClickListener(__ ->
                     mViewModel.onClickDeleteButton(position)
             );
 
@@ -60,7 +60,6 @@ public class ImageSlideAdapter extends PagerAdapter {
 
                 String text = (position + 1) + "/" + getCount() + "";
                 binding.tvVpNumber.setText(text);
-
                 container.addView(binding.getRoot());
 
             } catch (Exception e) {

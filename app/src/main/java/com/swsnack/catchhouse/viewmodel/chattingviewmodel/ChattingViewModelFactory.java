@@ -9,13 +9,13 @@ import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
-import com.swsnack.catchhouse.view.activities.BottomNavListener;
+import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 public class ChattingViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private BottomNavListener mBottomNavListener;
+    private ViewModelListener mBottomNavListener;
 
-    public ChattingViewModelFactory(BottomNavListener bottomNavListener) {
+    public ChattingViewModelFactory(ViewModelListener bottomNavListener) {
         this.mBottomNavListener = bottomNavListener;
     }
 

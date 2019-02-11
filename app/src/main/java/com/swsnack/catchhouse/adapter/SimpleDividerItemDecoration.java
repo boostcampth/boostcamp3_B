@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.view;
+package com.swsnack.catchhouse.adapter;
 
 import android.content.Context;
 import android.graphics.Canvas;

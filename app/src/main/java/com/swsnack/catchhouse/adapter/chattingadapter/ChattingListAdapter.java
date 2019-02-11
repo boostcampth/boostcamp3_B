@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.adapters.chattingadapter;
+package com.swsnack.catchhouse.adapter.chattingadapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter;
+import com.swsnack.catchhouse.adapter.BaseRecyclerViewAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.databinding.ItemChattingListBinding;

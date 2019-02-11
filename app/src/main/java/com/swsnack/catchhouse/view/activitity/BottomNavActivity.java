@@ -1,6 +1,5 @@
-package com.swsnack.catchhouse.view.activities;
+package com.swsnack.catchhouse.view.activitity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,8 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapters.ViewPagerAdapter;
-import com.swsnack.catchhouse.constants.Constants;
+import com.swsnack.catchhouse.adapter.ViewPagerAdapter;
+import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
@@ -18,13 +17,13 @@ import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
-import com.swsnack.catchhouse.view.fragments.ChatListFragment;
-import com.swsnack.catchhouse.view.fragments.HomeFragment;
-import com.swsnack.catchhouse.view.fragments.HomeFragmentListener;
-import com.swsnack.catchhouse.view.fragments.MapFragment;
-import com.swsnack.catchhouse.view.fragments.MyPageFragment;
-import com.swsnack.catchhouse.view.fragments.SignFragment;
-import com.swsnack.catchhouse.view.fragments.SignInFragment;
+import com.swsnack.catchhouse.view.fragment.ChatListFragment;
+import com.swsnack.catchhouse.view.fragment.HomeFragment;
+import com.swsnack.catchhouse.view.fragment.HomeFragmentListener;
+import com.swsnack.catchhouse.view.fragment.MapFragment;
+import com.swsnack.catchhouse.view.fragment.MyPageFragment;
+import com.swsnack.catchhouse.view.fragment.SignFragment;
+import com.swsnack.catchhouse.view.fragment.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
@@ -53,24 +52,24 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     public void onSuccess(String success) {
         super.onSuccess(success);
         switch (success) {
-            case Constants.UserStatus.SIGN_UP_SUCCESS:
+            case Constant.UserStatus.SIGN_UP_SUCCESS:
                 mFragmentManager.popBackStack();
                 break;
-            case Constants.UserStatus.SIGN_IN_SUCCESS:
+            case Constant.UserStatus.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new MyPageFragment(), MyPageFragment.class.getName()).commit();
                 break;
-            case Constants.UserStatus.DELETE_USER_SUCCESS:
+            case Constant.UserStatus.DELETE_USER_SUCCESS:
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                 break;
-            case Constants.UserStatus.UPDATE_PASSWORD_SUCCESS:
+            case Constant.UserStatus.UPDATE_PASSWORD_SUCCESS:
                 showSnackMessage(getString(R.string.snack_re_sign_in));
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                 break;
-            case Constants.UserStatus.UPDATE_PROFILE_SUCCESS:
+            case Constant.UserStatus.UPDATE_PROFILE_SUCCESS:
                 showSnackMessage(getString(R.string.snack_update_profile_success));
                 break;
-            case Constants.UserStatus.UPDATE_NICK_NAME_SUCCESS:
+            case Constant.UserStatus.UPDATE_NICK_NAME_SUCCESS:
                 showSnackMessage(getString(R.string.snack_change_nick_name_success));
                 break;
         }
