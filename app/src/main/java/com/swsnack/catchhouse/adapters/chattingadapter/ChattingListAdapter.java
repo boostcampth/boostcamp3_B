@@ -61,7 +61,6 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
 
         ItemChattingListBinding binding = ((ChattingListItemHolder) holder).getBinding();
         Toast.makeText(binding.getRoot().getContext(), "" + position, Toast.LENGTH_SHORT).show();
-        Log.d("리스트", "position : " + position + ",  message : " + arrayList.get(position).getMessage());
 
         binding.setChattingData(arrayList.get(position));
         mChattingViewModel.getUser(position,
@@ -71,6 +70,8 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
         if (arrayList.get(position).getMessage() != null) {
             binding.tvChattingListLastMessage.setText(
                     DataConverter.sortByValueFromMapToList(arrayList.get(position).getMessage()).get(0).getContent());
+        } else {
+            binding.tvChattingListLastMessage.setText("");
         }
     }
 
