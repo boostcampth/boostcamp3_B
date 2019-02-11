@@ -56,13 +56,10 @@ public class SearchViewModel extends ReactiveViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(__ -> mListener.isWorking())
                 .doAfterTerminate(() -> mListener.isFinished())
-                .map(tMapPOIItems -> {
-                    List<Address> tempList = new ArrayList<>();
-                    for (int i = 0; i < tMapPOIItems.size(); i++) {
-                        TMapPOIItem item = tMapPOIItems.get(i);
-                        tempList.add(new Address(item.name, item.getPOIAddress().replace("null", ""), item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()));
-                    }
-                    return tempList;
-                });
+                .toObservable()
+                .flatMap(Observable::fromIterable)
+                .map(item -> new Address(item.name, item.getPOIAddress().replace("null", ""), item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()))
+                .toList();
     }
+
 }

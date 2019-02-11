@@ -29,12 +29,13 @@ public class RoomsRemoteData implements RoomsDataSource {
     @NonNull
     @Override
     public Single<List<TMapPOIItem>> getAddressList(String keyword) {
-        return Single.defer(() -> Single.create(subscribe -> mTMapData.findAllPOI(keyword, arrayList -> {
+        return Single.create(subscribe -> mTMapData.findAllPOI(keyword, arrayList -> {
             if(arrayList.size() > 0) {
                 subscribe.onSuccess(arrayList);
             } else {
                 subscribe.onError(new RuntimeException(Constants.MSG_ERROR_GET_ADDRESS));
             }
-        })));
+        }));
     }
 }
+

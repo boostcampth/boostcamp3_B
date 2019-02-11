@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ import io.reactivex.disposables.CompositeDisposable;
 public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewModel> {
     public FragmentManager mFragmentManager;
     private TMapView mTMapView;
+    private CompositeDisposable mDisposable;
 
     @Override
     protected int getLayout() {
@@ -65,37 +67,33 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         super.onViewCreated(view, savedInstanceState);
 
         mFragmentManager = getActivity().getSupportFragmentManager();
-
+        mDisposable = new CompositeDisposable();
         getBinding().setHandler(getViewModel());
         getBinding().setLifecycleOwner(getActivity());
         getBinding().rvMapAddress.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         getBinding().rvMapAddress.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         AddressBindingAdapter adapter = new AddressBindingAdapter(getContext());
-        getBinding().rvMapAddress.setAdapter(adapter);
-        //FIXME NPE 원인입니다. 수정 부탁드려요
-//        adapter.updateItems(getViewModel().getAddressList().getValue());
-        //adapter.updateItems(getViewModel().getAddressList().getValue());
 
         /* Tmap 연동 */
         mTMapView = new TMapView(getContext());
         mTMapView.setSKTMapApiKey(getResources().getString(R.string.tmap_api_key));
         ConstraintLayout mapLayout = getBinding().clMap;
         mapLayout.addView(mTMapView);
-
+        getBinding().rvMapAddress.setAdapter(adapter);
         getBinding().rvMapAddress.bringToFront();
 
-        getBinding().etMapSearch.setOnKeyListener((v, keyCode, event) -> {
-            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                getViewModel().searchAddress()
+        getBinding().etMapSearch.setOnEditorActionListener((v, id, event) -> {
+            if (v.getId() == R.id.et_map_search && id == EditorInfo.IME_ACTION_DONE) {
+                mDisposable.add(getViewModel().searchAddress()
                         .subscribe(addressList -> {
                             adapter.updateItems(addressList);
                             getBinding().rvMapAddress.setVisibility(View.VISIBLE);
                         }, exception -> {
                             Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
                             getBinding().rvMapAddress.setVisibility(View.GONE);
-                        });
-                return true;
+                        }));
             }
+
             return false;
         });
 
@@ -125,6 +123,11 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         mTMapView.addMarkerItem("1", markerItem);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDisposable.dispose();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
