@@ -61,95 +61,48 @@ public class Room {
         return price;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
     public String getFrom() {
         return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
     }
 
     public String getTo() {
         return to;
     }
 
-    public void setTo(String to) {
-        this.to = to;
-    }
-
     public String getTitle() {
         return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public List<String> getImages() {
         return images;
-    }
-
-    public void setImages(List<String> images) {
-        this.images = images;
     }
 
     public String getUUID() {
         return UUID;
     }
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
-    }
-
     public Address getAddress() {
         return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
     }
 
     public boolean isOptionStandard() {
         return optionStandard;
     }
 
-    public void setOptionStandard(boolean optionStandard) {
-        this.optionStandard = optionStandard;
-    }
-
     public boolean isOptionGender() {
         return optionGender;
-    }
-
-    public void setOptionGender(boolean optionGender) {
-        this.optionGender = optionGender;
     }
 
     public boolean isOptionPet() {
         return optionPet;
     }
 
-    public void setOptionPet(boolean optionPet) {
-        this.optionPet = optionPet;
-    }
-
     public boolean isOptionSmoking() {
         return optionSmoking;
     }
 
-    public void setOptionSmoking(boolean optionSmoking) {
-        this.optionSmoking = optionSmoking;
-    }
 }
