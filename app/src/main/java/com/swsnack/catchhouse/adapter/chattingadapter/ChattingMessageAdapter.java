@@ -65,6 +65,7 @@ public class ChattingMessageAdapter extends BaseRecyclerViewAdapter<Message, Cha
         ChattingMessageItemHolder viewHolder = new ChattingMessageItemHolder(binding);
         binding.setLifecycleOwner(viewHolder);
         binding.setHandler(mChattingViewModel);
+        binding.setUserData(mUserData);
 
         return viewHolder;
     }

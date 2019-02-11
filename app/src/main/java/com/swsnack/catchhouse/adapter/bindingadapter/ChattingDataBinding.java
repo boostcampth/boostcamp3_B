@@ -20,13 +20,13 @@ import java.util.List;
 
 public class ChattingDataBinding {
 
-    @BindingAdapter({"setList"})
+    @BindingAdapter({"setChattingList"})
     public static void setList(RecyclerView recyclerView, List<Chatting> chattingList) {
         ChattingListAdapter chattingListAdapter = (ChattingListAdapter) recyclerView.getAdapter();
         chattingListAdapter.setList(chattingList);
     }
 
-    @BindingAdapter({"setChattingListProfile"})
+    @BindingAdapter({"setChattingUserProfile"})
     public static void setProfile(ImageView imageView, User user) {
         if (user == null) {
             return;
@@ -46,8 +46,6 @@ public class ChattingDataBinding {
 
         if (chattingMessages.getMessage() != null) {
             ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
-            List<Message> messages = DataConverter.sortByValueFromMapToList(chattingMessages.getMessage());
-            Log.d("메세지", "setMessage: " + messages);
             chattingMessageAdapter.setList(DataConverter.sortByValueFromMapToList(chattingMessages.getMessage()));
         }
     }
