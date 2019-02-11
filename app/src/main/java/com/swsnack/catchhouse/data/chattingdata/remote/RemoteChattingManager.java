@@ -1,12 +1,10 @@
 package com.swsnack.catchhouse.data.chattingdata.remote;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,9 +15,7 @@ import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.swsnack.catchhouse.Constant.Chatting.NO_CHAT_ROOM;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
@@ -90,7 +86,7 @@ public class RemoteChattingManager implements ChattingManager {
 
         db.orderByChild(DB_USER + "/" + uuid)
                 .equalTo(true)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         List<Chatting> chattingList = new ArrayList<>();
@@ -115,33 +111,25 @@ public class RemoteChattingManager implements ChattingManager {
 
     @Override
     public void getChatMessage(@NonNull String chatRoomId,
-                               @NonNull OnSuccessListener<Map<String, Message>> onSuccessListener,
+                               @NonNull OnSuccessListener<List<Message>> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
+
         db.child(chatRoomId)
                 .child(MESSAGE)
-                .addChildEventListener(new ChildEventListener() {
+                .addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        if (dataSnapshot.getValue() != null) {
-                            Map<String, Message> newMessage = new HashMap<>();
-                            newMessage.put(dataSnapshot.getKey(), dataSnapshot.getValue(Message.class));
-                            onSuccessListener.onSuccess(newMessage);
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        List<Message> messages = new ArrayList<>();
+                        if (dataSnapshot.getValue() == null) {
+                            onSuccessListener.onSuccess(messages);
+                            return;
                         }
-                    }
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        //채팅 메세지 수정기능을 추가하게 될 시, 구현
-                    }
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            messages.add(snapshot.getValue(Message.class));
+                        }
 
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-                        //채팅 메세지 수정기능을 추가하게 될 시, 구현
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                        //채팅 메세지 수정기능을 추가하게 될 시, 구현
+                        onSuccessListener.onSuccess(messages);
                     }
 
                     @Override
@@ -161,9 +149,16 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void setChatMessage(@NonNull Message message,
+    public void setChatMessage(@NonNull String roomUid,
+                               @NonNull Message message,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
+        db.child(roomUid)
+                .child(MESSAGE)
+                .push()
+                .setValue(message)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
     }
 }

@@ -18,12 +18,13 @@ public interface ChattingManager {
     void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
     void getChatMessage(@NonNull String chatRoomId,
-                        @NonNull OnSuccessListener<Map<String, Message>> onSuccessListener,
+                        @NonNull OnSuccessListener<List<Message>> onSuccessListener,
                         @NonNull OnFailureListener onFailureListener);
 
     void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
-    void setChatMessage(@NonNull Message message,
+    void setChatMessage(@NonNull String roomUid,
+                        @NonNull Message message,
                         @NonNull OnSuccessListener<Void> onSuccessListener,
                         @NonNull OnFailureListener onFailureListener);
 }

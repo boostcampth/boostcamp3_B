@@ -11,21 +11,28 @@ import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.data.userdata.model.User;
+import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.swsnack.catchhouse.Constant.FacebookData.KEY;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 
 public class ChattingViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
     private MutableLiveData<List<Chatting>> mChattingList;
-    private MutableLiveData<Chatting> mChattingMessage;
+    private String roomUid;
+    private MutableLiveData<List<Message>> mMessageList;
     private MutableLiveData<User> mDestinationUserData;
 
     ChattingViewModel(DataManager dataManager, ViewModelListener bottomNavListener) {
@@ -33,7 +40,7 @@ public class ChattingViewModel extends ReactiveViewModel {
         this.mAppContext = AppApplication.getAppContext();
         this.mListener = bottomNavListener;
         this.mChattingList = new MutableLiveData<>();
-        this.mChattingMessage = new MutableLiveData<>();
+        this.mMessageList = new MutableLiveData<>();
         this.mDestinationUserData = new MutableLiveData<>();
     }
 
@@ -80,6 +87,20 @@ public class ChattingViewModel extends ReactiveViewModel {
 
     }
 
+    public void getNewMessage() {
+        getDataManager()
+                .getChatMessage(roomUid,
+                        messageList -> mMessageList.setValue(messageList),
+                        error -> mListener.onError(""));
+    }
+
+    public void sendNewMessage(String content) {
+        getDataManager()
+                .setChatMessage(roomUid, new Message(FirebaseAuth.getInstance().getCurrentUser().getUid(), content),
+                        success -> mListener.onSuccess("sendSuccess"),
+                        error -> mListener.onError(""));
+    }
+
     public LiveData<List<Chatting>> getChattingList() {
         return this.mChattingList;
     }
@@ -88,12 +109,17 @@ public class ChattingViewModel extends ReactiveViewModel {
         this.mChattingList.setValue(list);
     }
 
-    public LiveData<Chatting> getChattingMessage() {
-        return mChattingMessage;
+    public LiveData<List<Message>> getChattingMessage() {
+        return mMessageList;
     }
 
     public void setChattingMessage(Chatting chattingMessage) {
-        this.mChattingMessage.setValue(chattingMessage);
+        if (chattingMessage != null && chattingMessage.getMessage() != null) {
+            roomUid = chattingMessage.getRoomUid();
+            this.mMessageList.setValue(DataConverter.sortByValueFromMapToList(chattingMessage.getMessage()));
+            return;
+        }
+        mMessageList.setValue(new ArrayList<>());
     }
 
     public LiveData<User> getDestinationUserData() {

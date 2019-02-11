@@ -39,15 +39,13 @@ public class ChattingDataBinding {
     }
 
     @BindingAdapter({"setChattingMessage"})
-    public static void setMessage(RecyclerView recyclerView, Chatting chattingMessages) {
+    public static void setMessage(RecyclerView recyclerView, List<Message> chattingMessages) {
         if (chattingMessages == null) {
             return;
         }
 
-        if (chattingMessages.getMessage() != null) {
-            ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
-            chattingMessageAdapter.setList(DataConverter.sortByValueFromMapToList(chattingMessages.getMessage()));
-        }
+        ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
+        chattingMessageAdapter.setList(chattingMessages);
     }
 
     @BindingAdapter({"setUserData"})

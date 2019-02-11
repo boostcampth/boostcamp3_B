@@ -247,7 +247,7 @@ public class AppDataManager implements DataManager {
 
     @Override
     public void getChatMessage(@NonNull String chatRoomId,
-                               @NonNull OnSuccessListener<Map<String, Message>> onSuccessListener,
+                               @NonNull OnSuccessListener<List<Message>> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
         mRemoteChattingManager.getChatMessage(chatRoomId, onSuccessListener, onFailureListener);
@@ -260,11 +260,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setChatMessage(@NonNull Message message,
+    public void setChatMessage(@NonNull String roomUid,
+                               @NonNull Message message,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.setChatMessage(message, onSuccessListener, onFailureListener);
+        mRemoteChattingManager.setChatMessage(roomUid, message, onSuccessListener, onFailureListener);
 
     }
 
