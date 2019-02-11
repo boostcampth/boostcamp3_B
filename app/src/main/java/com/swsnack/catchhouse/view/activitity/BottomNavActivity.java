@@ -1,12 +1,12 @@
 package com.swsnack.catchhouse.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.ViewPagerAdapter;
@@ -20,15 +20,13 @@ import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragments.ChatListFragment;
 import com.swsnack.catchhouse.view.fragments.HomeFragment;
+import com.swsnack.catchhouse.view.fragments.HomeFragmentListener;
 import com.swsnack.catchhouse.view.fragments.MapFragment;
 import com.swsnack.catchhouse.view.fragments.MyPageFragment;
 import com.swsnack.catchhouse.view.fragments.SignFragment;
 import com.swsnack.catchhouse.view.fragments.SignInFragment;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
-import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
-import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
@@ -40,7 +38,7 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements ViewModelListener, HomeFragment.OnSearchButtonListener {
+public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements HomeFragmentListener {
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
@@ -52,14 +50,8 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     }
 
     @Override
-    public void onError(String errorMessage) {
-        unFreezeUI();
-        showSnackMessage(errorMessage);
-    }
-
-    @Override
     public void onSuccess(String success) {
-        unFreezeUI();
+        super.onSuccess(success);
         switch (success) {
             case Constants.UserStatus.SIGN_UP_SUCCESS:
                 mFragmentManager.popBackStack();
@@ -85,13 +77,20 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     }
 
     @Override
-    public void isWorking() {
-        freezeUI();
+    public void openMapFragment() {
+        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
     }
 
     @Override
-    public void isFinished() {
-        unFreezeUI();
+    protected void freezeUI() {
+        super.freezeUI();
+        getBinding().pgBottomNav.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    protected void unFreezeUI() {
+        super.unFreezeUI();
+        getBinding().pgBottomNav.setVisibility(View.GONE);
     }
 
     @Override
@@ -115,7 +114,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
                 AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance(), RemoteChattingManager.getInstance()),
                 this));
-        createViewModel(RoomsViewModel.class, new RoomsViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
         createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
         createViewModel(ChattingViewModel.class, new ChattingViewModelFactory(this));
     }
@@ -197,24 +195,8 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         viewPagerAdapter.setItems(list);
     }
 
-    private void freezeUI() {
-        getBinding().pgBottomNav.setVisibility(View.VISIBLE);
-        getBinding().getRoot().setAlpha(0.6f);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-
-    private void unFreezeUI() {
-        getBinding().pgBottomNav.setVisibility(View.GONE);
-        getBinding().getRoot().setAlpha(1.0f);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-    }
-
-    @Override
-    public void onClicked() {
-        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
-    }
-
     public void setViewPagerListener(OnViewPagerChangedListener onViewPagerChangedListener) {
         this.mViewPagerListener = onViewPagerChangedListener;
     }
+
 }

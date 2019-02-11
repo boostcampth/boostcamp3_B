@@ -11,8 +11,10 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
@@ -23,26 +25,34 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.AppApplication;
+import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.util.DataConverter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.DUPLICATE_NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.FAILED_UPDATE;
 import static com.swsnack.catchhouse.constants.Constants.ExceptionReason.NOT_SIGNED_USER;
+import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
+import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_ROOM_IMAGE;
+import static com.swsnack.catchhouse.constants.Constants.PostException.NETWORK_ERROR;
 
 public class AppUserDataManager implements UserDataManager {
 
     private DatabaseReference db;
+    private DatabaseReference dbRooms;
     private StorageReference fs;
+    private StorageReference fsRooms;
     private Application mAppContext;
 
     private static AppUserDataManager INSTANCE;
@@ -56,7 +66,9 @@ public class AppUserDataManager implements UserDataManager {
 
     private AppUserDataManager() {
         db = FirebaseDatabase.getInstance().getReference().child(DB_USER);
+        dbRooms = FirebaseDatabase.getInstance().getReference().child(DB_ROOM);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_PROFILE);
+        fsRooms = FirebaseStorage.getInstance().getReference().child(STORAGE_ROOM_IMAGE);
         mAppContext = AppApplication.getAppContext();
     }
 
@@ -220,7 +232,6 @@ public class AppUserDataManager implements UserDataManager {
                 });
     }
 
-
     @Override
     public void updateUser(@NonNull String uuid,
                            @NonNull Map<String, Object> updateFields,
@@ -251,5 +262,77 @@ public class AppUserDataManager implements UserDataManager {
                     onFailureListener.onFailure(new RuntimeException(DUPLICATE_NICK_NAME));
                 },
                 onFailureListener);
+    }
+
+    @Override
+    public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
+                          @NonNull OnFailureListener onFailureListener) {
+        dbRooms.push().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String key = dataSnapshot.getKey();
+                if (key != null) {
+                    onSuccessListener.onSuccess(key);
+                } else {
+                    onFailureListener.onFailure(new RuntimeException(NETWORK_ERROR));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onFailureListener.onFailure(new RuntimeException(NETWORK_ERROR));
+            }
+        });
+    }
+
+    @Override
+    public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
+                                @NonNull OnSuccessListener<List<String>> onSuccessListener,
+                                @NonNull OnFailureListener onFailureListener) {
+
+        List<String> list = new ArrayList<>();
+        List<StorageReference> innerRef = new ArrayList<>();
+        for (int i = 0; i < imageList.size(); i++) {
+            innerRef.add(fsRooms.child(uuid + "/" + i));
+        }
+        UploadTask uploadTask = innerRef.get(0).putBytes(imageList.remove(0));
+
+        Continuation<UploadTask.TaskSnapshot, Task<Uri>> continuation = task -> {
+            if (!task.isSuccessful()) {
+                onFailureListener.onFailure(new RuntimeException(NETWORK_ERROR));
+            }
+            return innerRef.remove(0).getDownloadUrl();
+        };
+
+
+        OnSuccessListener<Uri> loopListener = new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                list.add(uri.toString());
+
+                if (!imageList.isEmpty()) {
+                    innerRef.get(0).putBytes(imageList.remove(0))
+                            .continueWithTask(continuation)
+                            .addOnSuccessListener(this)
+                            .addOnFailureListener(onFailureListener);
+                } else {
+                    onSuccessListener.onSuccess(list);
+                }
+            }
+        };
+
+        uploadTask
+                .continueWithTask(continuation)
+                .addOnSuccessListener(loopListener)
+                .addOnFailureListener(onFailureListener);
+    }
+
+    @Override
+    public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+        dbRooms.child(uuid).setValue(room)
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
     }
 }

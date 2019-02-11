@@ -4,22 +4,22 @@ import android.app.Application;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.view.activities.BottomNavListener;
+import com.swsnack.catchhouse.view.activities.WriteListener;
 
 import io.reactivex.annotations.NonNull;
 
 public class RoomsViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private Application mApplication;
-    private RoomsRepository mRepository;
-    private ViewModelListener mListener;
+    private DataManager mDataManager;
+    private WriteListener mListener;
 
-    public RoomsViewModelFactory(@NonNull Application application, RoomsRepository repository, ViewModelListener listener) {
+    public RoomsViewModelFactory(@NonNull Application application, DataManager dataManager, WriteListener listener) {
         this.mApplication = application;
-        this.mRepository = repository;
+        this.mDataManager = dataManager;
         this.mListener = listener;
     }
 
@@ -27,7 +27,7 @@ public class RoomsViewModelFactory extends ViewModelProvider.NewInstanceFactory 
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(RoomsViewModel.class)) {
-            return (T) new RoomsViewModel(mApplication, mRepository, mListener);
+            return (T) new RoomsViewModel(mApplication, mDataManager, mListener);
         }
         throw new Fragment.InstantiationException("not viewModel class", null);
     }

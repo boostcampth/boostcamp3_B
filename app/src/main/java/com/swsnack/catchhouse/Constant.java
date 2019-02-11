@@ -27,10 +27,16 @@ import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_PROFILE;
+import static com.swsnack.catchhouse.constants.Constants.FirebaseKey.STORAGE_ROOM_IMAGE;
 import static com.swsnack.catchhouse.constants.Constants.Gender.FEMALE;
 import static com.swsnack.catchhouse.constants.Constants.Gender.MALE;
 import static com.swsnack.catchhouse.constants.Constants.ParcelableData.CHATTING_DATA;
 import static com.swsnack.catchhouse.constants.Constants.ParcelableData.USER_DATA;
+import static com.swsnack.catchhouse.constants.Constants.PostException.EMPTY_PRICE_FIELD;
+import static com.swsnack.catchhouse.constants.Constants.PostException.EMPTY_ROOM_IMAGE;
+import static com.swsnack.catchhouse.constants.Constants.PostException.EMPTY_TITLE_FIELD;
+import static com.swsnack.catchhouse.constants.Constants.PostException.NETWORK_ERROR;
+import static com.swsnack.catchhouse.constants.Constants.PostException.NOT_SELECTION_DATE;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.E_MAIL;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.constants.Constants.SignInMethod.GOOGLE;
@@ -46,6 +52,8 @@ public class Constants {
     public static final int GALLERY = 1003;
     public static final int GOOGLE_SIGN_IN = 1000;
     public static final int FILTER = 1005;
+
+    public static final String MSG_ERROR_GET_ADDRESS = "주소를 찾을 수 없습니다.";
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, DELETE_USER_SUCCESS, UPDATE_NICK_NAME_SUCCESS,
@@ -79,10 +87,12 @@ public class Constants {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({DB_USER, STORAGE_PROFILE, NICK_NAME, CHATTING})
+    @StringDef({DB_USER, STORAGE_PROFILE, STORAGE_ROOM_IMAGE, NICK_NAME, CHATTING})
     public @interface FirebaseKey {
         String DB_USER = "users";
+        String DB_ROOM = "rooms";
         String STORAGE_PROFILE = "profile";
+        String STORAGE_ROOM_IMAGE = "roomImage";
         String NICK_NAME = "nickName";
         String CHATTING = "chatting";
     }
@@ -114,6 +124,17 @@ public class Constants {
         String FACEBOOK = "facebook.com";
         String GOOGLE = "google.com";
         String E_MAIL = "password";
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({EMPTY_ROOM_IMAGE, EMPTY_PRICE_FIELD, NOT_SELECTION_DATE, EMPTY_TITLE_FIELD,
+            NETWORK_ERROR})
+    public @interface PostException {
+        String EMPTY_ROOM_IMAGE = "EmptyRoomImage";
+        String EMPTY_PRICE_FIELD = "EmptyPriceField";
+        String NOT_SELECTION_DATE = "NotSelectionDate";
+        String EMPTY_TITLE_FIELD = "EmptyTitleField";
+        String NETWORK_ERROR = "NetworkError";
     }
 
     @Retention(RetentionPolicy.SOURCE)

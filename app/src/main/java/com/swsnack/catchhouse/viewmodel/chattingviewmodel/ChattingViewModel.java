@@ -14,7 +14,7 @@ import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
-import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.swsnack.catchhouse.view.activities.BottomNavListener;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,15 +23,15 @@ import java.util.Map;
 public class ChattingViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
-    private ViewModelListener mListener;
+    private BottomNavListener mListener;
     private MutableLiveData<List<Chatting>> mChattingList;
     private MutableLiveData<Chatting> mChattingMessage;
     private MutableLiveData<User> mDestinationUserData;
 
-    ChattingViewModel(DataManager dataManager, ViewModelListener viewModelListener) {
+    ChattingViewModel(DataManager dataManager, BottomNavListener bottomNavListener) {
         super(dataManager);
         this.mAppContext = AppApplication.getAppContext();
-        this.mListener = viewModelListener;
+        this.mListener = bottomNavListener;
         this.mChattingList = new MutableLiveData<>();
         this.mChattingMessage = new MutableLiveData<>();
         this.mDestinationUserData = new MutableLiveData<>();
