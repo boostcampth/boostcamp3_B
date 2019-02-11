@@ -7,23 +7,18 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+
 public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    // FIXME 복붙코드의 냄새가 납니다. lint warning으로 뜨는 내용들을 다 없애서 반영해주세요. 접근자, lambda식, unchecked 등
     protected List<T> arrayList;
-    OnItemClickListener onItemClickListener;
-    OnItemLongClickListener onItemLongClickListener;
+    private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
     private Context context;
 
 
     public BaseRecyclerViewAdapter(Context context) {
         this.context = context;
-    }
-
-    public BaseRecyclerViewAdapter(Context context, List<T> arrayList) {
-        this.context = context;
-        this.arrayList = arrayList;
-
     }
 
     public Context getContext() {
@@ -34,7 +29,6 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
     public int getItemCount() {
         if (arrayList == null)
             return 0;
-
 
         return arrayList.size();
     }
@@ -67,8 +61,6 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
         }
 
         notifyDataSetChanged();
-
-
     }
 
     public void clearItems() {
@@ -77,38 +69,25 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
             arrayList.clear();
             notifyDataSetChanged();
         }
-
-
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@android.support.annotation.NonNull final RecyclerView.ViewHolder holder, final int position) {
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(holder.itemView, position);
-                }
-
+        holder.itemView.setOnClickListener(view -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(holder.itemView, position);
             }
         });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                if (onItemLongClickListener != null) {
-                    onItemLongClickListener.onItemLongClick(holder.itemView, position);
-                }
-
-                return false;
+        holder.itemView.setOnLongClickListener(view -> {
+            if (onItemLongClickListener != null) {
+                onItemLongClickListener.onItemLongClick(holder.itemView, position);
             }
+            return false;
         });
-
 
         onBindView((H) holder, position);
-
-
     }
 
     abstract public void onBindView(H holder, int position);
@@ -124,13 +103,11 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
     }
 
     public interface OnItemClickListener {
-
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
     }
 
 
     public interface OnItemLongClickListener {
-
-        public void onItemLongClick(View view, int position);
+        void onItemLongClick(View view, int position);
     }
 }
