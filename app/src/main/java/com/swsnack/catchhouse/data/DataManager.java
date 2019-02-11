@@ -8,12 +8,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
+import com.swsnack.catchhouse.data.locationdata.LocationDataManager;
 import com.swsnack.catchhouse.data.roomdata.RoomDataManager;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.model.User;
 
-public interface DataManager extends APIManager, UserDataManager, ChattingManager, RoomDataManager {
+public interface DataManager extends APIManager, UserDataManager, ChattingManager, RoomDataManager, LocationDataManager {
 
     APIManager getAPIManager();
 

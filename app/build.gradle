@@ -58,6 +58,8 @@ dependencies {
     implementation "com.google.android.gms:play-services-auth:$rootProject.ext.googleAuthVersion"
     //firebase facebook auth api
     implementation "com.facebook.android:facebook-login:$rootProject.ext.facebookAuthVersion"
+    //firebase geofire
+    implementation "com.firebase:geofire-android:$rootProject.ext.geofireVersion"
     //glide
     implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"

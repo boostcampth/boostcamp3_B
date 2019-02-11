@@ -21,6 +21,7 @@ import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
 import static com.swsnack.catchhouse.Constant.PostException.NETWORK_ERROR;
 
@@ -39,7 +40,7 @@ public class AppRoomDataManager implements RoomDataManager {
     }
 
     private AppRoomDataManager() {
-        db = FirebaseDatabase.getInstance().getReference().child("rooms");
+        db = FirebaseDatabase.getInstance().getReference().child(DB_ROOM);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_ROOM_IMAGE);
     }
 

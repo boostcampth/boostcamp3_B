@@ -16,7 +16,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.locationdata.LocationDataManager;
 import com.swsnack.catchhouse.data.roomdata.RoomDataManager;
+import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
@@ -33,15 +35,18 @@ public class AppDataManager implements DataManager {
     private UserDataManager mUserDataManager;
     private ChattingManager mRemoteChattingManager;
     private RoomDataManager mRoomDataManager;
+    private LocationDataManager mLocationDataManager;
 
     private AppDataManager(APIManager apiManager,
                            UserDataManager userDataManager,
                            ChattingManager remoteChattingManager,
-                           RoomDataManager roomDataManager) {
+                           RoomDataManager roomDataManager,
+                           LocationDataManager locationDataManager) {
         mApiManager = apiManager;
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
         mRoomDataManager = roomDataManager;
+        mLocationDataManager = locationDataManager;
     }
 
     private static AppDataManager INSTANCE;
@@ -49,9 +54,14 @@ public class AppDataManager implements DataManager {
     public static synchronized AppDataManager getInstance(@NonNull APIManager apiManager,
                                                           @NonNull UserDataManager userDataManager,
                                                           @NonNull ChattingManager remoteChattingManager,
-                                                          @NonNull RoomDataManager roomDataManager) {
+                                                          @NonNull RoomDataManager roomDataManager,
+                                                          @NonNull LocationDataManager locationDataManager) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataManager(apiManager, userDataManager, remoteChattingManager, roomDataManager);
+            INSTANCE = new AppDataManager(apiManager,
+                    userDataManager,
+                    remoteChattingManager,
+                    roomDataManager,
+                    locationDataManager);
         }
         return INSTANCE;
     }
@@ -285,5 +295,12 @@ public class AppDataManager implements DataManager {
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
         mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void uploadLocationData(@NonNull String uuid, @NonNull Address address,
+                                   @NonNull OnSuccessListener<String> onSuccessListener,
+                                   @NonNull OnFailureListener onFailureListener) {
+        mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailureListener);
     }
 }
