@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapters.chattingadapter.ChattingItemHolder;
+import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListItemHolder;
 import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.userdata.model.User;
@@ -74,7 +74,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
 
         chattingListAdapter.setOnItemClickListener((v, position) -> {
             Chatting chatting = chattingListAdapter.getItem(position);
-            User user = ((ChattingItemHolder) v).getBinding().getUserData();
+            User user = ((ChattingListItemHolder) v).getBinding().getUserData();
 
             getActivity().startActivity(
                     new Intent(getContext(),
@@ -93,6 +93,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
             getBinding().tvChatListNotSigned.setVisibility(View.GONE);
             /* set dummy data*/
             getViewModel().getChattingRoomList();
+            getViewModel().setChattingRoom();
         }
     }
 

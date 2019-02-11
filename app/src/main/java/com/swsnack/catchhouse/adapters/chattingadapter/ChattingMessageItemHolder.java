@@ -6,18 +6,17 @@ import android.arch.lifecycle.LifecycleRegistry;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
-import com.swsnack.catchhouse.databinding.ItemChattingListBinding;
+import com.swsnack.catchhouse.databinding.ItemChattingMessageBinding;
 
-public class ChattingItemHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
+public class ChattingMessageItemHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
 
-    private ItemChattingListBinding mBinding;
-
+    private ItemChattingMessageBinding mBinding;
     private LifecycleRegistry mLifeCycle = new LifecycleRegistry(this);
 
-    ChattingItemHolder(@NonNull ItemChattingListBinding binding) {
+    public ChattingMessageItemHolder(@NonNull ItemChattingMessageBinding binding) {
         super(binding.getRoot());
-        mBinding = binding;
-        mLifeCycle.markState(Lifecycle.State.INITIALIZED);
+        this.mBinding = binding;
+        this.mLifeCycle.markState(Lifecycle.State.INITIALIZED);
     }
 
     void onAttachHolder() {
@@ -31,11 +30,11 @@ public class ChattingItemHolder extends RecyclerView.ViewHolder implements Lifec
     @NonNull
     @Override
     public Lifecycle getLifecycle() {
-        return mLifeCycle;
+        return this.mLifeCycle;
     }
 
     @NonNull
-    public ItemChattingListBinding getBinding() {
-        return mBinding;
+    public ItemChattingMessageBinding getBinding() {
+        return this.mBinding;
     }
 }

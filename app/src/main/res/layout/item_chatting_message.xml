@@ -2,6 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="handler"
+            type="com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel"/>
+
+        <variable
+            name="chattingData"
+            type="com.swsnack.catchhouse.data.chattingdata.model.Chatting"/>
+
+        <variable
+            name="userData"
+            type="com.swsnack.catchhouse.data.userdata.model.User"/>
+    </data>
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
