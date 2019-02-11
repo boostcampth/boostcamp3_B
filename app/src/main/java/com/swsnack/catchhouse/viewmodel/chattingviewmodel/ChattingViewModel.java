@@ -23,9 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.swsnack.catchhouse.Constant.FacebookData.KEY;
-import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
-
 public class ChattingViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
@@ -53,6 +50,11 @@ public class ChattingViewModel extends ReactiveViewModel {
                 .getChattingList(FirebaseAuth.getInstance().getCurrentUser().getUid(),
                         list -> mChattingList.setValue(list),
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
+    }
+
+    public void removeListenerForChattingList() {
+        getDataManager()
+                .removeChattingListListener();
     }
 
     public void setChattingRoom() {

@@ -12,7 +12,6 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
@@ -243,6 +242,11 @@ public class AppDataManager implements DataManager {
     @Override
     public void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mRemoteChattingManager.getChattingList(uuid, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void removeChattingListListener() {
+        mRemoteChattingManager.removeChattingListListener();
     }
 
     @Override

@@ -6,15 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListItemHolder;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListAdapter;
+import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListItemHolder;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.databinding.FragmentChatListBinding;
@@ -50,23 +48,10 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        return getBinding().getRoot();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getBinding().setHandler(getViewModel());
-        getBinding().setLifecycleOwner(this);
 
         ChattingListAdapter chattingListAdapter = new ChattingListAdapter(getContext(), getViewModel());
         getBinding().rvChatList.setAdapter(chattingListAdapter);
@@ -83,6 +68,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
                             .putExtra(USER_DATA, user));
         });
 
+        getViewModel().getChattingRoomList();
     }
 
     public void getChattingList() {
@@ -91,10 +77,12 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
             getViewModel().setChattingList(new ArrayList<>());
         } else {
             getBinding().tvChatListNotSigned.setVisibility(View.GONE);
-            /* set dummy data*/
-            getViewModel().getChattingRoomList();
-            getViewModel().setChattingRoom();
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewModel.removeListenerForChattingList();
+    }
 }

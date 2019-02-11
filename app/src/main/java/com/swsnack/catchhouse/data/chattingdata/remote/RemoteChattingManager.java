@@ -9,6 +9,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
@@ -26,6 +27,8 @@ import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 public class RemoteChattingManager implements ChattingManager {
 
     private DatabaseReference db;
+    private Query mChattingListQuery;
+    private ValueEventListener mChattingObservingListener;
 
     private static RemoteChattingManager INSTANCE;
 
@@ -51,6 +54,34 @@ public class RemoteChattingManager implements ChattingManager {
             return;
         }
 
+//        mChattingListQuery =
+//                db.orderByChild(DB_USER + "/" + uuid)
+//                        .equalTo(true);
+//
+//        mChattingObservingListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.getValue() == null) {
+//                    onSuccessListener.onSuccess(NO_CHAT_ROOM);
+//                    return;
+//                }
+//
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    Chatting chatting = snapshot.getValue(Chatting.class);
+//                    if (chatting.getUsers().containsKey(destinationUuid)) {
+//                        onSuccessListener.onSuccess(snapshot.getKey());
+//                        return;
+//                    }
+//                    onSuccessListener.onSuccess(NO_CHAT_ROOM);
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                        onFailureListener.onFailure(databaseError.toException());
+//            }
+//        };
+
         db.orderByChild(DB_USER + "/" + uuid)
                 .equalTo(true)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -60,6 +91,7 @@ public class RemoteChattingManager implements ChattingManager {
                             onSuccessListener.onSuccess(NO_CHAT_ROOM);
                             return;
                         }
+
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Chatting chatting = snapshot.getValue(Chatting.class);
                             if (chatting.getUsers().containsKey(destinationUuid)) {
@@ -79,34 +111,47 @@ public class RemoteChattingManager implements ChattingManager {
 
     @Override
     public void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new RuntimeException(NOT_SIGNED_USER));
             return;
         }
 
-        db.orderByChild(DB_USER + "/" + uuid)
-                .equalTo(true)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        List<Chatting> chattingList = new ArrayList<>();
-                        if (dataSnapshot.getValue() == null) {
-                            onSuccessListener.onSuccess(chattingList);
-                            return;
-                        }
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Chatting chatting = snapshot.getValue(Chatting.class);
-                            chatting.setRoomUid(snapshot.getKey());
-                            chattingList.add(chatting);
-                        }
-                        onSuccessListener.onSuccess(chattingList);
-                    }
+        mChattingListQuery
+                = db.orderByChild(DB_USER + "/" + uuid).equalTo(true);
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        onFailureListener.onFailure(databaseError.toException());
-                    }
-                });
+        mChattingObservingListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Chatting> chattingList = new ArrayList<>();
+                if (dataSnapshot.getValue() == null) {
+                    onSuccessListener.onSuccess(chattingList);
+                    return;
+                }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chatting chatting = snapshot.getValue(Chatting.class);
+                    chatting.setRoomUid(snapshot.getKey());
+                    chattingList.add(chatting);
+                }
+                onSuccessListener.onSuccess(chattingList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onFailureListener.onFailure(databaseError.toException());
+            }
+        };
+
+        mChattingListQuery.addValueEventListener(mChattingObservingListener);
+    }
+
+    @Override
+    public void removeChattingListListener() {
+        if(mChattingListQuery != null && mChattingObservingListener != null) {
+            mChattingListQuery.removeEventListener(mChattingObservingListener);
+            mChattingListQuery = null;
+            mChattingObservingListener = null;
+        }
     }
 
     @Override
@@ -161,4 +206,5 @@ public class RemoteChattingManager implements ChattingManager {
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
     }
+
 }

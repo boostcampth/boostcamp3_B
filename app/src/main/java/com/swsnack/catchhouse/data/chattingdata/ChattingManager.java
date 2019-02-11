@@ -17,6 +17,8 @@ public interface ChattingManager {
 
     void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 
+    void removeChattingListListener();
+
     void getChatMessage(@NonNull String chatRoomId,
                         @NonNull OnSuccessListener<List<Message>> onSuccessListener,
                         @NonNull OnFailureListener onFailureListener);

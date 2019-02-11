@@ -31,6 +31,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, V extends ViewMode
         if (getActivity() != null) {
             if (getViewModelClass() != null) {
                 mViewModel = ViewModelProviders.of(getActivity()).get(getViewModelClass());
+                mBinding.setLifecycleOwner(this);
             }
         } else {
             throw new RuntimeException(this.getClass().getName() + "has null activity");
