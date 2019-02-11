@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="handler"
+            type="com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tb_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="12dp"
+                app:title="@string/tb_post" />
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/vp_write"
+                        android:layout_width="match_parent"
+                        android:layout_height="320dp"
+                        android:layout_margin="8dp" />
+
+                    <TextView
+                        style="@style/TextStyle.Bold.SubTitle"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/tv_post_price" />
+
+                    <TextView
+                        android:id="@+id/tv_post_price"
+                        style="@style/TextStyle.Regular.Title"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/tv_post_price_detail"
+                        style="@style/TextStyle.Regular.Medium"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/tv_post_room_info"
+                        style="@style/TextStyle.Bold.SubTitle"
+                        android:layout_marginTop="24dp"
+                        android:text="@string/tv_post_room_info" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextStyle.Regular.Medium"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.25"
+                            android:text="@string/tv_post_address" />
+
+                        <TextView
+                            android:id="@+id/tv_post_address"
+                            style="@style/TextStyle.Regular.Medium"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.75" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextStyle.Regular.Medium"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.25"
+                            android:text="@string/tv_post_size" />
+
+                        <TextView
+                            style="@style/TextStyle.Regular.Medium"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.75" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/TextStyle.Regular.Medium"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.25"
+                            android:text="@string/tv_post_date" />
+
+                        <TextView
+                            style="@style/TextStyle.Regular.Medium"
+                            android:layout_width="0dp"
+                            android:layout_weight="0.75" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_post_title"
+                        style="@style/TextStyle.Bold.SubTitle"
+                        android:layout_marginTop="24dp" />
+
+                    <TextView
+                        android:id="@+id/tv_post_content"
+                        style="@style/TextStyle.Regular.Medium" />
+
+                    <TextView
+                        android:id="@+id/tv_write_preview"
+                        style="@style/tv.accent.small"
+                        android:layout_width="wrap_content"
+                        android:layout_margin="8dp"
+                        android:text="@string/tv_post_chat" />
+                </LinearLayout>
+            </ScrollView>
+
+            <ProgressBar
+                android:id="@+id/pg_post"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
+</layout>
