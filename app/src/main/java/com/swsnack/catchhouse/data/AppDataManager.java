@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.facebook.AccessToken;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,6 +24,11 @@ import com.swsnack.catchhouse.data.userdata.model.User;
 
 import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
+import io.reactivex.CompletableSource;
+import io.reactivex.Single;
 
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 
@@ -109,6 +115,20 @@ public class AppDataManager implements DataManager {
             onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;
         }
+
+        getUserFromSingleSnapShot(uuid)
+                .doOnSuccess(user -> deleteUserData(uuid))
+                .flatMapCompletable(user -> {
+                    if(user.getProfile()==null){
+                        return Completable.complete();
+                    }else{
+                        return deleteProfile(uuid);
+                    }
+                })
+                .andThen(deleteUser());
+
+
+
         // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
         getUserFromSingleSnapShot(uuid,
                 user ->
@@ -163,6 +183,12 @@ public class AppDataManager implements DataManager {
         mApiManager.deleteUser(onSuccessListener, onFailureListener);
     }
 
+
+    public Completable deleteUser(){
+        return Completable.create(emitter
+                -> mApiManager.deleteUser(aVoid -> emitter.onComplete(), emitter::onError));
+    }
+
     @Override
     public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mApiManager.updatePassword(oldPassword, newPassword, onSuccessListener, onFailureListener);
@@ -187,19 +213,40 @@ public class AppDataManager implements DataManager {
         mUserDataManager.getUserFromSingleSnapShot(uuid, onSuccessListener, onFailureListener);
     }
 
+    public Single<User> getUserFromSingleSnapShot(String uuid){
+        return Single.create(emitter
+                -> mUserDataManager.getUserFromSingleSnapShot(uuid, emitter::onSuccess, emitter::onError));
+    }
+
     @Override
     public void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mUserDataManager.setUser(uuid, user, onSuccessListener, onFailureListener);
     }
 
+
+    public Completable setUser(@NonNull String uuid, @NonNull User user){
+        return Completable.create(emitter
+                -> mUserDataManager.setUser(uuid, user,aVoid -> emitter.onComplete(), emitter::onError));
+    }
     @Override
     public void deleteUserData(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mUserDataManager.deleteUserData(uuid, onSuccessListener, onFailureListener);
     }
 
+    public Completable deleteUserData(String uuid){
+        return Completable.create(emitter
+                -> mUserDataManager.deleteUserData(uuid,aVoid -> emitter.onComplete(), emitter::onError));
+    }
+
     @Override
     public void deleteProfile(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mUserDataManager.deleteProfile(uuid, onSuccessListener, onFailureListener);
+    }
+
+
+    public Completable deleteProfile(String uuid){
+        return Completable.create(emitter
+                -> mUserDataManager.deleteProfile(uuid,aVoid -> emitter.onComplete(), emitter::onError));
     }
 
     @Override
