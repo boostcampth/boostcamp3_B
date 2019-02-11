@@ -3,14 +3,18 @@ package com.swsnack.catchhouse.adapters.bindingadapters;
 import android.databinding.BindingAdapter;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.adapters.chattingadapter.ChattingListAdapter;
+import com.swsnack.catchhouse.adapters.chattingadapter.ChattingMessageAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.data.userdata.model.User;
+import com.swsnack.catchhouse.util.DataConverter;
 
 import java.util.List;
 
@@ -24,7 +28,7 @@ public class ChattingDataBinding {
 
     @BindingAdapter({"setChattingListProfile"})
     public static void setProfile(ImageView imageView, User user) {
-        if(user == null) {
+        if (user == null) {
             return;
         }
 
@@ -32,5 +36,29 @@ public class ChattingDataBinding {
         if (uri != null) {
             Glide.with(AppApplication.getAppContext()).load(Uri.parse(uri)).apply(new RequestOptions().circleCrop()).into(imageView);
         }
+    }
+
+    @BindingAdapter({"setChattingMessage"})
+    public static void setMessage(RecyclerView recyclerView, Chatting chattingMessages) {
+        if (chattingMessages == null) {
+            return;
+        }
+
+        if (chattingMessages.getMessage() != null) {
+            ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
+            List<Message> messages = DataConverter.sortByValueFromMapToList(chattingMessages.getMessage());
+            Log.d("메세지", "setMessage: " + messages);
+            chattingMessageAdapter.setList(DataConverter.sortByValueFromMapToList(chattingMessages.getMessage()));
+        }
+    }
+
+    @BindingAdapter({"setUserData"})
+    public static void setUserData(RecyclerView recyclerView, User user) {
+        if (user == null) {
+            return;
+        }
+
+        ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
+        chattingMessageAdapter.setUserData(user);
     }
 }

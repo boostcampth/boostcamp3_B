@@ -30,4 +30,15 @@ public class Message implements Serializable {
         return content;
     }
 
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setSendUuid(String sendUuid) {
+        this.sendUuid = sendUuid;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

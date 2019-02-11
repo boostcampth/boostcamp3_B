@@ -5,14 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.databinding.ItemChattingListBinding;
 import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
@@ -60,16 +59,14 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
         super.onBindViewHolder(holder, position);
 
         ItemChattingListBinding binding = ((ChattingListItemHolder) holder).getBinding();
-        Toast.makeText(binding.getRoot().getContext(), "" + position, Toast.LENGTH_SHORT).show();
-
         binding.setChattingData(arrayList.get(position));
         mChattingViewModel.getUser(position,
                 binding::setUserData,
                 error -> Snackbar.make(binding.getRoot(), R.string.snack_failed_load_list, Snackbar.LENGTH_SHORT).show());
 
         if (arrayList.get(position).getMessage() != null) {
-            binding.tvChattingListLastMessage.setText(
-                    DataConverter.sortByValueFromMapToList(arrayList.get(position).getMessage()).get(0).getContent());
+            List<Message> messages = DataConverter.sortByValueFromMapToList(arrayList.get(position).getMessage());
+            binding.tvChattingListLastMessage.setText(messages.get(messages.size() - 1).getContent());
         } else {
             binding.tvChattingListLastMessage.setText("");
         }

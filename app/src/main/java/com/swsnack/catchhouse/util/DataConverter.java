@@ -35,8 +35,6 @@ public class DataConverter {
             return message1.getTimestamp().compareTo(message2.getTimestamp());
         });
 
-        Collections.reverse(keys);
-
         for (String key : keys) {
             messages.add(map.get(key));
         }

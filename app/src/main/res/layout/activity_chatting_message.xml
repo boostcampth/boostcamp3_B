@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -37,7 +38,9 @@
                 app:layout_constraintBottom_toTopOf="@id/cd_chatting_message"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                bind:setChattingMessage="@{handler.mChattingMessage}"
+                bind:setUserData="@{handler.mDestinationUserData}">
 
             </android.support.v7.widget.RecyclerView>
 

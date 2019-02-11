@@ -3,16 +3,24 @@ package com.swsnack.catchhouse.adapters.chattingadapter;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapters.BaseRecyclerViewAdapter;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.userdata.model.User;
 import com.swsnack.catchhouse.databinding.ItemChattingMessageBinding;
 
+import java.util.List;
+
 public class ChattingMessageAdapter extends BaseRecyclerViewAdapter<Message, ChattingMessageItemHolder> {
+
+    private User mUserData;
 
     public ChattingMessageAdapter(Context context) {
         super(context);
@@ -32,7 +40,17 @@ public class ChattingMessageAdapter extends BaseRecyclerViewAdapter<Message, Cha
 
     @Override
     public void onBindView(ChattingMessageItemHolder holder, int position) {
+        holder.getBinding().setMessage(arrayList.get(position));
 
+        if (arrayList.get(position).getSendUuid().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+            holder.getBinding().ivItemMessageProfile.setVisibility(View.GONE);
+            holder.getBinding().tvItemMessageDestination.setVisibility(View.GONE);
+            holder.getBinding().tvItemMessage.setVisibility(View.VISIBLE);
+            return;
+        }
+        holder.getBinding().ivItemMessageProfile.setVisibility(View.VISIBLE);
+        holder.getBinding().tvItemMessageDestination.setVisibility(View.VISIBLE);
+        holder.getBinding().tvItemMessage.setVisibility(View.GONE);
     }
 
     @NonNull
@@ -44,5 +62,22 @@ public class ChattingMessageAdapter extends BaseRecyclerViewAdapter<Message, Cha
         ChattingMessageItemHolder viewHolder = new ChattingMessageItemHolder(binding);
 
         return viewHolder;
+    }
+
+    public void setList(List<Message> newChattingList) {
+        if (arrayList == null) {
+            arrayList = newChattingList;
+            notifyDataSetChanged();
+            return;
+        }
+
+        ChattingMessageDiffUtil diffCallback = new ChattingMessageDiffUtil(this.arrayList, newChattingList);
+        DiffUtil.DiffResult result = DiffUtil.calculateDiff(diffCallback);
+        this.arrayList = newChattingList;
+        result.dispatchUpdatesTo(this);
+    }
+
+    public void setUserData(User user) {
+        this.mUserData = user;
     }
 }

@@ -8,8 +8,8 @@
             type="com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel"/>
 
         <variable
-            name="chattingData"
-            type="com.swsnack.catchhouse.data.chattingdata.model.Chatting"/>
+            name="message"
+            type="com.swsnack.catchhouse.data.chattingdata.model.Message"/>
 
         <variable
             name="userData"
@@ -40,7 +40,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_item_message_profile"
             app:layout_constraintWidth_max="wrap"
-            app:layout_constraintWidth_percent="0.7" />
+            app:layout_constraintWidth_percent="0.7"
+            android:text="@{message.content}"/>
 
         <TextView
             android:id="@+id/tv_item_message"
@@ -55,7 +56,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_max="wrap"
-            app:layout_constraintWidth_percent="0.7" />
+            app:layout_constraintWidth_percent="0.7"
+            android:text="@{message.content}"/>
 
     </android.support.constraint.ConstraintLayout>
 
