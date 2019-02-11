@@ -27,22 +27,18 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> implements P
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        createViewModels();
-        mViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
+        mViewModel = ViewModelProviders.of(this,
+                new PostViewModelFactory(
+                AppDataManager.getInstance(
+                        AppAPIManager.getInstance(),
+                        AppUserDataManager.getInstance(),
+                        RemoteChattingManager.getInstance()
+                ),
+                this
+        )).get(PostViewModel.class);
+        
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
     }
 
-    private void createViewModels() {
-        createViewModel(PostViewModel.class,
-                new PostViewModelFactory(
-                        AppDataManager.getInstance(
-                                AppAPIManager.getInstance(),
-                                AppUserDataManager.getInstance(),
-                                RemoteChattingManager.getInstance()
-                        ),
-                        this
-                )
-        );
-    }
 }

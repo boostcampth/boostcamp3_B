@@ -79,8 +79,17 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        createViewModels();
-        mViewModel = ViewModelProviders.of(this).get(RoomsViewModel.class);
+        mViewModel = ViewModelProviders.of(this,
+                new RoomsViewModelFactory(
+                        getApplication(),
+                        AppDataManager.getInstance(
+                                AppAPIManager.getInstance(),
+                                AppUserDataManager.getInstance(),
+                                RemoteChattingManager.getInstance()
+                        ),
+                        this
+                )).get(RoomsViewModel.class);
+        
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
 
