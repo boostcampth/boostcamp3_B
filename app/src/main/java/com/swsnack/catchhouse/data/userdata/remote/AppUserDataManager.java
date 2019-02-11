@@ -72,6 +72,43 @@ public class AppUserDataManager implements UserDataManager {
         mAppContext = AppApplication.getAppContext();
     }
 
+    private void uploadProfile(@NonNull String uuid,
+                               @NonNull Uri imageUri,
+                               @NonNull OnSuccessListener<Uri> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+
+        StorageReference reference = fs.child(uuid);
+        getProfile(imageUri,
+                bitmap -> {
+                    try {
+                        UploadTask uploadTask = reference.putBytes(DataConverter.getByteArray(DataConverter.getScaledBitmap(bitmap)));
+                        uploadTask.continueWithTask(task -> {
+                            if (!task.isSuccessful()) {
+                                onFailureListener.onFailure(new Exception(FAILED_UPDATE));
+                                return null;
+                            }
+                            return reference.getDownloadUrl();
+                        }).addOnSuccessListener(onSuccessListener)
+                                .addOnFailureListener(onFailureListener);
+                    } catch (IOException e) {
+                        onFailureListener.onFailure(e);
+                    }
+                },
+                onFailureListener);
+    }
+
+    private void deleteUser(@NonNull String uuid,
+                            @NonNull OnSuccessListener<Void> onSuccessListener,
+                            @NonNull OnFailureListener onFailureListener) {
+
+        FirebaseDatabase.getInstance()
+                .getReference(DB_USER)
+                .child(uuid)
+                .removeValue()
+                .addOnSuccessListener(onSuccessListener)
+                .addOnFailureListener(onFailureListener);
+    }
+
     @Override
     public void getUserAndListeningForChanging(@NonNull String uuid,
                                                @NonNull OnSuccessListener<User> onSuccessListener,
@@ -119,32 +156,6 @@ public class AppUserDataManager implements UserDataManager {
     }
 
     @Override
-    public void uploadProfile(@NonNull String uuid,
-                              @NonNull Uri imageUri,
-                              @NonNull OnSuccessListener<Uri> onSuccessListener,
-                              @NonNull OnFailureListener onFailureListener) {
-
-        StorageReference reference = fs.child(uuid);
-        getProfile(imageUri,
-                bitmap -> {
-                    try {
-                        UploadTask uploadTask = reference.putBytes(DataConverter.getByteArray(DataConverter.getScaledBitmap(bitmap)));
-                        uploadTask.continueWithTask(task -> {
-                            if (!task.isSuccessful()) {
-                                onFailureListener.onFailure(new Exception(FAILED_UPDATE));
-                                return null;
-                            }
-                            return reference.getDownloadUrl();
-                        }).addOnSuccessListener(onSuccessListener)
-                                .addOnFailureListener(onFailureListener);
-                    } catch (IOException e) {
-                        onFailureListener.onFailure(e);
-                    }
-                },
-                onFailureListener);
-    }
-
-    @Override
     public void getProfile(@NonNull Uri uri, @NonNull OnSuccessListener<Bitmap> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         Glide.with(mAppContext)
                 .asBitmap()
@@ -165,19 +176,23 @@ public class AppUserDataManager implements UserDataManager {
     }
 
     @Override
-    public void updateProfile(@NonNull String uuid, @NonNull Uri uri, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        getUserFromSingleSnapShot(uuid,
-                user -> uploadProfile(uuid, uri,
-                        remoteUrl -> {
-                            user.setProfile(remoteUrl.toString());
-                            setUser(uuid, user,
-                                    onSuccessListener,
-                                    onFailureListener);
-                        },
-                        onFailureListener),
-                onFailureListener);
+    public void updateProfile(@NonNull String uuid,
+                              @NonNull Uri uri,
+                              @NonNull User user,
+                              @NonNull OnSuccessListener<Void> onSuccessListener,
+                              @NonNull OnFailureListener onFailureListener) {
+
+        setUser(uuid, user, uri, onSuccessListener, onFailureListener);
     }
 
+    @Override
+    public void updateUser(@NonNull String uuid,
+                           @NonNull User user,
+                           @NonNull OnSuccessListener<Void> onSuccessListener,
+                           @NonNull OnFailureListener onFailureListener) {
+
+        this.setUser(uuid, user, onSuccessListener, onFailureListener);
+    }
 
     @Override
     public void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
@@ -188,13 +203,29 @@ public class AppUserDataManager implements UserDataManager {
     }
 
     @Override
-    public void deleteUserData(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        FirebaseDatabase.getInstance()
-                .getReference(DB_USER)
-                .child(uuid)
-                .removeValue()
-                .addOnSuccessListener(onSuccessListener)
-                .addOnFailureListener(onFailureListener);
+    public void setUser(@NonNull String uuid, @NonNull User user, @NonNull Uri uri, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+        uploadProfile(uuid, uri,
+                storageUri -> {
+                    user.setProfile(storageUri.toString());
+                    setUser(uuid, user, onSuccessListener, onFailureListener);
+                },
+                onFailureListener);
+    }
+
+    @Override
+    public void deleteUserData(@NonNull String uuid,
+                               @NonNull User user,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+
+        if (user.getProfile() == null) {
+            deleteUser(uuid, onSuccessListener, onFailureListener);
+            return;
+        }
+
+        deleteUser(uuid,
+                deleteDbSuccess -> deleteProfile(uuid, onSuccessListener, onFailureListener),
+                onFailureListener);
     }
 
     @Override
@@ -230,38 +261,6 @@ public class AppUserDataManager implements UserDataManager {
                         onFailureListener.onFailure(databaseError.toException());
                     }
                 });
-    }
-
-    @Override
-    public void updateUser(@NonNull String uuid,
-                           @NonNull Map<String, Object> updateFields,
-                           @NonNull OnSuccessListener<Void> onSuccessListener,
-                           @NonNull OnFailureListener onFailureListener) {
-
-        db.child(uuid)
-                .updateChildren(updateFields)
-                .addOnSuccessListener(onSuccessListener)
-                .addOnFailureListener(onFailureListener);
-    }
-
-    @Override
-    public void updateNickName(@NonNull String uuid,
-                               @NonNull String changeNickName,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailureListener onFailureListener) {
-
-        findUserByQueryString(NICK_NAME,
-                changeNickName,
-                result -> {
-                    if (result == null) {
-                        Map<String, Object> updateFields = new HashMap<>();
-                        updateFields.put(NICK_NAME, changeNickName);
-                        updateUser(uuid, updateFields, onSuccessListener, onFailureListener);
-                        return;
-                    }
-                    onFailureListener.onFailure(new RuntimeException(DUPLICATE_NICK_NAME));
-                },
-                onFailureListener);
     }
 
     @Override

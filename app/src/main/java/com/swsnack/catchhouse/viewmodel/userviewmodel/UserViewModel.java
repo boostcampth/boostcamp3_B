@@ -40,6 +40,7 @@ public class UserViewModel extends ReactiveViewModel {
     private ViewModelListener mListener;
     private Uri mProfileUri;
     private MutableLiveData<String> mGender;
+    private User mUser;
     public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
@@ -91,6 +92,7 @@ public class UserViewModel extends ReactiveViewModel {
                             if (user == null) {
                                 return;
                             }
+                            mUser = user;
                             mEmail.setValue(user.getEMail());
                             mNickName.setValue(user.getNickName());
                             mGender.setValue(user.getGender());
@@ -201,10 +203,12 @@ public class UserViewModel extends ReactiveViewModel {
 
         String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getDataManager()
-                .deleteUserAll(uuid, deleteResult -> {
-                    mListener.onSuccess(DELETE_USER_SUCCESS);
-                    mIsSigned.setValue(false);
-                }, error -> mListener.onError(getStringFromResource(R.string.snack_error_occured)));
+                .deleteUserAll(uuid, mUser,
+                        deleteResult -> {
+                            mListener.onSuccess(DELETE_USER_SUCCESS);
+                            mIsSigned.setValue(false);
+                        },
+                        error -> mListener.onError(getStringFromResource(R.string.snack_error_occured)));
     }
 
     public void changeNickName(String changeNickName) {
@@ -213,9 +217,10 @@ public class UserViewModel extends ReactiveViewModel {
             return;
         }
 
+        mUser.setNickName(changeNickName);
         getDataManager()
-                .updateNickName(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                        changeNickName,
+                .updateUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                        mUser,
                         success -> mListener.onSuccess(UPDATE_NICK_NAME_SUCCESS),
                         error -> mListener.onError(getStringFromResource(R.string.snack_duplicate_nick_name)));
     }
@@ -230,7 +235,7 @@ public class UserViewModel extends ReactiveViewModel {
     public void updateProfile(Uri uri) {
         mListener.isWorking();
         getDataManager().
-                updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri,
+                updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri, mUser,
                         result -> mListener.onSuccess(UPDATE_PROFILE_SUCCESS),
                         error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
     }

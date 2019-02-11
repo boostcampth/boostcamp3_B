@@ -46,8 +46,6 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
             mViewModel.setDestinationUserData(getIntent().getParcelableExtra(USER_DATA));
         }
 
-        mViewModel.getNewMessage();
-
         ChattingMessageAdapter messageAdapter = new ChattingMessageAdapter(getApplicationContext(), mViewModel);
         getBinding().rvChattingMessage.setAdapter(messageAdapter);
         getBinding().rvChattingMessage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
@@ -63,10 +61,23 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mViewModel.getNewMessage();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mViewModel.cancelChangingMessagesListening();
+    }
+
     private void init() {
         mViewModel = ViewModelProviders.of(this, new ChattingViewModelFactory(this)).get(ChattingViewModel.class);
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
     }
+
 
 }

@@ -46,6 +46,7 @@ public class ChattingDataBinding {
 
         ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
         chattingMessageAdapter.setList(chattingMessages);
+        recyclerView.smoothScrollToPosition(chattingMessages.size() - 1);
     }
 
     @BindingAdapter({"setUserData"})

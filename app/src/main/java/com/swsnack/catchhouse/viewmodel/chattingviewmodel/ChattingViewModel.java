@@ -52,7 +52,7 @@ public class ChattingViewModel extends ReactiveViewModel {
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
     }
 
-    public void removeListenerForChattingList() {
+    public void cancelChattingListChangingListeneing() {
         getDataManager()
                 .cancelChattingModelObserving();
     }
@@ -94,6 +94,11 @@ public class ChattingViewModel extends ReactiveViewModel {
                 .getChatMessage(roomUid,
                         messageList -> mMessageList.setValue(messageList),
                         error -> mListener.onError(""));
+    }
+
+    public void cancelChangingMessagesListening() {
+        getDataManager()
+                .cancelMessageModelObserving();
     }
 
     public void sendNewMessage(String content) {

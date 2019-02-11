@@ -85,4 +85,20 @@ public class User implements Parcelable {
     public void setProfile(String profile) {
         this.profile = profile;
     }
+
+    public void setEMail(String eMail) {
+        this.eMail = eMail;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setMyRoom(String myRoom) {
+        this.myRoom = myRoom;
+    }
 }

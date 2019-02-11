@@ -68,7 +68,24 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
                             .putExtra(USER_DATA, user));
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         getViewModel().getChattingRoomList();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getViewModel().cancelChattingListChangingListeneing();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mViewModel.cancelChattingListChangingListeneing();
     }
 
     public void getChattingList() {
@@ -78,11 +95,5 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
         } else {
             getBinding().tvChatListNotSigned.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mViewModel.removeListenerForChattingList();
     }
 }
