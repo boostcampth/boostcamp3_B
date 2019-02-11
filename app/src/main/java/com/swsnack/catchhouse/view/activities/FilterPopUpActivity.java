@@ -21,12 +21,6 @@ public class FilterPopUpActivity extends BaseActivity<ActivityFilterPopUpBinding
         return R.layout.activity_filter_pop_up;
     }
 
-    // FIXME 아무것도 하는일이 없는 불필요한 코드입니다.
-    @Override
-    protected ActivityFilterPopUpBinding getBinding() {
-        return super.getBinding();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
