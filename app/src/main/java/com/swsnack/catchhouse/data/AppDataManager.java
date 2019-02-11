@@ -16,6 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.roomdata.RoomDataManager;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
@@ -31,20 +32,26 @@ public class AppDataManager implements DataManager {
     private APIManager mApiManager;
     private UserDataManager mUserDataManager;
     private ChattingManager mRemoteChattingManager;
+    private RoomDataManager mRoomDataManager;
 
-    private AppDataManager(APIManager apiManager, UserDataManager userDataManager, ChattingManager remoteChattingManager) {
+    private AppDataManager(APIManager apiManager,
+                           UserDataManager userDataManager,
+                           ChattingManager remoteChattingManager,
+                           RoomDataManager roomDataManager) {
         mApiManager = apiManager;
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
+        mRoomDataManager = roomDataManager;
     }
 
     private static AppDataManager INSTANCE;
 
     public static synchronized AppDataManager getInstance(@NonNull APIManager apiManager,
                                                           @NonNull UserDataManager userDataManager,
-                                                          @NonNull ChattingManager remoteChattingManager) {
+                                                          @NonNull ChattingManager remoteChattingManager,
+                                                          @NonNull RoomDataManager roomDataManager) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataManager(apiManager, userDataManager, remoteChattingManager);
+            INSTANCE = new AppDataManager(apiManager, userDataManager, remoteChattingManager, roomDataManager);
         }
         return INSTANCE;
     }
@@ -119,8 +126,10 @@ public class AppDataManager implements DataManager {
                                                 error -> {
                                                     onFailureListener.onFailure(error);
                                                     setUser(uuid, user,
-                                                            Void -> {},
-                                                            transactionError -> {});
+                                                            Void -> {
+                                                            },
+                                                            transactionError -> {
+                                                            });
                                                 });
                                         return;
                                     }
@@ -130,8 +139,10 @@ public class AppDataManager implements DataManager {
                                             error -> {
                                                 onFailureListener.onFailure(error);
                                                 setUser(uuid, user,
-                                                        Void -> {},
-                                                        transactionError -> {});
+                                                        Void -> {
+                                                        },
+                                                        transactionError -> {
+                                                        });
                                             });
                                 },
                                 onFailureListener),
@@ -259,20 +270,20 @@ public class AppDataManager implements DataManager {
     @Override
     public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
                           @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.createKey(onSuccessListener, onFailureListener);
+        mRoomDataManager.createKey(onSuccessListener, onFailureListener);
     }
 
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailureListener);
+        mRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailureListener);
     }
 
     @Override
     public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
+        mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
     }
 }

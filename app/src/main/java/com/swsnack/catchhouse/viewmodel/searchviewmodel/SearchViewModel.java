@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.data.roomdata.remote.AppRoomDataManager;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
@@ -27,7 +28,10 @@ public class SearchViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mKeyword;
 
     SearchViewModel(Application application, RoomsRepository repository, ViewModelListener listener) {
-        super(AppDataManager.getInstance(AppAPIManager.getInstance(), AppUserDataManager.getInstance(), RemoteChattingManager.getInstance()));
+        super(AppDataManager.getInstance(AppAPIManager.getInstance(),
+                AppUserDataManager.getInstance(),
+                RemoteChattingManager.getInstance(),
+                AppRoomDataManager.getInstance()));
         mAppContext = application;
         mRepository = repository;
         mListener = listener;
