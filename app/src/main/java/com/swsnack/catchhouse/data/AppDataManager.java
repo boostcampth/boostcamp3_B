@@ -245,8 +245,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void removeChattingListListener() {
-        mRemoteChattingManager.removeChattingListListener();
+    public void cancelChattingModelObserving() {
+        mRemoteChattingManager.cancelChattingModelObserving();
     }
 
     @Override
@@ -256,6 +256,11 @@ public class AppDataManager implements DataManager {
 
         mRemoteChattingManager.getChatMessage(chatRoomId, onSuccessListener, onFailureListener);
 
+    }
+
+    @Override
+    public void cancelMessageModelObserving() {
+        mRemoteChattingManager.cancelMessageModelObserving();
     }
 
     @Override

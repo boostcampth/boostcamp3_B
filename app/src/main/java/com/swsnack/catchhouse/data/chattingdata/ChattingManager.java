@@ -13,15 +13,22 @@ import java.util.Map;
 
 public interface ChattingManager {
 
-    void getChattingRoom(@NonNull String uuid, @NonNull String destinationUuid, @NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+    void getChattingRoom(@NonNull String uuid,
+                         @NonNull String destinationUuid,
+                         @NonNull OnSuccessListener<String> onSuccessListener,
+                         @NonNull OnFailureListener onFailureListener);
 
-    void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+    void getChattingList(@NonNull String uuid,
+                         @NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
+                         @NonNull OnFailureListener onFailureListener);
 
-    void removeChattingListListener();
+    void cancelChattingModelObserving();
 
     void getChatMessage(@NonNull String chatRoomId,
                         @NonNull OnSuccessListener<List<Message>> onSuccessListener,
                         @NonNull OnFailureListener onFailureListener);
+
+    void cancelMessageModelObserving();
 
     void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
 

@@ -28,7 +28,9 @@ public class RemoteChattingManager implements ChattingManager {
 
     private DatabaseReference db;
     private Query mChattingListQuery;
+    private Query mMessageListQuery;
     private ValueEventListener mChattingObservingListener;
+    private ValueEventListener mMessageObservingListener;
 
     private static RemoteChattingManager INSTANCE;
 
@@ -53,34 +55,6 @@ public class RemoteChattingManager implements ChattingManager {
             onFailureListener.onFailure(new RuntimeException(NOT_SIGNED_USER));
             return;
         }
-
-//        mChattingListQuery =
-//                db.orderByChild(DB_USER + "/" + uuid)
-//                        .equalTo(true);
-//
-//        mChattingObservingListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.getValue() == null) {
-//                    onSuccessListener.onSuccess(NO_CHAT_ROOM);
-//                    return;
-//                }
-//
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    Chatting chatting = snapshot.getValue(Chatting.class);
-//                    if (chatting.getUsers().containsKey(destinationUuid)) {
-//                        onSuccessListener.onSuccess(snapshot.getKey());
-//                        return;
-//                    }
-//                    onSuccessListener.onSuccess(NO_CHAT_ROOM);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        onFailureListener.onFailure(databaseError.toException());
-//            }
-//        };
 
         db.orderByChild(DB_USER + "/" + uuid)
                 .equalTo(true)
@@ -146,8 +120,8 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void removeChattingListListener() {
-        if(mChattingListQuery != null && mChattingObservingListener != null) {
+    public void cancelChattingModelObserving() {
+        if (mChattingListQuery != null && mChattingObservingListener != null) {
             mChattingListQuery.removeEventListener(mChattingObservingListener);
             mChattingListQuery = null;
             mChattingObservingListener = null;
@@ -159,29 +133,42 @@ public class RemoteChattingManager implements ChattingManager {
                                @NonNull OnSuccessListener<List<Message>> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
-        db.child(chatRoomId)
-                .child(MESSAGE)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        List<Message> messages = new ArrayList<>();
-                        if (dataSnapshot.getValue() == null) {
-                            onSuccessListener.onSuccess(messages);
-                            return;
-                        }
+        mMessageListQuery =
+                db.child(chatRoomId)
+                        .child(MESSAGE);
 
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            messages.add(snapshot.getValue(Message.class));
-                        }
+        mMessageObservingListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Message> messages = new ArrayList<>();
+                if (dataSnapshot.getValue() == null) {
+                    onSuccessListener.onSuccess(messages);
+                    return;
+                }
 
-                        onSuccessListener.onSuccess(messages);
-                    }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    messages.add(snapshot.getValue(Message.class));
+                }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        onFailureListener.onFailure(databaseError.toException());
-                    }
-                });
+                onSuccessListener.onSuccess(messages);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onFailureListener.onFailure(databaseError.toException());
+            }
+        };
+
+        mMessageListQuery.addValueEventListener(mMessageObservingListener);
+    }
+
+    @Override
+    public void cancelMessageModelObserving() {
+        if (mMessageListQuery != null && mMessageObservingListener != null) {
+            mMessageListQuery.removeEventListener(mMessageObservingListener);
+            mMessageListQuery = null;
+            mMessageObservingListener = null;
+        }
     }
 
     @Override

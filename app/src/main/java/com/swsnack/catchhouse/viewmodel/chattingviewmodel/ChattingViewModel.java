@@ -54,7 +54,7 @@ public class ChattingViewModel extends ReactiveViewModel {
 
     public void removeListenerForChattingList() {
         getDataManager()
-                .removeChattingListListener();
+                .cancelChattingModelObserving();
     }
 
     public void setChattingRoom() {
@@ -116,9 +116,11 @@ public class ChattingViewModel extends ReactiveViewModel {
     }
 
     public void setChattingMessage(Chatting chattingMessage) {
-        if (chattingMessage != null && chattingMessage.getMessage() != null) {
+        if (chattingMessage != null) {
             roomUid = chattingMessage.getRoomUid();
-            this.mMessageList.setValue(DataConverter.sortByValueFromMapToList(chattingMessage.getMessage()));
+            if (chattingMessage.getMessage() != null) {
+                this.mMessageList.setValue(DataConverter.sortByValueFromMapToList(chattingMessage.getMessage()));
+            }
             return;
         }
         mMessageList.setValue(new ArrayList<>());
