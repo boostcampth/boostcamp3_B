@@ -32,6 +32,10 @@ public class DataConverter {
         }
 
         Collections.sort(chattingList, (rowIndexChatting, highIndexChatting) -> {
+            if(rowIndexChatting.getMessages() == null || highIndexChatting.getMessages() == null) {
+                return 0;
+            }
+
             Message rowIndexLastMessage = rowIndexChatting.getMessages().get(rowIndexChatting.getMessages().size() - 1);
             Message highIndexLastMessage = highIndexChatting.getMessages().get(highIndexChatting.getMessages().size() - 1);
 
