@@ -31,5 +31,8 @@ public interface DataManager extends APIManager, UserDataManager, ChattingManage
                           @NonNull OnSuccessListener<Void> onSuccessListener,
                           @NonNull OnFailureListener onFailureListener);
 
-    void deleteUserAll(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+    void deleteUserAll(@NonNull String uuid,
+                       @NonNull User user,
+                       @NonNull OnSuccessListener<Void> onSuccessListener,
+                       @NonNull OnFailureListener onFailureListener);
 }

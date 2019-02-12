@@ -27,9 +27,11 @@ import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_PROFILE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
@@ -42,12 +44,13 @@ import static com.swsnack.catchhouse.Constant.PostException.NOT_SELECTION_DATE;
 import static com.swsnack.catchhouse.Constant.SignInMethod.E_MAIL;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
-import static com.swsnack.catchhouse.Constant.UserStatus.DELETE_USER_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.SIGN_IN_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.SIGN_UP_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_NICK_NAME_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_PASSWORD_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_PROFILE_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.DELETE_USER_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.SEND_MESSAGE_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_IN_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PROFILE_SUCCESS;
 
 public class Constant {
 
@@ -59,14 +62,15 @@ public class Constant {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, DELETE_USER_SUCCESS, UPDATE_NICK_NAME_SUCCESS,
-            UPDATE_PASSWORD_SUCCESS, UPDATE_PROFILE_SUCCESS})
-    public @interface UserStatus {
+            UPDATE_PASSWORD_SUCCESS, UPDATE_PROFILE_SUCCESS, SEND_MESSAGE_SUCCESS})
+    public @interface SuccessKey {
         String SIGN_IN_SUCCESS = "singInSuccess";
         String SIGN_UP_SUCCESS = "signUpSuccess";
         String DELETE_USER_SUCCESS = "deleteSuccess";
         String UPDATE_NICK_NAME_SUCCESS = "updateNickNameSuccess";
         String UPDATE_PASSWORD_SUCCESS = "updatePasswordSuccess";
         String UPDATE_PROFILE_SUCCESS = "updateProfileSuccess";
+        String SEND_MESSAGE_SUCCESS = "sendMessageSuccess";
     }
 
     //magic constant
@@ -89,7 +93,8 @@ public class Constant {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({DB_USER, DB_ROOM, DB_LOCATION, STORAGE_PROFILE, STORAGE_ROOM_IMAGE, NICK_NAME, CHATTING})
+    @StringDef({DB_USER, STORAGE_PROFILE, STORAGE_ROOM_IMAGE, NICK_NAME, CHATTING,
+            MESSAGE, UUID})
     public @interface FirebaseKey {
         String DB_USER = "users";
         String DB_ROOM = "rooms";
@@ -98,6 +103,8 @@ public class Constant {
         String STORAGE_ROOM_IMAGE = "roomImage";
         String NICK_NAME = "nickName";
         String CHATTING = "chatting";
+        String MESSAGE = "messages";
+        String UUID = "uuid";
     }
 
     @Retention(RetentionPolicy.SOURCE)

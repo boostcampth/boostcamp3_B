@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,6 +66,7 @@ public class ChattingMessageAdapter extends BaseRecyclerViewAdapter<Message, Cha
         ChattingMessageItemHolder viewHolder = new ChattingMessageItemHolder(binding);
         binding.setLifecycleOwner(viewHolder);
         binding.setHandler(mChattingViewModel);
+        binding.setUserData(mUserData);
 
         return viewHolder;
     }

@@ -20,13 +20,14 @@ import java.util.List;
 
 public class ChattingDataBinding {
 
-    @BindingAdapter({"setList"})
+    @BindingAdapter({"setChattingList"})
     public static void setList(RecyclerView recyclerView, List<Chatting> chattingList) {
         ChattingListAdapter chattingListAdapter = (ChattingListAdapter) recyclerView.getAdapter();
-        chattingListAdapter.setList(chattingList);
+        List<Chatting> orderedList = DataConverter.reOrderedListByTimeStamp(chattingList);
+        chattingListAdapter.setList(orderedList);
     }
 
-    @BindingAdapter({"setChattingListProfile"})
+    @BindingAdapter({"setChattingUserProfile"})
     public static void setProfile(ImageView imageView, User user) {
         if (user == null) {
             return;
@@ -39,17 +40,14 @@ public class ChattingDataBinding {
     }
 
     @BindingAdapter({"setChattingMessage"})
-    public static void setMessage(RecyclerView recyclerView, Chatting chattingMessages) {
-        if (chattingMessages == null) {
+    public static void setMessage(RecyclerView recyclerView, List<Message> chattingMessages) {
+        if (chattingMessages == null || chattingMessages.size() == 0) {
             return;
         }
 
-        if (chattingMessages.getMessage() != null) {
-            ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
-            List<Message> messages = DataConverter.sortByValueFromMapToList(chattingMessages.getMessage());
-            Log.d("메세지", "setMessage: " + messages);
-            chattingMessageAdapter.setList(DataConverter.sortByValueFromMapToList(chattingMessages.getMessage()));
-        }
+        ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
+        chattingMessageAdapter.setList(chattingMessages);
+        recyclerView.scrollToPosition(chattingMessages.size() - 1);
     }
 
     @BindingAdapter({"setUserData"})

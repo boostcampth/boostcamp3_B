@@ -13,7 +13,6 @@ public class ChattingMessageDiffUtil extends BaseDiffUtil<Message> {
 
     @Override
     public boolean areContentsTheSame(int i, int i1) {
-        return mOldList.get(i).getTimestamp().equals(mNewList.get(i1).getTimestamp())
-                && mOldList.get(i).getContent().equals(mNewList.get(i1).getContent());
+        return mOldList.get(i).getContent().equals(mNewList.get(i1).getContent());
     }
 }

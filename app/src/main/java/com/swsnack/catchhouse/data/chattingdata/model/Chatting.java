@@ -3,6 +3,7 @@ package com.swsnack.catchhouse.data.chattingdata.model;
 import android.support.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 public class Chatting implements Serializable {
@@ -10,7 +11,7 @@ public class Chatting implements Serializable {
     private String roomUid;
     private Map<String, Boolean> users;
     @Nullable
-    private Map<String, Message> message;
+    private List<Message> messages;
 
     public Chatting() {
     }
@@ -25,15 +26,6 @@ public class Chatting implements Serializable {
 
     public void setUsers(Map<String, Boolean> users) {
         this.users = users;
-    }
-
-    @Nullable
-    public Map<String, Message> getMessage() {
-        return message;
-    }
-
-    public void setMessage(@Nullable Map<String, Message> message) {
-        this.message = message;
     }
 
     public String getRoomUid() {
@@ -51,6 +43,15 @@ public class Chatting implements Serializable {
         }
 
         return this.roomUid.equals(((Chatting) obj).getRoomUid());
+    }
+
+    @Nullable
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }
 

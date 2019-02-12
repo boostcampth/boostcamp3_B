@@ -42,6 +42,7 @@ public class AppDataManager implements DataManager {
                            ChattingManager remoteChattingManager,
                            RoomDataManager roomDataManager,
                            LocationDataManager locationDataManager) {
+
         mApiManager = apiManager;
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
@@ -90,12 +91,7 @@ public class AppDataManager implements DataManager {
                         setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
                         return;
                     }
-                    uploadProfile(signUpSuccess.getUser().getUid(),
-                            uri,
-                            storageUri -> {
-                                user.setProfile(storageUri.toString());
-                                setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-                            }, onFailureListener);
+                    setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
                 },
                 onFailureListener);
     }
@@ -105,6 +101,7 @@ public class AppDataManager implements DataManager {
                                  @NonNull User user,
                                  @NonNull OnSuccessListener<Void> onSuccessListener,
                                  @NonNull OnFailureListener onFailureListener) {
+
         signUp(authCredential,
                 signUpSuccess ->
                         getUserFromSingleSnapShot(signUpSuccess.getUser().getUid(),
@@ -121,61 +118,54 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void deleteUserAll(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void deleteUserAll(@NonNull String uuid,
+                              @NonNull User user,
+                              @NonNull OnSuccessListener<Void> onSuccessListener,
+                              @NonNull OnFailureListener onFailureListener) {
+
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
             return;
         }
-        // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
-        getUserFromSingleSnapShot(uuid,
-                user ->
-                        deleteUserData(uuid,
-                                deleteDB -> {
-                                    if (user.getProfile() == null) {
-                                        deleteUser(onSuccessListener,
-                                                error -> {
-                                                    onFailureListener.onFailure(error);
-                                                    setUser(uuid, user,
-                                                            Void -> {
-                                                            },
-                                                            transactionError -> {
-                                                            });
-                                                });
-                                        return;
-                                    }
-                                    deleteProfile(uuid,
-                                            deleteProfile ->
-                                                    deleteUser(onSuccessListener, onFailureListener),
-                                            error -> {
-                                                onFailureListener.onFailure(error);
-                                                setUser(uuid, user,
-                                                        Void -> {
-                                                        },
-                                                        transactionError -> {
-                                                        });
-                                            });
-                                },
-                                onFailureListener),
+
+        deleteUserData(uuid, user,
+                deleteUserSuccess -> deleteUser(onSuccessListener, onFailureListener),
                 onFailureListener);
     }
 
     @Override
-    public void updateProfile(@NonNull String uuid, @NonNull Uri uri, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.updateProfile(uuid, uri, onSuccessListener, onFailureListener);
+    public void updateProfile(@NonNull String uuid,
+                              @NonNull Uri uri,
+                              @NonNull User user,
+                              @NonNull OnSuccessListener<Void> onSuccessListener,
+                              @NonNull OnFailureListener onFailureListener) {
+
+        mUserDataManager.updateProfile(uuid, uri, user, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void signUp(@NonNull AuthCredential authCredential, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void signUp(@NonNull AuthCredential authCredential,
+                       @NonNull OnSuccessListener<AuthResult> onSuccessListener,
+                       @NonNull OnFailureListener onFailureListener) {
+
         mApiManager.signUp(authCredential, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void signUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void signUp(@NonNull String email,
+                       @NonNull String password,
+                       @NonNull OnSuccessListener<AuthResult> onSuccessListener,
+                       @NonNull OnFailureListener onFailureListener) {
+
         mApiManager.signUp(email, password, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void signIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void signIn(@NonNull String email,
+                       @NonNull String password,
+                       @NonNull OnSuccessListener<AuthResult> onSuccessListener,
+                       @NonNull OnFailureListener onFailureListener) {
+
         mApiManager.signIn(email, password, onSuccessListener, onFailureListener);
     }
 
@@ -185,12 +175,19 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void updatePassword(@NonNull String oldPassword,
+                               @NonNull String newPassword,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+
         mApiManager.updatePassword(oldPassword, newPassword, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void getUserInfoFromFacebook(@NonNull AccessToken accessToken, @NonNull OnSuccessListener<User> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void getUserInfoFromFacebook(@NonNull AccessToken accessToken,
+                                        @NonNull OnSuccessListener<User> onSuccessListener,
+                                        @NonNull OnFailureListener onFailureListener) {
+
         mApiManager.getUserInfoFromFacebook(accessToken, onSuccessListener, onFailureListener);
     }
 
@@ -209,17 +206,38 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void setUser(@NonNull String uuid,
+                        @NonNull User user,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailureListener onFailureListener) {
+
         mUserDataManager.setUser(uuid, user, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void deleteUserData(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.deleteUserData(uuid, onSuccessListener, onFailureListener);
+    public void setUser(@NonNull String uuid,
+                        @NonNull User user,
+                        @NonNull Uri uri,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailureListener onFailureListener) {
+
+        mUserDataManager.setUser(uuid, user, uri, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void deleteProfile(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void deleteUserData(@NonNull String uuid,
+                               @NonNull User user,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+
+        mUserDataManager.deleteUserData(uuid, user, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void deleteProfile(@NonNull String uuid,
+                              @NonNull OnSuccessListener<Void> onSuccessListener,
+                              @NonNull OnFailureListener onFailureListener) {
+
         mUserDataManager.deleteProfile(uuid, onSuccessListener, onFailureListener);
     }
 
@@ -233,53 +251,80 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void updateUser(@NonNull String uuid, @NonNull Map<String, Object> updateFields, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.updateUser(uuid, updateFields, onSuccessListener, onFailureListener);
+    public void updateUser(@NonNull String uuid,
+                           @NonNull User user,
+                           @NonNull OnSuccessListener<Void> onSuccessListener,
+                           @NonNull OnFailureListener onFailureListener) {
+
+        mUserDataManager.updateUser(uuid, user, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void updateNickName(@NonNull String uuid, @NonNull String changeNickName, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.updateNickName(uuid, changeNickName, onSuccessListener, onFailureListener);
-    }
+    public void getProfile(@NonNull Uri uri,
+                           @NonNull OnSuccessListener<Bitmap> onSuccessListener,
+                           @NonNull OnFailureListener onFailureListener) {
 
-    @Override
-    public void uploadProfile(@NonNull String uuid, @NonNull Uri imageUri, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.uploadProfile(uuid, imageUri, onSuccessListener, onFailureListener);
-    }
-
-    @Override
-    public void getProfile(@NonNull Uri uri, @NonNull OnSuccessListener<Bitmap> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         mUserDataManager.getProfile(uri, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void getChattingRoom(@NonNull String uuid, @NonNull String destinationUuid, @NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mRemoteChattingManager.getChattingRoom(uuid, destinationUuid, onSuccessListener, onFailureListener);
+    public void getChattingRoom(@NonNull String destinationUuid,
+                                @NonNull OnSuccessListener<String> onSuccessListener,
+                                @NonNull OnFailureListener onFailureListener) {
+
+        mRemoteChattingManager.getChattingRoom(destinationUuid, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mRemoteChattingManager.getChattingList(uuid, onSuccessListener, onFailureListener);
+    public void getChattingList(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
+                                @NonNull OnFailureListener onFailureListener) {
+
+        mRemoteChattingManager.getChattingList(onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void getChatMessage(@NonNull String chatRoomId, @NonNull ValueEventListener valueEventListener) {
+    public void cancelChattingModelObserving() {
+        mRemoteChattingManager.cancelChattingModelObserving();
+    }
+
+    @Override
+    public void listeningForChangedChatMessage(@NonNull String chatRoomId,
+                                               @NonNull OnSuccessListener<List<Message>> onSuccessListener,
+                                               @NonNull OnFailureListener onFailureListener) {
+
+        mRemoteChattingManager.listeningForChangedChatMessage(chatRoomId, onSuccessListener, onFailureListener);
 
     }
 
     @Override
-    public void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mRemoteChattingManager.setChattingRoom(chattingUser, onSuccessListener, onFailureListener);
+    public void cancelMessageModelObserving() {
+        mRemoteChattingManager.cancelMessageModelObserving();
     }
 
     @Override
-    public void setChatMessage(@NonNull Message message, @NonNull ValueEventListener valueEventListener) {
+    public void setChattingRoom(@NonNull String destinationUuid,
+                                @NonNull OnSuccessListener<String> onSuccessListener,
+                                @NonNull OnFailureListener onFailureListener) {
+
+        mRemoteChattingManager.setChattingRoom(destinationUuid, onSuccessListener, onFailureListener);
+    }
+
+    @Override
+    public void setChatMessage(int messagesLength,
+                               @Nullable String roomUid,
+                               @NonNull String destinationUid,
+                               @NonNull String content,
+                               @NonNull OnSuccessListener<String> onSuccessListener,
+                               @NonNull OnFailureListener onFailureListener) {
+
+        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailureListener);
 
     }
 
     @Override
     public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
                           @NonNull OnFailureListener onFailureListener) {
+
         mRoomDataManager.createKey(onSuccessListener, onFailureListener);
     }
 
@@ -287,6 +332,7 @@ public class AppDataManager implements DataManager {
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
+
         mRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailureListener);
     }
 
@@ -294,6 +340,7 @@ public class AppDataManager implements DataManager {
     public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
+
         mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
     }
 
@@ -301,6 +348,7 @@ public class AppDataManager implements DataManager {
     public void uploadLocationData(@NonNull String uuid, @NonNull Address address,
                                    @NonNull OnSuccessListener<String> onSuccessListener,
                                    @NonNull OnFailureListener onFailureListener) {
+
         mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailureListener);
     }
 }

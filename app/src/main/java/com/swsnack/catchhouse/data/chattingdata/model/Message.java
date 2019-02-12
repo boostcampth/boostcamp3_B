@@ -41,4 +41,13 @@ public class Message implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Message)) {
+           return false;
+        }
+
+        return this.timestamp.equals(((Message) obj).getTimestamp());
+    }
 }
