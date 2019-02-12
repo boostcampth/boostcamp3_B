@@ -14,8 +14,10 @@ import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
 
+import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
 import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
+import static com.swsnack.catchhouse.Constant.SuccessKey.SEND_MESSAGE_SUCCESS;
 
 public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessageBinding> {
 
@@ -25,7 +27,7 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
     public void onSuccess(String success) {
         super.onSuccess(success);
 
-        if (success.equals("sendSuccess")) {
+        if (success.equals(SEND_MESSAGE_SUCCESS)) {
             getBinding().etChattingMessageContent.setText("");
         }
     }
@@ -44,6 +46,11 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
                 && getIntent().getSerializableExtra(CHATTING_DATA) != null) {
             mViewModel.setChattingMessage((Chatting) getIntent().getSerializableExtra(CHATTING_DATA));
             mViewModel.setDestinationUserData(getIntent().getParcelableExtra(USER_DATA));
+        } else if(getIntent().getStringExtra(UUID) != null){
+            // set dummy data
+            mViewModel.setDestinationUuid("Ma1jLM8hj7NVmBVHlU2P7NIrrvu1");
+        } else {
+            throw new RuntimeException("chatting destination user's not exist");
         }
 
         ChattingMessageAdapter messageAdapter = new ChattingMessageAdapter(getApplicationContext(), mViewModel);
@@ -52,8 +59,10 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
 
         getBinding().etChattingMessageContent.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
+                if(getBinding().etChattingMessageContent.getText().toString().trim().equals("")) {
+                    return true;
+                }
                 mViewModel.sendNewMessage(messageAdapter.getItemCount(), getBinding().etChattingMessageContent.getText().toString());
-                getBinding().etChattingMessageContent.setText("");
                 return true;
             }
             return false;
@@ -79,5 +88,9 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
         getBinding().setLifecycleOwner(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+    }
 }

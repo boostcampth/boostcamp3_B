@@ -2,6 +2,7 @@ package com.swsnack.catchhouse.util;
 
 import android.graphics.Bitmap;
 
+import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.io.ByteArrayOutputStream;
@@ -25,19 +26,20 @@ public class DataConverter {
         return byteArrayFromBitmap;
     }
 
-    public static List<Message> sortByValueFromMapToList(Map<String, Message> map) {
-        List<String> keys = new ArrayList<>(map.keySet());
-        List<Message> messages = new ArrayList<>();
+    public static List<Chatting> reOrderedListByTimeStamp(List<Chatting> chattingList) {
+        if(chattingList == null) {
+            return null;
+        }
 
-        Collections.sort(keys, (key1, key2) -> {
-            Message message1 = map.get(key1);
-            Message message2 = map.get(key2);
-            return message1.getTimestamp().compareTo(message2.getTimestamp());
+        Collections.sort(chattingList, (rowIndexChatting, highIndexChatting) -> {
+            Message rowIndexLastMessage = rowIndexChatting.getMessages().get(rowIndexChatting.getMessages().size() - 1);
+            Message highIndexLastMessage = highIndexChatting.getMessages().get(highIndexChatting.getMessages().size() - 1);
+
+            return rowIndexLastMessage.getTimestamp().compareTo(highIndexLastMessage.getTimestamp());
         });
 
-        for (String key : keys) {
-            messages.add(map.get(key));
-        }
-        return messages;
+        Collections.reverse(chattingList);
+
+        return chattingList;
     }
 }

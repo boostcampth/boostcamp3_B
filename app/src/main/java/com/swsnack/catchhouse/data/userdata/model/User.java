@@ -2,9 +2,12 @@ package com.swsnack.catchhouse.data.userdata.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 public class User implements Parcelable {
 
+    @Nullable
+    private String uuid;
     private String eMail;
     private String nickName;
     private String gender;
@@ -62,6 +65,15 @@ public class User implements Parcelable {
         dest.writeString(myRoom);
     }
 
+    @Nullable
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public String getEMail() {
         return eMail;
     }
@@ -78,27 +90,12 @@ public class User implements Parcelable {
         return profile;
     }
 
-    public String getMyRoom() {
-        return myRoom;
-    }
-
     public void setProfile(String profile) {
         this.profile = profile;
-    }
-
-    public void setEMail(String eMail) {
-        this.eMail = eMail;
     }
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public void setMyRoom(String myRoom) {
-        this.myRoom = myRoom;
-    }
 }

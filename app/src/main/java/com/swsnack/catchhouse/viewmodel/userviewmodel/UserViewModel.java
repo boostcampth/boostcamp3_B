@@ -27,12 +27,12 @@ import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import static com.swsnack.catchhouse.Constant.UserStatus.DELETE_USER_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.SIGN_IN_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.SIGN_UP_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_NICK_NAME_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_PASSWORD_SUCCESS;
-import static com.swsnack.catchhouse.Constant.UserStatus.UPDATE_PROFILE_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.DELETE_USER_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_IN_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PROFILE_SUCCESS;
 
 public class UserViewModel extends ReactiveViewModel {
 

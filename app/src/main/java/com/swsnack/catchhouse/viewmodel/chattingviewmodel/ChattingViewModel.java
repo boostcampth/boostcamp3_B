@@ -18,16 +18,17 @@ import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import static com.swsnack.catchhouse.Constant.SuccessKey.SEND_MESSAGE_SUCCESS;
 
 public class ChattingViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
     private MutableLiveData<List<Chatting>> mChattingList;
-    private String roomUid;
+    private Boolean mIsListeningForchangedMessage;
+    private String mRoomUid;
     private MutableLiveData<List<Message>> mMessageList;
     private MutableLiveData<User> mDestinationUserData;
 
@@ -35,6 +36,7 @@ public class ChattingViewModel extends ReactiveViewModel {
         super(dataManager);
         this.mAppContext = AppApplication.getAppContext();
         this.mListener = bottomNavListener;
+        this.mIsListeningForchangedMessage = false;
         this.mChattingList = new MutableLiveData<>();
         this.mMessageList = new MutableLiveData<>();
         this.mDestinationUserData = new MutableLiveData<>();
@@ -46,8 +48,7 @@ public class ChattingViewModel extends ReactiveViewModel {
         }
 
         getDataManager()
-                .getChattingList(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                        list -> mChattingList.setValue(list),
+                .getChattingList(list -> mChattingList.setValue(list),
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
     }
 
@@ -56,37 +57,15 @@ public class ChattingViewModel extends ReactiveViewModel {
                 .cancelChattingModelObserving();
     }
 
-    public void setChattingRoom() {
-        Map<String, Boolean> users = new HashMap<>();
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            return;
-        }
-        mListener.isWorking();
-
-        //set dummy data
-        List<Message> messages = new ArrayList<>();
-        messages.add(new Message("RvXHEN2wXAMDQRvjQkgrfL0rWOC3", "dd"));
-        messages.add(new Message("RvXHEN2wXAMDQRvjQkgrfL0rWOC3", "dd"));
-
-        /* dummy data for testing*/
-        users.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
-        users.put("RvXHEN2wXAMDQRvjQkgrfL0rWOC3", true);
-
-        Chatting chatting = new Chatting(users);
-        chatting.setMessages(messages);
-        getDataManager()
-                .setChattingRoom(chatting,
-                        success -> mListener.isFinished(),
-                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_make_chattingRoom)));
-    }
-
     public void getUser(int position, OnSuccessListener<User> onSuccessListener, OnFailureListener onFailureListener) {
-
         for (String uuid : mChattingList.getValue().get(position).getUsers().keySet()) {
-            if (!uuid.equals(FirebaseAuth.getInstance().getCurrentUser().toString())) {
+            if (!uuid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 getDataManager()
                         .getUserFromSingleSnapShot(uuid,
-                                onSuccessListener,
+                                user -> {
+                                    user.setUuid(uuid);
+                                    onSuccessListener.onSuccess(user);
+                                },
                                 onFailureListener);
                 return;
             }
@@ -95,20 +74,29 @@ public class ChattingViewModel extends ReactiveViewModel {
 
     public void getNewMessage() {
         getDataManager()
-                .getChatMessage(roomUid,
-                        messageList -> mMessageList.setValue(messageList),
+                .listeningForChangedChatMessage(mRoomUid,
+                        messageList -> {
+                            mMessageList.setValue(messageList);
+                            mIsListeningForchangedMessage = true;
+                        },
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_load_list)));
     }
 
     public void cancelChangingMessagesListening() {
         getDataManager()
                 .cancelMessageModelObserving();
+        mIsListeningForchangedMessage = false;
     }
 
     public void sendNewMessage(int messagesLength, String content) {
         getDataManager()
-                .setChatMessage(messagesLength, roomUid, content,
-                        success -> {
+                .setChatMessage(messagesLength, mRoomUid, mDestinationUserData.getValue().getUuid(), content,
+                        roomUid -> {
+                            mRoomUid = roomUid;
+                            mListener.onSuccess(SEND_MESSAGE_SUCCESS);
+                            if (!mIsListeningForchangedMessage) {
+                                getNewMessage();
+                            }
                         },
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_send_message)));
     }
@@ -127,7 +115,7 @@ public class ChattingViewModel extends ReactiveViewModel {
 
     public void setChattingMessage(Chatting chatting) {
         if (chatting != null) {
-            roomUid = chatting.getRoomUid();
+            mRoomUid = chatting.getRoomUid();
             if (chatting.getMessages() != null) {
                 this.mMessageList.setValue(chatting.getMessages());
             }
@@ -142,5 +130,15 @@ public class ChattingViewModel extends ReactiveViewModel {
 
     public void setDestinationUserData(User user) {
         this.mDestinationUserData.setValue(user);
+    }
+
+    public void setDestinationUuid(String destinationUuid) {
+        getDataManager()
+                .getUserFromSingleSnapShot(destinationUuid,
+                        user -> {
+                            user.setUuid(destinationUuid);
+                            mDestinationUserData.setValue(user);
+                        },
+                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_load_list)));
     }
 }

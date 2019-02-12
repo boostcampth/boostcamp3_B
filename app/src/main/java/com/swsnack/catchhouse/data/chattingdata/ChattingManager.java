@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.data.chattingdata;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -13,30 +14,30 @@ import java.util.Map;
 
 public interface ChattingManager {
 
-    void getChattingRoom(@NonNull String uuid,
-                         @NonNull String destinationUuid,
+    void getChattingRoom(@NonNull String destinationUuid,
                          @NonNull OnSuccessListener<String> onSuccessListener,
                          @NonNull OnFailureListener onFailureListener);
 
-    void getChattingList(@NonNull String uuid,
-                         @NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
+    void getChattingList(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
                          @NonNull OnFailureListener onFailureListener);
 
     void cancelChattingModelObserving();
 
-    void getChatMessage(@NonNull String chatRoomId,
-                        @NonNull OnSuccessListener<List<Message>> onSuccessListener,
-                        @NonNull OnFailureListener onFailureListener);
+    void listeningForChangedChatMessage(@NonNull String chatRoomId,
+                                        @NonNull OnSuccessListener<List<Message>> onSuccessListener,
+                                        @NonNull OnFailureListener onFailureListener);
 
     void cancelMessageModelObserving();
 
-    void setChattingRoom(@NonNull Chatting chatting,
-                         @NonNull OnSuccessListener<Void> onSuccessListener,
+    void setChattingRoom(@NonNull String destinationUuid,
+                         @NonNull OnSuccessListener<String> onSuccessListener,
                          @NonNull OnFailureListener onFailureListener);
 
     void setChatMessage(int messagesLength,
-                        @NonNull String roomUid,
+                        @Nullable String roomUid,
+                        @NonNull String destinationUid,
                         @NonNull String content,
-                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnSuccessListener<String> onSuccessListener,
                         @NonNull OnFailureListener onFailureListener);
+
 }

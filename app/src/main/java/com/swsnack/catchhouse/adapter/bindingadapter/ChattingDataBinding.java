@@ -23,7 +23,8 @@ public class ChattingDataBinding {
     @BindingAdapter({"setChattingList"})
     public static void setList(RecyclerView recyclerView, List<Chatting> chattingList) {
         ChattingListAdapter chattingListAdapter = (ChattingListAdapter) recyclerView.getAdapter();
-        chattingListAdapter.setList(chattingList);
+        List<Chatting> orderedList = DataConverter.reOrderedListByTimeStamp(chattingList);
+        chattingListAdapter.setList(orderedList);
     }
 
     @BindingAdapter({"setChattingUserProfile"})
@@ -40,13 +41,13 @@ public class ChattingDataBinding {
 
     @BindingAdapter({"setChattingMessage"})
     public static void setMessage(RecyclerView recyclerView, List<Message> chattingMessages) {
-        if (chattingMessages == null) {
+        if (chattingMessages == null || chattingMessages.size() == 0) {
             return;
         }
 
         ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
         chattingMessageAdapter.setList(chattingMessages);
-        recyclerView.smoothScrollToPosition(chattingMessages.size() - 1);
+        recyclerView.scrollToPosition(chattingMessages.size() - 1);
     }
 
     @BindingAdapter({"setUserData"})

@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.data.chattingdata.remote;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.swsnack.catchhouse.Constant.Chatting.NO_CHAT_ROOM;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
@@ -48,8 +48,7 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void getChattingRoom(@NonNull String uuid,
-                                @NonNull String destinationUuid,
+    public void getChattingRoom(@NonNull String destinationUuid,
                                 @NonNull OnSuccessListener<String> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
 
@@ -58,13 +57,15 @@ public class RemoteChattingManager implements ChattingManager {
             return;
         }
 
+        String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         db.orderByChild(DB_USER + "/" + uuid)
                 .equalTo(true)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() == null) {
-                            onSuccessListener.onSuccess(NO_CHAT_ROOM);
+                            setChattingRoom(destinationUuid, onSuccessListener, onFailureListener);
                             return;
                         }
 
@@ -74,8 +75,8 @@ public class RemoteChattingManager implements ChattingManager {
                                 onSuccessListener.onSuccess(snapshot.getKey());
                                 return;
                             }
-                            onSuccessListener.onSuccess(NO_CHAT_ROOM);
                         }
+                        setChattingRoom(destinationUuid, onSuccessListener, onFailureListener);
                     }
 
                     @Override
@@ -86,12 +87,14 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void getChattingList(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new RuntimeException(NOT_SIGNED_USER));
             return;
         }
+
+        String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         mChattingListQuery
                 = db.orderByChild(DB_USER + "/" + uuid).equalTo(true);
@@ -131,9 +134,13 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void getChatMessage(@NonNull String chatRoomId,
-                               @NonNull OnSuccessListener<List<Message>> onSuccessListener,
-                               @NonNull OnFailureListener onFailureListener) {
+    public void listeningForChangedChatMessage(@Nullable String chatRoomId,
+                                               @NonNull OnSuccessListener<List<Message>> onSuccessListener,
+                                               @NonNull OnFailureListener onFailureListener) {
+
+        if (chatRoomId == null) {
+            return;
+        }
 
         mMessageListQuery =
                 db.child(chatRoomId)
@@ -174,29 +181,51 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void setChattingRoom(@NonNull Chatting chatting, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void setChattingRoom(@NonNull String destinationUuid,
+                                @NonNull OnSuccessListener<String> onSuccessListener,
+                                @NonNull OnFailureListener onFailureListener) {
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            onFailureListener.onFailure(new RuntimeException());
+            return;
+        }
+
+        String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        Map<String, Boolean> users = new HashMap<>();
+        users.put(uuid, true);
+        users.put(destinationUuid, true);
+
         db
                 .push()
-                .setValue(chatting)
-                .addOnSuccessListener(onSuccessListener)
+                .setValue(new Chatting(users))
+                .addOnSuccessListener(success ->
+                        getChattingRoom(destinationUuid, onSuccessListener, onFailureListener))
                 .addOnFailureListener(onFailureListener);
     }
 
     @Override
     public void setChatMessage(int messagesLength,
-                               @NonNull String roomUid,
+                               @Nullable String roomUid,
+                               @NonNull String destinationUid,
                                @NonNull String content,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnSuccessListener<String> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
+        if (roomUid == null) {
+            getChattingRoom(destinationUid, newRoomId ->
+                            setChatMessage(messagesLength, newRoomId, destinationUid, content, onSuccessListener, onFailureListener),
+                    onFailureListener);
+            return;
+        }
+
         Map<String, Object> setMessageField = new HashMap<>();
-        setMessageField.put(String.valueOf(messagesLength + 1), new Message(FirebaseAuth.getInstance().getCurrentUser().getUid(), content));
+        setMessageField.put(String.valueOf(messagesLength), new Message(FirebaseAuth.getInstance().getCurrentUser().getUid(), content));
 
         db.child(roomUid)
                 .child(MESSAGE)
                 .updateChildren(setMessageField)
-                .addOnSuccessListener(onSuccessListener)
+                .addOnSuccessListener(success -> onSuccessListener.onSuccess(roomUid))
                 .addOnFailureListener(onFailureListener);
     }
-
 }

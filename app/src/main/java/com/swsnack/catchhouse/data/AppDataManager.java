@@ -248,20 +248,18 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getChattingRoom(@NonNull String uuid,
-                                @NonNull String destinationUuid,
+    public void getChattingRoom(@NonNull String destinationUuid,
                                 @NonNull OnSuccessListener<String> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.getChattingRoom(uuid, destinationUuid, onSuccessListener, onFailureListener);
+        mRemoteChattingManager.getChattingRoom(destinationUuid, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void getChattingList(@NonNull String uuid,
-                                @NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
+    public void getChattingList(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.getChattingList(uuid, onSuccessListener, onFailureListener);
+        mRemoteChattingManager.getChattingList(onSuccessListener, onFailureListener);
     }
 
     @Override
@@ -270,11 +268,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getChatMessage(@NonNull String chatRoomId,
-                               @NonNull OnSuccessListener<List<Message>> onSuccessListener,
-                               @NonNull OnFailureListener onFailureListener) {
+    public void listeningForChangedChatMessage(@NonNull String chatRoomId,
+                                               @NonNull OnSuccessListener<List<Message>> onSuccessListener,
+                                               @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.getChatMessage(chatRoomId, onSuccessListener, onFailureListener);
+        mRemoteChattingManager.listeningForChangedChatMessage(chatRoomId, onSuccessListener, onFailureListener);
 
     }
 
@@ -284,22 +282,22 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setChattingRoom(@NonNull Chatting chatting,
-                                @NonNull OnSuccessListener<Void> onSuccessListener,
+    public void setChattingRoom(@NonNull String destinationUuid,
+                                @NonNull OnSuccessListener<String> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.setChattingRoom(chatting, onSuccessListener, onFailureListener);
+        mRemoteChattingManager.setChattingRoom(destinationUuid, onSuccessListener, onFailureListener);
     }
 
     @Override
     public void setChatMessage(int messagesLength,
-                               @NonNull String roomUid,
+                               @Nullable String roomUid,
+                               @NonNull String destinationUid,
                                @NonNull String content,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnSuccessListener<String> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, content, onSuccessListener, onFailureListener);
-
+        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailureListener);
     }
 
     @Override
