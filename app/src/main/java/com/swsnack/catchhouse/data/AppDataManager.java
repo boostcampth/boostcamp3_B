@@ -42,9 +42,12 @@ public class AppDataManager implements DataManager {
                            ChattingManager remoteChattingManager,
                            RoomDataManager roomDataManager,
                            LocationDataManager locationDataManager) {
+
         mApiManager = apiManager;
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
+        mRoomDataManager = roomDataManager;
+        mLocationDataManager = locationDataManager;
     }
 
     private static AppDataManager INSTANCE;
@@ -314,11 +317,14 @@ public class AppDataManager implements DataManager {
                                @NonNull OnSuccessListener<String> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
+        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailureListener);
+
     }
 
     @Override
     public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
                           @NonNull OnFailureListener onFailureListener) {
+
         mRoomDataManager.createKey(onSuccessListener, onFailureListener);
     }
 
@@ -326,6 +332,7 @@ public class AppDataManager implements DataManager {
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
+
         mRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailureListener);
     }
 
@@ -333,6 +340,7 @@ public class AppDataManager implements DataManager {
     public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
+
         mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
     }
 
@@ -340,6 +348,7 @@ public class AppDataManager implements DataManager {
     public void uploadLocationData(@NonNull String uuid, @NonNull Address address,
                                    @NonNull OnSuccessListener<String> onSuccessListener,
                                    @NonNull OnFailureListener onFailureListener) {
+
         mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailureListener);
     }
 }
