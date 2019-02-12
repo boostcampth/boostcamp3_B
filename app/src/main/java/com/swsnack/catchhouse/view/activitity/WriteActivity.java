@@ -13,14 +13,16 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.adapter.slideadapter.ImageSlideAdapter;
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.data.locationdata.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.roomdata.remote.AppRoomDataManager;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
-import com.swsnack.catchhouse.adapter.slideadapter.ImageSlideAdapter;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
@@ -80,19 +82,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this,
-                new RoomsViewModelFactory(
-                        getApplication(),
-                        AppDataManager.getInstance(
-                                AppAPIManager.getInstance(),
-                                AppUserDataManager.getInstance(),
-                                RemoteChattingManager.getInstance()
-                        ),
-                        this
-                )).get(RoomsViewModel.class);
-        
-        getBinding().setHandler(mViewModel);
-        getBinding().setLifecycleOwner(this);
+        createViewModels();
 
         getBinding().vpWrite.setAdapter(new ImageSlideAdapter(mViewModel, mViewModel.mImageList.getValue()));
 
@@ -156,18 +146,21 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     }
 
     private void createViewModels() {
-        createViewModel(
-                RoomsViewModel.class,
+        mViewModel = ViewModelProviders.of(this,
                 new RoomsViewModelFactory(
                         getApplication(),
                         AppDataManager.getInstance(
                                 AppAPIManager.getInstance(),
                                 AppUserDataManager.getInstance(),
-                                RemoteChattingManager.getInstance()
+                                RemoteChattingManager.getInstance(),
+                                AppRoomDataManager.getInstance(),
+                                AppLocationDataManager.getInstance()
                         ),
                         this
-                )
-        );
+                )).get(RoomsViewModel.class);
+
+        getBinding().setHandler(mViewModel);
+        getBinding().setLifecycleOwner(this);
     }
 
     private void createDatePicker(DatePickerDialog.OnDateSetListener listener) {

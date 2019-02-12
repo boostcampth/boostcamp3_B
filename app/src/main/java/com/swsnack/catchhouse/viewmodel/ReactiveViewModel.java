@@ -2,7 +2,6 @@ package com.swsnack.catchhouse.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 
-import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.DataManager;
 
 import io.reactivex.disposables.CompositeDisposable;

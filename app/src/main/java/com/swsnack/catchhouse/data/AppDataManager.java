@@ -12,15 +12,20 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.locationdata.LocationDataManager;
+import com.swsnack.catchhouse.data.roomdata.RoomDataManager;
+import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.data.userdata.APIManager;
 import com.swsnack.catchhouse.data.userdata.UserDataManager;
 import com.swsnack.catchhouse.data.userdata.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 
@@ -29,8 +34,14 @@ public class AppDataManager implements DataManager {
     private APIManager mApiManager;
     private UserDataManager mUserDataManager;
     private ChattingManager mRemoteChattingManager;
+    private RoomDataManager mRoomDataManager;
+    private LocationDataManager mLocationDataManager;
 
-    private AppDataManager(APIManager apiManager, UserDataManager userDataManager, ChattingManager remoteChattingManager) {
+    private AppDataManager(APIManager apiManager,
+                           UserDataManager userDataManager,
+                           ChattingManager remoteChattingManager,
+                           RoomDataManager roomDataManager,
+                           LocationDataManager locationDataManager) {
         mApiManager = apiManager;
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
@@ -40,9 +51,15 @@ public class AppDataManager implements DataManager {
 
     public static synchronized AppDataManager getInstance(@NonNull APIManager apiManager,
                                                           @NonNull UserDataManager userDataManager,
-                                                          @NonNull ChattingManager remoteChattingManager) {
+                                                          @NonNull ChattingManager remoteChattingManager,
+                                                          @NonNull RoomDataManager roomDataManager,
+                                                          @NonNull LocationDataManager locationDataManager) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataManager(apiManager, userDataManager, remoteChattingManager);
+            INSTANCE = new AppDataManager(apiManager,
+                    userDataManager,
+                    remoteChattingManager,
+                    roomDataManager,
+                    locationDataManager);
         }
         return INSTANCE;
     }
@@ -297,29 +314,32 @@ public class AppDataManager implements DataManager {
                                @NonNull OnSuccessListener<String> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailureListener);
     }
 
     @Override
     public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
                           @NonNull OnFailureListener onFailureListener) {
-
-        mUserDataManager.createKey(onSuccessListener, onFailureListener);
+        mRoomDataManager.createKey(onSuccessListener, onFailureListener);
     }
 
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
-
-        mUserDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailureListener);
+        mRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailureListener);
     }
 
     @Override
     public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
+        mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
+    }
 
-        mUserDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
+    @Override
+    public void uploadLocationData(@NonNull String uuid, @NonNull Address address,
+                                   @NonNull OnSuccessListener<String> onSuccessListener,
+                                   @NonNull OnFailureListener onFailureListener) {
+        mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailureListener);
     }
 }

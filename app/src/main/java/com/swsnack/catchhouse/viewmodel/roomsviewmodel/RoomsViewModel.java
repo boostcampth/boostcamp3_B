@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.asynctask.ConvertImageTask;
+import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
 import com.swsnack.catchhouse.util.DateCalculator;
@@ -25,6 +26,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.swsnack.catchhouse.Constant.PostException.EMPTY_PRICE_FIELD;
 import static com.swsnack.catchhouse.Constant.PostException.EMPTY_ROOM_IMAGE;
@@ -124,18 +130,14 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     public void onSearchAddress() {
-        List<Address> addressList = mSearchResultList.getValue();
-        String keyword = mKeyword.getValue();
 
-        if (addressList != null) {
-            addressList.clear();
-            // replace api call
-            addressList.add(new Address("test1", "1", 1, 1));
-            addressList.add(new Address("test2", "2", 1, 1));
-            addressList.add(new Address("test3", "3", 1, 1));
-        }
-
-        mSearchResultList.setValue(addressList);
+        getCompositeDisposable().add(searchAddress()
+                .subscribe(list ->
+                                mSearchResultList.postValue(list)
+                        , exception ->
+                                mListener.onError("error")
+                )
+        );
     }
 
     public void onSelectAddress(int position) {
@@ -143,7 +145,9 @@ public class RoomsViewModel extends ReactiveViewModel {
             List<Address> addressList = mSearchResultList.getValue();
 
             mAddress.setValue(addressList.get(position));
+
             addressList.clear();
+            mKeyword.setValue("");
             mSearchResultList.setValue(addressList);
         }
     }
@@ -167,14 +171,16 @@ public class RoomsViewModel extends ReactiveViewModel {
                 key -> convert(
                         imageByte -> mDataManager.uploadRoomImage(key, imageByte,
                                 urlList -> push(key, urlList,
-                                        __ -> {
-                                            mListener.isFinished();
-                                            mListener.onSuccess("Success");
-                                        }
+                                        __ -> mDataManager.uploadLocationData(key, mAddress.getValue(),
+                                                ___ -> {
+                                                    mListener.isFinished();
+                                                    mListener.onSuccess("Success");
+                                                }, errorHandler)
                                         , errorHandler
                                 ), errorHandler
                         ), errorHandler
-                ), errorHandler);
+                ), errorHandler
+        );
     }
 
     private void init() {
@@ -249,5 +255,19 @@ public class RoomsViewModel extends ReactiveViewModel {
                 mOptionSmoking.getValue()
         );
         getDataManager().uploadRoomData(key, room, onSuccessListener, onFailureListener);
+    }
+
+    private Single<List<Address>> searchAddress() {
+        String keyword = mKeyword.getValue();
+
+        return RoomsRepository.getInstance().getPOIFromRemote(keyword)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(__ -> mListener.isWorking())
+                .doAfterTerminate(() -> mListener.isFinished())
+                .toObservable()
+                .flatMap(Observable::fromIterable)
+                .map(item -> new Address(item.name, item.getPOIAddress().replace("null", ""), item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()))
+                .toList();
     }
 }

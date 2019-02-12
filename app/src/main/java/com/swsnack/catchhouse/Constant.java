@@ -24,6 +24,8 @@ import static com.swsnack.catchhouse.Constant.FacebookData.KEY;
 import static com.swsnack.catchhouse.Constant.FacebookData.NAME;
 import static com.swsnack.catchhouse.Constant.FacebookData.VALUE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.NICK_NAME;
@@ -96,6 +98,7 @@ public class Constant {
     public @interface FirebaseKey {
         String DB_USER = "users";
         String DB_ROOM = "rooms";
+        String DB_LOCATION = "location";
         String STORAGE_PROFILE = "profile";
         String STORAGE_ROOM_IMAGE = "roomImage";
         String NICK_NAME = "nickName";
