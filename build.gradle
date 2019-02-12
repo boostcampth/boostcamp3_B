@@ -40,6 +40,7 @@ ext {
     firebaseStorageVersion = '16.0.5'
     googleAuthVersion = '16.0.1'
     facebookAuthVersion = '4.39.0'
+    geofireVersion = "2.3.1"
     glideVersion = '4.8.0'
     glideTransformVersion = '4.0.0'
     multidexVersion = '1.0.3'

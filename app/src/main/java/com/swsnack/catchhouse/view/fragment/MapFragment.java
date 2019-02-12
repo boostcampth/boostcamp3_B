@@ -15,15 +15,15 @@ import android.widget.Toast;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
+import com.skt.Tmap.TMapView;
+import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
-import com.swsnack.catchhouse.Constant;
+import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
+import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.databinding.FragmentMapBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
 import com.swsnack.catchhouse.view.activitity.FilterPopUpActivity;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
-import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
 
 import io.reactivex.annotations.Nullable;

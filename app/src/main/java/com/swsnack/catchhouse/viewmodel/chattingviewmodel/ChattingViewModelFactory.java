@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.data.locationdata.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.roomdata.remote.AppRoomDataManager;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -25,7 +27,9 @@ public class ChattingViewModelFactory extends ViewModelProvider.NewInstanceFacto
         if (modelClass.isAssignableFrom(ChattingViewModel.class)) {
             return (T) new ChattingViewModel(AppDataManager.getInstance(AppAPIManager.getInstance(),
                     AppUserDataManager.getInstance(),
-                    RemoteChattingManager.getInstance()),
+                    RemoteChattingManager.getInstance(),
+                    AppRoomDataManager.getInstance(),
+                    AppLocationDataManager.getInstance()),
                     mBottomNavListener);
         }
         throw new Fragment.InstantiationException("not viewModel class", null);

@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.data.locationdata.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.roomdata.remote.AppRoomDataManager;
 import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
 import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityPostBinding;
@@ -27,17 +29,23 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewModel = ViewModelProviders.of(this,
-                new PostViewModelFactory(
-                AppDataManager.getInstance(
-                        AppAPIManager.getInstance(),
-                        AppUserDataManager.getInstance(),
-                        RemoteChattingManager.getInstance()
-                ),
-                this
-        )).get(PostViewModel.class);
+        createViewModels();
 
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
+    }
+
+    private void createViewModels() {
+        mViewModel = ViewModelProviders.of(this,
+                new PostViewModelFactory(
+                        AppDataManager.getInstance(
+                                AppAPIManager.getInstance(),
+                                AppUserDataManager.getInstance(),
+                                RemoteChattingManager.getInstance(),
+                                AppRoomDataManager.getInstance(),
+                                AppLocationDataManager.getInstance()
+                        ),
+                        this
+                )).get(PostViewModel.class);
     }
 }
