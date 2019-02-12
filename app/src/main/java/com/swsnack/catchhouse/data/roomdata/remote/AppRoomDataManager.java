@@ -115,4 +115,23 @@ public class AppRoomDataManager implements RoomDataManager {
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
     }
+
+    @Override
+    public void readRoomData(@NonNull String uuid,
+                             @NonNull OnSuccessListener<Room> onSuccessListener,
+                             @NonNull OnFailureListener onFailureListener) {
+
+        db.child(uuid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Room room = dataSnapshot.getValue(Room.class);
+                onSuccessListener.onSuccess(room);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onFailureListener.onFailure(new RuntimeException(databaseError.getMessage()));
+            }
+        });
+    }
 }

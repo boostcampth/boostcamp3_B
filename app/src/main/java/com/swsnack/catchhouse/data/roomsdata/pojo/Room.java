@@ -1,35 +1,71 @@
 package com.swsnack.catchhouse.data.roomsdata.pojo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Room {
-    /** 가격(1박) **/
+public class Room implements Parcelable {
+    /**
+     * 가격(1박)
+     **/
     private String price;
-    /** 시작 날짜 **/
+    /**
+     * 시작 날짜
+     **/
     private String from;
-    /** 종료 날짜 **/
+    /**
+     * 종료 날짜
+     **/
     private String to;
-    /** 제목 **/
+    /**
+     * 제목
+     **/
     private String title;
-    /** 내용 **/
+    /**
+     * 내용
+     **/
     private String content;
-    /** 이미지들 링크 **/
+    /**
+     * 이미지들 링크
+     **/
     private List<String> images;
-    /** 작성자 **/
+    /**
+     * 작성자
+     **/
     private String UUID;
-    /** 주소 **/
-    private Address address;
+    /**
+     * 주소
+     **/
+    private String address;
+    /**
+     * 주소 명
+     **/
+    private String addressName;
 
     /* 옵션
      * 선택하지 않을경우 false */
-    /** 기본 옵션 **/
+    /**
+     * 기본 옵션
+     **/
     private boolean optionStandard;
-    /** 성별 옵션 **/
+    /**
+     * 성별 옵션
+     **/
     private boolean optionGender;
-    /** 반려동물 옵션 **/
+    /**
+     * 반려동물 옵션
+     **/
     private boolean optionPet;
-    /** 흡연 옵션 **/
+    /**
+     * 흡연 옵션
+     **/
     private boolean optionSmoking;
+
+    public Room() {
+
+    }
 
     public Room(String price,
                 String from,
@@ -38,7 +74,8 @@ public class Room {
                 String content,
                 List<String> images,
                 String UUID,
-                Address address,
+                String address,
+                String addressName,
                 boolean optionStandard,
                 boolean optionGender,
                 boolean optionPet,
@@ -51,10 +88,28 @@ public class Room {
         this.images = images;
         this.UUID = UUID;
         this.address = address;
+        this.addressName = addressName;
         this.optionStandard = optionStandard;
         this.optionGender = optionGender;
         this.optionPet = optionPet;
         this.optionSmoking = optionSmoking;
+    }
+
+    public Room(Parcel in) {
+        images = new ArrayList<>();
+        price = in.readString();
+        from = in.readString();
+        to = in.readString();
+        title = in.readString();
+        content = in.readString();
+        in.readStringList(images);
+        UUID = in.readString();
+        address = in.readString();
+        addressName = in.readString();
+        optionStandard = in.readByte() != 0;
+        optionGender = in.readByte() != 0;
+        optionPet = in.readByte() != 0;
+        optionSmoking = in.readByte() != 0;
     }
 
     public String getPrice() {
@@ -85,7 +140,7 @@ public class Room {
         return UUID;
     }
 
-    public Address getAddress() {
+    public String getAddress() {
         return address;
     }
 
@@ -105,4 +160,41 @@ public class Room {
         return optionSmoking;
     }
 
+    public String getAddressName() {
+        return addressName;
+    }
+
+    public static final Creator<Room> CREATOR = new Creator<Room>() {
+        @Override
+        public Room createFromParcel(Parcel in) {
+            return new Room(in);
+        }
+
+        @Override
+        public Room[] newArray(int size) {
+            return new Room[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(price);
+        dest.writeString(from);
+        dest.writeString(to);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeStringList(images);
+        dest.writeString(UUID);
+        dest.writeString(address);
+        dest.writeString(addressName);
+        dest.writeByte((byte) (optionStandard ? 1 : 0));
+        dest.writeByte((byte) (optionGender ? 1 : 0));
+        dest.writeByte((byte) (optionPet ? 1 : 0));
+        dest.writeByte((byte) (optionSmoking ? 1 : 0));
+    }
 }

@@ -21,4 +21,7 @@ public interface RoomDataManager {
                         @NonNull OnSuccessListener<Void> onSuccessListener,
                         @NonNull OnFailureListener onFailureListener);
 
+    void readRoomData(@NonNull String uuid,
+                      @NonNull OnSuccessListener<Room> onSuccessListener,
+                      @NonNull OnFailureListener onFailureListener);
 }

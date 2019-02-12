@@ -62,6 +62,9 @@ public class RoomsViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
     public final MutableLiveData<String> mContent = new MutableLiveData<>();
 
+    // for test
+    public Room mRoom;
+
     RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
         super(dataManager);
         mAppContext = application;
@@ -172,10 +175,15 @@ public class RoomsViewModel extends ReactiveViewModel {
                         imageByte -> mDataManager.uploadRoomImage(key, imageByte,
                                 urlList -> push(key, urlList,
                                         __ -> mDataManager.uploadLocationData(key, mAddress.getValue(),
-                                                ___ -> {
-                                                    mListener.isFinished();
-                                                    mListener.onSuccess("Success");
-                                                }, errorHandler)
+                                                ___ ->
+                                                        // for test
+                                                        mDataManager.readRoomData(key,
+                                                                room -> {
+                                                                    mListener.isFinished();
+                                                                    mListener.onSuccess("Success");
+                                                                    mRoom = room;
+                                                                }, errorHandler)
+                                                , errorHandler)
                                         , errorHandler
                                 ), errorHandler
                         ), errorHandler
@@ -248,7 +256,8 @@ public class RoomsViewModel extends ReactiveViewModel {
                 mContent.getValue(),
                 urls,
                 UUID,
-                mAddress.getValue(),
+                mAddress.getValue().getAddress(),
+                mAddress.getValue().getName(),
                 mOptionStandard.getValue(),
                 mOptionGender.getValue(),
                 mOptionPet.getValue(),

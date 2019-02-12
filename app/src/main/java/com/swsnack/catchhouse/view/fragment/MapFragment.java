@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,8 +49,14 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
+        Log.d("test1", "create");
         return getBinding().getRoot();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("test1", "stop");
     }
 
     @Override

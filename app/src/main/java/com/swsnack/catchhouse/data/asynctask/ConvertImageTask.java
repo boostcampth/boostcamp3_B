@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.swsnack.catchhouse.util.DataConverter;
@@ -37,7 +36,6 @@ public class ConvertImageTask extends AsyncTask<Uri, Void, List<byte[]>> {
                 Bitmap bitmap = Glide
                         .with(mAppContext)
                         .asBitmap()
-                        .apply(new RequestOptions().override(340, 324))
                         .load(uri)
                         .submit()
                         .get();

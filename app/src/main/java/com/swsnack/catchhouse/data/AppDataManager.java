@@ -298,9 +298,17 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void readRoomData(@NonNull String uuid,
+                             @NonNull OnSuccessListener<Room> onSuccessListener,
+                             @NonNull OnFailureListener onFailureListener) {
+        mRoomDataManager.readRoomData(uuid, onSuccessListener, onFailureListener);
+    }
+
+    @Override
     public void uploadLocationData(@NonNull String uuid, @NonNull Address address,
                                    @NonNull OnSuccessListener<String> onSuccessListener,
                                    @NonNull OnFailureListener onFailureListener) {
         mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailureListener);
     }
+
 }

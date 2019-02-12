@@ -3,49 +3,29 @@ package com.swsnack.catchhouse.adapter.slideadapter;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.databinding.ItemViewpagerBinding;
+import com.swsnack.catchhouse.adapter.BaseViewPagerAdapter;
+import com.swsnack.catchhouse.databinding.ItemDeletableImagePagerBinding;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 
 import java.util.List;
 
-public class ImageSlideAdapter extends PagerAdapter {
+public class DeletableImagePagerAdapter extends BaseViewPagerAdapter<Uri, RoomsViewModel> {
 
-    private List<Uri> mImageUriList;
-    private RoomsViewModel mViewModel;
-
-    public ImageSlideAdapter(RoomsViewModel viewModel, List<Uri> uriList) {
-        mViewModel = viewModel;
-        mImageUriList = uriList;
-    }
-
-    public void setItem(List<Uri> item) {
-        mImageUriList = item;
-    }
-
-    @Override
-    public int getCount() {
-        return mImageUriList.size();
-    }
-
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view == object;
+    public DeletableImagePagerAdapter(List<Uri> uris, RoomsViewModel roomsViewModel){
+        super(uris, roomsViewModel);
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
-        ItemViewpagerBinding binding =
-                DataBindingUtil.bind(inflater.inflate(R.layout.item_viewpager, container, false));
+        ItemDeletableImagePagerBinding binding =
+                DataBindingUtil.bind(inflater.inflate(R.layout.item_deletable_image_pager, container, false));
 
         if(binding != null) {
             binding.ivVpImage.setOnClickListener(__ ->
@@ -54,8 +34,7 @@ public class ImageSlideAdapter extends PagerAdapter {
 
             try {
                 Glide.with(container.getContext())
-                        .load(mImageUriList.get(position))
-                        .apply(new RequestOptions().override(340, 324))
+                        .load(mList.get(position))
                         .into(binding.ivVpImage);
 
                 String text = (position + 1) + "/" + getCount() + "";
@@ -68,13 +47,6 @@ public class ImageSlideAdapter extends PagerAdapter {
             return binding.getRoot();
         }
         return container;
-    }
-
-    @Override
-    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        View view = (View) object;
-        container.removeView(view);
-        container.invalidate();
     }
 
     @Override

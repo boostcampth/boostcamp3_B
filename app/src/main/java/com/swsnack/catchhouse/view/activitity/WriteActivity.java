@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapter.slideadapter.ImageSlideAdapter;
+import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.locationdata.remote.AppLocationDataManager;
@@ -69,7 +69,13 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         builder
                 .setMessage(getString(R.string.dl_write_finish))
                 .setOnDismissListener(__ -> finish())
-                .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) -> finish());
+                .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) -> {
+                    finish();
+                    // for test
+                    Intent intent = new Intent(this, PostActivity.class);
+                    intent.putExtra("room", mViewModel.mRoom);
+                    startActivity(intent);
+                });
 
         AlertDialog alert = builder.create();
 
@@ -84,7 +90,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
         createViewModels();
 
-        getBinding().vpWrite.setAdapter(new ImageSlideAdapter(mViewModel, mViewModel.mImageList.getValue()));
+        getBinding().vpWrite.setAdapter(new DeletableImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
 
         getBinding().tbWrite.setNavigationIcon(R.drawable.action_back);
         getBinding().tbWrite.setNavigationOnClickListener(__ ->
