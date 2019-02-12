@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -13,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.asynctask.ConvertImageTask;
+import com.swsnack.catchhouse.data.roomdata.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
@@ -20,12 +20,8 @@ import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -54,6 +50,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mFromDate = new MutableLiveData<>();
     public final MutableLiveData<String> mToDate = new MutableLiveData<>();
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
+    public final MutableLiveData<String> mSize = new MutableLiveData<>();
     public final MutableLiveData<Boolean> mOptionStandard = new MutableLiveData<>();
     public final MutableLiveData<Boolean> mOptionPet = new MutableLiveData<>();
     public final MutableLiveData<Boolean> mOptionGender = new MutableLiveData<>();
@@ -62,8 +59,11 @@ public class RoomsViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
     public final MutableLiveData<String> mContent = new MutableLiveData<>();
 
+    private ExpectedPrice ep;
+
     // for test
     public Room mRoom;
+
 
     RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
         super(dataManager);
@@ -95,41 +95,25 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     public void onSelectFromDate(int year, int month, int day) {
-        mFromDate.setValue(year + "-" +
-                DateCalculator.refineDate(month) + "-" +
-                DateCalculator.refineDate(day)
-        );
-        onChangePriceAndInterval();
+        String date = DateCalculator.createDateString(year, month, day);
+
+        mFromDate.setValue(date);
+        ep.updateFromDate(date);
+        mExpectedPrice.setValue(ep.onChangePriceAndInterval());
     }
 
     public void onSelectToDate(int year, int month, int day) {
-        mToDate.setValue(year + "-" +
-                DateCalculator.refineDate(month) + "-" +
-                DateCalculator.refineDate(day)
-        );
-        onChangePriceAndInterval();
+        String date = DateCalculator.createDateString(year, month, day);
+
+        mToDate.setValue(date);
+        ep.updateToDate(date);
+        mExpectedPrice.setValue(ep.onChangePriceAndInterval());
     }
 
-    public void onChangePriceAndInterval() {
-        int diffDay;
+    public void onChangePriceAndPeriod() {
         String price = mPrice.getValue();
-
-        if (isPriceAndDateValid()) {
-            try {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                Date fromDate = formatter.parse(mFromDate.getValue());
-                Date toDate = formatter.parse(mToDate.getValue());
-                diffDay = DateCalculator.getDiffDate(fromDate, toDate);
-
-                DecimalFormat myFormatter = new DecimalFormat("###,###");
-                mExpectedPrice.setValue(
-                        myFormatter.format(Integer.parseInt(price) * diffDay) +
-                                "원" + "  (" + diffDay + "박)"
-                );
-            } catch (Exception e) {
-                Log.e(TAG, "parse error", e);
-            }
-        }
+        ep.updatePrice(price);
+        mExpectedPrice.setValue(ep.onChangePriceAndInterval());
     }
 
     public void onSearchAddress() {
@@ -207,15 +191,7 @@ public class RoomsViewModel extends ReactiveViewModel {
         mContent.setValue("");
 
         mImageList.setValue(new ArrayList<>());
-    }
-
-    private boolean isPriceAndDateValid() {
-        String defaultDate = mAppContext.getString(R.string.tv_write_date);
-
-        return (!TextUtils.equals(mFromDate.getValue(), defaultDate) &&
-                !TextUtils.equals(mToDate.getValue(), defaultDate) &&
-                !TextUtils.isEmpty(mPrice.getValue())
-        );
+        ep = new ExpectedPrice("", "", "");
     }
 
     private String isRoomDataValid() {
@@ -256,6 +232,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                 mContent.getValue(),
                 urls,
                 UUID,
+                mSize.getValue(),
                 mAddress.getValue().getAddress(),
                 mAddress.getValue().getName(),
                 mOptionStandard.getValue(),

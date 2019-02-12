@@ -21,7 +21,7 @@ import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
 public class PostActivity extends BaseActivity<ActivityPostBinding> {
 
     private PostViewModel mViewModel;
-    private Room mRoom;
+
     @Override
     protected int getLayout() {
         return R.layout.activity_post;
@@ -36,13 +36,23 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
 
-        mRoom = getIntent().getParcelableExtra("room");
-        getBinding().tvPostPrice.setText(mRoom.getPrice());
-        getBinding().tvPostAddress.setText(mRoom.getAddress());
-        getBinding().tvPostTitle.setText(mRoom.getTitle());
-        getBinding().tvPostContent.setText(mRoom.getContent());
-        getBinding().vpPost.setAdapter(new ImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
-        mViewModel.setInitData(mRoom);
+        init();
+    }
+
+    private void init() {
+        Room room = getIntent().getParcelableExtra("room");
+        String period = room.getFrom() + " ~ " + room.getTo();
+        String size = room.getSize() + "평";
+
+        getBinding().tvPostAddress.setText(room.getAddress());
+        getBinding().tvPostTitle.setText(room.getTitle());
+        getBinding().tvPostContent.setText(room.getContent());
+        getBinding().tvPostPeriod.setText(period);
+        getBinding().tvPostSize.setText(size);
+        getBinding().vpPost.setAdapter(
+                new ImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel)
+        );
+        mViewModel.setInitData(room);
     }
 
     private void createViewModels() {

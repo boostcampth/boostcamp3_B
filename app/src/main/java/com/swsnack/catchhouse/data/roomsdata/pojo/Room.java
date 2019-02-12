@@ -43,9 +43,12 @@ public class Room implements Parcelable {
      * 주소 명
      **/
     private String addressName;
+    /**
+     * 방 사이즈
+     */
+    private String size;
 
-    /* 옵션
-     * 선택하지 않을경우 false */
+    /* 옵션 선택하지 않을경우 false */
     /**
      * 기본 옵션
      **/
@@ -74,6 +77,7 @@ public class Room implements Parcelable {
                 String content,
                 List<String> images,
                 String UUID,
+                String size,
                 String address,
                 String addressName,
                 boolean optionStandard,
@@ -87,6 +91,7 @@ public class Room implements Parcelable {
         this.content = content;
         this.images = images;
         this.UUID = UUID;
+        this.size = size;
         this.address = address;
         this.addressName = addressName;
         this.optionStandard = optionStandard;
@@ -104,6 +109,7 @@ public class Room implements Parcelable {
         content = in.readString();
         in.readStringList(images);
         UUID = in.readString();
+        size = in.readString();
         address = in.readString();
         addressName = in.readString();
         optionStandard = in.readByte() != 0;
@@ -138,6 +144,10 @@ public class Room implements Parcelable {
 
     public String getUUID() {
         return UUID;
+    }
+
+    public String getSize() {
+        return size;
     }
 
     public String getAddress() {
@@ -190,6 +200,7 @@ public class Room implements Parcelable {
         dest.writeString(content);
         dest.writeStringList(images);
         dest.writeString(UUID);
+        dest.writeString(size);
         dest.writeString(address);
         dest.writeString(addressName);
         dest.writeByte((byte) (optionStandard ? 1 : 0));

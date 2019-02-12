@@ -40,11 +40,17 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/tv_post_title"
+                        style="@style/TextStyle.Bold.Title"
+                        android:layout_gravity="center" />
+
                     <android.support.v4.view.ViewPager
                         android:id="@+id/vp_post"
                         android:layout_width="match_parent"
                         android:layout_height="320dp"
                         android:layout_margin="8dp"
+                        android:layout_marginTop="24dp"
                         app:adapter="@{handler.mImageList}" />
 
                     <TextView
@@ -57,13 +63,16 @@
                         android:id="@+id/tv_post_price"
                         style="@style/TextStyle.Regular.Title"
                         android:layout_gravity="center"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@{handler.mExpectedPrice}" />
 
                     <TextView
-                        android:id="@+id/tv_post_price_detail"
+                        android:id="@+id/tv_post_option_tag"
                         style="@style/TextStyle.Regular.Medium"
                         android:layout_gravity="center"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@{handler.mOptionTag}"
+                        android:textColor="@color/colorAccent" />
 
                     <TextView
                         style="@style/TextStyle.Bold.SubTitle"
@@ -102,6 +111,7 @@
 
                         <TextView
                             style="@style/TextStyle.Regular.Medium"
+                            android:id="@+id/tv_post_size"
                             android:layout_width="0dp"
                             android:layout_weight="0.75" />
 
@@ -119,26 +129,35 @@
                             android:text="@string/tv_post_date" />
 
                         <TextView
+                            android:id="@+id/tv_post_period"
                             style="@style/TextStyle.Regular.Medium"
                             android:layout_width="0dp"
                             android:layout_weight="0.75" />
 
                     </LinearLayout>
 
+
                     <TextView
-                        android:id="@+id/tv_post_title"
                         style="@style/TextStyle.Bold.SubTitle"
-                        android:layout_marginTop="24dp" />
+                        android:layout_marginTop="24dp"
+                        android:text="@string/tv_post_map" />
 
                     <TextView
                         android:id="@+id/tv_post_content"
-                        style="@style/TextStyle.Regular.Medium" />
+                        style="@style/TextStyle.Regular.Medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/et_round_background"
+                        android:backgroundTint="@android:color/white"
+                        android:elevation="4dp" />
 
                     <TextView
-                        android:id="@+id/tv_write_preview"
+                        android:id="@+id/tv_post_send"
                         style="@style/tv.accent.small"
-                        android:layout_width="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_marginStart="64dp"
+                        android:layout_marginEnd="64dp"
                         android:text="@string/tv_post_chat" />
                 </LinearLayout>
             </ScrollView>

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-public class BaseViewPagerAdapter<T, VM> extends PagerAdapter {
+public abstract class BaseViewPagerAdapter<T, VM> extends PagerAdapter {
 
     protected VM mViewModel;
     protected List<T> mList;

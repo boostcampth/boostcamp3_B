@@ -119,7 +119,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         );
 
         mViewModel.mPrice.observe(this, __ ->
-                mViewModel.onChangePriceAndInterval()
+                mViewModel.onChangePriceAndPeriod()
         );
 
         getBinding().etWriteAddress.setOnClickListener(__ ->
