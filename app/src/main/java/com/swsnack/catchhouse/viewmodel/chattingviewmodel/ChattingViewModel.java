@@ -13,7 +13,6 @@ import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 import com.swsnack.catchhouse.data.userdata.model.User;
-import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -52,7 +51,7 @@ public class ChattingViewModel extends ReactiveViewModel {
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
     }
 
-    public void cancelChattingListChangingListeneing() {
+    public void cancelChattingListChangingListening() {
         getDataManager()
                 .cancelChattingModelObserving();
     }
@@ -64,11 +63,17 @@ public class ChattingViewModel extends ReactiveViewModel {
         }
         mListener.isWorking();
 
+        //set dummy data
+        List<Message> messages = new ArrayList<>();
+        messages.add(new Message("RvXHEN2wXAMDQRvjQkgrfL0rWOC3", "dd"));
+        messages.add(new Message("RvXHEN2wXAMDQRvjQkgrfL0rWOC3", "dd"));
+
         /* dummy data for testing*/
         users.put(FirebaseAuth.getInstance().getCurrentUser().getUid(), true);
         users.put("RvXHEN2wXAMDQRvjQkgrfL0rWOC3", true);
 
         Chatting chatting = new Chatting(users);
+        chatting.setMessages(messages);
         getDataManager()
                 .setChattingRoom(chatting,
                         success -> mListener.isFinished(),
@@ -86,14 +91,13 @@ public class ChattingViewModel extends ReactiveViewModel {
                 return;
             }
         }
-
     }
 
     public void getNewMessage() {
         getDataManager()
                 .getChatMessage(roomUid,
                         messageList -> mMessageList.setValue(messageList),
-                        error -> mListener.onError(""));
+                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_load_list)));
     }
 
     public void cancelChangingMessagesListening() {
@@ -101,11 +105,12 @@ public class ChattingViewModel extends ReactiveViewModel {
                 .cancelMessageModelObserving();
     }
 
-    public void sendNewMessage(String content) {
+    public void sendNewMessage(int messagesLength, String content) {
         getDataManager()
-                .setChatMessage(roomUid, new Message(FirebaseAuth.getInstance().getCurrentUser().getUid(), content),
-                        success -> mListener.onSuccess("sendSuccess"),
-                        error -> mListener.onError(""));
+                .setChatMessage(messagesLength, roomUid, content,
+                        success -> {
+                        },
+                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_send_message)));
     }
 
     public LiveData<List<Chatting>> getChattingList() {
@@ -120,11 +125,11 @@ public class ChattingViewModel extends ReactiveViewModel {
         return mMessageList;
     }
 
-    public void setChattingMessage(Chatting chattingMessage) {
-        if (chattingMessage != null) {
-            roomUid = chattingMessage.getRoomUid();
-            if (chattingMessage.getMessage() != null) {
-                this.mMessageList.setValue(DataConverter.sortByValueFromMapToList(chattingMessage.getMessage()));
+    public void setChattingMessage(Chatting chatting) {
+        if (chatting != null) {
+            roomUid = chatting.getRoomUid();
+            if (chatting.getMessages() != null) {
+                this.mMessageList.setValue(chatting.getMessages());
             }
             return;
         }

@@ -284,20 +284,21 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setChattingRoom(@NonNull Chatting chattingUser,
+    public void setChattingRoom(@NonNull Chatting chatting,
                                 @NonNull OnSuccessListener<Void> onSuccessListener,
                                 @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.setChattingRoom(chattingUser, onSuccessListener, onFailureListener);
+        mRemoteChattingManager.setChattingRoom(chatting, onSuccessListener, onFailureListener);
     }
 
     @Override
-    public void setChatMessage(@NonNull String roomUid,
-                               @NonNull Message message,
+    public void setChatMessage(int messagesLength,
+                               @NonNull String roomUid,
+                               @NonNull String content,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
-        mRemoteChattingManager.setChatMessage(roomUid, message, onSuccessListener, onFailureListener);
+        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, content, onSuccessListener, onFailureListener);
 
     }
 

@@ -68,6 +68,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
                             .putExtra(USER_DATA, user));
         });
 
+        getViewModel().setChattingRoom();
     }
 
     @Override
@@ -79,13 +80,13 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     @Override
     public void onStop() {
         super.onStop();
-        getViewModel().cancelChattingListChangingListeneing();
+        getViewModel().cancelChattingListChangingListening();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mViewModel.cancelChattingListChangingListeneing();
+        mViewModel.cancelChattingListChangingListening();
     }
 
     public void getChattingList() {

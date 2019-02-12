@@ -55,7 +55,7 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
 
         ItemChattingListBinding binding = ((ChattingListItemHolder) holder).getBinding();
@@ -64,8 +64,8 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
                 binding::setUserData,
                 error -> Snackbar.make(binding.getRoot(), R.string.snack_failed_load_list, Snackbar.LENGTH_SHORT).show());
 
-        if (arrayList.get(position).getMessage() != null) {
-            List<Message> messages = DataConverter.sortByValueFromMapToList(arrayList.get(position).getMessage());
+        if (arrayList.get(position).getMessages() != null) {
+            List<Message> messages = arrayList.get(position).getMessages();
             binding.tvChattingListLastMessage.setText(messages.get(messages.size() - 1).getContent());
         } else {
             binding.tvChattingListLastMessage.setText("");

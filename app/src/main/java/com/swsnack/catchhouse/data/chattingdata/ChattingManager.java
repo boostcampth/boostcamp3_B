@@ -30,10 +30,13 @@ public interface ChattingManager {
 
     void cancelMessageModelObserving();
 
-    void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener);
+    void setChattingRoom(@NonNull Chatting chatting,
+                         @NonNull OnSuccessListener<Void> onSuccessListener,
+                         @NonNull OnFailureListener onFailureListener);
 
-    void setChatMessage(@NonNull String roomUid,
-                        @NonNull Message message,
+    void setChatMessage(int messagesLength,
+                        @NonNull String roomUid,
+                        @NonNull String content,
                         @NonNull OnSuccessListener<Void> onSuccessListener,
                         @NonNull OnFailureListener onFailureListener);
 }

@@ -28,8 +28,7 @@ public abstract class BaseDiffUtil<T> extends DiffUtil.Callback {
     }
 
     @Override
-    public boolean areItemsTheSame(int i, int i1) {
-        Log.d("값", "" + mOldList.get(i).equals(mNewList.get(i1)));
-        return mOldList.get(i).equals(mNewList.get(i1));
+    public boolean areItemsTheSame(int oldListIndex, int newListIndex) {
+        return mOldList.get(oldListIndex).equals(mNewList.get(newListIndex));
     }
 }

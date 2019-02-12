@@ -16,7 +16,9 @@ import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
 import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.swsnack.catchhouse.Constant.Chatting.NO_CHAT_ROOM;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
@@ -172,24 +174,27 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void setChattingRoom(@NonNull Chatting chatting, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
         db
                 .push()
-                .setValue(chattingUser)
+                .setValue(chatting)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
     }
 
     @Override
-    public void setChatMessage(@NonNull String roomUid,
-                               @NonNull Message message,
+    public void setChatMessage(int messagesLength,
+                               @NonNull String roomUid,
+                               @NonNull String content,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailureListener onFailureListener) {
 
+        Map<String, Object> setMessageField = new HashMap<>();
+        setMessageField.put(String.valueOf(messagesLength + 1), new Message(FirebaseAuth.getInstance().getCurrentUser().getUid(), content));
+
         db.child(roomUid)
                 .child(MESSAGE)
-                .push()
-                .setValue(message)
+                .updateChildren(setMessageField)
                 .addOnSuccessListener(onSuccessListener)
                 .addOnFailureListener(onFailureListener);
     }

@@ -52,7 +52,7 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
 
         getBinding().etChattingMessageContent.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
-                mViewModel.sendNewMessage(getBinding().etChattingMessageContent.getText().toString());
+                mViewModel.sendNewMessage(messageAdapter.getItemCount(), getBinding().etChattingMessageContent.getText().toString());
                 getBinding().etChattingMessageContent.setText("");
                 return true;
             }

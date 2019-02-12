@@ -97,7 +97,7 @@ public class Constant {
         String STORAGE_ROOM_IMAGE = "roomImage";
         String NICK_NAME = "nickName";
         String CHATTING = "chatting";
-        String MESSAGE = "message";
+        String MESSAGE = "messages";
     }
 
     @Retention(RetentionPolicy.SOURCE)
