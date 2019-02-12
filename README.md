@@ -1,3 +1,5 @@
+<img width="1000" alt="default" src="https://user-images.githubusercontent.com/32831939/52606464-07206580-2eb6-11e9-8363-d6cceec44135.png">
+
 # CatchHouse
 > 대학생의 비워진 자취방을 공유하는 서비스 앱  
 <br>
