@@ -41,10 +41,6 @@
         </activity>
         <activity android:name="com.swsnack.catchhouse.view.activitity.WriteActivity" />
         <activity android:name="com.swsnack.catchhouse.view.activitity.PostActivity" />
-        <activity
-            android:name=".view.activitity.FilterPopUpActivity"
-            android:screenOrientation="unspecified"
-            android:theme="@style/popupTheme" />
         <activity android:name=".view.activitity.ChattingMessageActivity"/>
     </application>
 
