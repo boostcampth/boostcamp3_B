@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.viewmodel.searchviewmodel;
+package com.swsnack.catchhouse.viewmodel.searchingviewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
@@ -8,10 +8,10 @@ import android.util.Log;
 
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.AppDataManager;
+import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
-import com.swsnack.catchhouse.data.db.rooms.RoomsRepository;
 import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.data.pojo.Filter;
@@ -27,14 +27,12 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class SearchViewModel extends ReactiveViewModel {
+public class SearchingViewModel extends ReactiveViewModel {
     private Application mAppContext;
-    private RoomsRepository mRepository;
     private ViewModelListener mListener;
     private MutableLiveData<String> mKeyword;
     private MutableLiveData<List<Address>> mAddressList;
     private MutableLiveData<Boolean> mFinish; // 주소검색 끝났을때
-    private List<Geocoder> getList;
     private MutableLiveData<List<RoomData>> mRoomDataList;
 
     /* FILTER */
@@ -52,15 +50,9 @@ public class SearchViewModel extends ReactiveViewModel {
     public MutableLiveData<Boolean> mFilterOptionSmoking;
 
 
-    SearchViewModel(Application application, RoomsRepository repository, APIManager apiManager, ViewModelListener listener) {
-        super(AppDataManager.getInstance(AppUserDataManager.getInstance(),
-                RemoteChattingManager.getInstance(),
-                AppRoomDataManager.getInstance(),
-                AppLocationDataManager.getInstance()),
-                apiManager);
-
+    SearchingViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+        super(dataManager, apiManager);
         mAppContext = application;
-        mRepository = repository;
         mListener = listener;
         mKeyword = new MutableLiveData<>();
         mAddressList = new MutableLiveData<>();
@@ -111,9 +103,8 @@ public class SearchViewModel extends ReactiveViewModel {
         mKeyword.setValue(keyword);
     }
 
-    //public Single<List<Address>> searchAddress() {
     public void searchAddress() {
-        getCompositeDisposable().add(mRepository.getPOIFromRepository(getKeyword())
+        getCompositeDisposable().add(getDataManager().getPOIList(getKeyword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(__ -> mListener.isWorking())
@@ -130,26 +121,10 @@ public class SearchViewModel extends ReactiveViewModel {
                 }, throwable -> {
                     Log.v("csh", "address fail");
                 }));
-        /*
-        return mRepository.getPOIFromRepository(getKeyword())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(__ -> mListener.isWorking())
-                .doAfterTerminate(() -> mListener.isFinished())
-                .toObservable()
-                .flatMap(Observable::fromIterable)
-                .map(item -> new Address(item.name, item.getPOIAddress().replace("null", ""), item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()))
-                .toList()
-                .subscribe( addressList -> {
-
-                },throwable -> {
-
-                })
-                ;*/
     }
 
     public void updateData(String keyword, double latitude, double longitude) {
-        mRepository.getNearRoomListFromRepository(latitude, longitude, 10)
+        getDataManager().getNearRoomList(latitude, longitude, 10)
                 .subscribe(roomDataList -> {
                     Log.v("csh", "Single Success");
                     mRoomDataList.postValue(roomDataList);
