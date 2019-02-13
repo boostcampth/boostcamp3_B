@@ -11,7 +11,6 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.asynctask.ConvertImageTask;
-import com.swsnack.catchhouse.data.db.rooms.RoomsRepository;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
@@ -212,7 +211,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     private Single<List<Address>> searchAddress(String keyword) {
-        return RoomsRepository.getInstance().getPOIFromRepository(keyword)
+        return getDataManager().getPOIList(keyword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(__ -> mListener.isWorking())

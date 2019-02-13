@@ -6,7 +6,7 @@
     <data>
         <variable
             name="handler"
-            type="com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel" />
+            type="com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout

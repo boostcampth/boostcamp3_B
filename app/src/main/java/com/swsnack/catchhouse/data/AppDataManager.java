@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.data.db.chatting.ChattingManager;
+import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.model.Chatting;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.db.location.LocationDataManager;
@@ -17,8 +19,11 @@ import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.data.pojo.Room;
 import com.swsnack.catchhouse.data.db.user.UserDataManager;
 import com.swsnack.catchhouse.data.model.User;
+import com.swsnack.catchhouse.data.pojo.RoomData;
 
 import java.util.List;
+
+import io.reactivex.Single;
 
 public class AppDataManager implements DataManager {
 
@@ -26,16 +31,19 @@ public class AppDataManager implements DataManager {
     private ChattingManager mRemoteChattingManager;
     private RoomDataManager mRoomDataManager;
     private LocationDataManager mLocationDataManager;
+    private SearchingDataManager mSearchingDataManager;
 
     private AppDataManager(UserDataManager userDataManager,
                            ChattingManager remoteChattingManager,
                            RoomDataManager roomDataManager,
-                           LocationDataManager locationDataManager) {
+                           LocationDataManager locationDataManager,
+                           SearchingDataManager searchingDataManager) {
 
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
         mRoomDataManager = roomDataManager;
         mLocationDataManager = locationDataManager;
+        mSearchingDataManager = searchingDataManager;
     }
 
     private static AppDataManager INSTANCE;
@@ -43,12 +51,14 @@ public class AppDataManager implements DataManager {
     public static synchronized AppDataManager getInstance(@NonNull UserDataManager userDataManager,
                                                           @NonNull ChattingManager remoteChattingManager,
                                                           @NonNull RoomDataManager roomDataManager,
-                                                          @NonNull LocationDataManager locationDataManager) {
+                                                          @NonNull LocationDataManager locationDataManager,
+                                                          @NonNull SearchingDataManager searchingDataManager) {
         if (INSTANCE == null) {
             INSTANCE = new AppDataManager(userDataManager,
                     remoteChattingManager,
                     roomDataManager,
-                    locationDataManager);
+                    locationDataManager,
+                    searchingDataManager);
         }
         return INSTANCE;
     }
@@ -239,6 +249,18 @@ public class AppDataManager implements DataManager {
                                    @NonNull OnFailedListener onFailedListener) {
 
         mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailedListener);
+    }
+
+    @NonNull
+    public Single<List<TMapPOIItem>> getPOIList(@NonNull String keyword) {
+        return mSearchingDataManager.getPOIList(keyword);
+    }
+
+    @NonNull
+    public Single<List<RoomData>> getNearRoomList(@NonNull double latitude,
+                                                  @NonNull double longitude,
+                                                  @NonNull double distance) {
+        return mSearchingDataManager.getNearRoomList(latitude, longitude, distance);
     }
 
 }

@@ -26,14 +26,14 @@ import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
 import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.databinding.FragmentMapBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
+import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
 import java.util.ArrayList;
 
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewModel> {
+public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewModel> {
     public FragmentManager mFragmentManager;
     private TMapView mTMapView;
     private CompositeDisposable mDisposable;
@@ -44,8 +44,8 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
     }
 
     @Override
-    protected Class<SearchViewModel> getViewModelClass() {
-        return SearchViewModel.class;
+    protected Class<SearchingViewModel> getViewModelClass() {
+        return SearchingViewModel.class;
     }
 
     @Nullable

@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
+import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
@@ -35,7 +37,8 @@ public class APIManager {
             INSTANCE = new APIManager(AppDataManager.getInstance(AppUserDataManager.getInstance(),
                     RemoteChattingManager.getInstance(),
                     AppRoomDataManager.getInstance(),
-                    AppLocationDataManager.getInstance()));
+                    AppLocationDataManager.getInstance(),
+                    AppSearchingDataManager.getInstance()));
         }
         return INSTANCE;
     }

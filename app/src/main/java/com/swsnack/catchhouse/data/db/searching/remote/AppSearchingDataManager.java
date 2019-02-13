@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.data.db.rooms.remote;
+package com.swsnack.catchhouse.data.db.searching.remote;
 
 import android.util.Log;
 
@@ -14,6 +14,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.Constant;
+import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.pojo.Room;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 
@@ -26,30 +27,32 @@ import io.reactivex.annotations.NonNull;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 
-public class RoomsRemoteData {
-    private TMapData mTMapData = new TMapData();
+public class AppSearchingDataManager implements SearchingDataManager {
+
+    private static AppSearchingDataManager INSTANCE;
+    private TMapData mTMapData;
     private DatabaseReference mRefLocation;
     private DatabaseReference mRefRoom;
-
     private GeoFire mGeoFire;
+    private int cnt;
 
-
-    private static class RoomsRemoteDataHelper {
-        private static final RoomsRemoteData INSTANCE = new RoomsRemoteData();
+    public static synchronized AppSearchingDataManager getInstance() {
+        if(INSTANCE == null) {
+            INSTANCE = new AppSearchingDataManager();
+        }
+        return INSTANCE;
     }
 
-    public static RoomsRemoteData getInstance() {
-        return RoomsRemoteDataHelper.INSTANCE;
-    }
-
-    private RoomsRemoteData() {
+    public AppSearchingDataManager() {
+        mTMapData = new TMapData();
         mRefLocation = FirebaseDatabase.getInstance().getReference().child(DB_LOCATION);
         mRefRoom = FirebaseDatabase.getInstance().getReference().child(DB_ROOM);
         mGeoFire = new GeoFire(mRefLocation);
+        cnt = 0;
     }
 
     @NonNull
-    public Single<List<TMapPOIItem>> getPOIFromRemote(String keyword) {
+    public Single<List<TMapPOIItem>> getPOIList(@NonNull String keyword) {
         return Single.create(subscribe -> mTMapData.findAllPOI(keyword, arrayList -> {
             if (arrayList.size() > 0) {
                 subscribe.onSuccess(arrayList);
@@ -59,9 +62,10 @@ public class RoomsRemoteData {
         }));
     }
 
-    private int cnt = 0;
-
-    public Single<List<RoomData>> getNearRoomListFromRemote(double latitude, double longitude, double distance) {
+    @NonNull
+    public Single<List<RoomData>> getNearRoomList(@NonNull double latitude,
+                                                            @NonNull double longitude,
+                                                            @NonNull double distance) {
         if(cnt>0) {
             Log.v("csh","getNearRoomListFromRemote 이미 진행중인 작업 있음");
             return null;
@@ -115,5 +119,5 @@ public class RoomsRemoteData {
             }
         }));
     }
-}
 
+}
