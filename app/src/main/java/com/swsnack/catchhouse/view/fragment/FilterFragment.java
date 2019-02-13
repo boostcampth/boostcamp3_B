@@ -15,7 +15,7 @@ import android.widget.EditText;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentFilterBinding;
-import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
+import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,7 +23,7 @@ import java.util.Locale;
 
 public class FilterFragment extends DialogFragment {
     private FragmentFilterBinding mBinding;
-    private SearchViewModel mViewModel;
+    private SearchingViewModel mViewModel;
     private final Calendar mCalendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener mDate;
     private EditText mTargetEditText;
@@ -40,7 +40,7 @@ public class FilterFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getActivity() != null) {
-            mViewModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);
+            mViewModel = ViewModelProviders.of(getActivity()).get(SearchingViewModel.class);
         } else {
             throw new RuntimeException(this.getClass().getName() + "has null activity");
         }

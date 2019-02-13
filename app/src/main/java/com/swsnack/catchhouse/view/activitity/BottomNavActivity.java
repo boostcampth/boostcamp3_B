@@ -17,7 +17,7 @@ import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
-import com.swsnack.catchhouse.data.db.rooms.RoomsRepository;
+import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
@@ -30,8 +30,8 @@ import com.swsnack.catchhouse.view.fragment.SignFragment;
 import com.swsnack.catchhouse.view.fragment.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
-import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
-import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModelFactory;
+import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
+import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 
@@ -127,10 +127,17 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                         AppUserDataManager.getInstance(),
                         RemoteChattingManager.getInstance(),
                         AppRoomDataManager.getInstance(),
-                        AppLocationDataManager.getInstance()),
+                        AppLocationDataManager.getInstance(),
+                        AppSearchingDataManager.getInstance()),
                 APIManager.getInstance(),
                 this));
-        createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), APIManager.getInstance(), this));
+        createViewModel(SearchingViewModel.class, new SearchingViewModelFactory(getApplication(),
+                AppDataManager.getInstance(
+                        AppUserDataManager.getInstance(),
+                        RemoteChattingManager.getInstance(),
+                        AppRoomDataManager.getInstance(),
+                        AppLocationDataManager.getInstance(),
+                        AppSearchingDataManager.getInstance()), APIManager.getInstance(), this));
         createViewModel(ChattingViewModel.class, new ChattingViewModelFactory(this));
     }
 
@@ -173,7 +180,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         List<Fragment> list = new ArrayList<>();
 
         list.add(new HomeFragment());
-        //FIXME MapFragment에서 inflating 과정 중, NPE 발생합니다. 수정 부탁드려요
         list.add(new MapFragment());
         list.add(new ChatListFragment());
         list.add(new SignFragment());
