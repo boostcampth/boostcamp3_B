@@ -74,6 +74,8 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                     // for test
                     Intent intent = new Intent(this, PostActivity.class);
                     intent.putExtra("room", mViewModel.mRoom);
+                    intent.putExtra("longitude", mViewModel.mAddress.getValue().getLongitude());
+                    intent.putExtra("latitude", mViewModel.mAddress.getValue().getLatitude());
                     startActivity(intent);
                 });
 

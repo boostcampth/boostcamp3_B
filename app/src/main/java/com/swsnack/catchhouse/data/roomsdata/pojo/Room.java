@@ -100,7 +100,7 @@ public class Room implements Parcelable {
         this.optionSmoking = optionSmoking;
     }
 
-    public Room(Parcel in) {
+    private Room(Parcel in) {
         images = new ArrayList<>();
         price = in.readString();
         from = in.readString();

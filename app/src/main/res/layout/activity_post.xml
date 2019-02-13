@@ -110,8 +110,8 @@
                             android:text="@string/tv_post_size" />
 
                         <TextView
-                            style="@style/TextStyle.Regular.Medium"
                             android:id="@+id/tv_post_size"
+                            style="@style/TextStyle.Regular.Medium"
                             android:layout_width="0dp"
                             android:layout_weight="0.75" />
 
@@ -142,6 +142,15 @@
                         android:layout_marginTop="24dp"
                         android:text="@string/tv_post_map" />
 
+                    <LinearLayout
+                        android:id="@+id/ll_post_tmap_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="240dp"
+                        android:layout_marginTop="24dp"
+                        android:orientation="vertical"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp" />
+
                     <TextView
                         android:id="@+id/tv_post_content"
                         style="@style/TextStyle.Regular.Medium"
@@ -154,7 +163,7 @@
 
                     <TextView
                         android:id="@+id/tv_post_send"
-                        style="@style/tv.accent.small"
+                        style="@style/tv.accent"
                         android:layout_width="match_parent"
                         android:layout_marginStart="64dp"
                         android:layout_marginEnd="64dp"

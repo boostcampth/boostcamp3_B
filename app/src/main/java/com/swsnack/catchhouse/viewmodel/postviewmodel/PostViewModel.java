@@ -1,9 +1,7 @@
 package com.swsnack.catchhouse.viewmodel.postviewmodel;
 
-import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.roomdata.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
@@ -15,22 +13,17 @@ import java.util.List;
 
 public class PostViewModel extends ReactiveViewModel {
 
-    private Application mAppContext;
-    private ViewModelListener mListener;
-
     public final MutableLiveData<List<String>> mImageList = new MutableLiveData<>();
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
     public final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
 
     PostViewModel(DataManager dataManager, ViewModelListener listener) {
         super(dataManager);
-        mAppContext = AppApplication.getAppContext();
-        mListener = listener;
 
         init();
     }
 
-    public void setInitData(Room room) {
+    public void setInitRoomData(Room room) {
         mImageList.setValue(room.getImages());
         ExpectedPrice expectedPrice =
                 new ExpectedPrice(room.getPrice(), room.getFrom(), room.getTo());
