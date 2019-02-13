@@ -84,27 +84,26 @@ public class APIManager {
                                @NonNull OnSuccessListener<Void> onSuccessListener,
                                @NonNull OnFailedListener onFailedListener) {
 
-        FirebaseAuth.getInstance()
-                .createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult -> {
+        signUpWithEmail(email,
+                password,
+                authResult -> {
                     if (uri == null) {
                         mDataManager.setUser(authResult.getUser().getUid(), user, onSuccessListener, onFailedListener);
                         return;
                     }
                     mDataManager.setUser(authResult.getUser().getUid(), user, uri, onSuccessListener, onFailedListener);
-                })
-                .addOnFailureListener(onFailedListener::onFailed);
+                },
+                onFailedListener);
     }
 
-    public void firebaseSignUp(@NonNull String email,
-                               @NonNull String password,
-                               @NonNull User user,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailedListener onFailedListener) {
+    public void firebaseSignIn(@NonNull String email,
+                       @NonNull String password,
+                       @NonNull OnSuccessListener<AuthResult> onSuccessListener,
+                       @NonNull OnFailedListener onFailedListener) {
 
         FirebaseAuth.getInstance()
-                .createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(authResult -> mDataManager.setUser(authResult.getUser().getUid(), user, onSuccessListener, onFailedListener))
+                .signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(onSuccessListener::onSuccess)
                 .addOnFailureListener(onFailedListener::onFailed);
     }
 

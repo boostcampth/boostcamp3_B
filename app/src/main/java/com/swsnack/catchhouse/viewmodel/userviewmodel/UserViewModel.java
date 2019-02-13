@@ -25,7 +25,6 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.model.User;
-import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -189,16 +188,15 @@ public class UserViewModel extends ReactiveViewModel {
         User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
 
         getApiManager()
-                .firebaseSignUp(mEmail.getValue(),
+                .firebaseSignIn(mEmail.getValue(),
                         mPassword.getValue(),
-                        user,
-                        mProfileUri,
-                        success -> {
+                        result -> {
                             mListener.onSuccess(SIGN_IN_SUCCESS);
                             mIsSigned.setValue(true);
                         },
                         error -> {
-                            if (error instanceof FirebaseAuthInvalidUserException || error instanceof FirebaseAuthInvalidCredentialsException) {
+                            if (error instanceof FirebaseAuthInvalidUserException
+                                    || error instanceof FirebaseAuthInvalidCredentialsException) {
                                 mListener.onError(getStringFromResource(R.string.snack_invalid_user));
                                 return;
                             }
