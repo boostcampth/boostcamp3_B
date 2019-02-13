@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.skt.Tmap.TMapTapi;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.ViewPagerAdapter;
@@ -114,6 +115,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             onNavItemSelected(v);
             return true;
         });
+
+        TMapTapi tApi = new TMapTapi(getApplicationContext());
+        tApi.setSKTMapAuthentication(getResources().getString(R.string.tmap_api_key));
+
     }
 
     private void createViewModels() {

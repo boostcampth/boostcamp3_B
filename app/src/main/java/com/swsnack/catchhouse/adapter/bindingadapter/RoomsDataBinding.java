@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 
-import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
+import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
 import com.swsnack.catchhouse.data.pojo.Address;
@@ -37,7 +37,7 @@ public class RoomsDataBinding {
 
     @BindingAdapter("adapter")
     public static void setRecyclerItem(RecyclerView recyclerview, List<Address> items) {
-        AddressBindingAdapter adapter = (AddressBindingAdapter) recyclerview.getAdapter();
+        AddressListAdapter adapter = (AddressListAdapter) recyclerview.getAdapter();
 
         if (adapter != null && items != null) {
             adapter.updateItems(items);

@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.view.fragment;
 
 import android.content.Intent;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -12,20 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
+import com.swsnack.catchhouse.adapter.AddressListAdapter;
+import com.swsnack.catchhouse.data.pojo.RoomData;
 import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
 import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.databinding.FragmentMapBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
-import com.swsnack.catchhouse.view.activitity.FilterPopUpActivity;
 import com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel;
+
+import java.util.ArrayList;
 
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -59,48 +62,110 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         mFragmentManager = getActivity().getSupportFragmentManager();
         mDisposable = new CompositeDisposable();
         getBinding().setHandler(getViewModel());
-        getBinding().setLifecycleOwner(getActivity());
+        getBinding().setLifecycleOwner(this);
         getBinding().rvMapAddress.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
         getBinding().rvMapAddress.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
-        AddressBindingAdapter adapter = new AddressBindingAdapter(getContext());
+        AddressListAdapter adapter = new AddressListAdapter(getContext());
 
         /* Tmap 연동 */
         mTMapView = new TMapView(getContext());
-        mTMapView.setSKTMapApiKey(getResources().getString(R.string.tmap_api_key));
         ConstraintLayout mapLayout = getBinding().clMap;
         mapLayout.addView(mTMapView);
         getBinding().rvMapAddress.setAdapter(adapter);
         getBinding().rvMapAddress.bringToFront();
 
-        getBinding().etMapSearch.setOnEditorActionListener((v, id, event) -> {
-            if (v.getId() == R.id.et_map_search && id == EditorInfo.IME_ACTION_DONE) {
-                mDisposable.add(getViewModel().searchAddress()
-                        .subscribe(addressList -> {
-                            adapter.updateItems(addressList);
-                            getBinding().rvMapAddress.setVisibility(View.VISIBLE);
-                        }, exception -> {
-                            Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
-                            getBinding().rvMapAddress.setVisibility(View.GONE);
-                        }));
+        mTMapView.setOnClickListenerCallBack(new TMapView.OnClickListenerCallback() {
+            @Override
+            public boolean onPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
+                //Log.v("csh","onPressEvent");
+                return false;
             }
 
+            @Override
+            public boolean onPressUpEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
+                //TMapMarkerItem item = arrayList.get(0);
+                // TODO : PostActivity에 Room을 담아서 startActivity
+                //Log.v("csh","detail:"+getViewModel().getRoomDataList().getValue().get(Integer.parseInt(item.getID())).getContent());
+
+                return false;
+            }
+        });
+
+        getBinding().etMapSearch.setOnEditorActionListener((v, id, event) -> {
+            if (v.getId() == R.id.et_map_search && id == EditorInfo.IME_ACTION_DONE) {
+                getViewModel().searchAddress();
+            }
             return false;
         });
 
         adapter.setOnItemClickListener(((v, position) -> {
             getBinding().rvMapAddress.setVisibility(View.GONE);
-            getViewModel().setKeyword(adapter.getItem(position).getName());
             moveMap(adapter.getItem(position));
+            getViewModel().updateData(adapter.getItem(position).getName(), adapter.getItem(position).getLatitude(), adapter.getItem(position).getLongitude());
         }));
         getBinding().btFilter.setOnClickListener(__ -> {
-            Intent intent = new Intent(getContext(), FilterPopUpActivity.class);
-            startActivityForResult(intent, Constant.FILTER);
+            //Intent intent = new Intent(getContext(), FilterPopUpActivity.class);
+
+
+            //intent.putExtra(Constant.INTENT_FILTER, getViewModel().getFilterFromRepository());
+            //startActivityForResult(intent, Constant.FILTER);
+            new FilterFragment().show(mFragmentManager, "address selection");
+
         });
 
+        getViewModel().getRoomDataList()
+                .observe(this, roomDataList -> {
+                    Log.v("csh","변화감지");
+                    mTMapView.removeAllMarkerItem();
+                    for(int i=0; i<roomDataList.size(); i++) {
+                        addMarker(roomDataList.get(i), i);
+                    }
+                });
+
+        getViewModel().mFilterPriceFrom
+                .observe(this, __ -> {
+                    Log.v("csh","Change:"+getViewModel().mFilterPriceFrom.getValue());
+                });
     }
+
+    private void addMarker(RoomData roomData, int index) {
+
+        //TMapMarkerItem markerItem = new TMapMarkerItem();
+        TMapMarkerItem markerItem = new TMapMarkerItem();
+        TMapPoint point = new TMapPoint(roomData.getLatitude(), roomData.getLongitude());
+        markerItem.setTMapPoint(point);
+        markerItem.setPosition(0.5f, 1.0f);
+        markerItem.setCanShowCallout(true);
+
+        markerItem.setCalloutTitle(roomData.getTitle());
+        markerItem.setCalloutSubTitle(roomData.getContent());
+
+
+        markerItem.setAutoCalloutVisible(true);
+        mTMapView.addMarkerItem(String.valueOf(index), markerItem);
+
+        Log.v("csh", "마커추가:" + roomData.getLatitude() + "," + roomData.getLongitude());
+    }
+
+    /*
+    private void addMarker(Room room) {
+
+        TMapMarkerItem markerItem = new TMapMarkerItem();
+        TMapPoint point = new TMapPoint(room.get, room.getAddress().getLongitude());
+        markerItem.setTMapPoint(point);
+        markerItem.setPosition(0.5f, 1.0f);
+        markerItem.setCanShowCallout(true);
+        markerItem.setCalloutTitle("제목");
+        markerItem.setCalloutSubTitle("부제목");
+        markerItem.setAutoCalloutVisible(true);
+        mTMapView.addMarkerItem(String.valueOf(room.getAddress().getLatitude()), markerItem);
+        Log.v("csh", "마커추가:" + room.getAddress().getLatitude() + "," + room.getAddress().getLongitude());
+    }*/
 
     private void moveMap(Address address) {
         mTMapView.setCenterPoint(address.getLongitude(), address.getLatitude(), true);
+
+        /*
 
         TMapMarkerItem markerItem = new TMapMarkerItem();
         TMapPoint point = new TMapPoint(address.getLatitude(), address.getLongitude());
@@ -110,7 +175,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchViewMode
         markerItem.setCalloutTitle("제목");
         markerItem.setCalloutSubTitle("부제목");
         markerItem.setAutoCalloutVisible(true);
-        mTMapView.addMarkerItem("1", markerItem);
+        mTMapView.addMarkerItem("1", markerItem);*/
     }
 
     @Override

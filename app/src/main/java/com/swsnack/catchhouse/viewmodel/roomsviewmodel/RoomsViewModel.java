@@ -212,7 +212,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     private Single<List<Address>> searchAddress(String keyword) {
-        return RoomsRepository.getInstance().getPOIFromRemote(keyword)
+        return RoomsRepository.getInstance().getPOIFromRepository(keyword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(__ -> mListener.isWorking())

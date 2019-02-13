@@ -2,6 +2,7 @@ package com.swsnack.catchhouse.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,8 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
     }
 
     public void updateItems(List<T> items) {
+        if(items==null)
+            return;
 
         if (this.arrayList == null) {
             arrayList = new ArrayList<>();

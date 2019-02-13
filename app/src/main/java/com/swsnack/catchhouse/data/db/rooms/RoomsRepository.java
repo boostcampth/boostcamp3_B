@@ -4,9 +4,12 @@ import android.support.annotation.NonNull;
 
 import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.data.db.rooms.remote.RoomsRemoteData;
+import com.swsnack.catchhouse.data.pojo.Filter;
+import com.swsnack.catchhouse.data.pojo.RoomData;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class RoomsRepository {
@@ -21,11 +24,18 @@ public class RoomsRepository {
         private static final RoomsRepository INSTANCE = new RoomsRepository();
     }
 
-    private RoomsRepository() { mRoomsRemote = RoomsRemoteData.getInstance(); }
+    private RoomsRepository() {
+        mRoomsRemote = RoomsRemoteData.getInstance();
+    }
 
     @NonNull
-    public Single<List<TMapPOIItem>> getPOIFromRemote(String keyword) {
-        return mRoomsRemote.getAddressList(keyword);
+    public Single<List<TMapPOIItem>> getPOIFromRepository(String keyword) {
+        return mRoomsRemote.getPOIFromRemote(keyword);
+    }
+
+    @NonNull
+    public Single<List<RoomData>> getNearRoomListFromRepository(double latitude, double longitude, double distance) {
+        return mRoomsRemote.getNearRoomListFromRemote(latitude, longitude, distance);
     }
 
 }
