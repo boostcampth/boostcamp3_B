@@ -38,6 +38,7 @@ import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PROFILE_SUCCESS;
+import static com.swsnack.catchhouse.util.StringUtil.getStringFromResource;
 
 public class UserViewModel extends ReactiveViewModel {
 
@@ -45,7 +46,7 @@ public class UserViewModel extends ReactiveViewModel {
     private ViewModelListener mListener;
     private Uri mProfileUri;
     private MutableLiveData<String> mGender;
-    private User mUser;
+    private MutableLiveData<User> mUser;
     public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
@@ -55,7 +56,7 @@ public class UserViewModel extends ReactiveViewModel {
     UserViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         this.mAppContext = application;
-        this.mListener = listener;
+        this.mUser = new MutableLiveData<>();
         this.mGender = new MutableLiveData<>();
         this.mIsSigned = new MutableLiveData<>();
         this.mEmail = new MutableLiveData<>();
@@ -63,18 +64,7 @@ public class UserViewModel extends ReactiveViewModel {
         this.mNickName = new MutableLiveData<>();
         this.mProfile = new MutableLiveData<>();
         mIsSigned.setValue(false);
-    }
-
-    public void setGender(String gender) {
-        mGender.setValue(gender);
-    }
-
-    public LiveData getGender() {
-        return mGender;
-    }
-
-    private String getStringFromResource(int stringResource) {
-        return mAppContext.getString(stringResource);
+        this.mListener = listener;
     }
 
     public void getProfileFromUri(Uri uri) {
@@ -86,10 +76,10 @@ public class UserViewModel extends ReactiveViewModel {
                             mListener.isFinished();
                             mProfile.setValue(bitmap);
                         },
-                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_load_image)));
+                        error -> mListener.onError(getStringFromResource(R.string.snack_failed_load_image)));
     }
 
-    public void getUser() {
+    public void getUserData() {
         mIsSigned.setValue(true);
         getDataManager()
                 .getUserAndListeningForChanging(FirebaseAuth.getInstance().getCurrentUser().getUid(),
@@ -97,7 +87,7 @@ public class UserViewModel extends ReactiveViewModel {
                             if (user == null) {
                                 return;
                             }
-                            mUser = user;
+                            mUser.setValue(user);
                             mEmail.setValue(user.getEMail());
                             mNickName.setValue(user.getNickName());
                             mGender.setValue(user.getGender());
@@ -109,7 +99,7 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_database_exception)));
     }
 
-    public void onCheckedChangedListener(RadioGroup group ,int checkedId) {
+    public void onCheckedChangedListener(RadioGroup group, int checkedId) {
         switch (checkedId) {
             case R.id.rb_sign_up_male:
                 mGender.setValue(MALE);
@@ -139,7 +129,7 @@ public class UserViewModel extends ReactiveViewModel {
                             user.setProfile(uri.toString());
                             signUpWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()), user);
                         },
-                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_not_found_info)));
+                        error -> mListener.onError(getStringFromResource(R.string.snack_not_found_info)));
     }
 
     private void signUpWithCredential(AuthCredential authCredential, User user) {
@@ -230,7 +220,7 @@ public class UserViewModel extends ReactiveViewModel {
 
         String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getApiManager()
-                .firebaseDeleteUser(uuid, mUser,
+                .firebaseDeleteUser(uuid, mUser.getValue(),
                         deleteResult -> {
                             mListener.onSuccess(DELETE_USER_SUCCESS);
                             mIsSigned.setValue(false);
@@ -243,11 +233,12 @@ public class UserViewModel extends ReactiveViewModel {
             mListener.onError(getStringFromResource(R.string.snack_same_nick_name));
             return;
         }
-
-        mUser.setNickName(changeNickName);
+        User currentUser = mUser.getValue();
+        currentUser.setNickName(changeNickName);
+        mUser.setValue(currentUser);
         getDataManager()
                 .updateUser(FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                        mUser,
+                        mUser.getValue(),
                         success -> mListener.onSuccess(UPDATE_NICK_NAME_SUCCESS),
                         error -> mListener.onError(getStringFromResource(R.string.snack_duplicate_nick_name)));
     }
@@ -262,8 +253,12 @@ public class UserViewModel extends ReactiveViewModel {
     public void updateProfile(Uri uri) {
         mListener.isWorking();
         getDataManager().
-                updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri, mUser,
+                updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri, mUser.getValue(),
                         result -> mListener.onSuccess(UPDATE_PROFILE_SUCCESS),
                         error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
+    }
+
+    public LiveData<User> getUser() {
+        return mUser;
     }
 }
