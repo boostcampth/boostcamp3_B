@@ -13,7 +13,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
+import com.swsnack.catchhouse.adapter.AddressListAdapter;
+import com.swsnack.catchhouse.databinding.FragmentAddressSearchBinding;
 import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
 import com.swsnack.catchhouse.databinding.FragmentAddressSearchBinding;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
@@ -47,9 +48,9 @@ public class AddressSearchFragment extends DialogFragment {
         mBinding.rvAddress.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayout.VERTICAL, false));
         mBinding.rvAddress.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
-        mBinding.rvAddress.setAdapter(new AddressBindingAdapter(getActivity()));
+        mBinding.rvAddress.setAdapter(new AddressListAdapter(getActivity()));
 
-        ((AddressBindingAdapter) mBinding.rvAddress.getAdapter())
+        ((AddressListAdapter) mBinding.rvAddress.getAdapter())
                 .setOnItemClickListener((__, i) -> {
                     mViewModel.onSelectAddress(i);
                     this.dismiss();
