@@ -1,9 +1,9 @@
 package com.swsnack.catchhouse.viewmodel.roomsviewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
-import android.support.v4.app.Fragment;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.fragment.app.Fragment;
 
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;

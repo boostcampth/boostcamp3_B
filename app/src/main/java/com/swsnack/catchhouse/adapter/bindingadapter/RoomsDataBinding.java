@@ -1,9 +1,9 @@
 package com.swsnack.catchhouse.adapter.bindingadapter;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.net.Uri;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.EditText;
 
 import com.swsnack.catchhouse.adapter.AddressListAdapter;

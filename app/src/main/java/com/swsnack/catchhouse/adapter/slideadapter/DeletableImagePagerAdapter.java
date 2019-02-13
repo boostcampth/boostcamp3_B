@@ -1,8 +1,8 @@
 package com.swsnack.catchhouse.adapter.slideadapter;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 

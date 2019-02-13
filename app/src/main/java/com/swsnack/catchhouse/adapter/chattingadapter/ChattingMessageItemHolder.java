@@ -1,10 +1,10 @@
 package com.swsnack.catchhouse.adapter.chattingadapter;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LifecycleRegistry;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.swsnack.catchhouse.databinding.ItemChattingMessageBinding;
 

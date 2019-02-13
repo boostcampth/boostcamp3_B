@@ -10,23 +10,23 @@
             type="com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/tb_write"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="12dp"
                 app:title="@string/tb_write" />
 
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.9">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
@@ -47,7 +47,7 @@
                     android:orientation="vertical"
                     tools:ignore="AutoFill">
 
-                    <android.support.v4.view.ViewPager
+                    <androidx.viewpager.widget.ViewPager
                         android:id="@+id/vp_write"
                         android:layout_width="match_parent"
                         android:layout_height="320dp"
@@ -259,7 +259,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/et_write_title" />
 
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
             <FrameLayout
@@ -288,6 +288,6 @@
         </LinearLayout>
 
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

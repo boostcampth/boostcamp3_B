@@ -1,7 +1,7 @@
 package com.swsnack.catchhouse.data.db.room.remote;
 
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;

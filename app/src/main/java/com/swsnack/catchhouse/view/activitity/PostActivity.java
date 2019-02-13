@@ -1,9 +1,9 @@
 package com.swsnack.catchhouse.view.activitity;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;

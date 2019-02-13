@@ -3,10 +3,10 @@ package com.swsnack.catchhouse.view.fragment;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,7 +56,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @android.support.annotation.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @androidx.annotation.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mFragmentManager = getActivity().getSupportFragmentManager();
@@ -195,7 +195,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
     }
 
     @Override
-    public void onCreate(@android.support.annotation.Nullable Bundle savedInstanceState) {
+    public void onCreate(@androidx.annotation.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 

@@ -1,12 +1,12 @@
 package com.swsnack.catchhouse.view.fragment;
 
-import android.arch.lifecycle.ViewModelProviders;
-import android.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +16,6 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.databinding.FragmentAddressSearchBinding;
 import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
-import com.swsnack.catchhouse.databinding.FragmentAddressSearchBinding;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 
 public class AddressSearchFragment extends DialogFragment {
