@@ -34,7 +34,7 @@ public class Room implements Parcelable {
     /**
      * 작성자
      **/
-    private String UUID;
+    private String uuid;
     /**
      * 주소
      **/
@@ -90,7 +90,7 @@ public class Room implements Parcelable {
         this.title = title;
         this.content = content;
         this.images = images;
-        this.UUID = UUID;
+        this.uuid = UUID;
         this.size = size;
         this.address = address;
         this.addressName = addressName;
@@ -102,13 +102,14 @@ public class Room implements Parcelable {
 
     private Room(Parcel in) {
         images = new ArrayList<>();
+
         price = in.readString();
         from = in.readString();
         to = in.readString();
         title = in.readString();
         content = in.readString();
         in.readStringList(images);
-        UUID = in.readString();
+        uuid = in.readString();
         size = in.readString();
         address = in.readString();
         addressName = in.readString();
@@ -143,15 +144,19 @@ public class Room implements Parcelable {
     }
 
     public String getUUID() {
-        return UUID;
-    }
-
-    public String getSize() {
-        return size;
+        return uuid;
     }
 
     public String getAddress() {
         return address;
+    }
+
+    public String getAddressName() {
+        return addressName;
+    }
+
+    public String getSize() {
+        return size;
     }
 
     public boolean isOptionStandard() {
@@ -170,9 +175,6 @@ public class Room implements Parcelable {
         return optionSmoking;
     }
 
-    public String getAddressName() {
-        return addressName;
-    }
 
     public static final Creator<Room> CREATOR = new Creator<Room>() {
         @Override
@@ -199,7 +201,7 @@ public class Room implements Parcelable {
         dest.writeString(title);
         dest.writeString(content);
         dest.writeStringList(images);
-        dest.writeString(UUID);
+        dest.writeString(uuid);
         dest.writeString(size);
         dest.writeString(address);
         dest.writeString(addressName);

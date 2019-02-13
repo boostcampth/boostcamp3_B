@@ -4,8 +4,8 @@ import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
@@ -32,20 +32,37 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
         ItemImagePagerBinding binding = DataBindingUtil.bind(inflater.inflate(R.layout.item_image_pager, container, false));
 
-        try {
-            Glide.with(container.getContext())
-                    .load(mList.get(position))
-                    .into(binding.ivImagePager);
+        Glide.with(container.getContext())
+                .load(mList.get(position))
+                .listener(new RequestListener<Drawable>() {
+                              @Override
+                              public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                  binding.ivImagePagerRenew.setVisibility(View.VISIBLE);
+                                  binding.ivImagePagerRenew.setOnClickListener(__ ->
+                                          Glide.with(container.getContext())
+                                                  .load(mList.get(position))
+                                                  .listener(this)
+                                                  .into(binding.ivImagePager)
+                                  );
+                                  return false;
+                              }
 
-            String text = (position + 1) + "/" + getCount() + "";
-            binding.tvImagePagerNumber.setText(text);
+                              @Override
+                              public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                  if (binding.ivImagePagerRenew.getVisibility() == View.VISIBLE) {
+                                      binding.ivImagePagerRenew.setVisibility(View.GONE);
+                                  }
+                                  return false;
+                              }
+                          }
+                )
+                .into(binding.ivImagePager);
 
-            container.addView(binding.getRoot());
-            return binding.getRoot();
-        } catch (Exception e) {
-            Log.e("Test", "error", e);
-            return null;
-        }
+        String text = (position + 1) + "/" + getCount() + "";
+        binding.tvImagePagerNumber.setText(text);
+
+        container.addView(binding.getRoot());
+        return binding.getRoot();
 
     }
 }

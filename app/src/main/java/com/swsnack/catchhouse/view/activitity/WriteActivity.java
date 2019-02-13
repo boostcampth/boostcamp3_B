@@ -71,12 +71,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 .setOnDismissListener(__ -> finish())
                 .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) -> {
                     finish();
-                    // for test
-                    Intent intent = new Intent(this, PostActivity.class);
-                    intent.putExtra("room", mViewModel.mRoom);
-                    intent.putExtra("longitude", mViewModel.mAddress.getValue().getLongitude());
-                    intent.putExtra("latitude", mViewModel.mAddress.getValue().getLatitude());
-                    startActivity(intent);
                 });
 
         AlertDialog alert = builder.create();

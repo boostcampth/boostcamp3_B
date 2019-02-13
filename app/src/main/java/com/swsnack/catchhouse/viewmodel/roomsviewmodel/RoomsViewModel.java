@@ -42,28 +42,25 @@ public class RoomsViewModel extends ReactiveViewModel {
     private DataManager mDataManager;
 
     public final MutableLiveData<List<Address>> mSearchResultList = new MutableLiveData<>();
-    public final MutableLiveData<String> mKeyword = new MutableLiveData<>();
+    public final MutableLiveData<String> mKeyword = new MutableLiveData<>();    //
 
     public final MutableLiveData<List<Uri>> mImageList = new MutableLiveData<>();
 
     public final MutableLiveData<String> mPrice = new MutableLiveData<>();
-    public final MutableLiveData<String> mFromDate = new MutableLiveData<>();
-    public final MutableLiveData<String> mToDate = new MutableLiveData<>();
+    public final MutableLiveData<String> mFromDate = new MutableLiveData<>();   //
+    public final MutableLiveData<String> mToDate = new MutableLiveData<>();     //
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
+
     public final MutableLiveData<String> mSize = new MutableLiveData<>();
-    public final MutableLiveData<Boolean> mOptionStandard = new MutableLiveData<>();
-    public final MutableLiveData<Boolean> mOptionPet = new MutableLiveData<>();
-    public final MutableLiveData<Boolean> mOptionGender = new MutableLiveData<>();
-    public final MutableLiveData<Boolean> mOptionSmoking = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionStandard = new MutableLiveData<>();    //
+    public final MutableLiveData<Boolean> mOptionPet = new MutableLiveData<>();         //
+    public final MutableLiveData<Boolean> mOptionGender = new MutableLiveData<>();      //
+    public final MutableLiveData<Boolean> mOptionSmoking = new MutableLiveData<>();     //
     public final MutableLiveData<Address> mAddress = new MutableLiveData<>();
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
-    public final MutableLiveData<String> mContent = new MutableLiveData<>();
+    public final MutableLiveData<String> mContent = new MutableLiveData<>();            //
 
     private ExpectedPrice ep;
-
-    // for test
-    public Room mRoom;
-
 
     RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
         super(dataManager);
@@ -159,14 +156,10 @@ public class RoomsViewModel extends ReactiveViewModel {
                         imageByte -> mDataManager.uploadRoomImage(key, imageByte,
                                 urlList -> push(key, urlList,
                                         __ -> mDataManager.uploadLocationData(key, mAddress.getValue(),
-                                                ___ ->
-                                                        // for test
-                                                        mDataManager.readRoomData(key,
-                                                                room -> {
-                                                                    mListener.isFinished();
-                                                                    mListener.onSuccess("Success");
-                                                                    mRoom = room;
-                                                                }, errorHandler)
+                                                ___ -> {
+                                                    mListener.isFinished();
+                                                    mListener.onSuccess("Success");
+                                                }
                                                 , errorHandler)
                                         , errorHandler
                                 ), errorHandler
