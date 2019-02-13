@@ -4,10 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="handler"
-            type="com.swsnack.catchhouse.view.activitity.FilterPopUpActivity" />
+            type="com.swsnack.catchhouse.viewmodel.searchviewmodel.SearchViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -29,6 +28,7 @@
             android:id="@+id/et_filter_price_from"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:text="@={handler.mFilterPriceFrom}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_filter_price" />
 
@@ -45,6 +45,7 @@
             android:id="@+id/et_filter_price_to"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:text="@={handler.mFilterPriceTo}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_filter_price_between"
             app:layout_constraintLeft_toRightOf="@+id/tv_filter_price_between"
             app:layout_constraintTop_toTopOf="@+id/tv_filter_price_between" />
@@ -62,6 +63,9 @@
             android:id="@+id/et_filter_date_from"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true"
+            android:text="@={handler.mFilterDateFrom}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_filter_date" />
 
@@ -79,6 +83,9 @@
             android:id="@+id/et_filter_date_to"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true"
+            android:text="@={handler.mFilterDateTo}"
             app:layout_constraintBottom_toBottomOf="@+id/tv_filter_date_between"
             app:layout_constraintLeft_toRightOf="@id/tv_filter_date_between"
             app:layout_constraintTop_toTopOf="@+id/tv_filter_date_between" />
@@ -96,6 +103,7 @@
             android:id="@+id/cb_filter_standard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="@={handler.mFilterOptionStandard}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_filter_option" />
 
@@ -112,6 +120,7 @@
             android:id="@+id/cb_filter_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="@={handler.mFilterOptionGender}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cb_filter_standard" />
 
@@ -128,6 +137,7 @@
             android:id="@+id/cb_filter_pet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="@={handler.mFilterOptionPet}"
             app:layout_constraintTop_toBottomOf="@id/cb_filter_gender" />
 
         <TextView
@@ -142,10 +152,11 @@
             android:id="@+id/cb_filter_smoking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="@={handler.mFilterOptionSmoking}"
             app:layout_constraintTop_toBottomOf="@id/cb_filter_pet" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_filter_smoking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tv_filter_option_smoking"
@@ -153,14 +164,48 @@
             app:layout_constraintLeft_toRightOf="@id/cb_filter_smoking"
             app:layout_constraintTop_toTopOf="@+id/cb_filter_smoking" />
 
+        <TextView
+            android:id="@+id/tv_filter_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tv_filter_option_distance"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cb_filter_smoking" />
+
+        <TextView
+            android:id="@+id/tv_filter_distance_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_filter_distance" />
+
+
+        <SeekBar
+            android:id="@+id/sb_filter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:max="31"
+            android:min="1"
+            android:progress="@={handler.mFilterDistance}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_filter_distance_show" />
+
         <Button
             android:id="@+id/bt_filter_apply"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="@string/bt_filter_apply"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cb_filter_smoking" />
+            app:layout_constraintTop_toBottomOf="@+id/sb_filter" />
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>
