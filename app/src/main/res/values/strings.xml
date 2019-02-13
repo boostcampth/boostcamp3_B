@@ -91,6 +91,7 @@
     <string name="tv_write_post">확인</string>
     <string name="dl_write_ok">확인</string>
     <string name="et_write_title_hint">제목을 입력해주세요.</string>
+    <string name="et_write_content_hint">글 내용을 적어주세요.</string>
     <string name="dl_write_finish">판매글이 등록되었습니다.</string>
 
     /* fragment_address_search */

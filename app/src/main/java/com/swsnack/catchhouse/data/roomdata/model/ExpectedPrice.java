@@ -16,68 +16,61 @@ public class ExpectedPrice {
 
     private static final String TAG = ExpectedPrice.class.getSimpleName();
 
-    private String mExpectedPrice;
-    private int mDiffDays;
-    private String mPrice;
-    private String mFromDate;
-    private String mToDate;
+    private String expectedPrice;
+    private String price;
+    private String fromDate;
+    private String toDate;
 
     public ExpectedPrice(String price, String from, String to) {
-        mPrice = price;
-        mFromDate = from;
-        mToDate = to;
+        this.price = price;
+        this.fromDate = from;
+        this.toDate = to;
 
         onChangePriceAndInterval();
     }
 
-    public String updatePrice(String price) {
-        mPrice = price;
+    public String update(String price, String from, String to) {
+        this.price = price;
+        this.fromDate = from;
+        this.toDate = to;
 
-        return onChangePriceAndInterval();
+        onChangePriceAndInterval();
+
+        return expectedPrice;
     }
 
-    public String updateFromDate(String from) {
-        mFromDate = from;
-
-        return onChangePriceAndInterval();
-    }
-
-    public String updateToDate(String to) {
-        mToDate = to;
-
-        return onChangePriceAndInterval();
-    }
-
-    public String onChangePriceAndInterval() {
+    public void onChangePriceAndInterval() {
+        int diffDays;
 
         if (isPriceAndDateValid()) {
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-                Date fromDate = formatter.parse(mFromDate);
-                Date toDate = formatter.parse(mToDate);
-                mDiffDays = DateCalculator.getDiffDate(fromDate, toDate);
+                Date fromDate = formatter.parse(this.fromDate);
+                Date toDate = formatter.parse(this.toDate);
+                diffDays = DateCalculator.getDiffDate(fromDate, toDate);
 
                 DecimalFormat myFormatter = new DecimalFormat("###,###");
-                mExpectedPrice = myFormatter.format(Integer.parseInt(mPrice) * mDiffDays) +
-                        "원" + "  (" + mDiffDays + "박)";
-
-                return mExpectedPrice;
+                expectedPrice = myFormatter.format(Integer.parseInt(price) * diffDays) +
+                        "원" + "  (" + diffDays + "박)";
             } catch (Exception e) {
                 Log.e(TAG, "parse error", e);
-                return "";
             }
         } else {
-            return "";
+            expectedPrice = "";
         }
+    }
+
+    public String getExpectedPrice() {
+        return expectedPrice;
     }
 
     private boolean isPriceAndDateValid() {
 
-        return (!TextUtils.isEmpty(mPrice) &&
-                !TextUtils.isEmpty(mFromDate) &&
-                !TextUtils.isEmpty(mToDate) &&
-                !TextUtils.equals(mFromDate, DEFAULT_DATE_STRING) &&
-                !TextUtils.equals(mToDate, DEFAULT_DATE_STRING)
+        return (!TextUtils.isEmpty(price) &&
+                !TextUtils.isEmpty(fromDate) &&
+                !TextUtils.isEmpty(toDate) &&
+                !TextUtils.equals(fromDate, DEFAULT_DATE_STRING) &&
+                !TextUtils.equals(toDate, DEFAULT_DATE_STRING)
         );
     }
 }

@@ -16,7 +16,6 @@ import com.swsnack.catchhouse.data.roomdata.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
-import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -42,20 +41,14 @@ public class RoomsViewModel extends ReactiveViewModel {
     private DataManager mDataManager;
 
     public final MutableLiveData<List<Address>> mSearchResultList = new MutableLiveData<>();
-    public final MutableLiveData<String> mKeyword = new MutableLiveData<>();    //
-
     public final MutableLiveData<List<Uri>> mImageList = new MutableLiveData<>();
 
     public final MutableLiveData<String> mPrice = new MutableLiveData<>();
-    public final MutableLiveData<String> mFromDate = new MutableLiveData<>();   //
-    public final MutableLiveData<String> mToDate = new MutableLiveData<>();     //
+    public final MutableLiveData<String> mFromDate = new MutableLiveData<>();
+    public final MutableLiveData<String> mToDate = new MutableLiveData<>();
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
 
     public final MutableLiveData<String> mSize = new MutableLiveData<>();
-    public final MutableLiveData<Boolean> mOptionStandard = new MutableLiveData<>();    //
-    public final MutableLiveData<Boolean> mOptionPet = new MutableLiveData<>();         //
-    public final MutableLiveData<Boolean> mOptionGender = new MutableLiveData<>();      //
-    public final MutableLiveData<Boolean> mOptionSmoking = new MutableLiveData<>();     //
     public final MutableLiveData<Address> mAddress = new MutableLiveData<>();
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
     public final MutableLiveData<String> mContent = new MutableLiveData<>();            //
@@ -91,31 +84,17 @@ public class RoomsViewModel extends ReactiveViewModel {
         }
     }
 
-    public void onSelectFromDate(int year, int month, int day) {
-        String date = DateCalculator.createDateString(year, month, day);
-
-        mFromDate.setValue(date);
-        ep.updateFromDate(date);
-        mExpectedPrice.setValue(ep.onChangePriceAndInterval());
-    }
-
-    public void onSelectToDate(int year, int month, int day) {
-        String date = DateCalculator.createDateString(year, month, day);
-
-        mToDate.setValue(date);
-        ep.updateToDate(date);
-        mExpectedPrice.setValue(ep.onChangePriceAndInterval());
-    }
-
     public void onChangePriceAndPeriod() {
-        String price = mPrice.getValue();
-        ep.updatePrice(price);
-        mExpectedPrice.setValue(ep.onChangePriceAndInterval());
+        String expectedPrice = ep.update(
+                mPrice.getValue(),
+                mFromDate.getValue(),
+                mToDate.getValue()
+        );
+        mExpectedPrice.setValue(expectedPrice);
     }
 
-    public void onSearchAddress() {
-
-        getCompositeDisposable().add(searchAddress()
+    public void onSearchAddress(String keyword) {
+        getCompositeDisposable().add(searchAddress(keyword)
                 .subscribe(list ->
                                 mSearchResultList.postValue(list)
                         , exception ->
@@ -131,12 +110,11 @@ public class RoomsViewModel extends ReactiveViewModel {
             mAddress.setValue(addressList.get(position));
 
             addressList.clear();
-            mKeyword.setValue("");
             mSearchResultList.setValue(addressList);
         }
     }
 
-    public void onClickPost() {
+    public void onClickPost(boolean std, boolean gender, boolean pet, boolean smoking) {
         String validResult = isRoomDataValid();
 
         if (!TextUtils.isEmpty(validResult)) {
@@ -154,7 +132,7 @@ public class RoomsViewModel extends ReactiveViewModel {
         mDataManager.createKey(
                 key -> convert(
                         imageByte -> mDataManager.uploadRoomImage(key, imageByte,
-                                urlList -> push(key, urlList,
+                                urlList -> push(key, urlList, std, gender, pet, smoking,
                                         __ -> mDataManager.uploadLocationData(key, mAddress.getValue(),
                                                 ___ -> {
                                                     mListener.isFinished();
@@ -169,17 +147,12 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     private void init() {
-        mKeyword.setValue("");
         mSearchResultList.setValue(new ArrayList<>());
 
         mPrice.setValue("");
         mFromDate.setValue(mAppContext.getString(R.string.tv_write_date));
         mToDate.setValue(mAppContext.getString(R.string.tv_write_date));
         mExpectedPrice.setValue(mAppContext.getString(R.string.tv_write_expected_value_default));
-        mOptionStandard.setValue(false);
-        mOptionPet.setValue(false);
-        mOptionGender.setValue(false);
-        mOptionSmoking.setValue(false);
         mTitle.setValue("");
         mContent.setValue("");
 
@@ -213,6 +186,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     private void push(String key, List<String> urls,
+                      boolean std, boolean gender, boolean pet, boolean smoking,
                       OnSuccessListener<Void> onSuccessListener,
                       OnFailureListener onFailureListener) {
 
@@ -228,17 +202,15 @@ public class RoomsViewModel extends ReactiveViewModel {
                 mSize.getValue(),
                 mAddress.getValue().getAddress(),
                 mAddress.getValue().getName(),
-                mOptionStandard.getValue(),
-                mOptionGender.getValue(),
-                mOptionPet.getValue(),
-                mOptionSmoking.getValue()
+                std,
+                gender,
+                pet,
+                smoking
         );
         getDataManager().uploadRoomData(key, room, onSuccessListener, onFailureListener);
     }
 
-    private Single<List<Address>> searchAddress() {
-        String keyword = mKeyword.getValue();
-
+    private Single<List<Address>> searchAddress(String keyword) {
         return RoomsRepository.getInstance().getPOIFromRemote(keyword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

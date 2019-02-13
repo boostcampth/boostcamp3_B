@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
@@ -52,7 +53,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         getBinding().pgWrite.setVisibility(View.VISIBLE);
         getBinding().getRoot().setAlpha(0.6f);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-
     }
 
     @Override
@@ -69,9 +69,9 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         builder
                 .setMessage(getString(R.string.dl_write_finish))
                 .setOnDismissListener(__ -> finish())
-                .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) -> {
-                    finish();
-                });
+                .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) ->
+                        finish()
+                );
 
         AlertDialog alert = builder.create();
 
@@ -102,25 +102,24 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 }
         );
 
-        getBinding().tvWriteDateFrom.setOnClickListener(__ ->
-                createDatePicker((___, y, m, d) ->
-                        mViewModel.onSelectFromDate(y, m, d)
-                )
-        );
-
-        getBinding().tvWriteDateTo.setOnClickListener(__ ->
-                createDatePicker((___, y, m, d) ->
-                        mViewModel.onSelectToDate(y, m, d)
-                )
-        );
-
-        mViewModel.mPrice.observe(this, __ ->
-                mViewModel.onChangePriceAndPeriod()
-        );
+        /* 데이트 픽커 설정 */
+        getBinding().tvWriteDateFrom.setOnClickListener(v -> createDatePicker(v));
+        getBinding().tvWriteDateTo.setOnClickListener(v -> createDatePicker(v));
 
         getBinding().etWriteAddress.setOnClickListener(__ ->
                 new AddressSearchFragment().show(getSupportFragmentManager(), "address selection")
         );
+
+        getBinding().tvWritePost.setOnClickListener(__ ->
+                mViewModel.onClickPost(
+                        getBinding().cbWriteStandard.isChecked(),
+                        getBinding().cbWriteGender.isChecked(),
+                        getBinding().cbWritePet.isChecked(),
+                        getBinding().cbWriteSmoking.isChecked()
+                )
+        );
+
+        setObservableData();
     }
 
     @Override
@@ -165,13 +164,26 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         getBinding().setLifecycleOwner(this);
     }
 
-    private void createDatePicker(DatePickerDialog.OnDateSetListener listener) {
-        DatePickerDialog dialog = new DatePickerDialog(this, listener,
-                DateCalculator.getYear(),
-                DateCalculator.getMonth(),
-                DateCalculator.getDay()
-        );
+    private void createDatePicker(View v) {
+        TextView textView = (TextView) v;
+
+        DatePickerDialog dialog =
+                new DatePickerDialog(this,
+                        (__, y, m, d) -> {
+                            textView.setText(DateCalculator.createDateString(y, m, d));
+                            mViewModel.onChangePriceAndPeriod();
+                        },
+                        DateCalculator.getYear(),
+                        DateCalculator.getMonth(),
+                        DateCalculator.getDay()
+                );
 
         dialog.show();
+    }
+
+    private void setObservableData() {
+        mViewModel.mPrice.observe(this, __ ->
+                mViewModel.onChangePriceAndPeriod()
+        );
     }
 }

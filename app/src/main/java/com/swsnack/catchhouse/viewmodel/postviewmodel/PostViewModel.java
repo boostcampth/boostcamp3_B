@@ -28,7 +28,7 @@ public class PostViewModel extends ReactiveViewModel {
         ExpectedPrice expectedPrice =
                 new ExpectedPrice(room.getPrice(), room.getFrom(), room.getTo());
 
-        mExpectedPrice.setValue(expectedPrice.onChangePriceAndInterval());
+        mExpectedPrice.setValue(expectedPrice.getExpectedPrice());
 
         mOptionTag.setValue(
                 createOptionString(

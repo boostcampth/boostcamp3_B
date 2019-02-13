@@ -106,7 +106,7 @@
                         style="@style/TextStyle.Regular.Small"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="@{handler.mFromDate}"
+                        android:text="@={handler.mFromDate}"
                         android:textColor="@color/colorBottomNavDefault"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
@@ -126,7 +126,7 @@
                         style="@style/TextStyle.Regular.Small"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:text="@{handler.mToDate}"
+                        android:text="@={handler.mToDate}"
                         android:textColor="@color/colorBottomNavDefault"
                         app:layout_constraintStart_toEndOf="@+id/tv_write_ripple"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
@@ -152,7 +152,6 @@
                         style="@style/TextStyle.Regular.Small"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
-                        android:checked="@={handler.mOptionStandard}"
                         android:text="@string/cb_write_standard"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_expected_value" />
@@ -162,7 +161,6 @@
                         style="@style/TextStyle.Regular.Small"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:checked="@={handler.mOptionGender}"
                         android:text="@string/cb_write_gender"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cb_write_standard" />
@@ -172,7 +170,6 @@
                         style="@style/TextStyle.Regular.Small"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:checked="@={handler.mOptionPet}"
                         android:text="@string/cb_write_pet"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cb_write_gender" />
@@ -182,7 +179,6 @@
                         style="@style/TextStyle.Regular.Small"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
-                        android:checked="@={handler.mOptionSmoking}"
                         android:text="@string/cb_write_smoking"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cb_write_pet" />
@@ -248,14 +244,17 @@
                         style="@style/Basic_EditText"
                         android:layout_height="160dp"
                         android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
                         android:background="@drawable/et_round_background"
                         android:backgroundTint="@android:color/white"
                         android:elevation="4dp"
                         android:gravity="top"
+                        android:hint="@string/et_write_content_hint"
                         android:inputType="textMultiLine"
                         android:scrollHorizontally="false"
                         android:text="@={handler.mContent}"
                         android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/et_write_title" />
 
@@ -282,7 +281,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="4dp"
-                    android:onClick="@{()-> handler.onClickPost()}"
                     android:text="@string/tv_write_post"
                     android:textSize="@dimen/text_size_H6" />
             </FrameLayout>
