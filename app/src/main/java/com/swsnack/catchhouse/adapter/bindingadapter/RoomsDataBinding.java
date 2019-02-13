@@ -7,16 +7,27 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 
 import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
+import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
+import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
 import com.swsnack.catchhouse.data.pojo.Address;
-import com.swsnack.catchhouse.adapter.slideadapter.ImageSlideAdapter;
 
 import java.util.List;
 
 public class RoomsDataBinding {
 
     @BindingAdapter("adapter")
-    public static void setItems(ViewPager viewPager, List<Uri> items) {
-        ImageSlideAdapter adapter = (ImageSlideAdapter) viewPager.getAdapter();
+    public static void setDeletableImageItems(ViewPager viewPager, List<Uri> items) {
+        DeletableImagePagerAdapter adapter = (DeletableImagePagerAdapter) viewPager.getAdapter();
+
+        if (adapter != null && items != null) {
+            adapter.setItem(items);
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    @BindingAdapter("adapter")
+    public static void setImageItems(ViewPager viewPager, List<String> items) {
+        ImagePagerAdapter adapter = (ImagePagerAdapter) viewPager.getAdapter();
 
         if (adapter != null && items != null) {
             adapter.setItem(items);

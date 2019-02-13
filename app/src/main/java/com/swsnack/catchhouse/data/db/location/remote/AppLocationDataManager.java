@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.swsnack.catchhouse.data.db.location.LocationDataManager;
+import com.swsnack.catchhouse.data.listener.OnFailedListener;
+import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.pojo.Address;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
@@ -32,7 +32,7 @@ public class AppLocationDataManager implements LocationDataManager {
     @Override
     public void uploadLocationData(@NonNull String uuid, @NonNull Address address,
                                    @NonNull OnSuccessListener<String> onSuccessListener,
-                                   @NonNull OnFailureListener onFailureListener) {
+                                   @NonNull OnFailedListener onFailedListener) {
 
         GeoLocation geoLocation = new GeoLocation(address.getLatitude(), address.getLongitude());
 
@@ -40,7 +40,7 @@ public class AppLocationDataManager implements LocationDataManager {
                     if (error == null) {
                         onSuccessListener.onSuccess(key);
                     } else {
-                        onFailureListener.onFailure(new RuntimeException("error"));
+                        onFailedListener.onFailed(new RuntimeException("error"));
                     }
                 }
         );

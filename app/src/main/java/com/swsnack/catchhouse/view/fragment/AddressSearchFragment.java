@@ -14,8 +14,8 @@ import android.widget.LinearLayout;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
-import com.swsnack.catchhouse.databinding.FragmentAddressSearchBinding;
 import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
+import com.swsnack.catchhouse.databinding.FragmentAddressSearchBinding;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 
 public class AddressSearchFragment extends DialogFragment {
@@ -54,5 +54,9 @@ public class AddressSearchFragment extends DialogFragment {
                     mViewModel.onSelectAddress(i);
                     this.dismiss();
                 });
+
+        mBinding.tvAddressSearch.setOnClickListener(__ ->
+                mViewModel.onSearchAddress(mBinding.etAddressKeyword.getText().toString())
+        );
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -101,6 +102,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.d("test22","create");
         createViewModels();
         mDisposable = new CompositeDisposable();
         mFragmentManager = getSupportFragmentManager();
@@ -157,6 +159,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("test22","stop");
         mDisposable.dispose();
     }
 
@@ -171,6 +174,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         list.add(new SignFragment());
 
         getBinding().vpBottomNav.setAdapter(viewPagerAdapter);
+        getBinding().vpBottomNav.setOffscreenPageLimit(4);
         getBinding().vpBottomNav.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {

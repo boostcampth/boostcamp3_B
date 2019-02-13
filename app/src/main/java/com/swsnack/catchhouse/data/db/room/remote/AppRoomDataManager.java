@@ -4,8 +4,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,6 +14,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.data.db.room.RoomDataManager;
+import com.swsnack.catchhouse.data.listener.OnFailedListener;
+import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.pojo.Room;
 
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class AppRoomDataManager implements RoomDataManager {
 
     @Override
     public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
-                          @NonNull OnFailureListener onFailureListener) {
+                          @NonNull OnFailedListener onFailedListener) {
         db.push().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -54,13 +54,13 @@ public class AppRoomDataManager implements RoomDataManager {
                 if (key != null) {
                     onSuccessListener.onSuccess(key);
                 } else {
-                    onFailureListener.onFailure(new RuntimeException(NETWORK_ERROR));
+                    onFailedListener.onFailed(new RuntimeException(NETWORK_ERROR));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                onFailureListener.onFailure(new RuntimeException(NETWORK_ERROR));
+                onFailedListener.onFailed(new RuntimeException(NETWORK_ERROR));
             }
         });
     }
@@ -68,7 +68,7 @@ public class AppRoomDataManager implements RoomDataManager {
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
-                                @NonNull OnFailureListener onFailureListener) {
+                                @NonNull OnFailedListener onFailedListener) {
 
         List<String> list = new ArrayList<>();
         List<StorageReference> innerRef = new ArrayList<>();
@@ -79,7 +79,7 @@ public class AppRoomDataManager implements RoomDataManager {
 
         Continuation<UploadTask.TaskSnapshot, Task<Uri>> continuation = task -> {
             if (!task.isSuccessful()) {
-                onFailureListener.onFailure(new RuntimeException(NETWORK_ERROR));
+                onFailedListener.onFailed(new RuntimeException(NETWORK_ERROR));
             }
             return innerRef.remove(0).getDownloadUrl();
         };
@@ -93,8 +93,8 @@ public class AppRoomDataManager implements RoomDataManager {
                 if (!imageList.isEmpty()) {
                     innerRef.get(0).putBytes(imageList.remove(0))
                             .continueWithTask(continuation)
-                            .addOnSuccessListener(this)
-                            .addOnFailureListener(onFailureListener);
+                            .addOnSuccessListener(this::onSuccess)
+                            .addOnFailureListener(onFailedListener::onFailed);
                 } else {
                     onSuccessListener.onSuccess(list);
                 }
@@ -103,16 +103,35 @@ public class AppRoomDataManager implements RoomDataManager {
 
         uploadTask
                 .continueWithTask(continuation)
-                .addOnSuccessListener(loopListener)
-                .addOnFailureListener(onFailureListener);
+                .addOnSuccessListener(loopListener::onSuccess)
+                .addOnFailureListener(onFailedListener::onFailed);
     }
 
     @Override
     public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailureListener onFailureListener) {
+                               @NonNull OnFailedListener onFailedListener) {
         db.child(uuid).setValue(room)
-                .addOnSuccessListener(onSuccessListener)
-                .addOnFailureListener(onFailureListener);
+                .addOnSuccessListener(onSuccessListener::onSuccess)
+                .addOnFailureListener(onFailedListener::onFailed);
+    }
+
+    @Override
+    public void readRoomData(@NonNull String uuid,
+                             @NonNull OnSuccessListener<Room> onSuccessListener,
+                             @NonNull OnFailedListener onFailedListener) {
+
+        db.child(uuid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Room room = dataSnapshot.getValue(Room.class);
+                onSuccessListener.onSuccess(room);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                onFailedListener.onFailed(new RuntimeException(databaseError.getMessage()));
+            }
+        });
     }
 }

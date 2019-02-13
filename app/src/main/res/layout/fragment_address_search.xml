@@ -21,7 +21,6 @@
             android:layout_margin="4dp"
             android:hint="@string/et_address_keyword_hint"
             android:inputType="text"
-            android:text="@={handler.mKeyword}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +31,6 @@
             android:layout_height="40dp"
             android:layout_margin="4dp"
             android:text="@string/tv_address_search"
-            android:onClick="@{()-> handler.onSearchAddress()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/et_address_keyword"
             app:layout_constraintTop_toTopOf="parent" />

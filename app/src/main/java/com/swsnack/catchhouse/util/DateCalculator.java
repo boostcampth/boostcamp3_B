@@ -30,6 +30,12 @@ public class DateCalculator {
         return diffDay > 0 ? diffDay : 0;
     }
 
+    public static String createDateString(int year, int month ,int day) {
+        return year + "-" +
+                DateCalculator.refineDate(month) + "-" +
+                DateCalculator.refineDate(day);
+    }
+
     public static String refineDate(int num) {
         if(num < 10) {
             return "0" + num;
@@ -37,4 +43,5 @@ public class DateCalculator {
             return "" + num;
         }
     }
+
 }

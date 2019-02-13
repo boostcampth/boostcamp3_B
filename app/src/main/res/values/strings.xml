@@ -85,11 +85,13 @@
     <string name="et_write_address_hint">주소를 입력해주세요.</string>
     <string name="tv_write_room_size">방 크기</string>
     <string name="et_write_room_size_hint">평수를 입력해주세요.</string>
-    <string name="tv_write_title">제목</string>
+    <string name="tv_write_title">제목, 내용</string>
     <string name="tv_write_content">내용</string>
     <string name="tv_write_preview">미리 보기</string>
     <string name="tv_write_post">확인</string>
     <string name="dl_write_ok">확인</string>
+    <string name="et_write_title_hint">제목을 입력해주세요.</string>
+    <string name="et_write_content_hint">글 내용을 적어주세요.</string>
     <string name="dl_write_finish">판매글이 등록되었습니다.</string>
 
     /* fragment_address_search */
@@ -123,5 +125,6 @@
     <string name="tv_post_date">기간</string>
     <string name="tv_post_size">크기</string>
     <string name="tv_post_chat">쪽지보내기</string>
+    <string name="tv_post_map">지도</string>
 
 </resources>

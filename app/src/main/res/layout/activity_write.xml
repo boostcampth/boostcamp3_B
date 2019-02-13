@@ -28,15 +28,18 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-                <LinearLayout
+                android:layout_height="0dp"
+                android:layout_weight="0.9">
+
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
@@ -49,191 +52,240 @@
                         android:layout_width="match_parent"
                         android:layout_height="320dp"
                         android:layout_margin="8dp"
-                        app:adapter="@{handler.mImageList}" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        app:adapter="@{handler.mImageList}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tv_write_gallery"
                         style="@style/tv.accent.small"
                         android:layout_margin="8dp"
-                        android:layout_marginBottom="4dp"
-                        android:text="@string/tv_write_gallery" />
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="@string/tv_write_gallery"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/vp_write" />
 
                     <TextView
                         android:id="@+id/tv_write_value"
                         style="@style/TextStyle.Bold.SubTitle"
-                        android:text="@string/tv_write_value" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/tv_write_value"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_gallery" />
 
                     <EditText
                         android:id="@+id/et_write_value"
                         style="@style/Basic_EditText"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
                         android:hint="@string/et_write_value_hint"
                         android:inputType="number"
                         android:text="@={handler.mPrice}"
-                        android:textAlignment="textStart" />
+                        android:textAlignment="textStart"
+                        app:layout_constraintStart_toStartOf="@+id/tv_write_value"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_value" />
 
                     <TextView
-                        android:id="@+id/tv_write_from_to"
+                        android:id="@+id/tv_write_from_to_title"
                         style="@style/TextStyle.Bold.SubTitle"
-                        android:text="@string/tv_write_from_to" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="4dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_write_date_from"
-                            style="@style/TextStyle.Regular.Small"
-                            android:text="@{handler.mFromDate}"
-                            android:textColor="@color/colorBottomNavDefault" />
-
-                        <TextView
-                            style="@style/TextStyle.Regular.Small"
-                            android:text="@string/tv_write_ripple"
-                            android:textColor="@color/colorBottomNavDefault" />
-
-                        <TextView
-                            android:id="@+id/tv_write_date_to"
-                            style="@style/TextStyle.Regular.Small"
-                            android:text="@{handler.mToDate}"
-                            android:textColor="@color/colorBottomNavDefault" />
-                    </LinearLayout>
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/tv_write_from_to"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/et_write_value" />
 
                     <TextView
+                        android:id="@+id/tv_write_date_from"
+                        style="@style/TextStyle.Regular.Small"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@={handler.mFromDate}"
+                        android:textColor="@color/colorBottomNavDefault"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
+
+                    <TextView
+                        android:id="@+id/tv_write_ripple"
+                        style="@style/TextStyle.Regular.Small"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/tv_write_ripple"
+                        android:textColor="@color/colorBottomNavDefault"
+                        app:layout_constraintStart_toEndOf="@+id/tv_write_date_from"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
+
+                    <TextView
+                        android:id="@+id/tv_write_date_to"
+                        style="@style/TextStyle.Regular.Small"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@={handler.mToDate}"
+                        android:textColor="@color/colorBottomNavDefault"
+                        app:layout_constraintStart_toEndOf="@+id/tv_write_ripple"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
+
+                    <TextView
+                        android:id="@+id/tv_write_expected_value_title"
                         style="@style/TextStyle.Bold.SubTitle"
-                        android:text="@string/tv_write_expected_value" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/tv_write_expected_value"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_ripple" />
 
                     <TextView
                         android:id="@+id/tv_write_expected_value"
                         style="@style/TextStyle.Regular.Title"
-                        android:text="@{handler.mExpectedPrice}" />
+                        android:text="@{handler.mExpectedPrice}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_expected_value_title" />
 
                     <CheckBox
                         android:id="@+id/cb_write_standard"
                         style="@style/TextStyle.Regular.Small"
-                        android:checked="@={handler.mOptionStandard}"
-                        android:text="@string/cb_write_standard" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/cb_write_standard"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_expected_value" />
 
                     <CheckBox
                         android:id="@+id/cb_write_gender"
                         style="@style/TextStyle.Regular.Small"
-                        android:checked="@={handler.mOptionGender}"
-                        android:text="@string/cb_write_gender" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/cb_write_gender"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cb_write_standard" />
 
                     <CheckBox
                         android:id="@+id/cb_write_pet"
                         style="@style/TextStyle.Regular.Small"
-                        android:checked="@={handler.mOptionPet}"
-                        android:text="@string/cb_write_pet" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/cb_write_pet"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cb_write_gender" />
 
                     <CheckBox
                         android:id="@+id/cb_write_smoking"
                         style="@style/TextStyle.Regular.Small"
-                        android:checked="@={handler.mOptionSmoking}"
-                        android:text="@string/cb_write_smoking" />
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/cb_write_smoking"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cb_write_pet" />
 
                     <TextView
+                        android:id="@+id/tv_write_info_title"
                         style="@style/TextStyle.Bold.SubTitle"
-                        android:text="@string/tv_write_room_info" />
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/tv_write_room_info"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cb_write_smoking" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/et_write_address"
+                        style="@style/Basic_EditText"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:focusable="false"
+                        android:hint="@string/et_write_address_hint"
+                        android:inputType="text"
+                        android:textAlignment="textStart"
+                        app:address="@{handler.mAddress}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_info_title" />
 
-                        <TextView
-                            style="@style/TextStyle.Regular.Medium"
-                            android:layout_width="60dp"
-                            android:text="@string/tv_write_address" />
-
-                        <EditText
-                            android:id="@+id/et_write_address"
-                            style="@style/Basic_EditText"
-                            android:focusable="false"
-                            android:hint="@string/et_write_address_hint"
-                            android:inputType="text"
-                            android:textAlignment="textStart"
-                            app:address="@{handler.mAddress}" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            style="@style/TextStyle.Regular.Medium"
-                            android:layout_width="60dp"
-                            android:text="@string/tv_write_room_size" />
-
-                        <EditText
-                            android:id="@+id/et_write_room_size"
-                            style="@style/Basic_EditText"
-                            android:hint="@string/et_write_room_size_hint"
-                            android:inputType="number"
-                            android:textAlignment="textStart" />
-                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/et_write_room_size"
+                        style="@style/Basic_EditText"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/et_write_room_size_hint"
+                        android:inputType="number"
+                        android:text="@={handler.mSize}"
+                        android:textAlignment="textStart"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/et_write_address" />
 
                     <TextView
+                        android:id="@+id/tv_write_title_title"
                         style="@style/TextStyle.Bold.SubTitle"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/tv_write_title"
-                        android:textSize="20sp" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/et_write_room_size" />
+
 
                     <EditText
                         android:id="@+id/et_write_title"
                         style="@style/Basic_EditText"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:hint="@string/et_write_title_hint"
                         android:inputType="text"
                         android:text="@={handler.mTitle}"
-                        android:textAlignment="textStart" />
-
-                    <TextView
-                        style="@style/TextStyle.Bold.SubTitle"
-                        android:text="@string/tv_write_content" />
+                        android:textAlignment="textStart"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_title_title" />
 
                     <EditText
                         android:id="@+id/et_write_content"
                         style="@style/Basic_EditText"
                         android:layout_height="160dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginBottom="24dp"
                         android:background="@drawable/et_round_background"
                         android:backgroundTint="@android:color/white"
                         android:elevation="4dp"
                         android:gravity="top"
+                        android:hint="@string/et_write_content_hint"
                         android:inputType="textMultiLine"
                         android:scrollHorizontally="false"
                         android:text="@={handler.mContent}"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/et_write_title" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/tv_write_preview"
-                            style="@style/tv.accent.small"
-                            android:layout_margin="8dp"
-                            android:text="@string/tv_write_preview" />
-
-                        <TextView
-                            android:id="@+id/tv_write_post"
-                            style="@style/tv.accent.small"
-                            android:layout_margin="8dp"
-                            android:onClick="@{()-> handler.onClickPost()}"
-                            android:text="@string/tv_write_post" />
-                    </LinearLayout>
-
-                </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
             </ScrollView>
 
-            <ProgressBar
-                android:id="@+id/pg_write"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone" />
-        </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.08">
+
+                <ProgressBar
+                    android:id="@+id/pg_write"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/tv_write_post"
+                    style="@style/tv.accent.small"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="4dp"
+                    android:text="@string/tv_write_post"
+                    android:textSize="@dimen/text_size_H6" />
+            </FrameLayout>
+
+        </LinearLayout>
 
 
     </android.support.design.widget.CoordinatorLayout>

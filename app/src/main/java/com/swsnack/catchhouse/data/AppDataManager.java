@@ -203,33 +203,42 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void createKey(@NonNull com.google.android.gms.tasks.OnSuccessListener<String> onSuccessListener,
-                          @NonNull OnFailureListener onFailedListener) {
+    public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
+                          @NonNull OnFailedListener onFailedListener) {
 
         mRoomDataManager.createKey(onSuccessListener, onFailedListener);
     }
 
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
-                                @NonNull com.google.android.gms.tasks.OnSuccessListener<List<String>> onSuccessListener,
-                                @NonNull OnFailureListener onFailedListener) {
+                                @NonNull OnSuccessListener<List<String>> onSuccessListener,
+                                @NonNull OnFailedListener onFailedListener) {
 
         mRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
-                               @NonNull com.google.android.gms.tasks.OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailureListener onFailureListener) {
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailedListener onFailedListener) {
 
-        mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
+        mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailedListener);
+    }
+
+
+    @Override
+    public void readRoomData(@NonNull String uuid,
+                             @NonNull OnSuccessListener<Room> onSuccessListener,
+                             @NonNull OnFailedListener onFailedListener) {
+        mRoomDataManager.readRoomData(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void uploadLocationData(@NonNull String uuid, @NonNull Address address,
-                                   @NonNull com.google.android.gms.tasks.OnSuccessListener<String> onSuccessListener,
-                                   @NonNull OnFailureListener onFailureListener) {
+                                   @NonNull OnSuccessListener<String> onSuccessListener,
+                                   @NonNull OnFailedListener onFailedListener) {
 
-        mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailureListener);
+        mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailedListener);
     }
+
 }
