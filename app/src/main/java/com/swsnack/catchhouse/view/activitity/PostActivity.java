@@ -10,13 +10,13 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.locationdata.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.roomdata.remote.AppRoomDataManager;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
-import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
-import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
+import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
+import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
+import com.swsnack.catchhouse.data.pojo.Room;
 import com.swsnack.catchhouse.databinding.ActivityPostBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
@@ -91,14 +91,12 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         mViewModel = ViewModelProviders.of(this,
                 new PostViewModelFactory(
                         AppDataManager.getInstance(
-                                AppAPIManager.getInstance(),
                                 AppUserDataManager.getInstance(),
                                 RemoteChattingManager.getInstance(),
                                 AppRoomDataManager.getInstance(),
-                                AppLocationDataManager.getInstance()
-                        ),
-                        this
-                )
-        ).get(PostViewModel.class);
+                                AppLocationDataManager.getInstance()),
+                        APIManager.getInstance(),
+                        this))
+                .get(PostViewModel.class);
     }
 }

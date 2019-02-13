@@ -2,9 +2,11 @@ package com.swsnack.catchhouse.viewmodel.postviewmodel;
 
 import android.arch.lifecycle.MutableLiveData;
 
+
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.roomdata.model.ExpectedPrice;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
+import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -17,8 +19,8 @@ public class PostViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
     public final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
 
-    PostViewModel(DataManager dataManager, ViewModelListener listener) {
-        super(dataManager);
+    PostViewModel(DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+        super(dataManager, apiManager);
 
         init();
     }

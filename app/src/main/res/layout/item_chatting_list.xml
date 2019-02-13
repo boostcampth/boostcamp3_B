@@ -7,11 +7,11 @@
 
         <variable
             name="userData"
-            type="com.swsnack.catchhouse.data.userdata.model.User" />
+            type="com.swsnack.catchhouse.data.model.User" />
 
         <variable
             name="chattingData"
-            type="com.swsnack.catchhouse.data.chattingdata.model.Chatting"/>
+            type="com.swsnack.catchhouse.data.model.Chatting"/>
 
         <variable
             name="handler"
@@ -41,7 +41,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    bind:setChattingListProfile="@{userData}" />
+                    bind:setChattingUserProfile="@{userData}" />
 
                 <TextView
                     android:id="@+id/tv_chatting_list_item_nick_name"

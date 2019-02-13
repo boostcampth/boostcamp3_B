@@ -90,6 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
                 android:orientation="horizontal"
+                android:onCheckedChanged="@{handler::onCheckedChangedListener}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_gender"
                 app:layout_constraintEnd_toEndOf="@id/tv_sign_up_gender"
                 app:layout_constraintTop_toTopOf="@id/tv_sign_up_gender">

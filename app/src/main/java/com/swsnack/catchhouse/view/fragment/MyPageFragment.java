@@ -7,10 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
@@ -25,8 +22,6 @@ import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
-
-    private FragmentManager mFragmentManager;
 
     @Override
     protected int getLayout() {
@@ -44,20 +39,11 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        mFragmentManager = getActivity().getSupportFragmentManager();
-        return getBinding().getRoot();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getBinding().setHandler(getViewModel());
-        getBinding().setLifecycleOwner(getActivity());
-
-        getViewModel().getUser();
+        getViewModel().getUserData();
 
         for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
             if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
@@ -105,14 +91,6 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         });
 
         getBinding().tvMyPageChangeProfile.setOnClickListener(v -> startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY));
-
-        getBinding().tvMyPageDelete.setOnClickListener(v -> getViewModel().deleteUser());
-
-        getBinding().tvMyPageSignOut.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
-        });
-
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.swsnack.catchhouse.adapter.bindingadapter;
 import android.databinding.BindingAdapter;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -11,22 +10,23 @@ import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListAdapter;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingMessageAdapter;
-import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
-import com.swsnack.catchhouse.data.userdata.model.User;
+import com.swsnack.catchhouse.data.model.Chatting;
+import com.swsnack.catchhouse.data.model.Message;
+import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.util.DataConverter;
 
 import java.util.List;
 
 public class ChattingDataBinding {
 
-    @BindingAdapter({"setList"})
+    @BindingAdapter({"setChattingList"})
     public static void setList(RecyclerView recyclerView, List<Chatting> chattingList) {
         ChattingListAdapter chattingListAdapter = (ChattingListAdapter) recyclerView.getAdapter();
-        chattingListAdapter.setList(chattingList);
+        List<Chatting> orderedList = DataConverter.reOrderedListByTimeStamp(chattingList);
+        chattingListAdapter.setList(orderedList);
     }
 
-    @BindingAdapter({"setChattingListProfile"})
+    @BindingAdapter({"setChattingUserProfile"})
     public static void setProfile(ImageView imageView, User user) {
         if (user == null) {
             return;
@@ -39,17 +39,14 @@ public class ChattingDataBinding {
     }
 
     @BindingAdapter({"setChattingMessage"})
-    public static void setMessage(RecyclerView recyclerView, Chatting chattingMessages) {
-        if (chattingMessages == null) {
+    public static void setMessage(RecyclerView recyclerView, List<Message> chattingMessages) {
+        if (chattingMessages == null || chattingMessages.size() == 0) {
             return;
         }
 
-        if (chattingMessages.getMessage() != null) {
-            ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
-            List<Message> messages = DataConverter.sortByValueFromMapToList(chattingMessages.getMessage());
-            Log.d("메세지", "setMessage: " + messages);
-            chattingMessageAdapter.setList(DataConverter.sortByValueFromMapToList(chattingMessages.getMessage()));
-        }
+        ChattingMessageAdapter chattingMessageAdapter = (ChattingMessageAdapter) recyclerView.getAdapter();
+        chattingMessageAdapter.setList(chattingMessages);
+        recyclerView.scrollToPosition(chattingMessages.size() - 1);
     }
 
     @BindingAdapter({"setUserData"})

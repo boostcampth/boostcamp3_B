@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseRecyclerViewAdapter;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
-import com.swsnack.catchhouse.data.userdata.model.User;
+import com.swsnack.catchhouse.data.model.Message;
+import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.databinding.ItemChattingMessageBinding;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 
@@ -65,6 +65,7 @@ public class ChattingMessageAdapter extends BaseRecyclerViewAdapter<Message, Cha
         ChattingMessageItemHolder viewHolder = new ChattingMessageItemHolder(binding);
         binding.setLifecycleOwner(viewHolder);
         binding.setHandler(mChattingViewModel);
+        binding.setUserData(mUserData);
 
         return viewHolder;
     }

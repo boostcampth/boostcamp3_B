@@ -5,44 +5,33 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.facebook.AccessToken;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ValueEventListener;
-import com.swsnack.catchhouse.data.chattingdata.ChattingManager;
-import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
-import com.swsnack.catchhouse.data.locationdata.LocationDataManager;
-import com.swsnack.catchhouse.data.roomdata.RoomDataManager;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
-import com.swsnack.catchhouse.data.userdata.APIManager;
-import com.swsnack.catchhouse.data.userdata.UserDataManager;
-import com.swsnack.catchhouse.data.userdata.model.User;
+import com.swsnack.catchhouse.data.db.chatting.ChattingManager;
+import com.swsnack.catchhouse.data.model.Chatting;
+import com.swsnack.catchhouse.data.model.Message;
+import com.swsnack.catchhouse.data.db.location.LocationDataManager;
+import com.swsnack.catchhouse.data.listener.OnFailedListener;
+import com.swsnack.catchhouse.data.listener.OnSuccessListener;
+import com.swsnack.catchhouse.data.db.room.RoomDataManager;
+import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.db.user.UserDataManager;
+import com.swsnack.catchhouse.data.model.User;
 
 import java.util.List;
-import java.util.Map;
-
-import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 
 public class AppDataManager implements DataManager {
 
-    private APIManager mApiManager;
     private UserDataManager mUserDataManager;
     private ChattingManager mRemoteChattingManager;
     private RoomDataManager mRoomDataManager;
     private LocationDataManager mLocationDataManager;
 
-    private AppDataManager(APIManager apiManager,
-                           UserDataManager userDataManager,
+    private AppDataManager(UserDataManager userDataManager,
                            ChattingManager remoteChattingManager,
                            RoomDataManager roomDataManager,
                            LocationDataManager locationDataManager) {
-        mApiManager = apiManager;
+
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
         mRoomDataManager = roomDataManager;
@@ -51,14 +40,12 @@ public class AppDataManager implements DataManager {
 
     private static AppDataManager INSTANCE;
 
-    public static synchronized AppDataManager getInstance(@NonNull APIManager apiManager,
-                                                          @NonNull UserDataManager userDataManager,
+    public static synchronized AppDataManager getInstance(@NonNull UserDataManager userDataManager,
                                                           @NonNull ChattingManager remoteChattingManager,
                                                           @NonNull RoomDataManager roomDataManager,
                                                           @NonNull LocationDataManager locationDataManager) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataManager(apiManager,
-                    userDataManager,
+            INSTANCE = new AppDataManager(userDataManager,
                     remoteChattingManager,
                     roomDataManager,
                     locationDataManager);
@@ -66,249 +53,192 @@ public class AppDataManager implements DataManager {
         return INSTANCE;
     }
 
-    @NonNull
     @Override
-    public APIManager getAPIManager() {
-        return mApiManager;
-    }
+    public void updateProfile(@NonNull String uuid,
+                              @NonNull Uri uri,
+                              @NonNull User user,
+                              @NonNull OnSuccessListener<Void> onSuccessListener,
+                              @NonNull OnFailedListener onFailedListener) {
 
-    @NonNull
-    @Override
-    public UserDataManager getUserDataManager() {
-        return mUserDataManager;
-    }
-
-    public void signUpAndSetUser(@NonNull String password,
-                                 @NonNull User user,
-                                 @Nullable Uri uri,
-                                 @NonNull OnSuccessListener<Void> onSuccessListener,
-                                 @NonNull OnFailureListener onFailureListener) {
-
-        signUp(user.getEMail(), password,
-                signUpSuccess -> {
-                    if (uri == null) {
-                        setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-                        return;
-                    }
-                    uploadProfile(signUpSuccess.getUser().getUid(),
-                            uri,
-                            storageUri -> {
-                                user.setProfile(storageUri.toString());
-                                setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-                            }, onFailureListener);
-                },
-                onFailureListener);
-    }
-
-    @Override
-    public void signUpAndSetUser(@NonNull AuthCredential authCredential,
-                                 @NonNull User user,
-                                 @NonNull OnSuccessListener<Void> onSuccessListener,
-                                 @NonNull OnFailureListener onFailureListener) {
-        signUp(authCredential,
-                signUpSuccess ->
-                        getUserFromSingleSnapShot(signUpSuccess.getUser().getUid(),
-                                signed -> onSuccessListener.onSuccess(null),
-                                error -> {
-                                    if (error.getMessage().equals(NOT_SIGNED_USER)) {
-                                        setUser(signUpSuccess.getUser().getUid(), user, onSuccessListener, onFailureListener);
-                                        return;
-                                    }
-                                    onFailureListener.onFailure(error);
-                                })
-                , onFailureListener);
-
-    }
-
-    @Override
-    public void deleteUserAll(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            onFailureListener.onFailure(new FirebaseException(NOT_SIGNED_USER));
-            return;
-        }
-        // FIXME callback이 4개가 중첩되어있는 콜백지옥 구조인데 이런방식은 아주 좋지 않습니다. 개선할 방법을 고민하셔서 간결한 코드로 수정해주세요
-        getUserFromSingleSnapShot(uuid,
-                user ->
-                        deleteUserData(uuid,
-                                deleteDB -> {
-                                    if (user.getProfile() == null) {
-                                        deleteUser(onSuccessListener,
-                                                error -> {
-                                                    onFailureListener.onFailure(error);
-                                                    setUser(uuid, user,
-                                                            Void -> {
-                                                            },
-                                                            transactionError -> {
-                                                            });
-                                                });
-                                        return;
-                                    }
-                                    deleteProfile(uuid,
-                                            deleteProfile ->
-                                                    deleteUser(onSuccessListener, onFailureListener),
-                                            error -> {
-                                                onFailureListener.onFailure(error);
-                                                setUser(uuid, user,
-                                                        Void -> {
-                                                        },
-                                                        transactionError -> {
-                                                        });
-                                            });
-                                },
-                                onFailureListener),
-                onFailureListener);
-    }
-
-    @Override
-    public void updateProfile(@NonNull String uuid, @NonNull Uri uri, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.updateProfile(uuid, uri, onSuccessListener, onFailureListener);
-    }
-
-    @Override
-    public void signUp(@NonNull AuthCredential authCredential, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.signUp(authCredential, onSuccessListener, onFailureListener);
-    }
-
-    @Override
-    public void signUp(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.signUp(email, password, onSuccessListener, onFailureListener);
-    }
-
-    @Override
-    public void signIn(@NonNull String email, @NonNull String password, @NonNull OnSuccessListener<AuthResult> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.signIn(email, password, onSuccessListener, onFailureListener);
-    }
-
-    @Override
-    public void deleteUser(@NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.deleteUser(onSuccessListener, onFailureListener);
-    }
-
-    @Override
-    public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.updatePassword(oldPassword, newPassword, onSuccessListener, onFailureListener);
-    }
-
-    @Override
-    public void getUserInfoFromFacebook(@NonNull AccessToken accessToken, @NonNull OnSuccessListener<User> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mApiManager.getUserInfoFromFacebook(accessToken, onSuccessListener, onFailureListener);
+        mUserDataManager.updateProfile(uuid, uri, user, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void getUserAndListeningForChanging(@NonNull String uuid,
                                                @NonNull OnSuccessListener<User> onSuccessListener,
-                                               @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.getUserAndListeningForChanging(uuid, onSuccessListener, onFailureListener);
+                                               @NonNull OnFailedListener onFailedListener) {
+        mUserDataManager.getUserAndListeningForChanging(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void getUserFromSingleSnapShot(@NonNull String uuid,
                                           @NonNull OnSuccessListener<User> onSuccessListener,
-                                          @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.getUserFromSingleSnapShot(uuid, onSuccessListener, onFailureListener);
+                                          @NonNull OnFailedListener onFailedListener) {
+        mUserDataManager.getUserFromSingleSnapShot(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void setUser(@NonNull String uuid, @NonNull User user, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.setUser(uuid, user, onSuccessListener, onFailureListener);
+    public void setUser(@NonNull String uuid,
+                        @NonNull User user,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
+
+        mUserDataManager.setUser(uuid, user, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void deleteUserData(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.deleteUserData(uuid, onSuccessListener, onFailureListener);
+    public void setUser(@NonNull String uuid,
+                        @NonNull User user,
+                        @NonNull Uri uri,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
+
+        mUserDataManager.setUser(uuid, user, uri, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void deleteProfile(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.deleteProfile(uuid, onSuccessListener, onFailureListener);
+    public void setUserNotAlreadySigned(@NonNull String uuid,
+                                        @NonNull User user,
+                                        @NonNull com.swsnack.catchhouse.data.listener.OnSuccessListener<Void> onSuccessListener,
+                                        @NonNull OnFailedListener onFailedListener) {
+
+        mUserDataManager.setUserNotAlreadySigned(uuid, user, onSuccessListener, onFailedListener);
+    }
+
+    @Override
+    public void deleteUserData(@NonNull String uuid,
+                               @NonNull User user,
+                               @NonNull OnSuccessListener<Void> onSuccessListener,
+                               @NonNull OnFailedListener onFailedListener) {
+
+        mUserDataManager.deleteUserData(uuid, user, onSuccessListener, onFailedListener);
+    }
+
+    @Override
+    public void deleteProfile(@NonNull String uuid,
+                              @NonNull OnSuccessListener<Void> onSuccessListener,
+                              @NonNull OnFailedListener onFailedListener) {
+
+        mUserDataManager.deleteProfile(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void findUserByQueryString(@NonNull String queryString,
                                       @NonNull String findValue,
                                       @NonNull OnSuccessListener<String> onSuccessListener,
-                                      @NonNull OnFailureListener onFailureListener) {
+                                      @NonNull OnFailedListener onFailedListener) {
 
-        mUserDataManager.findUserByQueryString(queryString, findValue, onSuccessListener, onFailureListener);
+        mUserDataManager.findUserByQueryString(queryString, findValue, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void updateUser(@NonNull String uuid, @NonNull Map<String, Object> updateFields, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.updateUser(uuid, updateFields, onSuccessListener, onFailureListener);
+    public void updateUser(@NonNull String uuid,
+                           @NonNull User user,
+                           @NonNull OnSuccessListener<Void> onSuccessListener,
+                           @NonNull OnFailedListener onFailedListener) {
+
+        mUserDataManager.updateUser(uuid, user, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void updateNickName(@NonNull String uuid, @NonNull String changeNickName, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.updateNickName(uuid, changeNickName, onSuccessListener, onFailureListener);
+    public void getProfile(@NonNull Uri uri,
+                           @NonNull OnSuccessListener<Bitmap> onSuccessListener,
+                           @NonNull OnFailedListener onFailedListener) {
+
+        mUserDataManager.getProfile(uri, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void uploadProfile(@NonNull String uuid, @NonNull Uri imageUri, @NonNull OnSuccessListener<Uri> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.uploadProfile(uuid, imageUri, onSuccessListener, onFailureListener);
+    public void getChattingRoom(@NonNull String destinationUuid,
+                                @NonNull com.google.android.gms.tasks.OnSuccessListener<String> onSuccessListener,
+                                @NonNull OnFailureListener onFailedListener) {
+
+        mRemoteChattingManager.getChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void getProfile(@NonNull Uri uri, @NonNull OnSuccessListener<Bitmap> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mUserDataManager.getProfile(uri, onSuccessListener, onFailureListener);
+    public void getChattingList(@NonNull com.google.android.gms.tasks.OnSuccessListener<List<Chatting>> onSuccessListener,
+                                @NonNull OnFailureListener onFailedListener) {
+
+        mRemoteChattingManager.getChattingList(onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void getChattingRoom(@NonNull String uuid, @NonNull String destinationUuid, @NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mRemoteChattingManager.getChattingRoom(uuid, destinationUuid, onSuccessListener, onFailureListener);
+    public void cancelChattingModelObserving() {
+        mRemoteChattingManager.cancelChattingModelObserving();
     }
 
     @Override
-    public void getChattingList(@NonNull String uuid, @NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mRemoteChattingManager.getChattingList(uuid, onSuccessListener, onFailureListener);
+    public void listeningForChangedChatMessage(@NonNull String chatRoomId,
+                                               @NonNull com.google.android.gms.tasks.OnSuccessListener<List<Message>> onSuccessListener,
+                                               @NonNull OnFailureListener onFailedListener) {
+
+        mRemoteChattingManager.listeningForChangedChatMessage(chatRoomId, onSuccessListener, onFailedListener);
+
     }
 
     @Override
-    public void getChatMessage(@NonNull String chatRoomId, @NonNull ValueEventListener valueEventListener) {
-
+    public void cancelMessageModelObserving() {
+        mRemoteChattingManager.cancelMessageModelObserving();
     }
 
     @Override
-    public void setChattingRoom(@NonNull Chatting chattingUser, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
-        mRemoteChattingManager.setChattingRoom(chattingUser, onSuccessListener, onFailureListener);
+    public void setChattingRoom(@NonNull String destinationUuid,
+                                @NonNull com.google.android.gms.tasks.OnSuccessListener<String> onSuccessListener,
+                                @NonNull OnFailureListener onFailedListener) {
+
+        mRemoteChattingManager.setChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void setChatMessage(@NonNull Message message, @NonNull ValueEventListener valueEventListener) {
+    public void setChatMessage(int messagesLength,
+                               @Nullable String roomUid,
+                               @NonNull String destinationUid,
+                               @NonNull String content,
+                               @NonNull com.google.android.gms.tasks.OnSuccessListener<String> onSuccessListener,
+                               @NonNull OnFailureListener onFailedListener) {
+
+        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailedListener);
 
     }
 
     @Override
     public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
-                          @NonNull OnFailureListener onFailureListener) {
-        mRoomDataManager.createKey(onSuccessListener, onFailureListener);
+                          @NonNull OnFailedListener onFailedListener) {
+
+        mRoomDataManager.createKey(onSuccessListener, onFailedListener);
     }
 
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
-                                @NonNull OnFailureListener onFailureListener) {
-        mRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailureListener);
+                                @NonNull OnFailedListener onFailedListener) {
+
+        mRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailureListener onFailureListener) {
-        mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailureListener);
+                               @NonNull OnFailedListener onFailedListener) {
+
+        mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailedListener);
     }
+
 
     @Override
     public void readRoomData(@NonNull String uuid,
                              @NonNull OnSuccessListener<Room> onSuccessListener,
-                             @NonNull OnFailureListener onFailureListener) {
-        mRoomDataManager.readRoomData(uuid, onSuccessListener, onFailureListener);
+                             @NonNull OnFailedListener onFailedListener) {
+        mRoomDataManager.readRoomData(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void uploadLocationData(@NonNull String uuid, @NonNull Address address,
                                    @NonNull OnSuccessListener<String> onSuccessListener,
-                                   @NonNull OnFailureListener onFailureListener) {
-        mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailureListener);
+                                   @NonNull OnFailedListener onFailedListener) {
+
+        mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailedListener);
     }
 
 }

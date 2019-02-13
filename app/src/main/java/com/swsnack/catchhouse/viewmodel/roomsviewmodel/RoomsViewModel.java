@@ -6,16 +6,17 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.asynctask.ConvertImageTask;
-import com.swsnack.catchhouse.data.roomdata.model.ExpectedPrice;
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
+import com.swsnack.catchhouse.data.db.rooms.RoomsRepository;
+import com.swsnack.catchhouse.data.listener.OnFailedListener;
+import com.swsnack.catchhouse.data.listener.OnSuccessListener;
+import com.swsnack.catchhouse.data.model.ExpectedPrice;
+import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.pojo.Room;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -55,8 +56,8 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     private ExpectedPrice ep;
 
-    RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
-        super(dataManager);
+    RoomsViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+        super(dataManager, apiManager);
         mAppContext = application;
         mListener = listener;
         mDataManager = dataManager;
@@ -124,7 +125,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
         mListener.isWorking();
 
-        OnFailureListener errorHandler = error -> {
+        OnFailedListener errorHandler = error -> {
             mListener.isFinished();
             mListener.onError("error");
         };
@@ -178,9 +179,9 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     private void convert(OnSuccessListener<List<byte[]>> onSuccessListener,
-                         OnFailureListener onFailureListener) {
+                         OnFailedListener onFailedListener) {
         AsyncTask<Uri, Void, List<byte[]>> mTask;
-        mTask = new ConvertImageTask(mAppContext, onSuccessListener, onFailureListener);
+        mTask = new ConvertImageTask(mAppContext, onSuccessListener, onFailedListener);
         List<Uri> u = mImageList.getValue();
         mTask.execute(u.toArray(new Uri[0]));
     }
@@ -188,7 +189,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     private void push(String key, List<String> urls,
                       boolean std, boolean gender, boolean pet, boolean smoking,
                       OnSuccessListener<Void> onSuccessListener,
-                      OnFailureListener onFailureListener) {
+                      OnFailedListener onFailedListener) {
 
         String UUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Room room = new Room(
@@ -207,7 +208,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                 pet,
                 smoking
         );
-        getDataManager().uploadRoomData(key, room, onSuccessListener, onFailureListener);
+        getDataManager().uploadRoomData(key, room, onSuccessListener, onFailedListener);
     }
 
     private Single<List<Address>> searchAddress(String keyword) {

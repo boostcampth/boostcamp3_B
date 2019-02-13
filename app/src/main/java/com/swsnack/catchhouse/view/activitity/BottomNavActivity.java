@@ -11,13 +11,13 @@ import android.view.View;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.ViewPagerAdapter;
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.locationdata.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.roomdata.remote.AppRoomDataManager;
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
-import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
+import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
+import com.swsnack.catchhouse.data.db.rooms.RoomsRepository;
+import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
@@ -55,24 +55,27 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     public void onSuccess(String success) {
         super.onSuccess(success);
         switch (success) {
-            case Constant.UserStatus.SIGN_UP_SUCCESS:
+            case Constant.SuccessKey.SIGN_UP_SUCCESS:
                 mFragmentManager.popBackStack();
                 break;
-            case Constant.UserStatus.SIGN_IN_SUCCESS:
+            case Constant.SuccessKey.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new MyPageFragment(), MyPageFragment.class.getName()).commit();
                 break;
-            case Constant.UserStatus.DELETE_USER_SUCCESS:
+            case Constant.SuccessKey.SIGN_OUT_SUCCESS:
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                 break;
-            case Constant.UserStatus.UPDATE_PASSWORD_SUCCESS:
+            case Constant.SuccessKey.DELETE_USER_SUCCESS:
+                mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                break;
+            case Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS:
                 showSnackMessage(getString(R.string.snack_re_sign_in));
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                 break;
-            case Constant.UserStatus.UPDATE_PROFILE_SUCCESS:
+            case Constant.SuccessKey.UPDATE_PROFILE_SUCCESS:
                 showSnackMessage(getString(R.string.snack_update_profile_success));
                 break;
-            case Constant.UserStatus.UPDATE_NICK_NAME_SUCCESS:
+            case Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS:
                 showSnackMessage(getString(R.string.snack_change_nick_name_success));
                 break;
         }
@@ -116,13 +119,13 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
                 AppDataManager.getInstance(
-                        AppAPIManager.getInstance(),
                         AppUserDataManager.getInstance(),
                         RemoteChattingManager.getInstance(),
                         AppRoomDataManager.getInstance(),
                         AppLocationDataManager.getInstance()),
+                APIManager.getInstance(),
                 this));
-        createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
+        createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), APIManager.getInstance(), this));
         createViewModel(ChattingViewModel.class, new ChattingViewModelFactory(this));
     }
 

@@ -1,7 +1,7 @@
 package com.swsnack.catchhouse.adapter.chattingadapter;
 
 import com.swsnack.catchhouse.adapter.BaseDiffUtil;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.model.Message;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ public class ChattingMessageDiffUtil extends BaseDiffUtil<Message> {
 
     @Override
     public boolean areContentsTheSame(int i, int i1) {
-        return mOldList.get(i).getTimestamp().equals(mNewList.get(i1).getTimestamp())
-                && mOldList.get(i).getContent().equals(mNewList.get(i1).getContent());
+        return mOldList.get(i).getContent().equals(mNewList.get(i1).getContent());
     }
 }

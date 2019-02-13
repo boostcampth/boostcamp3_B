@@ -8,8 +8,8 @@ import android.widget.EditText;
 
 import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
+import com.swsnack.catchhouse.data.pojo.Address;
 
 import java.util.List;
 
