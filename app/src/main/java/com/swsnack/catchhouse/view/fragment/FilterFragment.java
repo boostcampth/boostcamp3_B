@@ -7,6 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +21,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentFilterBinding;
 import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -27,6 +32,10 @@ public class FilterFragment extends DialogFragment {
     private final Calendar mCalendar = Calendar.getInstance();
     private DatePickerDialog.OnDateSetListener mDate;
     private EditText mTargetEditText;
+
+    private DecimalFormat mDecimalFormat;
+    private String mStringResult;
+    private EditText mPriceEditText;
 
     @Nullable
     @Override
@@ -54,8 +63,39 @@ public class FilterFragment extends DialogFragment {
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateDate(v);
         };
-        mBinding.etFilterDateFrom.setOnClickListener(this::onClickDate);
-        mBinding.etFilterDateTo.setOnClickListener(this::onClickDate);
+        mBinding.etFilterDateFrom.setOnClickListener(this::onClickEditText);
+        mBinding.etFilterDateTo.setOnClickListener(this::onClickEditText);
+        mBinding.etFilterPriceFrom.setOnFocusChangeListener(this::onFocusChange);
+        mBinding.etFilterPriceTo.setOnFocusChangeListener(this::onFocusChange);
+
+        mDecimalFormat = new DecimalFormat("#,###");
+        mStringResult = "";
+        mPriceEditText = mBinding.etFilterPriceFrom;
+
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!TextUtils.isEmpty(charSequence.toString()) && !charSequence.toString().equals(mStringResult)){
+                    mStringResult = mDecimalFormat.format(Double.parseDouble(charSequence.toString().replaceAll(",","")));
+                    mPriceEditText.setText(mStringResult);
+                    mPriceEditText.setSelection(mStringResult.length());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+
+        mBinding.etFilterPriceFrom.addTextChangedListener(watcher);
+        mBinding.etFilterPriceTo.addTextChangedListener(watcher);
+
     }
 
     public void updateDate(View view) {
@@ -64,13 +104,20 @@ public class FilterFragment extends DialogFragment {
         mTargetEditText.setText(sdf.format(mCalendar.getTime()));
     }
 
-    public void onClickDate(View v) {
+    public void onClickEditText(View v) {
         Log.v("csh","onclick");
 
         if(v == mBinding.etFilterDateTo || v == mBinding.etFilterDateFrom) {
             mTargetEditText = (EditText)v;
             new DatePickerDialog(getContext(), mDate, mCalendar.get(Calendar.YEAR),
                     mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        }
+
+    }
+
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(v == mBinding.etFilterPriceFrom || v == mBinding.etFilterPriceTo) {
+            mPriceEditText = (EditText)v;
         }
     }
 }
