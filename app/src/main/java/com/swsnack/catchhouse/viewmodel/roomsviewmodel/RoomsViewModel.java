@@ -11,11 +11,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.asynctask.ConvertImageTask;
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Room;
+import com.swsnack.catchhouse.data.db.rooms.RoomsRepository;
+import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.pojo.Room;
 import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -62,8 +63,8 @@ public class RoomsViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
     public final MutableLiveData<String> mContent = new MutableLiveData<>();
 
-    RoomsViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
-        super(dataManager);
+    RoomsViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+        super(dataManager, apiManager);
         mAppContext = application;
         mListener = listener;
         mDataManager = dataManager;

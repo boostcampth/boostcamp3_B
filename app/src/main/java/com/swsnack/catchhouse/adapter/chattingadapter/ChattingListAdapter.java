@@ -10,10 +10,9 @@ import android.view.ViewGroup;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseRecyclerViewAdapter;
-import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.model.Chatting;
+import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.databinding.ItemChattingListBinding;
-import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 
 import java.util.List;

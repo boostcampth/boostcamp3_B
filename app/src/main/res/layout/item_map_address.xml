@@ -6,7 +6,7 @@
     <data>
         <variable
             name="address"
-            type="com.swsnack.catchhouse.data.roomsdata.pojo.Address"/>
+            type="com.swsnack.catchhouse.data.pojo.Address"/>
     </data>
 
     <LinearLayout

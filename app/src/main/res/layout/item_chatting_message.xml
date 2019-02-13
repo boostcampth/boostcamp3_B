@@ -11,11 +11,11 @@
 
         <variable
             name="message"
-            type="com.swsnack.catchhouse.data.chattingdata.model.Message" />
+            type="com.swsnack.catchhouse.data.model.Message" />
 
         <variable
             name="userData"
-            type="com.swsnack.catchhouse.data.userdata.model.User" />
+            type="com.swsnack.catchhouse.data.model.User" />
     </data>
 
     <android.support.constraint.ConstraintLayout

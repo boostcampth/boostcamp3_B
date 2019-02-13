@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
 
 import com.swsnack.catchhouse.adapter.AddressBindingAdapter;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
+import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.adapter.slideadapter.ImageSlideAdapter;
 
 import java.util.List;

@@ -14,12 +14,12 @@ import android.view.WindowManager;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.ImageSlideAdapter;
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.locationdata.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.roomdata.remote.AppRoomDataManager;
-import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
-import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
+import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
+import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
@@ -150,12 +150,12 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 new RoomsViewModelFactory(
                         getApplication(),
                         AppDataManager.getInstance(
-                                AppAPIManager.getInstance(),
                                 AppUserDataManager.getInstance(),
                                 RemoteChattingManager.getInstance(),
                                 AppRoomDataManager.getInstance(),
                                 AppLocationDataManager.getInstance()
                         ),
+                        APIManager.getInstance(),
                         this
                 )).get(RoomsViewModel.class);
 

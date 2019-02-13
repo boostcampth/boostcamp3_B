@@ -45,22 +45,10 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         super.onViewCreated(view, savedInstanceState);
 
         getBinding().setHandler(getViewModel());
-        getBinding().setLifecycleOwner(getActivity());
         getBinding().ivSignUpProfile.setOnClickListener(__ -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, Constant.GALLERY);
-        });
-
-        getBinding().rgSignUpGender.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case R.id.rb_sign_up_male:
-                    mViewModel.setGender(MALE);
-                    break;
-                case R.id.rb_sign_up_female:
-                    mViewModel.setGender(FEMALE);
-                    break;
-            }
         });
     }
 

@@ -13,8 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListAdapter;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListItemHolder;
-import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
-import com.swsnack.catchhouse.data.userdata.model.User;
+import com.swsnack.catchhouse.data.model.Chatting;
+import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.databinding.FragmentChatListBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activitity.BottomNavActivity;
@@ -75,6 +75,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
             intent.putExtra(UUID, "dd");
             startActivity(intent);
         });
+
     }
 
     @Override
