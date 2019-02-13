@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
+import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
 import com.swsnack.catchhouse.data.APIManager;
@@ -22,6 +23,10 @@ import com.swsnack.catchhouse.databinding.ActivityPostBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
+
+import static com.swsnack.catchhouse.Constant.INTENT_LAT;
+import static com.swsnack.catchhouse.Constant.INTENT_LON;
+import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
 public class PostActivity extends BaseActivity<ActivityPostBinding> {
 
@@ -46,10 +51,9 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
     }
 
     private void viewInit() {
-        Room room = getIntent().getParcelableExtra("room");
-
-        double longitude = getIntent().getDoubleExtra("longitude", 0);
-        double latitude = getIntent().getDoubleExtra("latitude", 0);
+        Room room = getIntent().getParcelableExtra(INTENT_ROOM);
+        double longitude = getIntent().getDoubleExtra(INTENT_LON, 0);
+        double latitude = getIntent().getDoubleExtra(INTENT_LAT, 0);
 
         String period = room.getFrom() + " ~ " + room.getTo();
         String size = room.getSize() + "평";

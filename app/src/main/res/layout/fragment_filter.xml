@@ -28,6 +28,9 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@={handler.mFilterPriceFrom}"
+            android:inputType="number"
+            android:gravity="end"
+            android:clickable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_filter_price" />
 
@@ -45,6 +48,9 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@={handler.mFilterPriceTo}"
+            android:inputType="number"
+            android:gravity="end"
+            android:clickable="true"
             app:layout_constraintBottom_toBottomOf="@+id/tv_filter_price_between"
             app:layout_constraintLeft_toRightOf="@+id/tv_filter_price_between"
             app:layout_constraintTop_toTopOf="@+id/tv_filter_price_between" />

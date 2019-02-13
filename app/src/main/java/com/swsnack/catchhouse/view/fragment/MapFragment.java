@@ -21,17 +21,23 @@ import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
+import com.swsnack.catchhouse.data.pojo.Room;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
 import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.databinding.FragmentMapBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
+import com.swsnack.catchhouse.view.activitity.PostActivity;
 import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
 import java.util.ArrayList;
 
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
+
+import static com.swsnack.catchhouse.Constant.INTENT_LAT;
+import static com.swsnack.catchhouse.Constant.INTENT_LON;
+import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
 public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewModel> {
     public FragmentManager mFragmentManager;
@@ -83,10 +89,19 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
 
             @Override
             public boolean onPressUpEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
-                //TMapMarkerItem item = arrayList.get(0);
-                // TODO : PostActivity에 Room을 담아서 startActivity
-                //Log.v("csh","detail:"+getViewModel().getRoomDataList().getValue().get(Integer.parseInt(item.getID())).getContent());
-
+                if(arrayList.size() > 0) {
+                    RoomData roomData = getViewModel().getRoomDataList().getValue().get(Integer.parseInt(arrayList.get(0).getID()));
+                    Room room = new Room(roomData.getPrice(), roomData.getFrom(), roomData.getTo(),
+                            roomData.getTitle(), roomData.getContent(), roomData.getImages(),
+                            roomData.getUUID(), roomData.getSize(), roomData.getAddress(),
+                            roomData.getAddressName(), roomData.isOptionStandard(), roomData.isOptionGender(),
+                            roomData.isOptionPet(), roomData.isOptionSmoking());
+                    Intent intent = new Intent(getActivity(), PostActivity.class);
+                    intent.putExtra(INTENT_ROOM, room);
+                    intent.putExtra(INTENT_LAT, roomData.getLatitude());
+                    intent.putExtra(INTENT_LON, roomData.getLongitude());
+                    startActivity(intent);
+                }
                 return false;
             }
         });
@@ -104,13 +119,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
             getViewModel().updateData(adapter.getItem(position).getName(), adapter.getItem(position).getLatitude(), adapter.getItem(position).getLongitude());
         }));
         getBinding().btFilter.setOnClickListener(__ -> {
-            //Intent intent = new Intent(getContext(), FilterPopUpActivity.class);
-
-
-            //intent.putExtra(Constant.INTENT_FILTER, getViewModel().getFilterFromRepository());
-            //startActivityForResult(intent, Constant.FILTER);
             new FilterFragment().show(mFragmentManager, "address selection");
-
         });
 
         getViewModel().getRoomDataList()
@@ -129,8 +138,6 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
     }
 
     private void addMarker(RoomData roomData, int index) {
-
-        //TMapMarkerItem markerItem = new TMapMarkerItem();
         TMapMarkerItem markerItem = new TMapMarkerItem();
         TMapPoint point = new TMapPoint(roomData.getLatitude(), roomData.getLongitude());
         markerItem.setTMapPoint(point);
@@ -147,56 +154,14 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
         Log.v("csh", "마커추가:" + roomData.getLatitude() + "," + roomData.getLongitude());
     }
 
-    /*
-    private void addMarker(Room room) {
-
-        TMapMarkerItem markerItem = new TMapMarkerItem();
-        TMapPoint point = new TMapPoint(room.get, room.getAddress().getLongitude());
-        markerItem.setTMapPoint(point);
-        markerItem.setPosition(0.5f, 1.0f);
-        markerItem.setCanShowCallout(true);
-        markerItem.setCalloutTitle("제목");
-        markerItem.setCalloutSubTitle("부제목");
-        markerItem.setAutoCalloutVisible(true);
-        mTMapView.addMarkerItem(String.valueOf(room.getAddress().getLatitude()), markerItem);
-        Log.v("csh", "마커추가:" + room.getAddress().getLatitude() + "," + room.getAddress().getLongitude());
-    }*/
-
     private void moveMap(Address address) {
         mTMapView.setCenterPoint(address.getLongitude(), address.getLatitude(), true);
-
-        /*
-
-        TMapMarkerItem markerItem = new TMapMarkerItem();
-        TMapPoint point = new TMapPoint(address.getLatitude(), address.getLongitude());
-        markerItem.setTMapPoint(point);
-        markerItem.setPosition(0.5f, 1.0f);
-        markerItem.setCanShowCallout(true);
-        markerItem.setCalloutTitle("제목");
-        markerItem.setCalloutSubTitle("부제목");
-        markerItem.setAutoCalloutVisible(true);
-        mTMapView.addMarkerItem("1", markerItem);*/
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mDisposable.dispose();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == Constant.FILTER) {
-            // TODO: 2019-02-02 팝업에 대한 result 처리 추가 필요
-        }
-
-    }
-
-    @Override
-    public void onCreate(@android.support.annotation.Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
 
