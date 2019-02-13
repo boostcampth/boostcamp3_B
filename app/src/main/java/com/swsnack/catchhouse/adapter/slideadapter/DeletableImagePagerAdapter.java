@@ -1,6 +1,8 @@
 package com.swsnack.catchhouse.adapter.slideadapter;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -28,13 +30,16 @@ public class DeletableImagePagerAdapter extends BaseViewPagerAdapter<Uri, RoomsV
                 DataBindingUtil.bind(inflater.inflate(R.layout.item_deletable_image_pager, container, false));
 
         if(binding != null) {
-            binding.ivVpImage.setOnClickListener(__ ->
+            binding.ivVpImage.setColorFilter(Color.parseColor("#DCDCDC"), PorterDuff.Mode.MULTIPLY);
+
+            binding.ivVpDelete.setOnClickListener(__ ->
                     mViewModel.onClickDeleteButton(position)
             );
 
             try {
                 Glide.with(container.getContext())
                         .load(mList.get(position))
+                        .thumbnail(0.2f)
                         .into(binding.ivVpImage);
 
                 String text = (position + 1) + "/" + getCount() + "";

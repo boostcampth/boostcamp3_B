@@ -1,6 +1,8 @@
 package com.swsnack.catchhouse.adapter.slideadapter;
 
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -31,7 +33,7 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
         ItemImagePagerBinding binding = DataBindingUtil.bind(inflater.inflate(R.layout.item_image_pager, container, false));
-
+        binding.ivImagePager.setColorFilter(Color.parseColor("#DCDCDC"), PorterDuff.Mode.MULTIPLY);
         Glide.with(container.getContext())
                 .load(mList.get(position))
                 .listener(new RequestListener<Drawable>() {
