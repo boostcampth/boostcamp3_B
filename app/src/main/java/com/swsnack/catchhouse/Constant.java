@@ -47,6 +47,7 @@ import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 import static com.swsnack.catchhouse.Constant.SuccessKey.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.SEND_MESSAGE_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_IN_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_OUT_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
@@ -62,10 +63,11 @@ public class Constant {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, DELETE_USER_SUCCESS, UPDATE_NICK_NAME_SUCCESS,
-            UPDATE_PASSWORD_SUCCESS, UPDATE_PROFILE_SUCCESS, SEND_MESSAGE_SUCCESS})
+            UPDATE_PASSWORD_SUCCESS, UPDATE_PROFILE_SUCCESS, SEND_MESSAGE_SUCCESS, SIGN_OUT_SUCCESS})
     public @interface SuccessKey {
         String SIGN_IN_SUCCESS = "singInSuccess";
         String SIGN_UP_SUCCESS = "signUpSuccess";
+        String SIGN_OUT_SUCCESS = "signOutSuccess";
         String DELETE_USER_SUCCESS = "deleteSuccess";
         String UPDATE_NICK_NAME_SUCCESS = "updateNickNameSuccess";
         String UPDATE_PASSWORD_SUCCESS = "updatePasswordSuccess";

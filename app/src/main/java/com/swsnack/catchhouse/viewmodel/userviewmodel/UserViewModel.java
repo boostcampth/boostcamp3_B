@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.RadioGroup;
 
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -21,14 +22,18 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.userdata.model.User;
+import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
+import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
+import static com.swsnack.catchhouse.Constant.Gender.MALE;
 import static com.swsnack.catchhouse.Constant.SuccessKey.DELETE_USER_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_IN_SUCCESS;
+import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_OUT_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
@@ -47,8 +52,8 @@ public class UserViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mNickName;
     public MutableLiveData<Bitmap> mProfile;
 
-    UserViewModel(Application application, DataManager dataManager, ViewModelListener listener) {
-        super(dataManager);
+    UserViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+        super(dataManager, apiManager);
         this.mAppContext = application;
         this.mListener = listener;
         this.mGender = new MutableLiveData<>();
@@ -104,6 +109,17 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_database_exception)));
     }
 
+    public void onCheckedChangedListener(RadioGroup group ,int checkedId) {
+        switch (checkedId) {
+            case R.id.rb_sign_up_male:
+                mGender.setValue(MALE);
+                break;
+            case R.id.rb_sign_up_female:
+                mGender.setValue(FEMALE);
+                break;
+        }
+    }
+
     public void signInWithGoogle(Intent data) {
         mListener.isWorking();
         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -117,7 +133,7 @@ public class UserViewModel extends ReactiveViewModel {
 
     public void signInWithFacebook(LoginResult loginResult, Uri uri) {
         mListener.isWorking();
-        getDataManager()
+        getApiManager()
                 .getUserInfoFromFacebook(loginResult.getAccessToken(),
                         user -> {
                             user.setProfile(uri.toString());
@@ -127,8 +143,8 @@ public class UserViewModel extends ReactiveViewModel {
     }
 
     private void signUpWithCredential(AuthCredential authCredential, User user) {
-        getDataManager()
-                .signUpAndSetUser(authCredential,
+        getApiManager()
+                .firebaseSignUp(authCredential,
                         user,
                         result -> mListener.onSuccess(SIGN_IN_SUCCESS),
                         error -> mListener.onError(getStringFromResource(R.string.snack_fb_sign_up_failed)));
@@ -150,11 +166,11 @@ public class UserViewModel extends ReactiveViewModel {
 
         mListener.isWorking();
 
-        User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
-
-        getDataManager()
-                .signUpAndSetUser(mPassword.getValue(),
-                        user,
+        User newUser = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
+        getApiManager()
+                .firebaseSignUp(mEmail.getValue(),
+                        mPassword.getValue(),
+                        newUser,
                         mProfileUri,
                         result -> mListener.onSuccess(SIGN_UP_SUCCESS),
                         error -> {
@@ -163,7 +179,8 @@ public class UserViewModel extends ReactiveViewModel {
                                 return;
                             }
                             mListener.onError(getStringFromResource(R.string.snack_error_occured));
-                        });
+                        }
+                );
     }
 
     public void signInWithEmail(View v) {
@@ -179,22 +196,32 @@ public class UserViewModel extends ReactiveViewModel {
         }
         mListener.isWorking();
 
-        getDataManager()
-                .signIn(mEmail.getValue(),
+        User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
+
+        getApiManager()
+                .firebaseSignUp(mEmail.getValue(),
                         mPassword.getValue(),
-                        authResult -> {
+                        user,
+                        mProfileUri,
+                        success -> {
                             mListener.onSuccess(SIGN_IN_SUCCESS);
                             mIsSigned.setValue(true);
                         },
                         error -> {
-                            if (error instanceof FirebaseAuthInvalidUserException
-                                    || error instanceof FirebaseAuthInvalidCredentialsException) {
+                            if (error instanceof FirebaseAuthInvalidUserException || error instanceof FirebaseAuthInvalidCredentialsException) {
                                 mListener.onError(getStringFromResource(R.string.snack_invalid_user));
+                                return;
                             }
+                            mListener.onError(getStringFromResource(R.string.snack_fb_sign_in_failed));
                         });
     }
 
-    public void deleteUser() {
+    public void signOut(View v) {
+        FirebaseAuth.getInstance().signOut();
+        mListener.onSuccess(SIGN_OUT_SUCCESS);
+    }
+
+    public void deleteUser(View v) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             mListener.onError(getStringFromResource(R.string.snack_fb_not_signed_user));
             return;
@@ -202,8 +229,8 @@ public class UserViewModel extends ReactiveViewModel {
         mListener.isWorking();
 
         String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        getDataManager()
-                .deleteUserAll(uuid, mUser,
+        getApiManager()
+                .firebaseDeleteUser(uuid, mUser,
                         deleteResult -> {
                             mListener.onSuccess(DELETE_USER_SUCCESS);
                             mIsSigned.setValue(false);
@@ -226,7 +253,7 @@ public class UserViewModel extends ReactiveViewModel {
     }
 
     public void updatePassword(@NonNull String oldPassword, @NonNull String newPassword) {
-        getDataManager()
+        getApiManager()
                 .updatePassword(oldPassword, newPassword,
                         result -> mListener.onSuccess(UPDATE_PASSWORD_SUCCESS),
                         error -> mListener.onError(getStringFromResource(R.string.snack_error_update_password)));

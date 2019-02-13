@@ -9,10 +9,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
-import com.swsnack.catchhouse.data.userdata.model.User;
+import com.swsnack.catchhouse.data.model.Chatting;
+import com.swsnack.catchhouse.data.model.Message;
+import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -32,8 +33,8 @@ public class ChattingViewModel extends ReactiveViewModel {
     private MutableLiveData<List<Message>> mMessageList;
     private MutableLiveData<User> mDestinationUserData;
 
-    ChattingViewModel(DataManager dataManager, ViewModelListener bottomNavListener) {
-        super(dataManager);
+    ChattingViewModel(DataManager dataManager, APIManager apiManager, ViewModelListener bottomNavListener) {
+        super(dataManager, apiManager);
         this.mAppContext = AppApplication.getAppContext();
         this.mListener = bottomNavListener;
         this.mIsListeningForchangedMessage = false;
@@ -66,7 +67,7 @@ public class ChattingViewModel extends ReactiveViewModel {
                                     user.setUuid(uuid);
                                     onSuccessListener.onSuccess(user);
                                 },
-                                onFailureListener);
+                                onFailureListener::onFailure);
                 return;
             }
         }

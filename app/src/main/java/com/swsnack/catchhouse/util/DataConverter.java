@@ -2,15 +2,13 @@ package com.swsnack.catchhouse.util;
 
 import android.graphics.Bitmap;
 
-import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.model.Chatting;
+import com.swsnack.catchhouse.data.model.Message;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 public class DataConverter {
 

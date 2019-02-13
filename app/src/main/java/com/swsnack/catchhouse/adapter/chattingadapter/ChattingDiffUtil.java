@@ -1,12 +1,10 @@
 package com.swsnack.catchhouse.adapter.chattingadapter;
 
 import com.swsnack.catchhouse.adapter.BaseDiffUtil;
-import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.model.Chatting;
+import com.swsnack.catchhouse.data.model.Message;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 public class ChattingDiffUtil extends BaseDiffUtil<Chatting> {
 

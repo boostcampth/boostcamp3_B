@@ -50,7 +50,6 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         init();
         return getBinding().getRoot();
     }
@@ -62,7 +61,6 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         mFragmentManager = getActivity().getSupportFragmentManager();
 
         getBinding().setHandler(getViewModel());
-        getBinding().setLifecycleOwner(getActivity());
         getBinding().ivSignInGoogle.setOnClickListener(__ -> {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))

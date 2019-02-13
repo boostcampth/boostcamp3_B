@@ -26,8 +26,6 @@ import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
 
-    private FragmentManager mFragmentManager;
-
     @Override
     protected int getLayout() {
         return R.layout.fragment_my_page;
@@ -44,19 +42,10 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        mFragmentManager = getActivity().getSupportFragmentManager();
-        return getBinding().getRoot();
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         getBinding().setHandler(getViewModel());
-        getBinding().setLifecycleOwner(getActivity());
-
         getViewModel().getUser();
 
         for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
@@ -105,14 +94,6 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         });
 
         getBinding().tvMyPageChangeProfile.setOnClickListener(v -> startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY));
-
-        getBinding().tvMyPageDelete.setOnClickListener(v -> getViewModel().deleteUser());
-
-        getBinding().tvMyPageSignOut.setOnClickListener(v -> {
-            FirebaseAuth.getInstance().signOut();
-            mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
-        });
-
     }
 
     @Override

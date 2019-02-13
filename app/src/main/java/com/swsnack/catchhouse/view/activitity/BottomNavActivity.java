@@ -10,13 +10,13 @@ import android.view.View;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.ViewPagerAdapter;
+import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.chattingdata.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.locationdata.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.roomdata.remote.AppRoomDataManager;
-import com.swsnack.catchhouse.data.roomsdata.RoomsRepository;
-import com.swsnack.catchhouse.data.userdata.api.AppAPIManager;
-import com.swsnack.catchhouse.data.userdata.remote.AppUserDataManager;
+import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
+import com.swsnack.catchhouse.data.db.rooms.RoomsRepository;
+import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
@@ -60,6 +60,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             case Constant.SuccessKey.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new MyPageFragment(), MyPageFragment.class.getName()).commit();
+                break;
+            case Constant.SuccessKey.SIGN_OUT_SUCCESS:
+                mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
                 break;
             case Constant.SuccessKey.DELETE_USER_SUCCESS:
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
@@ -114,13 +117,13 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
                 AppDataManager.getInstance(
-                        AppAPIManager.getInstance(),
                         AppUserDataManager.getInstance(),
                         RemoteChattingManager.getInstance(),
                         AppRoomDataManager.getInstance(),
                         AppLocationDataManager.getInstance()),
+                APIManager.getInstance(),
                 this));
-        createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), this));
+        createViewModel(SearchViewModel.class, new SearchViewModelFactory(getApplication(), RoomsRepository.getInstance(), APIManager.getInstance(), this));
         createViewModel(ChattingViewModel.class, new ChattingViewModelFactory(this));
     }
 

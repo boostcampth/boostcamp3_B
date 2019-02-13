@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingMessageAdapter;
-import com.swsnack.catchhouse.data.chattingdata.model.Chatting;
+import com.swsnack.catchhouse.data.model.Chatting;
 import com.swsnack.catchhouse.databinding.ActivityChattingMessageBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;

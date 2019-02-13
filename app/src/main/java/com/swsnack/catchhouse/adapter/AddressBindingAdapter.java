@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.roomsdata.pojo.Address;
+import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.databinding.ItemMapAddressBinding;
 
 public class AddressBindingAdapter extends com.swsnack.catchhouse.adapter.BaseRecyclerViewAdapter<Address, AddressBindingAdapter.AddressViewHolder> {

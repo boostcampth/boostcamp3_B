@@ -1,9 +1,6 @@
 package com.swsnack.catchhouse.adapter;
 
 import android.support.v7.util.DiffUtil;
-import android.util.Log;
-
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.swsnack.catchhouse.adapter.chattingadapter;
 
 import com.swsnack.catchhouse.adapter.BaseDiffUtil;
-import com.swsnack.catchhouse.data.chattingdata.model.Message;
+import com.swsnack.catchhouse.data.model.Message;
 
 import java.util.List;
 
