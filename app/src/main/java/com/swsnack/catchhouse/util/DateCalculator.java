@@ -32,7 +32,7 @@ public class DateCalculator {
 
     public static String createDateString(int year, int month ,int day) {
         return year + "-" +
-                DateCalculator.refineDate(month) + "-" +
+                DateCalculator.refineDate(month + 1) + "-" +
                 DateCalculator.refineDate(day);
     }
 
