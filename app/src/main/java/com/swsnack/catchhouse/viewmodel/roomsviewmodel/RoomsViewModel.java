@@ -207,7 +207,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                 pet,
                 smoking
         );
-        getDataManager().uploadRoomData(key, room, onSuccessListener, onFailedListener);
+        getDataManager().setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
     private Single<List<Address>> searchAddress(String keyword) {

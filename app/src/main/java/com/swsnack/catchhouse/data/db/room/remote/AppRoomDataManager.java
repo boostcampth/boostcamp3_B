@@ -98,20 +98,20 @@ public class AppRoomDataManager implements RoomDataManager {
     }
 
     @Override
-    public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailedListener onFailedListener) {
-        db.child(uuid).setValue(room)
+    public void setRoom(@NonNull String key, @NonNull Room room,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
+        db.child(key).setValue(room)
                 .addOnSuccessListener(onSuccessListener::onSuccess)
                 .addOnFailureListener(onFailedListener::onFailed);
     }
 
     @Override
-    public void readRoomData(@NonNull String uuid,
-                             @NonNull OnSuccessListener<Room> onSuccessListener,
-                             @NonNull OnFailedListener onFailedListener) {
+    public void getRoom(@NonNull String key,
+                        @NonNull OnSuccessListener<Room> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
 
-        db.child(uuid).addListenerForSingleValueEvent(new ValueEventListener() {
+        db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Room room = dataSnapshot.getValue(Room.class);

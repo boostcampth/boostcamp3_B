@@ -228,19 +228,19 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailedListener onFailedListener) {
+    public void setRoom(@NonNull String key, @NonNull Room room,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
 
-        mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailedListener);
+        mRoomDataManager.setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
 
     @Override
-    public void readRoomData(@NonNull String uuid,
-                             @NonNull OnSuccessListener<Room> onSuccessListener,
-                             @NonNull OnFailedListener onFailedListener) {
-        mRoomDataManager.readRoomData(uuid, onSuccessListener, onFailedListener);
+    public void getRoom(@NonNull String key,
+                        @NonNull OnSuccessListener<Room> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
+        mRoomDataManager.getRoom(key, onSuccessListener, onFailedListener);
     }
 
     @Override
