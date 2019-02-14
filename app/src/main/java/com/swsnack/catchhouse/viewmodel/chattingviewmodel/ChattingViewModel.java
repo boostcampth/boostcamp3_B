@@ -47,7 +47,6 @@ public class ChattingViewModel extends ReactiveViewModel {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
-
         getDataManager()
                 .getChattingList(list -> mChattingList.setValue(list),
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
@@ -71,6 +70,16 @@ public class ChattingViewModel extends ReactiveViewModel {
                 return;
             }
         }
+    }
+
+    public void getStoredMessage(String destinationUuid) {
+        getDataManager()
+                .getChattingRoom(destinationUuid,
+                        roomId -> {
+                            mRoomUid = roomId;
+                            getNewMessage();
+                        },
+                        error -> mListener.onError("에러"));
     }
 
     public void getNewMessage() {

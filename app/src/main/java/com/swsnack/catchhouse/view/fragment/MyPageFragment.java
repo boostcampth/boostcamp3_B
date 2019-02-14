@@ -91,6 +91,9 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         });
 
         getBinding().tvMyPageChangeProfile.setOnClickListener(v -> startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY));
+
+        getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.INVISIBLE);
+        getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.INVISIBLE);
     }
 
     @Override

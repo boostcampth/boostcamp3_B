@@ -49,6 +49,7 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
         } else if(getIntent().getStringExtra(UUID) != null){
             // set dummy data
             mViewModel.setDestinationUuid("Ma1jLM8hj7NVmBVHlU2P7NIrrvu1");
+            mViewModel.getStoredMessage("Ma1jLM8hj7NVmBVHlU2P7NIrrvu1");
         } else {
             throw new RuntimeException("chatting destination user's not exist");
         }
@@ -67,7 +68,6 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
             }
             return false;
         });
-
     }
 
     @Override
