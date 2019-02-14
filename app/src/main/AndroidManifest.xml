@@ -31,8 +31,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activitity.BottomNavActivity">
-
+        <activity android:name=".view.activitity.BottomNavActivity"
+            android:windowSoftInputMode="adjustNothing">
         </activity>
         <activity android:name=".view.activitity.WriteActivity" />
         <activity android:name=".view.activitity.PostActivity" />
@@ -40,10 +40,8 @@
         <activity android:name=".view.activitity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 
