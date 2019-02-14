@@ -25,7 +25,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -33,15 +32,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activitity.BottomNavActivity">
+
+        </activity>
+        <activity android:name=".view.activitity.WriteActivity" />
+        <activity android:name=".view.activitity.PostActivity" />
+        <activity android:name=".view.activitity.ChattingMessageActivity" />
+        <activity android:name=".view.activitity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name="com.swsnack.catchhouse.view.activitity.WriteActivity" />
-        <activity android:name="com.swsnack.catchhouse.view.activitity.PostActivity" />
-        <activity android:name=".view.activitity.ChattingMessageActivity"/>
     </application>
 
 </manifest>
