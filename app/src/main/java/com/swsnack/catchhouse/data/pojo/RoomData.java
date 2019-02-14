@@ -1,5 +1,7 @@
 package com.swsnack.catchhouse.data.pojo;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 public class RoomData {
@@ -70,7 +72,9 @@ public class RoomData {
      **/
     private boolean optionSmoking;
 
-    public RoomData(String price, String from, String to, String title, String content, List<String> images, String UUID, String address, String addressName, double latitude, double longitude, String size, boolean optionStandard, boolean optionGender, boolean optionPet, boolean optionSmoking) {
+    private Bitmap image;
+
+    public RoomData(String price, String from, String to, String title, String content, List<String> images, String UUID, String address, String addressName, double latitude, double longitude, String size, boolean optionStandard, boolean optionGender, boolean optionPet, boolean optionSmoking, Bitmap image) {
         this.price = price;
         this.from = from;
         this.to = to;
@@ -87,6 +91,7 @@ public class RoomData {
         this.optionGender = optionGender;
         this.optionPet = optionPet;
         this.optionSmoking = optionSmoking;
+        this.image = image;
     }
 
     public String getPrice() {
@@ -215,5 +220,13 @@ public class RoomData {
 
     public void setOptionSmoking(boolean optionSmoking) {
         this.optionSmoking = optionSmoking;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }
