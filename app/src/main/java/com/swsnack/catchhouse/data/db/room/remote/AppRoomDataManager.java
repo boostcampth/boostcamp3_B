@@ -1,10 +1,7 @@
 package com.swsnack.catchhouse.data.db.room.remote;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,7 +16,9 @@ import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.pojo.Room;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
@@ -65,46 +64,39 @@ public class AppRoomDataManager implements RoomDataManager {
         });
     }
 
+
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
 
-        List<String> list = new ArrayList<>();
-        List<StorageReference> innerRef = new ArrayList<>();
-        for (int i = 0; i < imageList.size(); i++) {
-            innerRef.add(fs.child(uuid + "/" + i));
-        }
-        UploadTask uploadTask = innerRef.get(0).putBytes(imageList.remove(0));
+        List<String> downloadUrl = new ArrayList<>();
 
-        Continuation<UploadTask.TaskSnapshot, Task<Uri>> continuation = task -> {
-            if (!task.isSuccessful()) {
-                onFailedListener.onFailed(new RuntimeException(NETWORK_ERROR));
-            }
-            return innerRef.remove(0).getDownloadUrl();
-        };
+        int size = imageList.size();
+        int count = 0;
 
+        for (byte[] image : imageList) {
+            StorageReference ref = fs.child(uuid + "/" + count++);
+            UploadTask uploadTask = ref.putBytes(image);
 
-        OnSuccessListener<Uri> loopListener = new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                list.add(uri.toString());
+            uploadTask.continueWithTask(
+                    task -> {
+                        if (!task.isSuccessful()) {
+                            downloadUrl.add("");
+                            ref.delete();
+                        }
 
-                if (!imageList.isEmpty()) {
-                    innerRef.get(0).putBytes(imageList.remove(0))
-                            .continueWithTask(continuation)
-                            .addOnSuccessListener(this::onSuccess)
-                            .addOnFailureListener(onFailedListener::onFailed);
-                } else {
-                    onSuccessListener.onSuccess(list);
+                        return ref.getDownloadUrl();
+                    }
+            ).addOnSuccessListener(url -> {
+                downloadUrl.add(url.toString());
+
+                if (size == downloadUrl.size()) {
+                    onSuccessListener.onSuccess(downloadUrl);
                 }
-            }
-        };
 
-        uploadTask
-                .continueWithTask(continuation)
-                .addOnSuccessListener(loopListener::onSuccess)
-                .addOnFailureListener(onFailedListener::onFailed);
+            }).addOnFailureListener(onFailedListener::onFailed);
+        }
     }
 
     @Override

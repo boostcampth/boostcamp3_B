@@ -27,7 +27,7 @@
         <TextView
             android:id="@+id/tv_vp_number"
             style="@style/TextStyle.Regular.SubTitle"
-            android:textColor="@color/colorDefaultGray"
+            android:textColor="@color/colorPrimary"
             android:gravity="center"
             android:text=""
             app:layout_constraintBottom_toBottomOf="@+id/iv_vp_image"
