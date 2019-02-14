@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.data.db.searching;
 
 import com.skt.Tmap.TMapPOIItem;
+import com.swsnack.catchhouse.data.pojo.Filter;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 
 import java.util.List;
@@ -14,7 +15,5 @@ public interface SearchingDataManager {
     Single<List<TMapPOIItem>> getPOIList(@NonNull String keyword);
 
     @NonNull
-    Single<List<RoomData>> getNearRoomList(@NonNull double latitude,
-                                                     @NonNull double longitude,
-                                                     @NonNull double distance);
+    Single<List<RoomData>> getNearRoomList(@NonNull Filter filter);
 }
