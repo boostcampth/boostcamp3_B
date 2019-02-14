@@ -10,23 +10,23 @@
             type="com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.AppBarLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/tb_write"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="12dp"
                 app:title="@string/tb_write" />
 
-        </android.support.design.widget.AppBarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:focusable="true"
@@ -47,7 +47,7 @@
                     android:orientation="vertical"
                     tools:ignore="AutoFill">
 
-                    <android.support.v4.view.ViewPager
+                    <androidx.viewpager.widget.ViewPager
                         android:id="@+id/vp_write"
                         android:layout_width="match_parent"
                         android:layout_height="320dp"
@@ -81,7 +81,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_gallery" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/et_write_value"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -91,7 +91,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_value">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginStart="8dp"
@@ -99,7 +99,7 @@
                             android:inputType="number"
                             android:text="@={handler.mPrice}"
                             android:textAlignment="textStart" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                     <TextView
@@ -203,7 +203,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/cb_write_smoking" />
 
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/et_write_address_group"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -213,7 +213,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_info_title">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_write_address"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
@@ -223,9 +223,9 @@
                             android:inputType="text"
                             android:textAlignment="textStart"
                             app:address="@{handler.mAddress}" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/et_write_room_size"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -235,7 +235,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/et_write_address_group">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginStart="8dp"
@@ -243,7 +243,7 @@
                             android:inputType="number"
                             android:text="@={handler.mSize}"
                             android:textAlignment="textStart" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:id="@+id/tv_write_title_title"
@@ -254,7 +254,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/et_write_room_size" />
 
-                    <android.support.design.widget.TextInputLayout
+                    <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/et_write_title"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -264,7 +264,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_title_title">
 
-                        <android.support.design.widget.TextInputEditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginStart="8dp"
@@ -272,7 +272,7 @@
                             android:inputType="text"
                             android:text="@={handler.mTitle}"
                             android:textAlignment="textStart" />
-                    </android.support.design.widget.TextInputLayout>
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <EditText
                         android:id="@+id/et_write_content"
@@ -294,7 +294,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/et_write_title" />
 
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </ScrollView>
 
             <FrameLayout
@@ -322,6 +322,6 @@
         </LinearLayout>
 
 
-    </android.support.design.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

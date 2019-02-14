@@ -1,7 +1,7 @@
 package com.swsnack.catchhouse.viewmodel.roomsviewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.TextUtils;

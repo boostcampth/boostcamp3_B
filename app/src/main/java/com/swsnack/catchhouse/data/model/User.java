@@ -2,7 +2,7 @@ package com.swsnack.catchhouse.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public class User implements Parcelable {
 

@@ -2,8 +2,8 @@ package com.swsnack.catchhouse.data;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -15,7 +15,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;

@@ -1,6 +1,6 @@
 package com.swsnack.catchhouse.data.db.location;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;

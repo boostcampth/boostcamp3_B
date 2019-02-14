@@ -1,8 +1,7 @@
 package com.swsnack.catchhouse.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +72,7 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(@android.support.annotation.NonNull final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@androidx.annotation.NonNull final RecyclerView.ViewHolder holder, final int position) {
 
         holder.itemView.setOnClickListener(view -> {
 

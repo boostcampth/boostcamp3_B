@@ -1,6 +1,6 @@
 package com.swsnack.catchhouse.viewmodel.postviewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 
 import com.swsnack.catchhouse.data.APIManager;

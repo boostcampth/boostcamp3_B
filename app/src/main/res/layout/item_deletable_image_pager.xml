@@ -9,7 +9,7 @@
             type="com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorDefaultGray">
@@ -48,7 +48,7 @@
             app:layout_constraintVertical_bias="0.08"
             app:srcCompat="@drawable/ic_highlight_off_white_36dp" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
 

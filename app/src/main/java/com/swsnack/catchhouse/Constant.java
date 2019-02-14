@@ -1,6 +1,6 @@
 package com.swsnack.catchhouse;
 
-import android.support.annotation.StringDef;
+import androidx.annotation.StringDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -24,8 +24,6 @@ import static com.swsnack.catchhouse.Constant.FacebookData.KEY;
 import static com.swsnack.catchhouse.Constant.FacebookData.NAME;
 import static com.swsnack.catchhouse.Constant.FacebookData.VALUE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
-import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
-import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.NICK_NAME;

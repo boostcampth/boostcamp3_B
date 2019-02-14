@@ -1,29 +1,21 @@
 package com.swsnack.catchhouse.viewmodel.searchingviewmodel;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.location.Geocoder;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import android.util.Log;
 
 import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
 import com.swsnack.catchhouse.data.pojo.Address;
-import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
-import com.swsnack.catchhouse.data.pojo.Filter;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import java.util.Calendar;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
