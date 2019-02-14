@@ -1,10 +1,12 @@
 package com.swsnack.catchhouse;
 
-import androidx.annotation.StringDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import androidx.annotation.StringDef;
+
+import static com.swsnack.catchhouse.Constant.DatabaseKey.DATABASE_NAME;
+import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.DELETED_USER;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.DELETE_EXCEPTION;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.DUPLICATE;
@@ -163,5 +165,12 @@ public class Constant {
     public @interface ParcelableData {
         String USER_DATA = "userData";
         String CHATTING_DATA = "chattingData";
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({ROOM_TABLE, DATABASE_NAME})
+    public @interface DatabaseKey {
+        String DATABASE_NAME = "db_catch_house";
+        String ROOM_TABLE = "my_favorite_room";
     }
 }
