@@ -207,6 +207,8 @@ public class UserViewModel extends ReactiveViewModel {
     public void signOut(View v) {
         FirebaseAuth.getInstance().signOut();
         mListener.onSuccess(SIGN_OUT_SUCCESS);
+        getDataManager().cancelMessageModelObserving();
+        getDataManager().cancelChattingModelObserving();
     }
 
     public void deleteUser(View v) {
@@ -224,6 +226,9 @@ public class UserViewModel extends ReactiveViewModel {
                             mIsSigned.setValue(false);
                         },
                         error -> mListener.onError(getStringFromResource(R.string.snack_error_occured)));
+
+        getDataManager().cancelMessageModelObserving();
+        getDataManager().cancelChattingModelObserving();
     }
 
     public void changeNickName(String changeNickName) {

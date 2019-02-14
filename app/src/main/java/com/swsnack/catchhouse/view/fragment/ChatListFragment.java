@@ -101,6 +101,8 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
             getBinding().tvChatListNotSigned.setVisibility(View.VISIBLE);
             getViewModel().setChattingList(new ArrayList<>());
         } else {
+            getViewModel().cancelChattingListChangingListening();
+            getViewModel().getChattingRoomList();
             getBinding().tvChatListNotSigned.setVisibility(View.GONE);
         }
     }
