@@ -1,7 +1,7 @@
 # https://github.com/github/gitignore/blob/master/Android.gitignore
 
 # API Key
-app/gradle-wrapper.properties
+app/gradle.properties
 
 # Built application files
 *.apk
