@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.AppApplication;
@@ -132,7 +133,7 @@ public class AppUserDataManager implements UserDataManager {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
                 if (user == null) {
-                    onFailedListener.onFailed(new DatabaseException(NOT_SIGNED_USER));
+                    onSuccessListener.onSuccess(null);
                     return;
                 }
                 onSuccessListener.onSuccess(user);
@@ -209,7 +210,13 @@ public class AppUserDataManager implements UserDataManager {
                                         @NonNull OnFailedListener onFailedListener) {
 
         getUserFromSingleSnapShot(uuid,
-                signedUser -> onSuccessListener.onSuccess(null),
+                signedUser -> {
+                    if (signedUser == null) {
+                        setUser(uuid, user, onSuccessListener, onFailedListener);
+                        return;
+                    }
+                    onSuccessListener.onSuccess(null);
+                },
                 error -> {
                     if (error.getMessage().equals(NOT_SIGNED_USER)) {
                         setUser(uuid, user, onSuccessListener, onFailedListener);
@@ -223,16 +230,24 @@ public class AppUserDataManager implements UserDataManager {
     public void deleteUserData(@NonNull String uuid,
                                @NonNull User user,
                                @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailedListener OnFailedListener) {
+                               @NonNull OnFailedListener onFailedListener) {
 
         if (user.getProfile() == null) {
-            deleteUser(uuid, onSuccessListener, OnFailedListener);
+            deleteUser(uuid, onSuccessListener, onFailedListener);
             return;
         }
 
         deleteUser(uuid,
-                deleteDbSuccess -> deleteProfile(uuid, onSuccessListener, OnFailedListener),
-                OnFailedListener);
+                deleteDbSuccess -> deleteProfile(uuid,
+                        onSuccessListener,
+                        error -> {
+                            if (error instanceof StorageException) {
+                                onSuccessListener.onSuccess(null);
+                                return;
+                            }
+                            onFailedListener.onFailed(error);
+                        }),
+                onFailedListener);
     }
 
     @Override
