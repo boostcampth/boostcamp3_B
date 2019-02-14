@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
@@ -32,8 +35,10 @@ import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
 import java.util.ArrayList;
 
+import io.reactivex.Completable;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.swsnack.catchhouse.Constant.INTENT_LAT;
 import static com.swsnack.catchhouse.Constant.INTENT_LON;
@@ -80,6 +85,25 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
         getBinding().rvMapAddress.setAdapter(adapter);
         getBinding().rvMapAddress.bringToFront();
 
+        mTMapView.setOnCalloutRightButtonClickListener(tMapMarkerItem -> {
+            RoomData roomData = getViewModel().getRoomDataList().getValue().get(Integer.parseInt(tMapMarkerItem.getID()));
+            Room room = new Room(roomData.getPrice(), roomData.getFrom(), roomData.getTo(),
+                    roomData.getTitle(), roomData.getContent(), roomData.getImages(),
+                    roomData.getUUID(), roomData.getSize(), roomData.getAddress(),
+                    roomData.getAddressName(), roomData.isOptionStandard(), roomData.isOptionGender(),
+                    roomData.isOptionPet(), roomData.isOptionSmoking());
+
+            Intent intent = new Intent(getActivity(), PostActivity.class);
+            intent.putExtra(INTENT_ROOM, room);
+            intent.putExtra(INTENT_LAT, roomData.getLatitude());
+            intent.putExtra(INTENT_LON, roomData.getLongitude());
+            startActivity(intent);
+        });
+
+
+
+
+/*
         mTMapView.setOnClickListenerCallBack(new TMapView.OnClickListenerCallback() {
             @Override
             public boolean onPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
@@ -90,12 +114,16 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
             @Override
             public boolean onPressUpEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint, PointF pointF) {
                 if(arrayList.size() > 0) {
+                    if(arrayList.get(0).getAutoCalloutVisible()==false) {
+                        return false;
+                    }
                     RoomData roomData = getViewModel().getRoomDataList().getValue().get(Integer.parseInt(arrayList.get(0).getID()));
                     Room room = new Room(roomData.getPrice(), roomData.getFrom(), roomData.getTo(),
                             roomData.getTitle(), roomData.getContent(), roomData.getImages(),
                             roomData.getUUID(), roomData.getSize(), roomData.getAddress(),
                             roomData.getAddressName(), roomData.isOptionStandard(), roomData.isOptionGender(),
                             roomData.isOptionPet(), roomData.isOptionSmoking());
+
                     Intent intent = new Intent(getActivity(), PostActivity.class);
                     intent.putExtra(INTENT_ROOM, room);
                     intent.putExtra(INTENT_LAT, roomData.getLatitude());
@@ -104,7 +132,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
                 }
                 return false;
             }
-        });
+        });*/
 
         getBinding().etMapSearch.setOnEditorActionListener((v, id, event) -> {
             if (v.getId() == R.id.et_map_search && id == EditorInfo.IME_ACTION_DONE) {
@@ -137,6 +165,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
                 });
     }
 
+
     private void addMarker(RoomData roomData, int index) {
         TMapMarkerItem markerItem = new TMapMarkerItem();
         TMapPoint point = new TMapPoint(roomData.getLatitude(), roomData.getLongitude());
@@ -144,14 +173,13 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
         markerItem.setPosition(0.5f, 1.0f);
         markerItem.setCanShowCallout(true);
 
-        markerItem.setCalloutTitle(roomData.getTitle());
-        markerItem.setCalloutSubTitle(roomData.getContent());
+        //markerItem.setCalloutTitle(roomData.getTitle());
+        //markerItem.setCalloutSubTitle(roomData.getContent());
 
-
-        markerItem.setAutoCalloutVisible(true);
+        markerItem.setCalloutRightButtonImage(roomData.getImage());
+        //markerItem.setAutoCalloutVisible(true);
         mTMapView.addMarkerItem(String.valueOf(index), markerItem);
 
-        Log.v("csh", "마커추가:" + roomData.getLatitude() + "," + roomData.getLongitude());
     }
 
     private void moveMap(Address address) {

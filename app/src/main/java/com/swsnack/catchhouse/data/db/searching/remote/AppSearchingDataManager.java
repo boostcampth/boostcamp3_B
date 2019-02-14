@@ -1,7 +1,11 @@
 package com.swsnack.catchhouse.data.db.searching.remote;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
@@ -13,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapPOIItem;
+import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.pojo.Room;
@@ -82,13 +87,26 @@ public class AppSearchingDataManager implements SearchingDataManager {
                 mRefRoom.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.v("csh","데이터 들어옴");
                         Room room = dataSnapshot.getValue(Room.class);
-                        roomDataList.add(new RoomData(room.getPrice(), room.getFrom(), room.getTo(), room.getTitle(), room.getContent(),
-                                room.getImages(), room.getUUID(), room.getAddress(), room.getAddressName(), location.latitude, location.longitude,
-                                room.getSize(), room.isOptionStandard(), room.isOptionGender(), room.isOptionPet(), room.isOptionSmoking()));
-                        if (--cnt == 0) {
-                            subscribe.onSuccess(roomDataList);
-                        }
+
+                        Glide
+                                .with(AppApplication.getAppContext())
+                                .asBitmap()
+                                .load(room.getImages().get(0))
+                                .into(new SimpleTarget<Bitmap>() {
+                                    @Override
+                                    public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                        roomDataList.add(new RoomData(room.getPrice(), room.getFrom(), room.getTo(), room.getTitle(), room.getContent(),
+                                                room.getImages(), room.getUUID(), room.getAddress(), room.getAddressName(), location.latitude, location.longitude,
+                                                room.getSize(), room.isOptionStandard(), room.isOptionGender(), room.isOptionPet(), room.isOptionSmoking(), resource));
+                                        Log.v("csh", "데이터 추가됨");
+                                        if (--cnt == 0) {
+                                            subscribe.onSuccess(roomDataList);
+                                        }
+                                    }
+
+                                });
                     }
 
                     @Override
