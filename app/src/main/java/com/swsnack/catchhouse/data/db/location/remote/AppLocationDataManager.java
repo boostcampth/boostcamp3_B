@@ -1,6 +1,6 @@
 package com.swsnack.catchhouse.data.db.location.remote;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;

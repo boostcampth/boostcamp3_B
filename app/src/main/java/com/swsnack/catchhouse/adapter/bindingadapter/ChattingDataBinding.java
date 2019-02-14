@@ -1,8 +1,8 @@
 package com.swsnack.catchhouse.adapter.bindingadapter;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;

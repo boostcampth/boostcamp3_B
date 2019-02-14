@@ -1,14 +1,13 @@
 package com.swsnack.catchhouse.view.activitity;
 
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
-import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
 import com.swsnack.catchhouse.data.APIManager;

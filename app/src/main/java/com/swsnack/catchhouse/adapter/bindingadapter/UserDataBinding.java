@@ -1,6 +1,6 @@
 package com.swsnack.catchhouse.adapter.bindingadapter;
 
-import android.databinding.BindingAdapter;
+import androidx.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 

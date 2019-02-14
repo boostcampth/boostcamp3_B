@@ -10,11 +10,11 @@
             type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -96,8 +96,8 @@
                 app:layout_constraintStart_toEndOf="@id/iv_dialog_change_nick_name_divider"
                 app:layout_constraintTop_toBottomOf="@id/et_dialog_change_nick_name" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </layout>

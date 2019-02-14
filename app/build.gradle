@@ -9,7 +9,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
     buildTypes {
@@ -35,17 +35,17 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
-    implementation "com.android.support:support-v4:$rootProject.ext.supportVersion"
-    implementation "com.android.support:design:$rootProject.ext.supportVersion"
-    implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintVersion"
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha03'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
-    androidTestImplementation "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
     //design
     //android lifeCycle
-    implementation "android.arch.lifecycle:extensions:$rootProject.ext.androidArchitectureVersion"
-    implementation "android.arch.lifecycle:viewmodel:$rootProject.ext.androidArchitectureVersion"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0-alpha02'
     // rxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJava"
@@ -65,6 +65,6 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
     implementation "jp.wasabeef:glide-transformations:$rootProject.ext.glideTransformVersion"
     //multidex
-    implementation "com.android.support:multidex:$rootProject.ext.multidexVersion"
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation files('libs/com.skt.Tmap_1.58.jar')
 }

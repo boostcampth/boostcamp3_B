@@ -1,9 +1,9 @@
 package com.swsnack.catchhouse.adapter.bindingadapter;
 
-import android.databinding.BindingAdapter;
-import android.databinding.InverseBindingMethod;
-import android.databinding.InverseBindingMethods;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingMethod;
+import androidx.databinding.InverseBindingMethods;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;

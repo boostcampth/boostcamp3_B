@@ -110,7 +110,7 @@ public class AppSearchingDataManager implements SearchingDataManager {
                     }
 
                     @Override
-                    public void onCancelled(@android.support.annotation.NonNull DatabaseError databaseError) {
+                    public void onCancelled(@androidx.annotation.NonNull DatabaseError databaseError) {
                         subscribe.onError(new RuntimeException("Can't read  a data"));
                     }
                 });

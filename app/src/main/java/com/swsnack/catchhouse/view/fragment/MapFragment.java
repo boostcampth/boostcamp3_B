@@ -1,27 +1,21 @@
 package com.swsnack.catchhouse.view.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.PointF;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.skt.Tmap.TMapMarkerItem;
-import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
-import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.data.pojo.Room;
@@ -33,12 +27,8 @@ import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activitity.PostActivity;
 import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
-import java.util.ArrayList;
-
-import io.reactivex.Completable;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static com.swsnack.catchhouse.Constant.INTENT_LAT;
 import static com.swsnack.catchhouse.Constant.INTENT_LON;
@@ -67,7 +57,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @android.support.annotation.Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @androidx.annotation.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mFragmentManager = getActivity().getSupportFragmentManager();
