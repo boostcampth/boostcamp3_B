@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.data.db.room;
+package com.swsnack.catchhouse.data.db.room.remote;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +24,6 @@ public interface RoomDataManager {
                  @Nullable OnFailedListener onFailedListener);
 
     void getRoom(@NonNull String key,
-                 @Nullable OnSuccessListener<Room> onSuccessListener,
-                 @Nullable OnFailedListener onFailedListener);
+                 @NonNull OnSuccessListener<Room> onSuccessListener,
+                 @NonNull OnFailedListener onFailedListener);
 }

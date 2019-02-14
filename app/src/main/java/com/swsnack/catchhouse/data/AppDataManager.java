@@ -14,7 +14,7 @@ import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.db.location.LocationDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.db.room.RoomDataManager;
+import com.swsnack.catchhouse.data.db.room.remote.RoomDataManager;
 import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.data.pojo.Room;
 import com.swsnack.catchhouse.data.db.user.UserDataManager;

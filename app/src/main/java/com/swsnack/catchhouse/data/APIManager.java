@@ -18,7 +18,7 @@ import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomDataManager;
+import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 
@@ -35,7 +35,7 @@ public class APIManager {
         if (INSTANCE == null) {
             INSTANCE = new APIManager(AppDataManager.getInstance(AppUserDataManager.getInstance(),
                     RemoteChattingManager.getInstance(),
-                    AppRoomDataManager.getInstance(),
+                    AppRoomRemoteDataManager.getInstance(),
                     AppLocationDataManager.getInstance(),
                     AppSearchingDataManager.getInstance()));
         }

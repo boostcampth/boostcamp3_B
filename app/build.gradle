@@ -68,6 +68,6 @@ dependencies {
 //room
     implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
     annotationProcessor "androidx.room:room-compiler:$rootProject.ext.roomVersion"
-    implementation "com.google.android.material:material:1.0.0"
+    implementation "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
     implementation files('libs/com.skt.Tmap_1.58.jar')
 }

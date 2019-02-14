@@ -8,7 +8,7 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
-class RoomLocalDataHelper {
+class FavoriteRoomHelper {
 
     public static class AsyncSetFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
 
@@ -44,7 +44,7 @@ class RoomLocalDataHelper {
 
         private RoomDao mRoomDao;
 
-        public AsyncLoadFavoriteRoom(RoomDao roomDao) {
+        AsyncLoadFavoriteRoom(RoomDao roomDao) {
             this.mRoomDao = roomDao;
         }
 

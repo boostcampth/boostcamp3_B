@@ -6,6 +6,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
 import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
 
@@ -21,6 +23,7 @@ public class RoomEntity {
     private String to;
     private String title;
     private String content;
+    @TypeConverters(TypeConverter.class)
     private List<String> images;
     @ColumnInfo(name = "writer_uuid")
     private String uuid;

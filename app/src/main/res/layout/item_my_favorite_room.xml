@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        app:cardElevation="4dp">
+        app:cardElevation="4dp"
+        app:cardCornerRadius="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,7 +22,6 @@
                 android:id="@+id/iv_item_my_favorite_room_image"
                 android:layout_width="200dp"
                 android:layout_height="150dp"
-                android:background="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,7 +29,6 @@
                 android:id="@+id/tv_item_my_favorite_title"
                 style="@style/tv.body"
                 android:layout_marginTop="16dp"
-                android:text="타이틀"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_item_my_favorite_room_image"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +37,6 @@
                 android:id="@+id/tv_item_my_favorite_from_to"
                 style="@style/tv.title.sub"
                 android:layout_marginTop="24dp"
-                android:text="가능한 날짜"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_item_my_favorite_room_image"
                 app:layout_constraintTop_toBottomOf="@id/tv_item_my_favorite_title" />
@@ -53,7 +51,6 @@
                 android:layout_marginEnd="8dp"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:text="위치"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_item_my_favorite_room_image"
                 app:layout_constraintTop_toBottomOf="@id/tv_item_my_favorite_from_to"
