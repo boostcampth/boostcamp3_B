@@ -1,6 +1,8 @@
 package com.swsnack.catchhouse.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -12,8 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.R;
@@ -26,6 +31,8 @@ import com.swsnack.catchhouse.databinding.FragmentMapBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activitity.PostActivity;
 import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
+
+import java.util.ArrayList;
 
 import io.reactivex.annotations.Nullable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -134,10 +141,13 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
         adapter.setOnItemClickListener(((v, position) -> {
             getBinding().rvMapAddress.setVisibility(View.GONE);
             moveMap(adapter.getItem(position));
-            getViewModel().updateData(adapter.getItem(position).getName(), adapter.getItem(position).getLatitude(), adapter.getItem(position).getLongitude());
+
+            updateMap(adapter.getItem(position).getLatitude(), adapter.getItem(position).getLongitude());
         }));
+
         getBinding().btFilter.setOnClickListener(__ -> {
             new FilterFragment().show(mFragmentManager, "address selection");
+            Log.v("csh","aaa");
         });
 
         getViewModel().getRoomDataList()
@@ -149,12 +159,41 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
                     }
                 });
 
-        getViewModel().mFilterPriceFrom
-                .observe(this, __ -> {
-                    Log.v("csh","Change:"+getViewModel().mFilterPriceFrom.getValue());
+        getBinding().btMapNear.setOnClickListener(__ -> {
+            TMapPoint point = mTMapView.getCenterPoint();
+
+            updateMap(point.getLatitude(), point.getLongitude());
+        });
+
+        getViewModel().getFilterUpdate()
+                .observe(this, filterUpdate -> {
+                    Log.v("csh","FilterUpdate 감지" + filterUpdate);
+                    TMapPoint point = mTMapView.getCenterPoint();
+
+                    updateMap(point.getLatitude(), point.getLongitude());
                 });
+
     }
 
+    private void updateMap(double latitude, double longitde) {
+        mTMapView.removeAllTMapCircle();
+        mTMapView.removeAllMarkerItem();
+
+        addCircle(latitude, longitde);
+        getViewModel().updateData(latitude, longitde);
+    }
+
+    private void addCircle(double latitude, double longitude) {
+        TMapPoint point = new TMapPoint(latitude, longitude);
+        TMapCircle circle = new TMapCircle();
+        circle.setCenterPoint(point);
+        circle.setAreaColor(Color.CYAN);
+        circle.setAreaAlpha(1000000);
+        circle.setLineAlpha(-1);
+        circle.setRadius(getViewModel().getFilterDistance()*1000);
+        mTMapView.addTMapCircle("circle", circle);
+
+    }
 
     private void addMarker(RoomData roomData, int index) {
         TMapMarkerItem markerItem = new TMapMarkerItem();
