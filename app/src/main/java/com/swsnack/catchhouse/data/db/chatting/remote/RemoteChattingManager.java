@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -21,6 +22,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static com.swsnack.catchhouse.Constant.ExceptionReason.FAILED_LISTENING;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
@@ -65,7 +67,7 @@ public class RemoteChattingManager implements ChattingManager {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getValue() == null) {
-                            setChattingRoom(destinationUuid, onSuccessListener, onFailureListener);
+                            onSuccessListener.onSuccess(null);
                             return;
                         }
 
@@ -76,7 +78,6 @@ public class RemoteChattingManager implements ChattingManager {
                                 return;
                             }
                         }
-                        setChattingRoom(destinationUuid, onSuccessListener, onFailureListener);
                     }
 
                     @Override
@@ -87,10 +88,15 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void getChattingList(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
+    public void listeningChattingListChanged(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener, @NonNull OnFailureListener onFailureListener) {
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailureListener.onFailure(new RuntimeException(NOT_SIGNED_USER));
+            return;
+        }
+
+        if (mChattingListQuery != null || mChattingObservingListener != null) {
+            onFailureListener.onFailure(new DatabaseException(FAILED_LISTENING));
             return;
         }
 
@@ -102,11 +108,11 @@ public class RemoteChattingManager implements ChattingManager {
         mChattingObservingListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Chatting> chattingList = new ArrayList<>();
                 if (dataSnapshot.getValue() == null) {
-                    onSuccessListener.onSuccess(chattingList);
+                    onSuccessListener.onSuccess(null);
                     return;
                 }
+                List<Chatting> chattingList = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chatting chatting = snapshot.getValue(Chatting.class);
                     chatting.setRoomUid(snapshot.getKey());
@@ -125,7 +131,7 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void cancelChattingModelObserving() {
+    public void cancelObservingChattingList() {
         if (mChattingListQuery != null && mChattingObservingListener != null) {
             mChattingListQuery.removeEventListener(mChattingObservingListener);
             mChattingListQuery = null;
@@ -134,11 +140,16 @@ public class RemoteChattingManager implements ChattingManager {
     }
 
     @Override
-    public void listeningForChangedChatMessage(@Nullable String chatRoomId,
-                                               @NonNull OnSuccessListener<List<Message>> onSuccessListener,
-                                               @NonNull OnFailureListener onFailureListener) {
+    public void listeningChatMessageChanged(@Nullable String chatRoomId,
+                                            @NonNull OnSuccessListener<List<Message>> onSuccessListener,
+                                            @NonNull OnFailureListener onFailureListener) {
 
         if (chatRoomId == null) {
+            return;
+        }
+
+        if (mMessageListQuery != null || mMessageObservingListener != null) {
+            onFailureListener.onFailure(new DatabaseException(FAILED_LISTENING));
             return;
         }
 
@@ -149,12 +160,11 @@ public class RemoteChattingManager implements ChattingManager {
         mMessageObservingListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<Message> messages = new ArrayList<>();
                 if (dataSnapshot.getValue() == null) {
-                    onSuccessListener.onSuccess(messages);
+                    onSuccessListener.onSuccess(null);
                     return;
                 }
-
+                List<Message> messages = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     messages.add(snapshot.getValue(Message.class));
                 }
@@ -213,9 +223,15 @@ public class RemoteChattingManager implements ChattingManager {
                                @NonNull OnFailureListener onFailureListener) {
 
         if (roomUid == null) {
-            getChattingRoom(destinationUid, newRoomId ->
-                            setChatMessage(messagesLength, newRoomId, destinationUid, content, onSuccessListener, onFailureListener),
-                    onFailureListener);
+            getChattingRoom(destinationUid,
+                    roomId -> {
+                        if (roomId == null) {
+                            setChattingRoom(destinationUid,
+                                    newRoomId ->
+                                            setChatMessage(messagesLength, newRoomId, destinationUid, content, onSuccessListener, onFailureListener),
+                                    onFailureListener);
+                        }
+                    }, onFailureListener);
             return;
         }
 

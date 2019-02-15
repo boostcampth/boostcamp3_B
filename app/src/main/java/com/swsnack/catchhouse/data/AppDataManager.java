@@ -172,23 +172,23 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getChattingList(@NonNull com.google.android.gms.tasks.OnSuccessListener<List<Chatting>> onSuccessListener,
-                                @NonNull OnFailureListener onFailedListener) {
+    public void listeningChattingListChanged(@NonNull com.google.android.gms.tasks.OnSuccessListener<List<Chatting>> onSuccessListener,
+                                             @NonNull OnFailureListener onFailedListener) {
 
-        mRemoteChattingManager.getChattingList(onSuccessListener, onFailedListener);
+        mRemoteChattingManager.listeningChattingListChanged(onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void cancelChattingModelObserving() {
-        mRemoteChattingManager.cancelChattingModelObserving();
+    public void cancelObservingChattingList() {
+        mRemoteChattingManager.cancelObservingChattingList();
     }
 
     @Override
-    public void listeningForChangedChatMessage(@NonNull String chatRoomId,
-                                               @NonNull com.google.android.gms.tasks.OnSuccessListener<List<Message>> onSuccessListener,
-                                               @NonNull OnFailureListener onFailedListener) {
+    public void listeningChatMessageChanged(@NonNull String chatRoomId,
+                                            @NonNull com.google.android.gms.tasks.OnSuccessListener<List<Message>> onSuccessListener,
+                                            @NonNull OnFailureListener onFailedListener) {
 
-        mRemoteChattingManager.listeningForChangedChatMessage(chatRoomId, onSuccessListener, onFailedListener);
+        mRemoteChattingManager.listeningChatMessageChanged(chatRoomId, onSuccessListener, onFailedListener);
 
     }
 

@@ -3,6 +3,8 @@ package com.swsnack.catchhouse.view.activitity;
 import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 
@@ -48,8 +50,8 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
             mViewModel.setDestinationUserData(getIntent().getParcelableExtra(USER_DATA));
         } else if(getIntent().getStringExtra(UUID) != null){
             // set dummy data
-            mViewModel.setDestinationUuid("Ma1jLM8hj7NVmBVHlU2P7NIrrvu1");
-            mViewModel.getStoredMessage("Ma1jLM8hj7NVmBVHlU2P7NIrrvu1");
+            mViewModel.setDestinationUuid("orew4DIKt4bSZLWToKRlDYED1Gm2");
+            mViewModel.getStoredMessage("orew4DIKt4bSZLWToKRlDYED1Gm2");
         } else {
             throw new RuntimeException("chatting destination user's not exist");
         }
@@ -64,6 +66,7 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
                     return true;
                 }
                 mViewModel.sendNewMessage(messageAdapter.getItemCount(), getBinding().etChattingMessageContent.getText().toString());
+                Log.d("카운트", "onCreate: " + messageAdapter.getItemCount());
                 return true;
             }
             return false;
@@ -91,6 +94,6 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        mViewModel.cancelChangingMessagesListening();
     }
 }

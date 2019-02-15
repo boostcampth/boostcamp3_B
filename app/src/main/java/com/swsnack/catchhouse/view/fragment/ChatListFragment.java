@@ -68,6 +68,8 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
                             .putExtra(CHATTING_DATA, chatting)
                             .putExtra(USER_DATA, user));
         });
+
+        getBinding().test.setOnClickListener(v -> startActivity(new Intent(getContext(), ChattingMessageActivity.class).putExtra(UUID, "")));
     }
 
     @Override
@@ -88,7 +90,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
         mViewModel.cancelChattingListChangingListening();
     }
 
-    public void getChattingList() {
+    private void getChattingList() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             getBinding().tvChatListNotSigned.setVisibility(View.VISIBLE);
             getViewModel().setChattingList(new ArrayList<>());

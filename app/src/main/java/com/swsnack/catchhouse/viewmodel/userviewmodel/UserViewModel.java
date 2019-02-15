@@ -213,7 +213,7 @@ public class UserViewModel extends ReactiveViewModel {
         FirebaseAuth.getInstance().signOut();
         mListener.onSuccess(SIGN_OUT_SUCCESS);
         getDataManager().cancelMessageModelObserving();
-        getDataManager().cancelChattingModelObserving();
+        getDataManager().cancelObservingChattingList();
     }
 
     public void deleteUser(View v) {
@@ -233,7 +233,7 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_error_occured)));
 
         getDataManager().cancelMessageModelObserving();
-        getDataManager().cancelChattingModelObserving();
+        getDataManager().cancelObservingChattingList();
     }
 
     public void changeNickName(String changeNickName) {
