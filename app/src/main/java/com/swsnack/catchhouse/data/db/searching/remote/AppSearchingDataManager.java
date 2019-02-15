@@ -20,7 +20,7 @@ import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 
 import java.util.ArrayList;
@@ -89,7 +89,7 @@ public class AppSearchingDataManager implements SearchingDataManager {
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Log.v("csh","데이터 들어옴");
                         Room room = dataSnapshot.getValue(Room.class);
-
+                        room.setKey(dataSnapshot.getKey());
                         Glide
                                 .with(AppApplication.getAppContext())
                                 .asBitmap()
@@ -97,8 +97,8 @@ public class AppSearchingDataManager implements SearchingDataManager {
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
                                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                        roomDataList.add(new RoomData(room.getPrice(), room.getFrom(), room.getTo(), room.getTitle(), room.getContent(),
-                                                room.getImages(), room.getUUID(), room.getAddress(), room.getAddressName(), location.latitude, location.longitude,
+                                        roomDataList.add(new RoomData(dataSnapshot.getKey(), room.getPrice(), room.getFrom(), room.getTo(), room.getTitle(), room.getContent(),
+                                                room.getImages(), room.getUuid(), room.getAddress(), room.getAddressName(), location.latitude, location.longitude,
                                                 room.getSize(), room.isOptionStandard(), room.isOptionGender(), room.isOptionPet(), room.isOptionSmoking(), resource));
                                         Log.v("csh", "데이터 추가됨");
                                         if (--cnt == 0) {

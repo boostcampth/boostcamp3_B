@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="handler"
             type="com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel" />
+
+        <variable
+            name="roomData"
+            type="com.swsnack.catchhouse.data.model.Room"/>
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -43,6 +48,7 @@
                     <TextView
                         android:id="@+id/tv_post_title"
                         style="@style/TextStyle.Bold.Title"
+                        android:text="@{roomData.title}"
                         android:layout_gravity="center" />
 
                     <androidx.viewpager.widget.ViewPager
@@ -88,7 +94,7 @@
                             style="@style/TextStyle.Regular.Medium"
                             android:layout_width="0dp"
                             android:layout_weight="0.25"
-                            android:text="@string/tv_post_address" />
+                            android:text="@{roomData.address}" />
 
                         <TextView
                             android:id="@+id/tv_post_address"
@@ -112,6 +118,7 @@
                         <TextView
                             android:id="@+id/tv_post_size"
                             style="@style/TextStyle.Regular.Medium"
+                            android:text="@{@string/formatted_room_size(roomData.size)}"
                             android:layout_width="0dp"
                             android:layout_weight="0.75" />
 
@@ -130,6 +137,7 @@
 
                         <TextView
                             android:id="@+id/tv_post_period"
+                            android:text="@{@string/formatted_period(roomData.from, roomData.to)}"
                             style="@style/TextStyle.Regular.Medium"
                             android:layout_width="0dp"
                             android:layout_weight="0.75" />
@@ -153,6 +161,7 @@
 
                     <TextView
                         android:id="@+id/tv_post_content"
+                        android:text="@{roomData.content}"
                         style="@style/TextStyle.Regular.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
@@ -161,13 +170,28 @@
                         android:backgroundTint="@android:color/white"
                         android:elevation="4dp" />
 
-                    <TextView
-                        android:id="@+id/tv_post_send"
-                        style="@style/tv.accent"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_marginStart="64dp"
-                        android:layout_marginEnd="64dp"
-                        android:text="@string/tv_post_chat" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_post_send"
+                            style="@style/tv.accent"
+                            android:layout_width="300dp"
+                            android:text="@string/tv_post_chat" />
+
+                        <ImageView
+                            android:id="@+id/iv_post_favorite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/favorite_default"
+                            android:layout_marginTop="4dp"
+                            android:onClick="@{handler::addFavoriteRoom}"
+                            bind:isFavorite="@{handler.isFavorite}"/>
+
+                    </LinearLayout>
+
                 </LinearLayout>
             </ScrollView>
 

@@ -9,6 +9,7 @@ import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.db.room.RoomRepository;
 import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
@@ -30,7 +31,7 @@ public class ChattingViewModelFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new ChattingViewModel(AppDataManager.getInstance(
                     AppUserDataManager.getInstance(),
                     RemoteChattingManager.getInstance(),
-                    AppRoomRemoteDataManager.getInstance(),
+                    RoomRepository.getInstance(),
                     AppLocationDataManager.getInstance(),
                     AppSearchingDataManager.getInstance()),
                     mApiManager,

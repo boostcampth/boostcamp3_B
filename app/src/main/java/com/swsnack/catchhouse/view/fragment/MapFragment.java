@@ -18,7 +18,7 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
 import com.swsnack.catchhouse.data.pojo.Address;
@@ -82,6 +82,7 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
                     roomData.getUUID(), roomData.getSize(), roomData.getAddress(),
                     roomData.getAddressName(), roomData.isOptionStandard(), roomData.isOptionGender(),
                     roomData.isOptionPet(), roomData.isOptionSmoking());
+            room.setKey(roomData.getKey());
 
             Intent intent = new Intent(getActivity(), PostActivity.class);
             intent.putExtra(INTENT_ROOM, room);

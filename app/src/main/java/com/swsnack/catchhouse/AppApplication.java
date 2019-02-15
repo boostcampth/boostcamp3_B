@@ -1,6 +1,9 @@
 package com.swsnack.catchhouse;
 
 import android.content.Context;
+
+import com.facebook.stetho.Stetho;
+
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
@@ -19,6 +22,7 @@ public class AppApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
+        Stetho.initializeWithDefaults(this);
     }
 
     @Override

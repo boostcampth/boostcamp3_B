@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.data.db.room.RoomRepository;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
@@ -35,7 +36,7 @@ public class APIManager {
         if (INSTANCE == null) {
             INSTANCE = new APIManager(AppDataManager.getInstance(AppUserDataManager.getInstance(),
                     RemoteChattingManager.getInstance(),
-                    AppRoomRemoteDataManager.getInstance(),
+                    RoomRepository.getInstance(),
                     AppLocationDataManager.getInstance(),
                     AppSearchingDataManager.getInstance()));
         }
@@ -99,9 +100,9 @@ public class APIManager {
     }
 
     public void firebaseSignIn(@NonNull String email,
-                       @NonNull String password,
-                       @NonNull OnSuccessListener<AuthResult> onSuccessListener,
-                       @NonNull OnFailedListener onFailedListener) {
+                               @NonNull String password,
+                               @NonNull OnSuccessListener<AuthResult> onSuccessListener,
+                               @NonNull OnFailedListener onFailedListener) {
 
         FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(email, password)

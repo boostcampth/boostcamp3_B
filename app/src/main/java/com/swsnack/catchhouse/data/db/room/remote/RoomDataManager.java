@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
 

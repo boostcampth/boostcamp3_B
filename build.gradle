@@ -47,4 +47,5 @@ ext {
     glideTransformVersion = '4.0.0'
     multidexVersion = '2.0.1'
     roomVersion = '2.1.0-alpha04'
+    gsonVersion = '2.8.5'
 }

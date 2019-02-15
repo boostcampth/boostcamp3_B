@@ -1,12 +1,15 @@
 package com.swsnack.catchhouse.data.entity;
 
+import com.swsnack.catchhouse.data.db.room.local.TypeConverter;
+import com.swsnack.catchhouse.data.model.Room;
+
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
 import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
@@ -17,13 +20,14 @@ public class RoomEntity {
 
     @PrimaryKey
     @ColumnInfo(name = "room_uid")
+    @NonNull
     private String roomUid;
     private String price;
     private String from;
     private String to;
     private String title;
     private String content;
-    @TypeConverters(TypeConverter.class)
+    @TypeConverters({TypeConverter.class})
     private List<String> images;
     @ColumnInfo(name = "writer_uuid")
     private String uuid;
@@ -35,11 +39,45 @@ public class RoomEntity {
     private boolean optionPet;
     private boolean optionSmoking;
 
+    public RoomEntity(@NonNull String roomUid,
+                      String price,
+                      String from,
+                      String to,
+                      String title,
+                      String content,
+                      List<String> images,
+                      String uuid,
+                      String address,
+                      String addressName,
+                      String size,
+                      boolean optionStandard,
+                      boolean optionGender,
+                      boolean optionPet,
+                      boolean optionSmoking) {
+
+        this.roomUid = roomUid;
+        this.price = price;
+        this.from = from;
+        this.to = to;
+        this.title = title;
+        this.content = content;
+        this.images = images;
+        this.uuid = uuid;
+        this.address = address;
+        this.addressName = addressName;
+        this.size = size;
+        this.optionStandard = optionStandard;
+        this.optionGender = optionGender;
+        this.optionPet = optionPet;
+        this.optionSmoking = optionSmoking;
+    }
+
+    @NonNull
     public String getRoomUid() {
         return roomUid;
     }
 
-    public void setRoomUid(String roomUid) {
+    public void setRoomUid(@NonNull String roomUid) {
         this.roomUid = roomUid;
     }
 
@@ -153,5 +191,23 @@ public class RoomEntity {
 
     public void setOptionSmoking(boolean optionSmoking) {
         this.optionSmoking = optionSmoking;
+    }
+
+    public static RoomEntity toRoomEntity(Room room) {
+        return new RoomEntity(room.getKey(),
+                room.getPrice(),
+                room.getFrom(),
+                room.getTo(),
+                room.getTitle(),
+                room.getContent(),
+                room.getImages(),
+                room.getUuid(),
+                room.getAddress(),
+                room.getAddressName(),
+                room.getSize(),
+                room.isOptionStandard(),
+                room.isOptionGender(),
+                room.isOptionPet(),
+                room.isOptionSmoking());
     }
 }

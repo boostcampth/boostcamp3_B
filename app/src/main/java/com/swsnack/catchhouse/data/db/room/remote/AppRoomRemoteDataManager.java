@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -12,7 +13,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +115,10 @@ public class AppRoomRemoteDataManager implements RoomDataManager {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Room room = dataSnapshot.getValue(Room.class);
+                if(room == null) {
+                    onFailedListener.onFailed(new DatabaseException("not registerd room"));
+                }
+                room.setKey(dataSnapshot.getKey());
                 onSuccessListener.onSuccess(room);
             }
 

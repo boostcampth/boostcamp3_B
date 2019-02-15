@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import java.util.List;
 
 public class RoomData {
+
+    private String key;
     /**
      * 가격(1박)
      **/
@@ -74,7 +76,8 @@ public class RoomData {
 
     private Bitmap image;
 
-    public RoomData(String price, String from, String to, String title, String content, List<String> images, String UUID, String address, String addressName, double latitude, double longitude, String size, boolean optionStandard, boolean optionGender, boolean optionPet, boolean optionSmoking, Bitmap image) {
+    public RoomData(String key, String price, String from, String to, String title, String content, List<String> images, String UUID, String address, String addressName, double latitude, double longitude, String size, boolean optionStandard, boolean optionGender, boolean optionPet, boolean optionSmoking, Bitmap image) {
+        this.key = key;
         this.price = price;
         this.from = from;
         this.to = to;
@@ -92,6 +95,14 @@ public class RoomData {
         this.optionPet = optionPet;
         this.optionSmoking = optionSmoking;
         this.image = image;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getPrice() {

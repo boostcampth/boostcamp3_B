@@ -1,6 +1,4 @@
-package com.swsnack.catchhouse.data.pojo;
-
-import com.swsnack.catchhouse.data.pojo.Address;
+package com.swsnack.catchhouse.data.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Room implements Parcelable {
+
+    private String key;
     /**
      * 가격(1박)
      **/
@@ -105,6 +105,7 @@ public class Room implements Parcelable {
     private Room(Parcel in) {
         images = new ArrayList<>();
 
+        key = in.readString();
         price = in.readString();
         from = in.readString();
         to = in.readString();
@@ -119,6 +120,14 @@ public class Room implements Parcelable {
         optionGender = in.readByte() != 0;
         optionPet = in.readByte() != 0;
         optionSmoking = in.readByte() != 0;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getPrice() {
@@ -143,10 +152,6 @@ public class Room implements Parcelable {
 
     public List<String> getImages() {
         return images;
-    }
-
-    public String getUUID() {
-        return uuid;
     }
 
     public String getAddress() {
@@ -177,6 +182,65 @@ public class Room implements Parcelable {
         return optionSmoking;
     }
 
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public void setOptionStandard(boolean optionStandard) {
+        this.optionStandard = optionStandard;
+    }
+
+    public void setOptionGender(boolean optionGender) {
+        this.optionGender = optionGender;
+    }
+
+    public void setOptionPet(boolean optionPet) {
+        this.optionPet = optionPet;
+    }
+
+    public void setOptionSmoking(boolean optionSmoking) {
+        this.optionSmoking = optionSmoking;
+    }
 
     public static final Creator<Room> CREATOR = new Creator<Room>() {
         @Override
@@ -197,6 +261,7 @@ public class Room implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(key);
         dest.writeString(price);
         dest.writeString(from);
         dest.writeString(to);

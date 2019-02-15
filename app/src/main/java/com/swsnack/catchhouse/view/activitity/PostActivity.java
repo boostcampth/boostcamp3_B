@@ -1,9 +1,7 @@
 package com.swsnack.catchhouse.view.activitity;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
@@ -14,14 +12,17 @@ import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
+import com.swsnack.catchhouse.data.db.room.RoomRepository;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.ActivityPostBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.INTENT_LAT;
 import static com.swsnack.catchhouse.Constant.INTENT_LON;
@@ -51,11 +52,10 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
 
     private void viewInit() {
         Room room = getIntent().getParcelableExtra(INTENT_ROOM);
+        getBinding().setRoomData(room);
+        mViewModel.setRoomData(room);
         double longitude = getIntent().getDoubleExtra(INTENT_LON, 0);
         double latitude = getIntent().getDoubleExtra(INTENT_LAT, 0);
-
-        String period = room.getFrom() + " ~ " + room.getTo();
-        String size = room.getSize() + "평";
 
         mTMapView = new TMapView(this);
         getBinding().llPostTmapContainer.addView(mTMapView);
@@ -64,15 +64,9 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
                 new ImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel)
         );
 
-        getBinding().tvPostAddress.setText(room.getAddress());
-        getBinding().tvPostTitle.setText(room.getTitle());
-        getBinding().tvPostContent.setText(room.getContent());
-        getBinding().tvPostPeriod.setText(period);
-        getBinding().tvPostSize.setText(size);
-
         getBinding().tvPostSend.setOnClickListener(__ -> {
             Intent intent = new Intent(this, ChattingMessageActivity.class);
-            intent.putExtra("uuid", room.getUUID());
+            intent.putExtra("uuid", room.getUuid());
             startActivity(intent);
         });
 
@@ -97,7 +91,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
                         AppDataManager.getInstance(
                                 AppUserDataManager.getInstance(),
                                 RemoteChattingManager.getInstance(),
-                                AppRoomRemoteDataManager.getInstance(),
+                                RoomRepository.getInstance(),
                                 AppLocationDataManager.getInstance(),
                                 AppSearchingDataManager.getInstance()),
                         APIManager.getInstance(),

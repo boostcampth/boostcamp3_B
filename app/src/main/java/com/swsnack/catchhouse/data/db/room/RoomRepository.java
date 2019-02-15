@@ -7,7 +7,7 @@ import com.swsnack.catchhouse.data.db.room.remote.RoomDataManager;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
 
@@ -17,11 +17,11 @@ import androidx.lifecycle.LiveData;
 
 public class RoomRepository implements RoomDataManager, FavoriteRoomManager {
 
-    private RoomRepository INSTANCE;
+    private static RoomRepository INSTANCE;
     private FavoriteRoomManager mLocalRoomDataManager;
     private RoomDataManager mRemoteRoomDataManager;
 
-    public RoomRepository getInstance() {
+    public static RoomRepository getInstance() {
         if(INSTANCE == null) {
             synchronized (RoomRepository.class) {
                 INSTANCE = new RoomRepository();
