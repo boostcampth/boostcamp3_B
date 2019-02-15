@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="default_margin">16dp</dimen>
-    <dimen name="sign_in_et_width">248dp</dimen>
+    <dimen name="sign_in_et_width">264dp</dimen>
     <dimen name="sign_in_et_height">40dp</dimen>
     <dimen name="sign_in_et_text_size">20sp</dimen>
     <dimen name="write_tv_width">80dp</dimen>
@@ -21,4 +21,11 @@
     <dimen name="text_size_H6">20sp</dimen>
     <dimen name="text_size_m">16sp</dimen>
     <dimen name="text_size_s">14sp</dimen>
+
+    <dimen name="text_header_h3">48sp</dimen>
+    <dimen name="text_header_h4">34sp</dimen>
+    <dimen name="text_header_h5">24sp</dimen>
+    <dimen name="text_header_h6">20sp</dimen>
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_14">14sp</dimen>
 </resources>

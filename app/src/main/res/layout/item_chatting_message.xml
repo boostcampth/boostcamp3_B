@@ -26,20 +26,22 @@
         <ImageView
             android:id="@+id/iv_item_message_profile"
             style="@style/iv.round"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             bind:setChattingUserProfile="@{userData}" />
 
         <TextView
             android:id="@+id/tv_item_message_destination"
-            style="@style/tv"
+            style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:background="@drawable/tv_message_destination"
             android:fontFamily="@font/aller_default"
             android:padding="3dp"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
+            android:layout_marginStart="4dp"
             android:text="@{message.content}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_item_message_profile"
@@ -48,8 +50,9 @@
 
         <TextView
             android:id="@+id/tv_item_message"
-            style="@style/tv"
+            style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:background="@drawable/tv_message"
             android:fontFamily="@font/aller_default"
