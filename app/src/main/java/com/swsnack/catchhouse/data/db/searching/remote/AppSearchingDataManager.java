@@ -21,6 +21,7 @@ import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.data.pojo.Filter;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 
 import java.util.ArrayList;
@@ -68,15 +69,13 @@ public class AppSearchingDataManager implements SearchingDataManager {
     }
 
     @NonNull
-    public Single<List<RoomData>> getNearRoomList(@NonNull double latitude,
-                                                            @NonNull double longitude,
-                                                            @NonNull double distance) {
+    public Single<List<RoomData>> getNearRoomList(@NonNull Filter filter) {
         if(cnt>0) {
             Log.v("csh","getNearRoomListFromRemote 이미 진행중인 작업 있음");
             return null;
         }
 
-        GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(latitude, longitude), distance);
+        GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(filter.getLatitude(), filter.getLongitude()), filter.getDistance());
         List<RoomData> roomDataList = new ArrayList<>();
 
         return Single.create(subscribe -> geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
@@ -129,6 +128,9 @@ public class AppSearchingDataManager implements SearchingDataManager {
             @Override
             public void onGeoQueryReady() {
                 Log.v("csh","onGeoQueryReady");
+                if(cnt==0) {
+                    subscribe.onError(new RuntimeException("No Data"));
+                }
             }
 
             @Override

@@ -20,6 +20,7 @@ import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.db.room.remote.RoomDataManager;
 import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.data.pojo.Filter;
 import com.swsnack.catchhouse.data.db.user.UserDataManager;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.data.pojo.RoomData;
@@ -263,10 +264,8 @@ public class AppDataManager implements DataManager {
     }
 
     @NonNull
-    public Single<List<RoomData>> getNearRoomList(@NonNull double latitude,
-                                                  @NonNull double longitude,
-                                                  @NonNull double distance) {
-        return mSearchingDataManager.getNearRoomList(latitude, longitude, distance);
+    public Single<List<RoomData>> getNearRoomList(@NonNull Filter filter) {
+        return mSearchingDataManager.getNearRoomList(filter);
     }
 
     @Override

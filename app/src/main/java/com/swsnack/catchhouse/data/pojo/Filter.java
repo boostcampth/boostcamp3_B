@@ -34,6 +34,23 @@ public class Filter {
         this.optionSmoking = false;
     }
 
+    public Filter(String priceFrom, String priceTo, String dateFrom,
+                  String dateTo, double latitude, double longitude,
+                  double distance, boolean optionStandard, boolean optionGender,
+                  boolean optionPet, boolean optionSmoking) {
+        this.priceFrom = priceFrom;
+        this.priceTo = priceTo;
+        this.dateFrom = dateFrom;
+        this.dateTo = dateTo;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.distance = distance;
+        this.optionStandard = optionStandard;
+        this.optionGender = optionGender;
+        this.optionPet = optionPet;
+        this.optionSmoking = optionSmoking;
+    }
+
     public String getPriceFrom() {
         return priceFrom;
     }

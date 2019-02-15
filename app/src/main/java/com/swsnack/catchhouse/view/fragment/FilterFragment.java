@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SeekBar;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentFilterBinding;
@@ -71,6 +72,23 @@ public class FilterFragment extends DialogFragment {
         mStringResult = "";
         mPriceEditText = mBinding.etFilterPriceFrom;
 
+        /*
+        mBinding.sbFilter.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                                          boolean fromUser) {
+                updatePreview(progress);
+            }
+        });
+*/
+
         TextWatcher watcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -94,7 +112,10 @@ public class FilterFragment extends DialogFragment {
 
         mBinding.etFilterPriceFrom.addTextChangedListener(watcher);
         mBinding.etFilterPriceTo.addTextChangedListener(watcher);
-
+        mBinding.btFilterApply.setOnClickListener(v -> {
+            mViewModel.mFilterUpdate.setValue(true);
+            dismiss();
+        });
     }
 
     public void updateDate(View view) {
@@ -104,14 +125,11 @@ public class FilterFragment extends DialogFragment {
     }
 
     public void onClickEditText(View v) {
-        Log.v("csh","onclick");
-
         if(v == mBinding.etFilterDateTo || v == mBinding.etFilterDateFrom) {
             mTargetEditText = (EditText)v;
             new DatePickerDialog(getContext(), mDate, mCalendar.get(Calendar.YEAR),
                     mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH)).show();
         }
-
     }
 
     public void onFocusChange(View v, boolean hasFocus) {
@@ -119,4 +137,9 @@ public class FilterFragment extends DialogFragment {
             mPriceEditText = (EditText)v;
         }
     }
+
+    private void updatePreview(int value) {
+        //mBinding.tvFilterDistanceShow.setText(String.valueOf(value)+"km");
+    }
+
 }
