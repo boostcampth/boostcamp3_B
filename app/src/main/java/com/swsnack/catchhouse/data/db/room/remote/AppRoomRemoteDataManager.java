@@ -4,16 +4,16 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.swsnack.catchhouse.data.db.room.RoomDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,21 +22,21 @@ import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
 import static com.swsnack.catchhouse.Constant.PostException.NETWORK_ERROR;
 
-public class AppRoomDataManager implements RoomDataManager {
+public class AppRoomRemoteDataManager implements RoomDataManager {
 
     private DatabaseReference db;
     private StorageReference fs;
 
-    private static AppRoomDataManager INSTANCE;
+    private static AppRoomRemoteDataManager INSTANCE;
 
-    public static synchronized AppRoomDataManager getInstance() {
+    public static synchronized AppRoomRemoteDataManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new AppRoomDataManager();
+            INSTANCE = new AppRoomRemoteDataManager();
         }
         return INSTANCE;
     }
 
-    private AppRoomDataManager() {
+    private AppRoomRemoteDataManager() {
         db = FirebaseDatabase.getInstance().getReference().child(DB_ROOM);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_ROOM_IMAGE);
     }
@@ -98,23 +98,27 @@ public class AppRoomDataManager implements RoomDataManager {
     }
 
     @Override
-    public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailedListener onFailedListener) {
-        db.child(uuid).setValue(room)
+    public void setRoom(@NonNull String key, @NonNull Room room,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
+        db.child(key).setValue(room)
                 .addOnSuccessListener(onSuccessListener::onSuccess)
                 .addOnFailureListener(onFailedListener::onFailed);
     }
 
     @Override
-    public void readRoomData(@NonNull String uuid,
-                             @NonNull OnSuccessListener<Room> onSuccessListener,
-                             @NonNull OnFailedListener onFailedListener) {
+    public void getRoom(@NonNull String key,
+                        @NonNull OnSuccessListener<Room> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
 
-        db.child(uuid).addListenerForSingleValueEvent(new ValueEventListener() {
+        db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Room room = dataSnapshot.getValue(Room.class);
+                if(room == null) {
+                    onFailedListener.onFailed(new DatabaseException("not registerd room"));
+                }
+                room.setKey(dataSnapshot.getKey());
                 onSuccessListener.onSuccess(room);
             }
 

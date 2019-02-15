@@ -1,11 +1,15 @@
 package com.swsnack.catchhouse.viewmodel.postviewmodel;
 
+import android.view.View;
+
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -18,10 +22,13 @@ public class PostViewModel extends ReactiveViewModel {
     public final MutableLiveData<List<String>> mImageList = new MutableLiveData<>();
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
     public final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
+    private MutableLiveData<Room> mRoom;
+    private MutableLiveData<Boolean> mIsFavorite;
 
     PostViewModel(DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
-
+        mRoom = new MutableLiveData<>();
+        mIsFavorite = new MutableLiveData<>();
         init();
     }
 
@@ -68,6 +75,36 @@ public class PostViewModel extends ReactiveViewModel {
         }
 
         return tag;
+    }
+
+    private void checkFavoriteRoom() {
+        if (getDataManager()
+                .getFavoriteRoom(mRoom.getValue().getKey()) != null) {
+            mIsFavorite.setValue(true);
+        } else {
+            mIsFavorite.setValue(false);
+        }
+    }
+
+    public void setRoomData(Room roomData) {
+        mRoom.setValue(roomData);
+        checkFavoriteRoom();
+    }
+
+    public void addOrRemoveFavoriteRoom(View v) {
+        if (!mIsFavorite.getValue()) {
+            getDataManager()
+                    .setFavoriteRoom(RoomEntity.toRoomEntity(mRoom.getValue()));
+            mIsFavorite.setValue(true);
+        } else {
+            getDataManager()
+                    .deleteFavoriteRoom(RoomEntity.toRoomEntity(mRoom.getValue()));
+            mIsFavorite.setValue(false);
+        }
+    }
+
+    public LiveData<Boolean> isFavorite() {
+        return mIsFavorite;
     }
 
 }

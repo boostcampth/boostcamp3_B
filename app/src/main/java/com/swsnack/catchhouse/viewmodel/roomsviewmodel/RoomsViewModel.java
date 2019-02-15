@@ -15,7 +15,7 @@ import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.pojo.Address;
-import com.swsnack.catchhouse.data.pojo.Room;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -207,7 +207,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                 pet,
                 smoking
         );
-        getDataManager().uploadRoomData(key, room, onSuccessListener, onFailedListener);
+        getDataManager().setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
     private Single<List<Address>> searchAddress(String keyword) {

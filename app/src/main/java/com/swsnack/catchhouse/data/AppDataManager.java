@@ -8,22 +8,26 @@ import androidx.annotation.Nullable;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.data.db.chatting.ChattingManager;
+import com.swsnack.catchhouse.data.db.room.RoomRepository;
+import com.swsnack.catchhouse.data.db.room.local.FavoriteRoomManager;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.Chatting;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.db.location.LocationDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.db.room.RoomDataManager;
+import com.swsnack.catchhouse.data.db.room.remote.RoomDataManager;
 import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.pojo.Filter;
-import com.swsnack.catchhouse.data.pojo.Room;
 import com.swsnack.catchhouse.data.db.user.UserDataManager;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import io.reactivex.Single;
 
 public class AppDataManager implements DataManager {
@@ -31,18 +35,20 @@ public class AppDataManager implements DataManager {
     private UserDataManager mUserDataManager;
     private ChattingManager mRemoteChattingManager;
     private RoomDataManager mRoomDataManager;
+    private FavoriteRoomManager mFavoriteRoomManager;
     private LocationDataManager mLocationDataManager;
     private SearchingDataManager mSearchingDataManager;
 
     private AppDataManager(UserDataManager userDataManager,
                            ChattingManager remoteChattingManager,
-                           RoomDataManager roomDataManager,
+                           RoomRepository roomRepository,
                            LocationDataManager locationDataManager,
                            SearchingDataManager searchingDataManager) {
 
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
-        mRoomDataManager = roomDataManager;
+        mRoomDataManager = roomRepository;
+        mFavoriteRoomManager = roomRepository;
         mLocationDataManager = locationDataManager;
         mSearchingDataManager = searchingDataManager;
     }
@@ -51,13 +57,13 @@ public class AppDataManager implements DataManager {
 
     public static synchronized AppDataManager getInstance(@NonNull UserDataManager userDataManager,
                                                           @NonNull ChattingManager remoteChattingManager,
-                                                          @NonNull RoomDataManager roomDataManager,
+                                                          @NonNull RoomRepository roomRepository,
                                                           @NonNull LocationDataManager locationDataManager,
                                                           @NonNull SearchingDataManager searchingDataManager) {
         if (INSTANCE == null) {
             INSTANCE = new AppDataManager(userDataManager,
                     remoteChattingManager,
-                    roomDataManager,
+                    roomRepository,
                     locationDataManager,
                     searchingDataManager);
         }
@@ -229,19 +235,19 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void uploadRoomData(@NonNull String uuid, @NonNull Room room,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailedListener onFailedListener) {
+    public void setRoom(@NonNull String key, @NonNull Room room,
+                        @NonNull OnSuccessListener<Void> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
 
-        mRoomDataManager.uploadRoomData(uuid, room, onSuccessListener, onFailedListener);
+        mRoomDataManager.setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
 
     @Override
-    public void readRoomData(@NonNull String uuid,
-                             @NonNull OnSuccessListener<Room> onSuccessListener,
-                             @NonNull OnFailedListener onFailedListener) {
-        mRoomDataManager.readRoomData(uuid, onSuccessListener, onFailedListener);
+    public void getRoom(@NonNull String key,
+                        @NonNull OnSuccessListener<Room> onSuccessListener,
+                        @NonNull OnFailedListener onFailedListener) {
+        mRoomDataManager.getRoom(key, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -262,4 +268,24 @@ public class AppDataManager implements DataManager {
         return mSearchingDataManager.getNearRoomList(filter);
     }
 
+    @Override
+    public void setFavoriteRoom(RoomEntity roomEntity) {
+        mFavoriteRoomManager.setFavoriteRoom(roomEntity);
+    }
+
+    @Override
+    public void deleteFavoriteRoom(RoomEntity roomEntity) {
+        mFavoriteRoomManager.deleteFavoriteRoom(roomEntity);
+
+    }
+
+    @Override
+    public List<RoomEntity> getFavoriteRoomList() {
+        return mFavoriteRoomManager.getFavoriteRoomList();
+    }
+
+    @Override
+    public RoomEntity getFavoriteRoom(String key) {
+        return mFavoriteRoomManager.getFavoriteRoom(key);
+    }
 }

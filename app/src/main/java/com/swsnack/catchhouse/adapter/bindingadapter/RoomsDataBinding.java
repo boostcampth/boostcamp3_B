@@ -5,7 +5,9 @@ import android.net.Uri;
 import androidx.viewpager.widget.ViewPager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
@@ -49,6 +51,15 @@ public class RoomsDataBinding {
 
         if(editText != null && address != null) {
             editText.setText(address.getAddress());
+        }
+    }
+
+    @BindingAdapter("isFavorite")
+    public static void isFavorite(ImageView imageView, boolean isFavorite) {
+        if(isFavorite) {
+            imageView.setImageResource(R.drawable.favorite_selected);
+        } else {
+            imageView.setImageResource(R.drawable.favorite_default);
         }
     }
 }

@@ -35,36 +35,40 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha03'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha3'
+    implementation "androidx.appcompat:appcompat:$rootProject.ext.appcompat"
+    implementation "androidx.legacy:legacy-support-v4:$rootProject.ext.supportVersion"
+    implementation "com.google.android.material:$rootProject.ext.material"
+    implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintVersion"
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
-    //design
-    //android lifeCycle
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha02'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0-alpha02'
-    // rxJava
+    androidTestImplementation "androidx.test:runner:$rootProject.ext.runnerVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
+//android lifeCycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.androidArchitectureVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$rootProject.ext.androidArchitectureVersion"
+// rxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxAndroidVersion"
     implementation "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJava"
-    //firebase
+//firebase
     implementation "com.google.firebase:firebase-core:$rootProject.ext.firebaseVersion"
     implementation "com.google.firebase:firebase-database:$rootProject.ext.firebaseVersion"
     implementation "com.google.firebase:firebase-auth:$rootProject.ext.firebaseAuthVersion"
     implementation "com.google.firebase:firebase-storage:$rootProject.ext.firebaseStorageVersion"
-    //firebase google auth api
+//firebase google auth api
     implementation "com.google.android.gms:play-services-auth:$rootProject.ext.googleAuthVersion"
-    //firebase facebook auth api
+//firebase facebook auth api
     implementation "com.facebook.android:facebook-login:$rootProject.ext.facebookAuthVersion"
-    //firebase geofire
+//firebase geofire
     implementation "com.firebase:geofire-android:$rootProject.ext.geofireVersion"
-    //glide
+//glide
     implementation "com.github.bumptech.glide:glide:$rootProject.ext.glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
     implementation "jp.wasabeef:glide-transformations:$rootProject.ext.glideTransformVersion"
-    //multidex
-    implementation 'androidx.multidex:multidex:2.0.1'
+//multidex
+    implementation "androidx.multidex:multidex:$rootProject.ext.multidexVersion"
+//room
+    implementation "androidx.room:room-runtime:$rootProject.ext.roomVersion"
+    annotationProcessor "androidx.room:room-compiler:$rootProject.ext.roomVersion"
+    implementation "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
+    implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation files('libs/com.skt.Tmap_1.58.jar')
 }

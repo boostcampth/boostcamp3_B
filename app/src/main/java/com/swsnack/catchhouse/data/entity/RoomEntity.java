@@ -1,108 +1,84 @@
-package com.swsnack.catchhouse.data.pojo;
+package com.swsnack.catchhouse.data.entity;
 
-import android.graphics.Bitmap;
+import com.swsnack.catchhouse.data.db.room.local.TypeConverter;
+import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
 
-public class RoomData {
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
-    private String key;
-    /**
-     * 가격(1박)
-     **/
+import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
+
+@Entity(tableName = ROOM_TABLE,
+        indices = {@Index(value = {"room_uid"})})
+public class RoomEntity {
+
+    @PrimaryKey
+    @ColumnInfo(name = "room_uid")
+    @NonNull
+    private String roomUid;
     private String price;
-    /**
-     * 시작 날짜
-     **/
     private String from;
-    /**
-     * 종료 날짜
-     **/
     private String to;
-    /**
-     * 제목
-     **/
     private String title;
-    /**
-     * 내용
-     **/
     private String content;
-    /**
-     * 이미지들 링크
-     **/
+    @TypeConverters({TypeConverter.class})
     private List<String> images;
-    /**
-     * 작성자
-     **/
-    private String UUID;
-    /**
-     * 주소
-     **/
+    @ColumnInfo(name = "writer_uuid")
+    private String uuid;
     private String address;
-    /**
-     * 주소 명
-     **/
     private String addressName;
-    /**
-     * 위도
-     **/
-    private double latitude;
-    /**
-     * 경도
-     **/
-    private double longitude;
-    /**
-     * 방 사이즈
-     */
     private String size;
-
-    /* 옵션 선택하지 않을경우 false */
-    /**
-     * 기본 옵션
-     **/
     private boolean optionStandard;
-    /**
-     * 성별 옵션
-     **/
     private boolean optionGender;
-    /**
-     * 반려동물 옵션
-     **/
     private boolean optionPet;
-    /**
-     * 흡연 옵션
-     **/
     private boolean optionSmoking;
 
-    private Bitmap image;
+    public RoomEntity(@NonNull String roomUid,
+                      String price,
+                      String from,
+                      String to,
+                      String title,
+                      String content,
+                      List<String> images,
+                      String uuid,
+                      String address,
+                      String addressName,
+                      String size,
+                      boolean optionStandard,
+                      boolean optionGender,
+                      boolean optionPet,
+                      boolean optionSmoking) {
 
-    public RoomData(String key, String price, String from, String to, String title, String content, List<String> images, String UUID, String address, String addressName, double latitude, double longitude, String size, boolean optionStandard, boolean optionGender, boolean optionPet, boolean optionSmoking, Bitmap image) {
-        this.key = key;
+        this.roomUid = roomUid;
         this.price = price;
         this.from = from;
         this.to = to;
         this.title = title;
         this.content = content;
         this.images = images;
-        this.UUID = UUID;
+        this.uuid = uuid;
         this.address = address;
         this.addressName = addressName;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.size = size;
         this.optionStandard = optionStandard;
         this.optionGender = optionGender;
         this.optionPet = optionPet;
         this.optionSmoking = optionSmoking;
-        this.image = image;
     }
 
-    public String getKey() {
-        return key;
+    @NonNull
+    public String getRoomUid() {
+        return roomUid;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setRoomUid(@NonNull String roomUid) {
+        this.roomUid = roomUid;
     }
 
     public String getPrice() {
@@ -153,12 +129,12 @@ public class RoomData {
         this.images = images;
     }
 
-    public String getUUID() {
-        return UUID;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getAddress() {
@@ -175,22 +151,6 @@ public class RoomData {
 
     public void setAddressName(String addressName) {
         this.addressName = addressName;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
     }
 
     public String getSize() {
@@ -233,11 +193,21 @@ public class RoomData {
         this.optionSmoking = optionSmoking;
     }
 
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public static RoomEntity toRoomEntity(Room room) {
+        return new RoomEntity(room.getKey(),
+                room.getPrice(),
+                room.getFrom(),
+                room.getTo(),
+                room.getTitle(),
+                room.getContent(),
+                room.getImages(),
+                room.getUuid(),
+                room.getAddress(),
+                room.getAddressName(),
+                room.getSize(),
+                room.isOptionStandard(),
+                room.isOptionGender(),
+                room.isOptionPet(),
+                room.isOptionSmoking());
     }
 }

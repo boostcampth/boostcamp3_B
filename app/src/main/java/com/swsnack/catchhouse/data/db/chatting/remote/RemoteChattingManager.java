@@ -1,8 +1,5 @@
 package com.swsnack.catchhouse.data.db.chatting.remote;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
