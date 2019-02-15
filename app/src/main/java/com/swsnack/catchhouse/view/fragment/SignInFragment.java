@@ -3,6 +3,7 @@ package com.swsnack.catchhouse.view.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -111,5 +112,8 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                 Snackbar.make(getBinding().getRoot(), R.string.snack_try_again, Snackbar.LENGTH_SHORT).show();
             }
         });
+
+        getBinding().ctlSignIn.setCollapsedTitleTextColor(Color.WHITE);
+        getBinding().ctlSignIn.setExpandedTitleColor(Color.TRANSPARENT);
     }
 }

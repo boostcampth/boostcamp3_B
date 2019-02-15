@@ -3,14 +3,11 @@ package com.swsnack.catchhouse.view.fragment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.roomadapter.FavoriteRoomAdapter;
@@ -19,6 +16,10 @@ import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static com.swsnack.catchhouse.Constant.GALLERY;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
@@ -47,6 +48,9 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getBinding().setHandler(getViewModel());
         getViewModel().getUserData();
+
+        getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
+        getBinding().ctlMyPage.setCollapsedTitleTextColor(Color.WHITE);
 
         for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
             if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
@@ -99,8 +103,8 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getBinding().tvMyPageChangeProfile.setOnClickListener(v -> startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY));
 
-        getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.INVISIBLE);
-        getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.INVISIBLE);
+        getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.GONE);
+        getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.GONE);
     }
 
     @Override
