@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="handler"
+            type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel"/>
+
+        <variable
+            name="data"
+            type="com.swsnack.catchhouse.data.entity.RoomEntity"/>
 
     </data>
 
@@ -23,7 +31,8 @@
                 android:layout_width="200dp"
                 android:layout_height="150dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                bind:setRoomImage="@{data.images}"/>
 
             <TextView
                 android:id="@+id/tv_item_my_favorite_title"
@@ -31,11 +40,13 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_item_my_favorite_room_image"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@{data.title}"/>
 
             <TextView
                 android:id="@+id/tv_item_my_favorite_from_to"
                 style="@style/tv.title.sub"
+                android:text="@{@string/formatted_period_enter(data.from, data.to)}"
                 android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_item_my_favorite_room_image"
@@ -44,6 +55,7 @@
             <TextView
                 android:id="@+id/tv_item_my_favorite_address"
                 style="@style/tv.title.sub"
+                android:text="@{data.addressName}"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

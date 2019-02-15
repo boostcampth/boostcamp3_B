@@ -24,9 +24,12 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+
+import java.util.List;
 
 import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
@@ -44,6 +47,7 @@ public class UserViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private ViewModelListener mListener;
     private Uri mProfileUri;
+    private MutableLiveData<List<RoomEntity>> mFavoriteRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
     public MutableLiveData<Boolean> mIsSigned;
@@ -55,6 +59,7 @@ public class UserViewModel extends ReactiveViewModel {
     UserViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         this.mAppContext = application;
+        this.mFavoriteRoomList = new MutableLiveData<>();
         this.mUser = new MutableLiveData<>();
         this.mGender = new MutableLiveData<>();
         this.mIsSigned = new MutableLiveData<>();
@@ -261,7 +266,15 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
     }
 
+    public void getFavoriteRoom() {
+        mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
+    }
+
     public LiveData<User> getUser() {
         return mUser;
+    }
+
+    public LiveData<List<RoomEntity>> getFavoriteRoomList() {
+        return mFavoriteRoomList;
     }
 }

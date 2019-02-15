@@ -6,8 +6,6 @@ import com.swsnack.catchhouse.data.entity.RoomEntity;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
-
 class FavoriteRoomHelper {
 
     public static class AsyncSetFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
@@ -40,7 +38,7 @@ class FavoriteRoomHelper {
         }
     }
 
-    public static class AsyncLoadFavoriteRoomList extends AsyncTask<Void, Void, LiveData<List<RoomEntity>>> {
+    public static class AsyncLoadFavoriteRoomList extends AsyncTask<Void, Void, List<RoomEntity>> {
 
         private RoomDao mRoomDao;
 
@@ -49,7 +47,7 @@ class FavoriteRoomHelper {
         }
 
         @Override
-        protected LiveData<List<RoomEntity>> doInBackground(Void... voids) {
+        protected List<RoomEntity> doInBackground(Void... voids) {
             return mRoomDao.loadFavoriteRoom();
         }
     }

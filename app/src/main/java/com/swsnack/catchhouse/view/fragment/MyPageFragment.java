@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.adapter.roomadapter.FavoriteRoomAdapter;
 import com.swsnack.catchhouse.databinding.DialogChangeNickNameBinding;
 import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
@@ -51,6 +54,10 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
                 break;
             }
         }
+
+        FavoriteRoomAdapter favoriteRoomAdapter = new FavoriteRoomAdapter(getContext(), getViewModel());
+        getBinding().lyMyPageInclude.rvMyPageMyFavorite.setAdapter(favoriteRoomAdapter);
+        getBinding().lyMyPageInclude.rvMyPageMyFavorite.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         getBinding().tvMyPageChangeNickName.setOnClickListener(v -> {
             DialogChangeNickNameBinding dialogBinding = DialogChangeNickNameBinding.inflate(getLayoutInflater());
@@ -94,6 +101,12 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.INVISIBLE);
         getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getViewModel().getFavoriteRoom();
     }
 
     @Override

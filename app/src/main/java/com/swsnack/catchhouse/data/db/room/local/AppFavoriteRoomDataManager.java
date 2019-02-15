@@ -38,7 +38,7 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
     }
 
     @Override
-    public LiveData<List<RoomEntity>> getFavoriteRoomList() {
+    public List<RoomEntity> getFavoriteRoomList() {
         try {
             return new FavoriteRoomHelper.AsyncLoadFavoriteRoomList(mRoomDao).execute().get();
         } catch (ExecutionException | InterruptedException e) {
