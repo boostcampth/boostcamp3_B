@@ -60,42 +60,43 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_write"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/vp_write"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp" />
+
+
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/tv_write_gallery"
-                        style="@style/tv.accent.small"
-                        android:layout_margin="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="8dp"
+                        style="@style/btn"
                         android:text="@string/tv_write_gallery"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.08"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/vp_write" />
+                        app:layout_constraintTop_toBottomOf="@+id/tab_write" />
 
-                    <TextView
-                        android:id="@+id/tv_write_value"
-                        style="@style/TextStyle.Bold.SubTitle"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/tv_write_value"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_write_gallery" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/et_write_value"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:hint="@string/et_write_value_hint"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_write_value">
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_gallery">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
+                            android:drawableStart="@drawable/ic_attach_money_black_18dp"
                             android:inputType="number"
                             android:text="@={handler.mPrice}"
                             android:textAlignment="textStart" />
@@ -104,7 +105,7 @@
 
                     <TextView
                         android:id="@+id/tv_write_from_to_title"
-                        style="@style/TextStyle.Bold.SubTitle"
+                        style="@style/tv.title"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/tv_write_from_to"
@@ -113,122 +114,126 @@
 
                     <TextView
                         android:id="@+id/tv_write_date_from"
-                        style="@style/TextStyle.Regular.Small"
+                        style="@style/tv.body"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
+                        android:drawableEnd="@drawable/ic_date_range_black_24dp"
                         android:text="@={handler.mFromDate}"
                         android:textColor="@color/colorBottomNavDefault"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
 
                     <TextView
                         android:id="@+id/tv_write_ripple"
-                        style="@style/TextStyle.Regular.Small"
+                        style="@style/tv.body"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:text="@string/tv_write_ripple"
                         android:textColor="@color/colorBottomNavDefault"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toEndOf="@+id/tv_write_date_from"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
 
                     <TextView
                         android:id="@+id/tv_write_date_to"
-                        style="@style/TextStyle.Regular.Small"
+                        style="@style/tv.body"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
+                        android:drawableEnd="@drawable/ic_date_range_black_24dp"
                         android:text="@={handler.mToDate}"
                         android:textColor="@color/colorBottomNavDefault"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toEndOf="@+id/tv_write_ripple"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
 
                     <TextView
                         android:id="@+id/tv_write_expected_value_title"
-                        style="@style/TextStyle.Bold.SubTitle"
+                        style="@style/tv.title"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="24dp"
                         android:text="@string/tv_write_expected_value"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_ripple" />
 
                     <TextView
                         android:id="@+id/tv_write_expected_value"
-                        style="@style/TextStyle.Regular.Title"
+                        style="@style/tv.title"
                         android:text="@{handler.mExpectedPrice}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_expected_value_title" />
 
                     <CheckBox
                         android:id="@+id/cb_write_standard"
-                        style="@style/TextStyle.Regular.Small"
-                        android:layout_marginStart="8dp"
+                        style="@style/tv.body"
+                        android:layout_marginStart="4dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/cb_write_standard"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_write_expected_value" />
 
                     <CheckBox
                         android:id="@+id/cb_write_gender"
-                        style="@style/TextStyle.Regular.Small"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
+                        style="@style/tv.body"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/cb_write_gender"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cb_write_standard" />
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toEndOf="@+id/cb_write_standard"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_write_expected_value" />
+
 
                     <CheckBox
                         android:id="@+id/cb_write_pet"
-                        style="@style/TextStyle.Regular.Small"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
+                        style="@style/tv.body"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
                         android:text="@string/cb_write_pet"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/cb_write_gender" />
 
                     <CheckBox
                         android:id="@+id/cb_write_smoking"
-                        style="@style/TextStyle.Regular.Small"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/cb_write_smoking"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cb_write_pet" />
-
-                    <TextView
-                        android:id="@+id/tv_write_info_title"
-                        style="@style/TextStyle.Bold.SubTitle"
+                        style="@style/tv.body"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/tv_write_room_info"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/cb_write_smoking" />
-
+                        android:layout_marginTop="4dp"
+                        android:text="@string/cb_write_smoking"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toEndOf="@+id/cb_write_standard"
+                        app:layout_constraintTop_toBottomOf="@+id/cb_write_gender" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/et_write_address_group"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:hint="@string/et_write_address_hint"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_write_info_title">
+                        app:layout_constraintTop_toBottomOf="@+id/cb_write_smoking">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_write_address"
+                            style="@style/tv.body"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:drawableStart="@drawable/ic_location_on_black_18dp"
                             android:focusable="false"
                             android:inputType="text"
+                            android:text="@string/et_write_address_hint"
                             android:textAlignment="textStart"
                             app:address="@{handler.mAddress}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/et_write_room_size"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:hint="@string/et_write_room_size_hint"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -237,9 +242,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
+                            android:drawableStart="@drawable/ic_straighten_black_18dp"
                             android:inputType="number"
                             android:text="@={handler.mSize}"
                             android:textAlignment="textStart" />
@@ -247,7 +253,7 @@
 
                     <TextView
                         android:id="@+id/tv_write_title_title"
-                        style="@style/TextStyle.Bold.SubTitle"
+                        style="@style/tv.title"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
                         android:text="@string/tv_write_title"
@@ -256,8 +262,9 @@
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/et_write_title"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:hint="@string/et_write_title_hint"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -266,7 +273,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
                             android:inputType="text"
@@ -299,7 +306,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="60dp">
 
                 <ProgressBar
                     android:id="@+id/pg_write"
@@ -309,11 +316,12 @@
                     android:layout_gravity="center"
                     android:visibility="gone" />
 
-                <TextView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/tv_write_post"
-                    style="@style/tv.accent.small"
+                    style="@style/btn"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_margin="4dp"
                     android:text="@string/tv_write_post"
                     android:textSize="@dimen/text_size_H6" />

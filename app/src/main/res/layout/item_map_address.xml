@@ -1,38 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="address"
-            type="com.swsnack.catchhouse.data.pojo.Address"/>
+            type="com.swsnack.catchhouse.data.pojo.Address" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:orientation="vertical"
-        android:padding="10dp"
-        android:background="@color/colorPrimary">
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/tv_map_name"
+            style="@style/tv.title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:text="@{address.name}"
-            android:textSize="@dimen/map_name_size"
-            android:layout_marginLeft="20dp"
-            />
+            android:textSize="@dimen/map_name_size" />
 
         <TextView
             android:id="@+id/tv_map_address"
+            style="@style/tv.body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:text="@{address.address}"
-            android:textSize="@dimen/map_address_size"
-            android:layout_marginLeft="20dp"
-            />
+            android:textSize="@dimen/map_address_size" />
 
     </LinearLayout>
 

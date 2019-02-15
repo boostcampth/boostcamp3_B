@@ -60,6 +60,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         getBinding().vpPost.setAdapter(
                 new ImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel)
         );
+        getBinding().tabPost.setupWithViewPager(getBinding().vpPost, true);
 
         getBinding().tvPostSend.setOnClickListener(__ -> {
             Intent intent = new Intent(this, ChattingMessageActivity.class);

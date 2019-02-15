@@ -11,7 +11,7 @@
 
         <variable
             name="roomData"
-            type="com.swsnack.catchhouse.data.model.Room"/>
+            type="com.swsnack.catchhouse.data.model.Room" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -47,9 +47,9 @@
 
                     <TextView
                         android:id="@+id/tv_post_title"
-                        style="@style/TextStyle.Bold.Title"
-                        android:text="@{roomData.title}"
-                        android:layout_gravity="center" />
+                        style="@style/tv.header"
+                        android:layout_gravity="center"
+                        android:text="@{roomData.title}" />
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/vp_post"
@@ -59,29 +59,72 @@
                         android:layout_marginTop="24dp"
                         app:adapter="@{handler.mImageList}" />
 
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_post"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/iv_post_favorite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:onClick="@{handler::addOrRemoveFavoriteRoom}"
+                            android:src="@drawable/favorite_default"
+                            bind:isFavorite="@{handler.isFavorite}" />
+
+                        <TextView
+                            style="@style/tv.body"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tv_post_favorite" />
+
+                        <ImageView
+                            android:id="@+id/tv_post_send"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_message_black_36dp" />
+
+                        <TextView
+                            style="@style/tv.body"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tv_post_chatting" />
+
+                    </LinearLayout>
+
                     <TextView
-                        style="@style/TextStyle.Bold.SubTitle"
+                        style="@style/tv.title"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="@string/tv_post_price" />
 
                     <TextView
                         android:id="@+id/tv_post_price"
-                        style="@style/TextStyle.Regular.Title"
+                        style="@style/tv.body"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="@{handler.mExpectedPrice}" />
 
                     <TextView
                         android:id="@+id/tv_post_option_tag"
-                        style="@style/TextStyle.Regular.Medium"
+                        style="@style/tv.body"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="@{handler.mOptionTag}"
-                        android:textColor="@color/colorAccent" />
+                        android:textColor="@color/colorSecondary" />
 
                     <TextView
-                        style="@style/TextStyle.Bold.SubTitle"
+                        style="@style/tv.title"
                         android:layout_marginTop="24dp"
                         android:text="@string/tv_post_room_info" />
 
@@ -91,16 +134,17 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/TextStyle.Regular.Medium"
+                            style="@style/tv.body"
                             android:layout_width="0dp"
                             android:layout_weight="0.25"
-                            android:text="@{roomData.address}" />
+                            android:text="@string/tv_post_address" />
 
                         <TextView
                             android:id="@+id/tv_post_address"
-                            style="@style/TextStyle.Regular.Medium"
+                            style="@style/tv.body"
                             android:layout_width="0dp"
-                            android:layout_weight="0.75" />
+                            android:layout_weight="0.75"
+                            android:text="@{roomData.address}" />
 
                     </LinearLayout>
 
@@ -110,17 +154,17 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/TextStyle.Regular.Medium"
+                            style="@style/tv.body"
                             android:layout_width="0dp"
                             android:layout_weight="0.25"
                             android:text="@string/tv_post_size" />
 
                         <TextView
                             android:id="@+id/tv_post_size"
-                            style="@style/TextStyle.Regular.Medium"
-                            android:text="@{@string/formatted_room_size(roomData.size)}"
+                            style="@style/tv.body"
                             android:layout_width="0dp"
-                            android:layout_weight="0.75" />
+                            android:layout_weight="0.75"
+                            android:text="@{@string/formatted_room_size(roomData.size)}" />
 
                     </LinearLayout>
 
@@ -130,23 +174,23 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            style="@style/TextStyle.Regular.Medium"
+                            style="@style/tv.body"
                             android:layout_width="0dp"
                             android:layout_weight="0.25"
                             android:text="@string/tv_post_date" />
 
                         <TextView
                             android:id="@+id/tv_post_period"
-                            android:text="@{@string/formatted_period(roomData.from, roomData.to)}"
-                            style="@style/TextStyle.Regular.Medium"
+                            style="@style/tv.body"
                             android:layout_width="0dp"
-                            android:layout_weight="0.75" />
+                            android:layout_weight="0.75"
+                            android:text="@{@string/formatted_period(roomData.from, roomData.to)}" />
 
                     </LinearLayout>
 
 
                     <TextView
-                        style="@style/TextStyle.Bold.SubTitle"
+                        style="@style/tv.title"
                         android:layout_marginTop="24dp"
                         android:text="@string/tv_post_map" />
 
@@ -161,36 +205,14 @@
 
                     <TextView
                         android:id="@+id/tv_post_content"
-                        android:text="@{roomData.content}"
-                        style="@style/TextStyle.Regular.Medium"
+                        style="@style/tv.body"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:layout_marginTop="24dp"
                         android:background="@drawable/et_round_background"
                         android:backgroundTint="@android:color/white"
-                        android:elevation="4dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/tv_post_send"
-                            style="@style/tv.accent"
-                            android:layout_width="300dp"
-                            android:text="@string/tv_post_chat" />
-
-                        <ImageView
-                            android:id="@+id/iv_post_favorite"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/favorite_default"
-                            android:layout_marginTop="4dp"
-                            android:onClick="@{handler::addOrRemoveFavoriteRoom}"
-                            bind:isFavorite="@{handler.isFavorite}"/>
-
-                    </LinearLayout>
+                        android:elevation="4dp"
+                        android:text="@{roomData.content}" />
 
                 </LinearLayout>
             </ScrollView>

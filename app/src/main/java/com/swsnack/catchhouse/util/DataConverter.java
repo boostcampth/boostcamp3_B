@@ -13,7 +13,7 @@ import java.util.List;
 public class DataConverter {
 
     public static Bitmap getScaledBitmap(Bitmap bitmap) {
-        return Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 0.2), (int) (bitmap.getHeight() * 0.2), true);
+        return Bitmap.createScaledBitmap(bitmap, (int) (bitmap.getWidth() * 1), (int) (bitmap.getHeight() * 1), true);
     }
 
     public static byte[] getByteArray(Bitmap bitmap) throws IOException {
