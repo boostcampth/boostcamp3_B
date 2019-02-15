@@ -19,7 +19,7 @@ public class UserDataBinding {
 
     @BindingAdapter({"setProfile"})
     public static void setProfile(ImageView imageView, Bitmap profileBitmap) {
-        Glide.with(imageView).load(profileBitmap).apply(RequestOptions.circleCropTransform()).into(imageView);
+        Glide.with(imageView).load(profileBitmap).apply(RequestOptions.centerCropTransform()).into(imageView);
     }
 
     @BindingAdapter({"setFavoriteRoom"})

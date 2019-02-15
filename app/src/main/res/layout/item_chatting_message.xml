@@ -32,12 +32,10 @@
 
         <TextView
             android:id="@+id/tv_item_message_destination"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+            style="@style/tv.body"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:background="@drawable/tv_message_destination"
-            android:fontFamily="@font/aller_default"
             android:padding="3dp"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
@@ -50,12 +48,10 @@
 
         <TextView
             android:id="@+id/tv_item_message"
-            style="@style/TextAppearance.MaterialComponents.Body1"
+            style="@style/tv.body"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:background="@drawable/tv_message"
-            android:fontFamily="@font/aller_default"
             android:padding="3dp"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"

@@ -68,14 +68,6 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
                             .putExtra(CHATTING_DATA, chatting)
                             .putExtra(USER_DATA, user));
         });
-
-        getBinding().test.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), ChattingMessageActivity.class);
-            // set dummy data
-            intent.putExtra(UUID, "dd");
-            startActivity(intent);
-        });
-
     }
 
     @Override
