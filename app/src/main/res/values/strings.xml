@@ -104,7 +104,7 @@
     <string name="tv_filter_between">~</string>
     <string name="tv_filter_date">기간</string>
     <string name="tv_filter_option">옵션</string>
-    <string name="tv_filter_option_distance">거리</string>
+    <string name="tv_filter_option_distance">거리(km)</string>
     <string name="tv_filter_option_standard">기본 옵션</string>
     <string name="tv_filter_option_gender">동일 성별</string>
     <string name="tv_filter_option_pet">반려동물 허용</string>

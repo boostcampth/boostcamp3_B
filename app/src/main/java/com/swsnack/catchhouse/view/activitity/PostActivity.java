@@ -1,9 +1,7 @@
 package com.swsnack.catchhouse.view.activitity;
 
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
@@ -22,6 +20,9 @@ import com.swsnack.catchhouse.databinding.ActivityPostBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.INTENT_LAT;
 import static com.swsnack.catchhouse.Constant.INTENT_LON;

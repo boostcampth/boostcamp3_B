@@ -5,10 +5,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.pojo.Filter;
 import com.swsnack.catchhouse.data.pojo.RoomData;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -33,8 +35,7 @@ public class SearchingViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mFilterPriceTo;
     public MutableLiveData<String> mFilterDateFrom;
     public MutableLiveData<String> mFilterDateTo;
-    public MutableLiveData<Double> mFilterLatitude;
-    public MutableLiveData<Double> mFilterLongitude;
+
     public MutableLiveData<Integer> mFilterDistance;
     public MutableLiveData<Boolean> mFilterOptionStandard;
     public MutableLiveData<Boolean> mFilterOptionGender;
@@ -57,21 +58,18 @@ public class SearchingViewModel extends ReactiveViewModel {
         mFilterPriceTo = new MutableLiveData<>();
         mFilterDateFrom = new MutableLiveData<>();
         mFilterDateTo = new MutableLiveData<>();
-        mFilterLatitude = new MutableLiveData<>();
-        mFilterLongitude = new MutableLiveData<>();
+
         mFilterDistance = new MutableLiveData<>();
         mFilterOptionStandard = new MutableLiveData<>();
         mFilterOptionGender = new MutableLiveData<>();
         mFilterOptionPet = new MutableLiveData<>();
         mFilterOptionSmoking = new MutableLiveData<>();
 
-        mFilterUpdate.setValue(false);
         mFilterPriceFrom.setValue("");
         mFilterPriceTo.setValue("");
         mFilterDateFrom.setValue("");
         mFilterDateTo.setValue("");
-        mFilterLatitude.setValue(0.0);
-        mFilterLongitude.setValue(0.0);
+
         mFilterDistance.setValue(10);
         mFilterOptionStandard.setValue(false);
         mFilterOptionGender.setValue(false);
@@ -115,13 +113,26 @@ public class SearchingViewModel extends ReactiveViewModel {
                 }));
     }
 
-    public void updateData(String keyword, double latitude, double longitude) {
-        getDataManager().getNearRoomList(latitude, longitude, 10)
+    public void updateData(double latitude, double longitude) {
+
+        Filter filter = new Filter(
+                getFilterPriceFrom(), getFilterPriceTo(), getFilterDateFrom(),
+                getFilterDateTo(), latitude, longitude,
+                getFilterDistance(), isFilterOptionStandard(), isFilterOptionGender(),
+                isFilterOptionPet(), isFilterOptionSmoking());
+
+        getDataManager().getNearRoomList(filter)
+                .doOnSubscribe(__ -> mListener.isWorking())
+                .doAfterTerminate(() -> {
+                    mListener.isFinished();
+                })
                 .subscribe(roomDataList -> {
                     Log.v("csh", "Single Success");
                     mRoomDataList.postValue(roomDataList);
+                    Toast.makeText(mAppContext, "검색 완료", Toast.LENGTH_SHORT).show();
                 },throwable -> {
-                    Log.v("csh", "Single Error");
+                    Log.v("csh", "Single Error" + throwable.getMessage());
+                    Toast.makeText(mAppContext, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -142,6 +153,60 @@ public class SearchingViewModel extends ReactiveViewModel {
     }
 
     public LiveData<List<RoomData>> getRoomDataList() { return this.mRoomDataList; }
+
+    public LiveData<Boolean> getFilterUpdate() { return this.mFilterUpdate; }
+
+    public void setFilterUpdate(boolean value) {
+        this.mFilterUpdate.postValue(value);
+    }
+
+    public String getFilterPriceFrom() {
+        String ret = mFilterPriceFrom.getValue();
+        if(ret == null)
+            return "0";
+        return ret;
+    }
+
+    public String getFilterPriceTo() {
+        String ret = mFilterPriceTo.getValue();
+        if(ret == null)
+            return "0";
+        return ret;
+    }
+
+    public String getFilterDateFrom() {
+        String ret = mFilterDateFrom.getValue();
+        if(ret == null)
+            return "0";
+        return ret;
+    }
+
+    public String getFilterDateTo() {
+        String ret = mFilterDateTo.getValue();
+        if(ret == null)
+            return "0";
+        return ret;
+    }
+
+    public int getFilterDistance() {
+        return mFilterDistance.getValue();
+    }
+
+    public boolean isFilterOptionStandard() {
+        return mFilterOptionStandard.getValue();
+    }
+
+    public boolean isFilterOptionGender() {
+        return mFilterOptionGender.getValue();
+    }
+
+    public boolean isFilterOptionPet() {
+        return mFilterOptionPet.getValue();
+    }
+
+    public boolean isFilterOptionSmoking() {
+        return mFilterOptionSmoking.getValue();
+    }
 
 
 }
