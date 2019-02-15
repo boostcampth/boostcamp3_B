@@ -33,7 +33,7 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
         ItemImagePagerBinding binding = DataBindingUtil.bind(inflater.inflate(R.layout.item_image_pager, container, false));
-        binding.ivImagePager.setColorFilter(Color.parseColor("#EBEBEB"), PorterDuff.Mode.MULTIPLY);
+
         Glide.with(container.getContext())
                 .load(mList.get(position))
                 .listener(new RequestListener<Drawable>() {
@@ -59,9 +59,6 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
                           }
                 )
                 .into(binding.ivImagePager);
-
-        String text = (position + 1) + "/" + getCount() + "";
-        binding.tvImagePagerNumber.setText(text);
 
         container.addView(binding.getRoot());
         return binding.getRoot();

@@ -62,6 +62,7 @@
                             android:id="@+id/et_sign_up_email"
                             android:layout_width="@dimen/sign_in_et_width"
                             android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
                             android:text="@={handler.mEmail}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,6 +84,7 @@
                             android:id="@+id/et_sign_up_password"
                             android:layout_width="@dimen/sign_in_et_width"
                             android:layout_height="wrap_content"
+                            android:inputType="textPassword"
                             android:text="@={handler.mPassword}" />
                     </com.google.android.material.textfield.TextInputLayout>
 

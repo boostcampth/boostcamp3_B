@@ -21,12 +21,12 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.Toolbar
-                style="@style/tb"
                 android:id="@+id/tb_sign_in"
+                style="@style/tb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/sign_up"
-                app:titleTextColor="@color/colorOnSecondary"/>
+                app:titleTextColor="@color/colorOnSecondary" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -39,8 +39,8 @@
             <ImageView
                 android:id="@+id/iv_sign_up_profile"
                 style="@style/iv.round"
-                android:background="@drawable/profile"
                 android:layout_marginTop="40dp"
+                android:background="@drawable/profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -61,6 +61,7 @@
                     android:id="@+id/et_sign_up_email"
                     android:layout_width="@dimen/sign_in_et_width"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:text="@={handler.mEmail}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,6 +80,7 @@
                     android:id="@+id/et_sign_up_password"
                     android:layout_width="@dimen/sign_in_et_width"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:text="@={handler.mPassword}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -97,6 +99,7 @@
                     android:id="@+id/et_sign_up_nick_name"
                     android:layout_width="@dimen/sign_in_et_width"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:text="@={handler.mNickName}" />
             </com.google.android.material.textfield.TextInputLayout>
 
