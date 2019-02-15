@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cd_my_page_recent_room"
             style="@style/cd"
             android:layout_marginTop="4dp"
@@ -28,11 +28,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:minHeight="30dp">
 
                 <TextView
                     android:id="@+id/tv_my_page_recently_visit_title"
-                    style="@style/tv.body"
+                    style="@style/tv.title"
                     android:text="@string/recently_visit_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -43,7 +44,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="20dp"
                     android:text="@string/not_singed" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -59,9 +59,9 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cd_my_page_favorite_room"
             style="@style/cd"
             android:layout_marginTop="4dp"
@@ -79,7 +79,7 @@
 
                 <TextView
                     android:id="@+id/tv_my_page_my_favorite_title"
-                    style="@style/tv.body"
+                    style="@style/tv.title"
                     android:text="@string/my_favorite_title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rv_my_page_recently_visit" />
@@ -90,7 +90,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="20dp"
                     android:text="@string/not_singed" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -106,8 +105,7 @@
 
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
-
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
