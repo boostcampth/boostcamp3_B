@@ -23,9 +23,6 @@ import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-
-import static com.swsnack.catchhouse.Constant.INTENT_LAT;
-import static com.swsnack.catchhouse.Constant.INTENT_LON;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
 public class PostActivity extends BaseActivity<ActivityPostBinding> {
@@ -54,8 +51,8 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         Room room = getIntent().getParcelableExtra(INTENT_ROOM);
         getBinding().setRoomData(room);
         mViewModel.setRoomData(room);
-        double longitude = getIntent().getDoubleExtra(INTENT_LON, 0);
-        double latitude = getIntent().getDoubleExtra(INTENT_LAT, 0);
+        double longitude = room.getLongitude();
+        double latitude = room.getLatitude();
 
         mTMapView = new TMapView(this);
         getBinding().llPostTmapContainer.addView(mTMapView);

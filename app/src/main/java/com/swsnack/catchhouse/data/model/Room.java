@@ -1,7 +1,10 @@
 package com.swsnack.catchhouse.data.model;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +70,12 @@ public class Room implements Parcelable {
      * 흡연 옵션
      **/
     private boolean optionSmoking;
+    @Exclude
+    private double latitude;
+    @Exclude
+    private double longitude;
+    @Exclude
+    private Bitmap image;
 
     public Room() {
 
@@ -120,6 +129,32 @@ public class Room implements Parcelable {
         optionGender = in.readByte() != 0;
         optionPet = in.readByte() != 0;
         optionSmoking = in.readByte() != 0;
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+    }
+
+    public Room(String key, String price, String from, String to, String title, String content,
+                List<String> images, String uuid, String address, String addressName, String size,
+                boolean optionStandard, boolean optionGender, boolean optionPet, boolean optionSmoking,
+                double latitude, double longitude, Bitmap image) {
+        this.key = key;
+        this.price = price;
+        this.from = from;
+        this.to = to;
+        this.title = title;
+        this.content = content;
+        this.images = images;
+        this.uuid = uuid;
+        this.address = address;
+        this.addressName = addressName;
+        this.size = size;
+        this.optionStandard = optionStandard;
+        this.optionGender = optionGender;
+        this.optionPet = optionPet;
+        this.optionSmoking = optionSmoking;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.image = image;
     }
 
     public String getKey() {
@@ -276,5 +311,31 @@ public class Room implements Parcelable {
         dest.writeByte((byte) (optionGender ? 1 : 0));
         dest.writeByte((byte) (optionPet ? 1 : 0));
         dest.writeByte((byte) (optionSmoking ? 1 : 0));
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }

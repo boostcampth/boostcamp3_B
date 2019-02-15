@@ -23,11 +23,9 @@ import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.pojo.Filter;
 import com.swsnack.catchhouse.data.db.user.UserDataManager;
 import com.swsnack.catchhouse.data.model.User;
-import com.swsnack.catchhouse.data.pojo.RoomData;
 
 import java.util.List;
 
-import androidx.lifecycle.LiveData;
 import io.reactivex.Single;
 
 public class AppDataManager implements DataManager {
@@ -264,7 +262,7 @@ public class AppDataManager implements DataManager {
     }
 
     @NonNull
-    public Single<List<RoomData>> getNearRoomList(@NonNull Filter filter) {
+    public Single<List<Room>> getNearRoomList(@NonNull Filter filter) {
         return mSearchingDataManager.getNearRoomList(filter);
     }
 
