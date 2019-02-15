@@ -35,7 +35,7 @@
                 android:id="@+id/rv_chatting_message"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/cd_chatting_message"
+                app:layout_constraintBottom_toTopOf="@id/et_chatting_message_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -44,29 +44,20 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cd_chatting_message"
+            <EditText
+                android:id="@+id/et_chatting_message_content"
+                style="@style/tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorDefaultGray"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                android:layout_margin="4dp"
+                android:background="@drawable/et_chatting_content"
+                android:fontFamily="@font/aller_default"
+                android:inputType="text"
+                android:lines="3"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-                <EditText
-                    android:id="@+id/et_chatting_message_content"
-                    style="@style/tv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:background="@drawable/et_chatting_content"
-                    android:fontFamily="@font/aller_default"
-                    android:inputType="text"
-                    android:lines="3"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp" />
-
-            </androidx.cardview.widget.CardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

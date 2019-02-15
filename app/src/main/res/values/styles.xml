@@ -15,29 +15,34 @@
     </style>
 
 
-    <style name="noActionBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="noActionBarStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
+    </style>
 
+    <style name="toolbar">
+        <item name="android:textColor">@color/colorOnSecondary</item>
     </style>
 
     <style name="tv">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">@font/aller_bold</item>
-        <item name="android:textSize">18sp</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:layout_marginStart">8dp</item>
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:fontFamily">@font/godo</item>
     </style>
 
     <style name="tv.header">
-        <item name="android:textSize">@dimen/header</item>
+        <item name="android:textSize">@dimen/text_header_h4</item>
     </style>
 
     <style name="tv.header.sub">
@@ -45,9 +50,7 @@
     </style>
 
     <style name="tv.title">
-        <item name="android:textSize">@dimen/title</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/text_header_h6</item>
     </style>
 
     <style name="tv.title.sub">
@@ -55,7 +58,20 @@
     </style>
 
     <style name="tv.body">
-        <item name="android:textSize">@dimen/body</item>
+        <item name="android:textSize">@dimen/text_16</item>
+    </style>
+
+    <style name="btn" parent="Base.TextAppearance.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/colorPrimaryVariant</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:textColor">@color/colorOnSecondary</item>
+        <item name="fontFamily">@font/godo</item>
+    </style>
+
+    <style name="tb" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
+        <item name="android:titleTextColor">@color/colorOnSecondary</item>
     </style>
 
     <style name="tv.round">
@@ -110,6 +126,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
+
 
     /* Text Style Base */
     <style name="TextStyle">

@@ -129,5 +129,4 @@
     <string name="tv_post_map">지도</string>
     <string formatted="false" name="formatted_period">%s ~ %s</string>
     <string formatted="false" name="formatted_room_size">%s평</string>
-    <string formatted="true" name="formatted_period_enter">%s ~\n %s</string>
 </resources>

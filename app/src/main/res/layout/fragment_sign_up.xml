@@ -16,110 +16,133 @@
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.Toolbar
+                style="@style/tb"
                 android:id="@+id/tb_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/sign_up" />
+                app:title="@string/sign_up"
+                app:titleTextColor="@color/colorOnSecondary"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/main_background"
+            android:fitsSystemWindows="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <ImageView
                 android:id="@+id/iv_sign_up_profile"
                 style="@style/iv.round"
+                android:background="@drawable/profile"
                 android:layout_marginTop="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 bind:setProfile="@{handler.mProfile}" />
 
-            <EditText
-                android:id="@+id/et_sign_up_email"
-                style="@style/tv.round"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tvl_sign_up_email"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="28dp"
                 android:hint="@string/sign_email"
-                android:inputType="textEmailAddress"
-                android:text="@={handler.mEmail}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_sign_up_profile" />
+                app:layout_constraintTop_toBottomOf="@id/iv_sign_up_profile">
 
-            <EditText
-                android:id="@+id/et_sign_up_password"
-                style="@style/tv.round"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_sign_up_email"
+                    android:layout_width="@dimen/sign_in_et_width"
+                    android:layout_height="wrap_content"
+                    android:text="@={handler.mEmail}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tvl_sign_up_password"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="@string/sign_password"
-                android:inputType="textPassword"
-                android:text="@={handler.mPassword}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_sign_up_email" />
+                app:layout_constraintTop_toBottomOf="@id/tvl_sign_up_email">
 
-            <EditText
-                android:id="@+id/et_sign_up_nick_name"
-                style="@style/tv.round"
-                android:layout_marginTop="20dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_sign_up_password"
+                    android:layout_width="@dimen/sign_in_et_width"
+                    android:layout_height="wrap_content"
+                    android:text="@={handler.mPassword}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tvl_sign_up_nick_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:hint="@string/sign_up_nick_name"
-                android:inputType="text"
-                android:text="@={handler.mNickName}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_sign_up_password" />
+                app:layout_constraintTop_toBottomOf="@id/tvl_sign_up_password">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_sign_up_nick_name"
+                    android:layout_width="@dimen/sign_in_et_width"
+                    android:layout_height="wrap_content"
+                    android:text="@={handler.mNickName}" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/tv_sign_up_gender"
-                style="@style/tv.round"
-                android:layout_marginTop="8dp"
-                android:hint="@string/sign_up_gender"
-                app:layout_constraintEnd_toEndOf="@id/et_sign_up_nick_name"
-                app:layout_constraintStart_toStartOf="@id/et_sign_up_nick_name"
-                app:layout_constraintTop_toBottomOf="@id/et_sign_up_nick_name" />
+                style="@style/tv.title"
+                android:layout_marginStart="8dp"
+                android:text="성별"
+                app:layout_constraintBottom_toBottomOf="@id/rg_sign_up_gender"
+                app:layout_constraintStart_toStartOf="@id/tvl_sign_up_password"
+                app:layout_constraintTop_toTopOf="@id/rg_sign_up_gender" />
 
             <RadioGroup
                 android:id="@+id/rg_sign_up_gender"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:onCheckedChanged="@{handler::onCheckedChangedListener}"
-                app:layout_constraintBottom_toBottomOf="@id/tv_sign_up_gender"
-                app:layout_constraintEnd_toEndOf="@id/tv_sign_up_gender"
-                app:layout_constraintTop_toTopOf="@id/tv_sign_up_gender">
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@id/tvl_sign_up_password"
+                app:layout_constraintTop_toBottomOf="@id/tvl_sign_up_nick_name">
 
                 <RadioButton
                     android:id="@+id/rb_sign_up_male"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/tv.body"
                     android:layout_marginEnd="4dp"
                     android:text="@string/gender_male" />
 
                 <RadioButton
                     android:id="@+id/rb_sign_up_female"
+                    style="@style/tv.body"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/gender_female" />
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/tv_sign_up"
-                style="@style/tv.accent"
-                android:layout_marginBottom="28dp"
+            <com.google.android.material.button.MaterialButton
+                style="@style/btn"
+                android:layout_width="0dp"
                 android:onClick="@{handler::signUpWithEmail}"
                 android:text="@string/sign_up"
-                android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_sign_up_gender" />
+                app:layout_constraintEnd_toEndOf="@id/tvl_sign_up_nick_name"
+                app:layout_constraintStart_toStartOf="@id/tvl_sign_up_nick_name"
+                app:layout_constraintTop_toBottomOf="@id/rg_sign_up_gender"
+                app:layout_constraintVertical_bias="0.2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

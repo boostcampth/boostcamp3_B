@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.viewmodel.chattingviewmodel;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -63,8 +64,12 @@ public class ChattingViewModel extends ReactiveViewModel {
                 getDataManager()
                         .getUserFromSingleSnapShot(uuid,
                                 user -> {
-                                    user.setUuid(uuid);
-                                    onSuccessListener.onSuccess(user);
+                                    if (user != null) {
+                                        user.setUuid(uuid);
+                                        onSuccessListener.onSuccess(user);
+                                        return;
+                                    }
+                                    onFailureListener.onFailure(new RuntimeException());
                                 },
                                 onFailureListener::onFailure);
                 return;

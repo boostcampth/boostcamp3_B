@@ -33,7 +33,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        getBinding().tbSignIn.setNavigationIcon(R.drawable.action_back);
+        getBinding().tbSignIn.setNavigationIcon(R.drawable.action_back_white);
         getBinding().tbSignIn.setNavigationOnClickListener(__ -> getActivity().getSupportFragmentManager().popBackStack());
         return getBinding().getRoot();
     }
