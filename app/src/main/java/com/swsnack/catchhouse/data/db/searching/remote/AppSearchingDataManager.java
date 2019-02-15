@@ -22,7 +22,6 @@ import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.pojo.Filter;
-import com.swsnack.catchhouse.data.pojo.RoomData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,14 +68,14 @@ public class AppSearchingDataManager implements SearchingDataManager {
     }
 
     @NonNull
-    public Single<List<RoomData>> getNearRoomList(@NonNull Filter filter) {
+    public Single<List<Room>> getNearRoomList(@NonNull Filter filter) {
         if(cnt>0) {
             Log.v("csh","getNearRoomListFromRemote 이미 진행중인 작업 있음");
             return null;
         }
 
         GeoQuery geoQuery = mGeoFire.queryAtLocation(new GeoLocation(filter.getLatitude(), filter.getLongitude()), filter.getDistance());
-        List<RoomData> roomDataList = new ArrayList<>();
+        List<Room> roomList = new ArrayList<>();
 
         return Single.create(subscribe -> geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
@@ -89,6 +88,9 @@ public class AppSearchingDataManager implements SearchingDataManager {
                         Log.v("csh","데이터 들어옴");
                         Room room = dataSnapshot.getValue(Room.class);
                         room.setKey(dataSnapshot.getKey());
+                        room.setLatitude(location.latitude);
+                        room.setLongitude(location.longitude);
+
                         Glide
                                 .with(AppApplication.getAppContext())
                                 .asBitmap()
@@ -96,13 +98,22 @@ public class AppSearchingDataManager implements SearchingDataManager {
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
                                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                        room.setImage(resource);
+                                        roomList.add(room);
+                                        Log.v("csh", "데이터 추가됨");
+                                        if (--cnt == 0) {
+                                            subscribe.onSuccess(roomList);
+                                        }
+
+                                        /*
+
                                         roomDataList.add(new RoomData(dataSnapshot.getKey(), room.getPrice(), room.getFrom(), room.getTo(), room.getTitle(), room.getContent(),
                                                 room.getImages(), room.getUuid(), room.getAddress(), room.getAddressName(), location.latitude, location.longitude,
                                                 room.getSize(), room.isOptionStandard(), room.isOptionGender(), room.isOptionPet(), room.isOptionSmoking(), resource));
                                         Log.v("csh", "데이터 추가됨");
                                         if (--cnt == 0) {
                                             subscribe.onSuccess(roomDataList);
-                                        }
+                                        }*/
                                     }
 
                                 });

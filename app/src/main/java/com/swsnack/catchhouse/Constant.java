@@ -60,8 +60,6 @@ public class Constant {
     public static final int FILTER = 1005;
     public static final String INTENT_FILTER = "1006";
     public static final String INTENT_ROOM = "1007";
-    public static final String INTENT_LON = "1008";
-    public static final String INTENT_LAT = "1009";
 
     public static final String MSG_ERROR_GET_ADDRESS = "주소를 찾을 수 없습니다.";
     public static final String DEFAULT_DATE_STRING = "YYYY-MM-DD";

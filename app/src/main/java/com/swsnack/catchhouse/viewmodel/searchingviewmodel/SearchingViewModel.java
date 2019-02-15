@@ -9,9 +9,9 @@ import android.widget.Toast;
 
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.data.pojo.Filter;
-import com.swsnack.catchhouse.data.pojo.RoomData;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -27,7 +27,7 @@ public class SearchingViewModel extends ReactiveViewModel {
     private MutableLiveData<String> mKeyword;
     private MutableLiveData<List<Address>> mAddressList;
     private MutableLiveData<Boolean> mFinish; // 주소검색 끝났을때
-    private MutableLiveData<List<RoomData>> mRoomDataList;
+    private MutableLiveData<List<Room>> mRoomList;
 
     /* FILTER */
     public MutableLiveData<Boolean> mFilterUpdate; // 필터 업데이트
@@ -50,7 +50,7 @@ public class SearchingViewModel extends ReactiveViewModel {
         mKeyword = new MutableLiveData<>();
         mAddressList = new MutableLiveData<>();
         mFinish = new MutableLiveData<>();
-        mRoomDataList = new MutableLiveData<>();
+        mRoomList = new MutableLiveData<>();
 
         /* Filter */
         mFilterUpdate = new MutableLiveData<>();
@@ -128,7 +128,7 @@ public class SearchingViewModel extends ReactiveViewModel {
                 })
                 .subscribe(roomDataList -> {
                     Log.v("csh", "Single Success");
-                    mRoomDataList.postValue(roomDataList);
+                    mRoomList.postValue(roomDataList);
                     Toast.makeText(mAppContext, "검색 완료", Toast.LENGTH_SHORT).show();
                 },throwable -> {
                     Log.v("csh", "Single Error" + throwable.getMessage());
@@ -152,7 +152,7 @@ public class SearchingViewModel extends ReactiveViewModel {
         this.mFinish.setValue(finish);
     }
 
-    public LiveData<List<RoomData>> getRoomDataList() { return this.mRoomDataList; }
+    public LiveData<List<Room>> getRoomList() { return this.mRoomList; }
 
     public LiveData<Boolean> getFilterUpdate() { return this.mFilterUpdate; }
 
