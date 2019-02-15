@@ -77,14 +77,30 @@ public class PostViewModel extends ReactiveViewModel {
         return tag;
     }
 
-    public void setRoomData(Room roomData) {
-        mRoom.setValue(roomData);
+    private void checkFavoriteRoom() {
+        if (getDataManager()
+                .getFavoriteRoom(mRoom.getValue().getKey()) != null) {
+            mIsFavorite.setValue(true);
+        } else {
+            mIsFavorite.setValue(false);
+        }
     }
 
-    public void addFavoriteRoom(View v) {
-        getDataManager()
-                .setFavoriteRoom(RoomEntity.toRoomEntity(mRoom.getValue()));
-        mIsFavorite.setValue(true);
+    public void setRoomData(Room roomData) {
+        mRoom.setValue(roomData);
+        checkFavoriteRoom();
+    }
+
+    public void addOrRemoveFavoriteRoom(View v) {
+        if (!mIsFavorite.getValue()) {
+            getDataManager()
+                    .setFavoriteRoom(RoomEntity.toRoomEntity(mRoom.getValue()));
+            mIsFavorite.setValue(true);
+        } else {
+            getDataManager()
+                    .deleteFavoriteRoom(RoomEntity.toRoomEntity(mRoom.getValue()));
+            mIsFavorite.setValue(false);
+        }
     }
 
     public LiveData<Boolean> isFavorite() {

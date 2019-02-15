@@ -14,7 +14,7 @@ public class TypeConverter {
             return new ArrayList<>();
         }
 
-        return new Gson().fromJson(jsonList, new TypeToken<String>() {}.getType());
+        return new Gson().fromJson(jsonList, new TypeToken<List<String>>() {}.getType());
     }
 
     @androidx.room.TypeConverter

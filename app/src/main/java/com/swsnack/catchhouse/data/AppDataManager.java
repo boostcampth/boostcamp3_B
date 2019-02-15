@@ -281,7 +281,12 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public LiveData<List<RoomEntity>> getFavoriteRoom() {
-        return mFavoriteRoomManager.getFavoriteRoom();
+    public LiveData<List<RoomEntity>> getFavoriteRoomList() {
+        return mFavoriteRoomManager.getFavoriteRoomList();
+    }
+
+    @Override
+    public RoomEntity getFavoriteRoom(String key) {
+        return mFavoriteRoomManager.getFavoriteRoom(key);
     }
 }

@@ -24,4 +24,7 @@ public interface RoomDao {
 
     @Query("SELECT * FROM " + ROOM_TABLE)
     LiveData<List<RoomEntity>> loadFavoriteRoom();
+
+    @Query("SELECT * FROM my_favorite_room WHERE room_uid = :key")
+    RoomEntity getFavoriteRoom(String key);
 }

@@ -67,7 +67,12 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager {
     }
 
     @Override
-    public LiveData<List<RoomEntity>> getFavoriteRoom() {
-        return mLocalRoomDataManager.getFavoriteRoom();
+    public LiveData<List<RoomEntity>> getFavoriteRoomList() {
+        return mLocalRoomDataManager.getFavoriteRoomList();
+    }
+
+    @Override
+    public RoomEntity getFavoriteRoom(String key) {
+        return mLocalRoomDataManager.getFavoriteRoom(key);
     }
 }

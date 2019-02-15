@@ -12,5 +12,7 @@ public interface FavoriteRoomManager {
 
     void deleteFavoriteRoom(RoomEntity roomEntity);
 
-    LiveData<List<RoomEntity>> getFavoriteRoom();
+    LiveData<List<RoomEntity>> getFavoriteRoomList();
+
+    RoomEntity getFavoriteRoom(String key);
 }
