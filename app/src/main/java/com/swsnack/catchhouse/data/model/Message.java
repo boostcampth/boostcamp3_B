@@ -47,7 +47,6 @@ public class Message implements Serializable {
         if(!(obj instanceof Message)) {
            return false;
         }
-
         return this.timestamp.equals(((Message) obj).getTimestamp());
     }
 }

@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseRecyclerViewAdapter;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.ItemMyFavoriteRoomBinding;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
@@ -17,11 +17,11 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class FavoriteRoomAdapter extends BaseRecyclerViewAdapter<RoomEntity, FavoriteRoomItemHolder> {
+public class RoomListAdapter extends BaseRecyclerViewAdapter<Room, RoomItemHolder> {
 
     private UserViewModel mUserViewModel;
 
-    public FavoriteRoomAdapter(Context context, UserViewModel userViewModel) {
+    public RoomListAdapter(Context context, UserViewModel userViewModel) {
         super(context);
         this.mUserViewModel = userViewModel;
     }
@@ -29,17 +29,17 @@ public class FavoriteRoomAdapter extends BaseRecyclerViewAdapter<RoomEntity, Fav
     @Override
     public void onViewAttachedToWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
-        ((FavoriteRoomItemHolder) holder).onAttachHolder();
+        ((RoomItemHolder) holder).onAttachHolder();
     }
 
     @Override
     public void onViewDetachedFromWindow(@NonNull RecyclerView.ViewHolder holder) {
         super.onViewDetachedFromWindow(holder);
-        ((FavoriteRoomItemHolder) holder).onDetachHolder();
+        ((RoomItemHolder) holder).onDetachHolder();
     }
 
     @Override
-    public void onBindView(FavoriteRoomItemHolder holder, int position) {
+    public void onBindView(RoomItemHolder holder, int position) {
         holder.getBinding().setData(arrayList.get(position));
     }
 
@@ -49,13 +49,13 @@ public class FavoriteRoomAdapter extends BaseRecyclerViewAdapter<RoomEntity, Fav
         ItemMyFavoriteRoomBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.item_my_favorite_room, parent, false);
 
-        FavoriteRoomItemHolder holder = new FavoriteRoomItemHolder(binding);
+        RoomItemHolder holder = new RoomItemHolder(binding);
         binding.setLifecycleOwner(holder);
         binding.setHandler(mUserViewModel);
         return holder;
     }
 
-    public void setList(List<RoomEntity> newRoomList) {
+    public void setList(List<Room> newRoomList) {
         if (arrayList == null) {
             arrayList = newRoomList;
             notifyDataSetChanged();

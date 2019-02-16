@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -14,6 +15,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
@@ -34,7 +40,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
 public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewModel> {
-    public FragmentManager mFragmentManager;
+    private FragmentManager mFragmentManager;
     private TMapView mTMapView;
     private CompositeDisposable mDisposable;
 
@@ -191,8 +197,20 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
 
         //markerItem.setCalloutTitle(roomData.getTitle());
         //markerItem.setCalloutSubTitle(roomData.getContent());
+        //FIXME : model에 bitmap을 가지고 있을 필요가 없다 생각해서, 기능 동작을 위해서 이렇게 우선 해뒀어요. 고쳐주세요
+        Glide.with(getContext()).asBitmap().load(room.getImages().get(0)).listener(new RequestListener<Bitmap>() {
+            @Override
+            public boolean onLoadFailed(GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                return false;
+            }
 
-        markerItem.setCalloutRightButtonImage(room.getImage());
+            @Override
+            public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
+                markerItem.setCalloutRightButtonImage(resource);
+                return false;
+            }
+        }).submit();
+
         //markerItem.setAutoCalloutVisible(true);
         mTMapView.addMarkerItem(String.valueOf(index), markerItem);
 

@@ -100,6 +100,10 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         loginManager.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                if(Profile.getCurrentProfile() == null) {
+                    getViewModel().signInWithFacebook(loginResult, null);
+                    return;
+                }
                 getViewModel().signInWithFacebook(loginResult, Profile.getCurrentProfile().getProfilePictureUri(300, 300));
             }
 

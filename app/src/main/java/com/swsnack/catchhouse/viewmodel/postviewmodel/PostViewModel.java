@@ -2,20 +2,22 @@ package com.swsnack.catchhouse.viewmodel.postviewmodel;
 
 import android.view.View;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
-
+import com.google.firebase.auth.FirebaseAuth;
+import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
-import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
+import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.util.DataConverter;
+import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 public class PostViewModel extends ReactiveViewModel {
 
@@ -24,12 +26,14 @@ public class PostViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
     private MutableLiveData<Room> mRoom;
     private MutableLiveData<Boolean> mIsFavorite;
+    private ViewModelListener mListener;
 
     PostViewModel(DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
+        init();
         mRoom = new MutableLiveData<>();
         mIsFavorite = new MutableLiveData<>();
-        init();
+        mListener = listener;
     }
 
     public void setInitRoomData(Room room) {
@@ -89,18 +93,28 @@ public class PostViewModel extends ReactiveViewModel {
     public void setRoomData(Room roomData) {
         mRoom.setValue(roomData);
         checkFavoriteRoom();
+        visitNewRoom();
     }
 
     public void addOrRemoveFavoriteRoom(View v) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            mListener.onError(StringUtil.getStringFromResource(R.string.not_singed));
+        }
+
         if (!mIsFavorite.getValue()) {
             getDataManager()
-                    .setFavoriteRoom(RoomEntity.toRoomEntity(mRoom.getValue()));
+                    .setFavoriteRoom(DataConverter.convertToRoomEntity(mRoom.getValue()));
             mIsFavorite.setValue(true);
         } else {
             getDataManager()
-                    .deleteFavoriteRoom(RoomEntity.toRoomEntity(mRoom.getValue()));
+                    .deleteFavoriteRoom(DataConverter.convertToRoomEntity(mRoom.getValue()));
             mIsFavorite.setValue(false);
         }
+    }
+
+    public void visitNewRoom() {
+        getDataManager()
+                .setRecentRoom(mRoom.getValue());
     }
 
     public LiveData<Boolean> isFavorite() {

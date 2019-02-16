@@ -73,7 +73,6 @@
                         android:orientation="horizontal">
 
                         <ImageView
-                            android:id="@+id/iv_post_favorite"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -82,22 +81,22 @@
                             bind:isFavorite="@{handler.isFavorite}" />
 
                         <TextView
+                            android:id="@+id/tv_post_favoirte"
                             style="@style/tv.body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="0dp"
+                            android:gravity="center"
+                            android:onClick="@{handler::addOrRemoveFavoriteRoom}"
                             android:text="@string/tv_post_favorite" />
 
-                        <ImageView
-                            android:id="@+id/tv_post_send"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_message_black_36dp" />
-
                         <TextView
+                            android:id="@+id/tv_post_chatting"
                             style="@style/tv.body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/message_24"
+                            android:gravity="center"
                             android:text="@string/tv_post_chatting" />
 
                     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.swsnack.catchhouse.data.entity;
 
+import com.google.firebase.database.Exclude;
 import com.swsnack.catchhouse.data.db.room.local.TypeConverter;
 import com.swsnack.catchhouse.data.model.Room;
 
@@ -22,6 +23,7 @@ public class RoomEntity {
     @ColumnInfo(name = "room_uid")
     @NonNull
     private String roomUid;
+    private String firebaseUuid;
     private String price;
     private String from;
     private String to;
@@ -38,6 +40,8 @@ public class RoomEntity {
     private boolean optionGender;
     private boolean optionPet;
     private boolean optionSmoking;
+    private double latitude;
+    private double longitude;
 
     public RoomEntity(@NonNull String roomUid,
                       String price,
@@ -53,7 +57,9 @@ public class RoomEntity {
                       boolean optionStandard,
                       boolean optionGender,
                       boolean optionPet,
-                      boolean optionSmoking) {
+                      boolean optionSmoking,
+                      double latitude,
+                      double longitude) {
 
         this.roomUid = roomUid;
         this.price = price;
@@ -70,6 +76,8 @@ public class RoomEntity {
         this.optionGender = optionGender;
         this.optionPet = optionPet;
         this.optionSmoking = optionSmoking;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @NonNull
@@ -79,6 +87,14 @@ public class RoomEntity {
 
     public void setRoomUid(@NonNull String roomUid) {
         this.roomUid = roomUid;
+    }
+
+    public String getFirebaseUuid() {
+        return firebaseUuid;
+    }
+
+    public void setFirebaseUuid(String firebaseUuid) {
+        this.firebaseUuid = firebaseUuid;
     }
 
     public String getPrice() {
@@ -193,21 +209,19 @@ public class RoomEntity {
         this.optionSmoking = optionSmoking;
     }
 
-    public static RoomEntity toRoomEntity(Room room) {
-        return new RoomEntity(room.getKey(),
-                room.getPrice(),
-                room.getFrom(),
-                room.getTo(),
-                room.getTitle(),
-                room.getContent(),
-                room.getImages(),
-                room.getUuid(),
-                room.getAddress(),
-                room.getAddressName(),
-                room.getSize(),
-                room.isOptionStandard(),
-                room.isOptionGender(),
-                room.isOptionPet(),
-                room.isOptionSmoking());
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

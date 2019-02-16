@@ -62,7 +62,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         );
         getBinding().tabPost.setupWithViewPager(getBinding().vpPost, true);
 
-        getBinding().tvPostSend.setOnClickListener(__ -> {
+        getBinding().tvPostChatting.setOnClickListener(__ -> {
             Intent intent = new Intent(this, ChattingMessageActivity.class);
             intent.putExtra("uuid", room.getUuid());
             startActivity(intent);

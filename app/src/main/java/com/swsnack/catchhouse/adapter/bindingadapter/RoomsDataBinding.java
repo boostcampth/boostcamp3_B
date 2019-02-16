@@ -6,7 +6,9 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;

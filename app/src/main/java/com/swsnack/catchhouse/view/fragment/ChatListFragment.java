@@ -41,7 +41,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         if (context instanceof BottomNavActivity) {
             ((BottomNavActivity) Objects.requireNonNull(getActivity())).setViewPagerListener(this::getChattingList);
@@ -88,7 +88,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
         mViewModel.cancelChattingListChangingListening();
     }
 
-    public void getChattingList() {
+    private void getChattingList() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             getBinding().tvChatListNotSigned.setVisibility(View.VISIBLE);
             getViewModel().setChattingList(new ArrayList<>());

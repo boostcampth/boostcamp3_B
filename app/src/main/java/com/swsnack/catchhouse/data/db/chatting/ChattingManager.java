@@ -16,14 +16,14 @@ public interface ChattingManager {
                          @NonNull OnSuccessListener<String> onSuccessListener,
                          @NonNull OnFailureListener onFailureListener);
 
-    void getChattingList(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
-                         @NonNull OnFailureListener onFailureListener);
+    void listeningChattingListChanged(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
+                                      @NonNull OnFailureListener onFailureListener);
 
-    void cancelChattingModelObserving();
+    void cancelObservingChattingList();
 
-    void listeningForChangedChatMessage(@NonNull String chatRoomId,
-                                        @NonNull OnSuccessListener<List<Message>> onSuccessListener,
-                                        @NonNull OnFailureListener onFailureListener);
+    void listeningChatMessageChanged(@NonNull String chatRoomId,
+                                     @NonNull OnSuccessListener<List<Message>> onSuccessListener,
+                                     @NonNull OnFailureListener onFailureListener);
 
     void cancelMessageModelObserving();
 

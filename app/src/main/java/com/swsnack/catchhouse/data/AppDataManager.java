@@ -10,6 +10,7 @@ import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.data.db.chatting.ChattingManager;
 import com.swsnack.catchhouse.data.db.room.RoomRepository;
 import com.swsnack.catchhouse.data.db.room.local.FavoriteRoomManager;
+import com.swsnack.catchhouse.data.db.room.local.RecentRoomManager;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.Chatting;
@@ -34,6 +35,7 @@ public class AppDataManager implements DataManager {
     private ChattingManager mRemoteChattingManager;
     private RoomDataManager mRoomDataManager;
     private FavoriteRoomManager mFavoriteRoomManager;
+    private RecentRoomManager mRecentRoomDataManager;
     private LocationDataManager mLocationDataManager;
     private SearchingDataManager mSearchingDataManager;
 
@@ -47,6 +49,7 @@ public class AppDataManager implements DataManager {
         mRemoteChattingManager = remoteChattingManager;
         mRoomDataManager = roomRepository;
         mFavoriteRoomManager = roomRepository;
+        mRecentRoomDataManager = roomRepository;
         mLocationDataManager = locationDataManager;
         mSearchingDataManager = searchingDataManager;
     }
@@ -172,23 +175,23 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void getChattingList(@NonNull com.google.android.gms.tasks.OnSuccessListener<List<Chatting>> onSuccessListener,
-                                @NonNull OnFailureListener onFailedListener) {
+    public void listeningChattingListChanged(@NonNull com.google.android.gms.tasks.OnSuccessListener<List<Chatting>> onSuccessListener,
+                                             @NonNull OnFailureListener onFailedListener) {
 
-        mRemoteChattingManager.getChattingList(onSuccessListener, onFailedListener);
+        mRemoteChattingManager.listeningChattingListChanged(onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void cancelChattingModelObserving() {
-        mRemoteChattingManager.cancelChattingModelObserving();
+    public void cancelObservingChattingList() {
+        mRemoteChattingManager.cancelObservingChattingList();
     }
 
     @Override
-    public void listeningForChangedChatMessage(@NonNull String chatRoomId,
-                                               @NonNull com.google.android.gms.tasks.OnSuccessListener<List<Message>> onSuccessListener,
-                                               @NonNull OnFailureListener onFailedListener) {
+    public void listeningChatMessageChanged(@NonNull String chatRoomId,
+                                            @NonNull com.google.android.gms.tasks.OnSuccessListener<List<Message>> onSuccessListener,
+                                            @NonNull OnFailureListener onFailedListener) {
 
-        mRemoteChattingManager.listeningForChangedChatMessage(chatRoomId, onSuccessListener, onFailedListener);
+        mRemoteChattingManager.listeningChatMessageChanged(chatRoomId, onSuccessListener, onFailedListener);
 
     }
 
@@ -285,5 +288,15 @@ public class AppDataManager implements DataManager {
     @Override
     public RoomEntity getFavoriteRoom(String key) {
         return mFavoriteRoomManager.getFavoriteRoom(key);
+    }
+
+    @Override
+    public void setRecentRoom(Room room) {
+        mRecentRoomDataManager.setRecentRoom(room);
+    }
+
+    @Override
+    public List<Room> getRecentRoom() {
+        return mRecentRoomDataManager.getRecentRoom();
     }
 }
