@@ -24,7 +24,7 @@
                 android:id="@+id/rv_chatting_message"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toTopOf="@id/et_chatting_message_content"
+                app:layout_constraintBottom_toTopOf="@id/cd_chatting_message_layout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -32,19 +32,26 @@
                 bind:setUserData="@{handler.getDestinationUserData}">
             </androidx.recyclerview.widget.RecyclerView>
 
-            <EditText
-                android:id="@+id/et_chatting_message_content"
-                style="@style/tv.body"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/cd_chatting_message_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:background="@drawable/et_chatting_content"
-                android:fontFamily="@font/aller_default"
-                android:inputType="text"
-                android:lines="3"
-                android:paddingStart="5dp"
-                android:paddingEnd="5dp"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_chatting_message_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:inputType="text"
+                    android:lines="3"
+                    android:paddingStart="5dp"
+                    android:paddingEnd="5dp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

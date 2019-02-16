@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="handler"
             type="com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel" />
@@ -23,18 +23,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_vp_number"
-            style="@style/TextStyle.Regular.SubTitle"
-            android:textColor="@color/colorPrimary"
-            android:gravity="center"
-            android:text=""
-            app:layout_constraintBottom_toBottomOf="@+id/iv_vp_image"
-            app:layout_constraintEnd_toEndOf="@+id/iv_vp_image"
-            app:layout_constraintStart_toStartOf="@+id/iv_vp_image"
-            app:layout_constraintTop_toTopOf="@+id/iv_vp_image"
-            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/iv_vp_delete"
