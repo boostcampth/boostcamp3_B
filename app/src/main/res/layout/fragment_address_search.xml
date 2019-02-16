@@ -37,7 +37,6 @@
                 android:textAlignment="textStart" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
         <Button
             android:id="@+id/tv_address_search"
             style="@style/btn"

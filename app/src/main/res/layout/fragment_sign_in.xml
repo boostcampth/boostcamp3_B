@@ -12,6 +12,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="@color/colorDefaultGray"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -38,9 +39,9 @@
                         android:paddingTop="40dp"
                         android:paddingBottom="20dp"
                         android:text="@string/main_title"
+                        android:textColor="@color/colorOnSecondary"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:textColor="@color/colorOnSecondary"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -62,6 +63,8 @@
                             android:id="@+id/et_sign_up_email"
                             android:layout_width="@dimen/sign_in_et_width"
                             android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:nextFocusDown="@id/tvl_sign_up_password"
                             android:text="@={handler.mEmail}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,6 +86,7 @@
                             android:id="@+id/et_sign_up_password"
                             android:layout_width="@dimen/sign_in_et_width"
                             android:layout_height="wrap_content"
+                            android:inputType="textPassword"
                             android:text="@={handler.mPassword}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,6 +154,7 @@
                 app:handler="@{handler}" />
 
         </androidx.core.widget.NestedScrollView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

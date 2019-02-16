@@ -13,6 +13,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorDefaultGray"
         android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -92,142 +93,113 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_my_page_user"
-                    style="@style/cd"
+                <LinearLayout
+                    android:id="@+id/ly_my_page_change_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    app:cardElevation="4dp"
-                    app:layout_constraintBottom_toTopOf="@id/cd_my_page_delete"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/ly_my_page_include">
 
-                    <LinearLayout
+                    <TextView
+                        style="@style/tv.title"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:text="@string/my_page_change_member_info"
+                        android:textAlignment="textStart" />
 
-                        <TextView
-                            style="@style/tv.title"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/my_page_change_member_info"
-                            android:paddingBottom="16dp"
-                            android:textAlignment="textStart" />
+                    <TextView
+                        android:id="@+id/tv_my_page_change_nick_name"
+                        style="@style/tv.body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@string/my_page_change_nick_name"
+                        android:textAlignment="textStart" />
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/divider" />
 
-                            <TextView
-                                android:id="@+id/tv_my_page_change_nick_name"
-                                style="@style/tv.body"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="10dp"
-                                android:text="@string/my_page_change_nick_name"
-                                android:textAlignment="textStart" />
+                    <TextView
+                        android:id="@+id/tv_my_page_change_password"
+                        style="@style/tv.body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@string/my_page_change_password"
+                        android:textAlignment="textStart" />
 
-                        </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="80dp"
+                        android:layout_marginEnd="20dp"
+                        android:background="@drawable/divider" />
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="4dp">
+                    <TextView
+                        android:id="@+id/tv_my_page_change_profile"
+                        style="@style/tv.body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="8dp"
+                        android:text="@string/my_page_change_profile"
+                        android:textAlignment="textStart" />
+                </LinearLayout>
 
-                            <TextView
-                                android:id="@+id/tv_my_page_change_password"
-                                style="@style/tv.body"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="10dp"
-                                android:text="@string/my_page_change_password"
-                                android:textAlignment="textStart" />
-
-                        </androidx.cardview.widget.CardView>
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <TextView
-                                android:id="@+id/tv_my_page_change_profile"
-                                style="@style/tv.body"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:padding="10dp"
-                                android:text="@string/my_page_change_profile"
-                                android:textAlignment="textStart" />
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cd_my_page_delete"
-                    style="@style/cd"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:paddingBottom="4dp"
-                    app:cardElevation="4dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cv_my_page_user">
+                    app:layout_constraintTop_toBottomOf="@id/ly_my_page_change_user">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tv_my_page_delete"
+                        style="@style/btn"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_margin="8dp"
+                        android:gravity="center"
+                        android:onClick="@{handler::deleteUser}"
+                        android:padding="16dp"
+                        android:text="@string/my_page_delete_user"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tv_my_page_sign_out"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tv_my_page_delete"
-                            style="@style/tv.title"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:onClick="@{handler::deleteUser}"
-                            android:text="@string/my_page_delete_user"
-                            android:textAlignment="center"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/tv_my_page_sign_out"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:layout_width="1dp"
-                            android:layout_height="0dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp"
-                            android:src="@drawable/divider"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@id/tv_my_page_delete"
-                            app:layout_constraintTop_toTopOf="parent" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tv_my_page_sign_out"
+                        style="@style/btn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="8dp"
+                        android:gravity="center"
+                        android:onClick="@{handler::signOut}"
+                        android:padding="16dp"
+                        android:text="@string/my_page_sign_out"
+                        android:textAlignment="center"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/tv_my_page_delete"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/tv_my_page_sign_out"
-                            style="@style/tv.title"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:onClick="@{handler::signOut}"
-                            android:text="@string/my_page_sign_out"
-                            android:textAlignment="center"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/tv_my_page_delete"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.cardview.widget.CardView>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
