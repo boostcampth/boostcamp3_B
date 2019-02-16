@@ -28,6 +28,7 @@
                 android:fitsSystemWindows="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:background="@color/colorDefaultGray"
                 app:title="마이페이지">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -173,7 +174,6 @@
                         android:layout_height="match_parent"
                         android:layout_margin="8dp"
                         android:gravity="center"
-                        android:onClick="@{handler::deleteUser}"
                         android:padding="16dp"
                         android:text="@string/my_page_delete_user"
                         android:textAlignment="center"
@@ -190,7 +190,6 @@
                         android:layout_height="match_parent"
                         android:layout_margin="8dp"
                         android:gravity="center"
-                        android:onClick="@{handler::signOut}"
                         android:padding="16dp"
                         android:text="@string/my_page_sign_out"
                         android:textAlignment="center"
