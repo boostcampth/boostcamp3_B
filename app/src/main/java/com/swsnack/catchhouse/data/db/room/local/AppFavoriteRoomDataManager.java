@@ -29,12 +29,20 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public void setFavoriteRoom(RoomEntity roomEntity) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return;
+        }
+
         roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
         new FavoriteRoomHelper.AsyncSetFavoriteRoom(mRoomDao).execute(roomEntity);
     }
 
     @Override
     public void deleteFavoriteRoom(RoomEntity roomEntity) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return;
+        }
+
         roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
         new FavoriteRoomHelper.AsyncDeleteFavoriteRoom(mRoomDao).execute(roomEntity);
 
@@ -42,6 +50,10 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public List<RoomEntity> getFavoriteRoomList() {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return null;
+        }
+
         try {
             return new FavoriteRoomHelper.AsyncLoadFavoriteRoomList(mRoomDao).execute(FirebaseAuth.getInstance().getCurrentUser().getUid()).get();
         } catch (ExecutionException | InterruptedException e) {
@@ -51,6 +63,10 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public RoomEntity getFavoriteRoom(String key) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return null;
+        }
+
         try {
             return new FavoriteRoomHelper.AsyncLoadFavoriteRoom(mRoomDao).execute(key, FirebaseAuth.getInstance().getCurrentUser().getUid()).get();
         } catch (ExecutionException | InterruptedException e) {

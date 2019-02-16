@@ -3,6 +3,8 @@ package com.swsnack.catchhouse.view.activitity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
@@ -23,6 +25,8 @@ import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+
+import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
 public class PostActivity extends BaseActivity<ActivityPostBinding> {
@@ -63,8 +67,12 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         getBinding().tabPost.setupWithViewPager(getBinding().vpPost, true);
 
         getBinding().tvPostChatting.setOnClickListener(__ -> {
+            if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+                Snackbar.make(getBinding().getRoot(), R.string.not_singed, Snackbar.LENGTH_SHORT).show();
+                return;
+            }
             Intent intent = new Intent(this, ChattingMessageActivity.class);
-            intent.putExtra("uuid", room.getUuid());
+            intent.putExtra(UUID, room.getUuid());
             startActivity(intent);
         });
 
