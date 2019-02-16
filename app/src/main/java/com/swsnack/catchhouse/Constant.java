@@ -3,6 +3,7 @@ package com.swsnack.catchhouse;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.StringDef;
 
 import static com.swsnack.catchhouse.Constant.DatabaseKey.DATABASE_NAME;
@@ -52,6 +53,10 @@ import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PROFILE_SUCCESS;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_RATIO;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
 
 public class Constant {
 
@@ -170,5 +175,14 @@ public class Constant {
     public @interface DatabaseKey {
         String DATABASE_NAME = "db_catch_house";
         String ROOM_TABLE = "my_favorite_room";
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({UCROP_WIDTH_MAX, UCROP_HEIGHT_MAX, UCROP_WIDTH_RATIO, UCROP_HEIGHT_RATIO})
+    public @interface Ucrop {
+        int UCROP_WIDTH_MAX = 1000;
+        int UCROP_HEIGHT_MAX = 600;
+        int UCROP_WIDTH_RATIO = 16;
+        int UCROP_HEIGHT_RATIO = 9;
     }
 }

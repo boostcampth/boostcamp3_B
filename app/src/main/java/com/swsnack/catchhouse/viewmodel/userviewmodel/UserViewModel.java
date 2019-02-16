@@ -28,9 +28,12 @@ import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
 import java.util.List;
 
+import static com.facebook.FacebookSdk.getCacheDir;
 import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
 import static com.swsnack.catchhouse.Constant.SuccessKey.DELETE_USER_SUCCESS;
@@ -40,6 +43,10 @@ import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PROFILE_SUCCESS;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_RATIO;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
 import static com.swsnack.catchhouse.util.StringUtil.getStringFromResource;
 
 public class UserViewModel extends ReactiveViewModel {

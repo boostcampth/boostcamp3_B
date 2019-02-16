@@ -29,7 +29,9 @@ import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
+import com.yalantis.ucrop.UCrop;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,7 +148,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 }
             }
         }
-        mViewModel.onSelectImage(uriList);
     }
 
     private void createViewModels() {

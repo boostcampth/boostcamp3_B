@@ -51,7 +51,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mSize = new MutableLiveData<>();
     public final MutableLiveData<Address> mAddress = new MutableLiveData<>();
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
-    public final MutableLiveData<String> mContent = new MutableLiveData<>();            //
+    public final MutableLiveData<String> mContent = new MutableLiveData<>();
 
     private ExpectedPrice ep;
 
