@@ -1,11 +1,6 @@
 package com.swsnack.catchhouse.adapter.slideadapter;
 
-import androidx.databinding.DataBindingUtil;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +14,24 @@ import com.bumptech.glide.request.target.Target;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseViewPagerAdapter;
 import com.swsnack.catchhouse.databinding.ItemImagePagerBinding;
+import com.swsnack.catchhouse.view.fragment.PhotoViewFragment;
+import com.swsnack.catchhouse.view.fragment.SignUpFragment;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentManager;
+
 public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewModel> {
 
-    public ImagePagerAdapter(List<String> url, PostViewModel postViewModel) {
+    private FragmentManager mFragmentManager;
+
+    public ImagePagerAdapter(List<String> url, PostViewModel postViewModel, FragmentManager fragmentManager) {
         super(url, postViewModel);
+        mFragmentManager = fragmentManager;
     }
 
     @NonNull
@@ -65,6 +70,14 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
                           }
                 )
                 .into(binding.ivImagePager);
+
+        binding.ivImagePager.setOnClickListener(v ->
+                mFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fl_post_container, new PhotoViewFragment())
+                        .addToBackStack("")
+                        .commit()
+        );
 
         container.addView(binding.getRoot());
         return binding.getRoot();
