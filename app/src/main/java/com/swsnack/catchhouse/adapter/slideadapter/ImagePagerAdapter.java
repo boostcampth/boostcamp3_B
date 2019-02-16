@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseViewPagerAdapter;
@@ -32,10 +33,13 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         LayoutInflater inflater = LayoutInflater.from(container.getContext());
-        ItemImagePagerBinding binding = DataBindingUtil.bind(inflater.inflate(R.layout.item_image_pager, container, false));
+        ItemImagePagerBinding binding =
+                DataBindingUtil.bind(inflater.inflate(R.layout.item_image_pager,
+                        container, false));
 
         Glide.with(container.getContext())
                 .load(mList.get(position))
+                .thumbnail(0.2f)
                 .listener(new RequestListener<Drawable>() {
                               @Override
                               public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -43,6 +47,8 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
                                   binding.ivImagePagerRenew.setOnClickListener(__ ->
                                           Glide.with(container.getContext())
                                                   .load(mList.get(position))
+                                                  .thumbnail(0.2f)
+                                                  .apply(new RequestOptions().override(1000, 600).centerCrop())
                                                   .listener(this)
                                                   .into(binding.ivImagePager)
                                   );

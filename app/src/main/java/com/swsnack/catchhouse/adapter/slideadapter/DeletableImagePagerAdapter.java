@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseViewPagerAdapter;
 import com.swsnack.catchhouse.databinding.ItemDeletableImagePagerBinding;
@@ -40,7 +41,7 @@ public class DeletableImagePagerAdapter extends BaseViewPagerAdapter<Uri, RoomsV
             try {
                 Glide.with(container.getContext())
                         .load(mList.get(position))
-                        .thumbnail(0.2f)
+                        .apply(new RequestOptions().override(1000, 600).centerCrop())
                         .into(binding.ivVpImage);
 
                 container.addView(binding.getRoot());

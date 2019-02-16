@@ -225,7 +225,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
+    public void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
 

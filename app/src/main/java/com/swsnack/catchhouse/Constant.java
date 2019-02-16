@@ -37,11 +37,6 @@ import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
 import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_PRICE_FIELD;
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_ROOM_IMAGE;
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_TITLE_FIELD;
-import static com.swsnack.catchhouse.Constant.PostException.NETWORK_ERROR;
-import static com.swsnack.catchhouse.Constant.PostException.NOT_SELECTION_DATE;
 import static com.swsnack.catchhouse.Constant.SignInMethod.E_MAIL;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
@@ -60,9 +55,11 @@ import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
 
 public class Constant {
 
-    public static final int GALLERY = 1003;
     public static final int GOOGLE_SIGN_IN = 1000;
+    public static final int PICK_IMAGE_MULTIPLE = 1002;
+    public static final int GALLERY = 1003;
     public static final int FILTER = 1005;
+
     public static final String INTENT_FILTER = "1006";
     public static final String INTENT_ROOM = "1007";
 
@@ -144,17 +141,6 @@ public class Constant {
         String FACEBOOK = "facebook.com";
         String GOOGLE = "google.com";
         String E_MAIL = "password";
-    }
-
-    @Retention(RetentionPolicy.SOURCE)
-    @StringDef({EMPTY_ROOM_IMAGE, EMPTY_PRICE_FIELD, NOT_SELECTION_DATE, EMPTY_TITLE_FIELD,
-            NETWORK_ERROR})
-    public @interface PostException {
-        String EMPTY_ROOM_IMAGE = "EmptyRoomImage";
-        String EMPTY_PRICE_FIELD = "EmptyPriceField";
-        String NOT_SELECTION_DATE = "NotSelectionDate";
-        String EMPTY_TITLE_FIELD = "EmptyTitleField";
-        String NETWORK_ERROR = "NetworkError";
     }
 
     @Retention(RetentionPolicy.SOURCE)

@@ -35,10 +35,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
+
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     private static final String TAG = WriteActivity.class.getSimpleName();
-    final int PICK_IMAGE_MULTIPLE = 1;
     private RoomsViewModel mViewModel;
 
     @Override
@@ -48,7 +49,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     @Override
     public void onError(String errorMessage) {
-        Snackbar.make(getBinding().getRoot(), "error", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getBinding().getRoot(), errorMessage, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -107,7 +108,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 }
         );
 
-        /* 데이트 픽커 설정 */
         getBinding().tvWriteDateFrom.setOnClickListener(v -> createDatePicker(v));
         getBinding().tvWriteDateTo.setOnClickListener(v -> createDatePicker(v));
 
@@ -147,6 +147,8 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                     uriList.add(clipData.getItemAt(i).getUri());
                 }
             }
+
+            mViewModel.onSelectImage(uriList);
         }
     }
 

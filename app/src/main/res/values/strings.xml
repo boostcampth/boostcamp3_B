@@ -95,6 +95,13 @@
     <string name="et_write_title_hint">제목을 입력해주세요.</string>
     <string name="et_write_content_hint">글 내용을 적어주세요.</string>
     <string name="dl_write_finish">판매글이 등록되었습니다.</string>
+    <string name="network_error">인터넷 연결을 확인해주세요.</string>
+    <string name="empty_image_error">방 이미지를 정해주세요.</string>
+    <string name="empty_price_error">방 가격을 설정해주세요.</string>
+    <string name="no_selection_address">주소를 설정해주세요.</string>
+    <string name="empty_room_size_error">방 크기를 입력해주세요.</string>
+    <string name="empty_title_error">글의 제목을 정해주세요.</string>
+    <string name="no_selection_date_error">기간을 설정해 주세요.</string>
 
     /* fragment_address_search */
     <string name="fr_address_title">주소 찾기</string>
