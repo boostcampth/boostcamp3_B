@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem;
@@ -198,7 +199,8 @@ public class MapFragment extends BaseFragment<FragmentMapBinding, SearchingViewM
         //markerItem.setCalloutTitle(roomData.getTitle());
         //markerItem.setCalloutSubTitle(roomData.getContent());
         //FIXME : model에 bitmap을 가지고 있을 필요가 없다 생각해서, 기능 동작을 위해서 이렇게 우선 해뒀어요. 고쳐주세요
-        Glide.with(getContext()).asBitmap().load(room.getImages().get(0)).listener(new RequestListener<Bitmap>() {
+        Glide.with(getContext()).asBitmap().load(room.getImages().get(0)).apply(new RequestOptions().override(320, 180).centerCrop())
+                .listener(new RequestListener<Bitmap>() {
             @Override
             public boolean onLoadFailed(GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
                 return false;
