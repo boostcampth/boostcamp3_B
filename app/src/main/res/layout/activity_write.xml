@@ -24,7 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="12dp"
-                app:title="@string/tb_write" />
+                app:title="@string/tb_write"
+                app:titleTextColor="@android:color/white"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -101,7 +102,6 @@
                             android:text="@={handler.mPrice}"
                             android:textAlignment="textStart" />
                     </com.google.android.material.textfield.TextInputLayout>
-
 
                     <TextView
                         android:id="@+id/tv_write_from_to_title"
