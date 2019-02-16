@@ -75,7 +75,7 @@
     <string name="tv_write_value">가격</string>
     <string name="et_write_value_hint">1박 가격을 적어주세요.</string>
     <string name="tv_write_from_to">기간</string>
-    <string name="tv_write_date">기간을 설정해주세요.   </string>
+    <string name="tv_write_date">기간 설정해주세요. </string>
     <string name="tv_write_from_hint">부터</string>
     <string name="tv_write_to_hint">까지</string>
     <string name="tv_write_ripple">~</string>
@@ -104,7 +104,7 @@
     <string name="no_selection_address">주소를 설정해주세요.</string>
     <string name="empty_room_size_error">방 크기를 입력해주세요.</string>
     <string name="empty_title_error">글의 제목을 정해주세요.</string>
-    <string name="no_selection_date_error">기간을 설정해 주세요.</string>
+    <string name="no_selection_date_error">기간을 설정을 확인해주세요.</string>
 
     /* fragment_address_search */
     <string name="fr_address_title">주소 찾기</string>

@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -34,6 +35,13 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NETWORK;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_ADDRESS;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_DATE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_IMAGE;
 
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
@@ -47,7 +55,47 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     @Override
     public void onError(String errorMessage) {
-        Snackbar.make(getBinding().getRoot(), errorMessage, Snackbar.LENGTH_SHORT).show();
+
+        clrearErrorMessage();
+
+        switch (errorMessage) {
+
+            case ERROR_NO_SELECTION_IMAGE:
+                Snackbar.make(getBinding().getRoot(), getString(R.string.empty_image_error)
+                        , Snackbar.LENGTH_SHORT).show();
+                break;
+
+            case ERROR_NETWORK:
+                Snackbar.make(getBinding().getRoot(), getString(R.string.network_error)
+                        , Snackbar.LENGTH_SHORT).show();
+                break;
+
+            case ERROR_EMPTY_PRICE:
+                getBinding().etWriteValue.setError(getString(R.string.empty_price_error));
+                getBinding().etWriteValue.requestFocus();
+                break;
+
+            case ERROR_NO_SELECTION_DATE:
+                getBinding().tvWriteDateTo.setError(getString(R.string.no_selection_date_error));
+                getBinding().tvWriteDateFrom.setError(getString(R.string.no_selection_date_error));
+                getBinding().tvWriteDateFrom.requestFocus();
+                break;
+
+            case ERROR_NO_SELECTION_ADDRESS:
+                getBinding().etWriteAddress.setError(getString(R.string.no_selection_address));
+                getBinding().etWriteAddress.requestFocus();
+                break;
+
+            case ERROR_EMPTY_ROOM_SIZE:
+                getBinding().etWriteRoomSize.setError(getString(R.string.empty_room_size_error));
+                getBinding().etWriteRoomSize.requestFocus();
+                break;
+
+            case ERROR_EMPTY_TITLE:
+                getBinding().etWriteTitle.setError(getString(R.string.empty_title_error));
+                getBinding().etWriteTitle.requestFocus();
+                break;
+        }
     }
 
     @Override
@@ -108,24 +156,51 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
         getBinding().tvWriteDateFrom.setKeyListener(null);
         getBinding().tvWriteDateTo.setKeyListener(null);
-        getBinding().tvWriteDateFrom.setOnClickListener(v -> createDatePicker(v));
-        getBinding().tvWriteDateTo.setOnClickListener(v -> createDatePicker(v));
+        getBinding().tvWriteDateFrom.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        createDatePicker(v);
+                    }
+                    return false;
+                }
+        );
+        getBinding().tvWriteDateTo.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        createDatePicker(v);
+                    }
+                    return false;
+                }
+        );
+
 
         getBinding().etWriteAddress.setKeyListener(null);
-        getBinding().etWriteAddress.setOnClickListener(__ ->
-                new AddressSearchFragment().show(getSupportFragmentManager(), "address selection")
+        getBinding().etWriteAddress.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        new AddressSearchFragment().show(getSupportFragmentManager(),
+                                "address selection");
+                    }
+                    return false;
+                }
+
         );
 
         getBinding().tvWritePost.setOnClickListener(__ ->
                 mViewModel.onClickPost(
+
                         getBinding().cbWriteStandard.isChecked(),
+
                         getBinding().cbWriteGender.isChecked(),
+
                         getBinding().cbWritePet.isChecked(),
+
                         getBinding().cbWriteSmoking.isChecked()
                 )
         );
 
         setObservableData();
+
     }
 
     @Override
@@ -203,5 +278,13 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         mViewModel.mAddress.observe(this, __ ->
                 getBinding().etWriteRoomSize.requestFocus()
         );
+    }
+
+    private void clrearErrorMessage() {
+        getBinding().etWriteValue.setError(null);
+        getBinding().tvWriteDateFrom.setError(null);
+        getBinding().tvWriteDateTo.setError(null);
+        getBinding().etWriteAddress.setError(null);
+        getBinding().etWriteRoomSize.setError(null);
     }
 }
