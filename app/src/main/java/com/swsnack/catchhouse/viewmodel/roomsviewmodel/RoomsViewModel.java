@@ -1,36 +1,29 @@
 package com.swsnack.catchhouse.viewmodel.roomsviewmodel;
 
 import android.app.Application;
-import androidx.lifecycle.MutableLiveData;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.asynctask.ConvertImageTask;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
-import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.data.pojo.Address;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_PRICE_FIELD;
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_ROOM_IMAGE;
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_TITLE_FIELD;
-import static com.swsnack.catchhouse.Constant.PostException.NOT_SELECTION_DATE;
 
 public class RoomsViewModel extends ReactiveViewModel {
 
@@ -51,7 +44,9 @@ public class RoomsViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mSize = new MutableLiveData<>();
     public final MutableLiveData<Address> mAddress = new MutableLiveData<>();
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
-    public final MutableLiveData<String> mContent = new MutableLiveData<>();            //
+    public final MutableLiveData<String> mContent = new MutableLiveData<>();
+
+    public final MutableLiveData<Room> room = new MutableLiveData<>();//
 
     private ExpectedPrice ep;
 
@@ -118,7 +113,7 @@ public class RoomsViewModel extends ReactiveViewModel {
         String validResult = isRoomDataValid();
 
         if (!TextUtils.isEmpty(validResult)) {
-            mListener.onError("error");
+            mListener.onError(validResult);
             return;
         }
 
@@ -126,21 +121,19 @@ public class RoomsViewModel extends ReactiveViewModel {
 
         OnFailedListener errorHandler = error -> {
             mListener.isFinished();
-            mListener.onError("error");
+            mListener.onError(mAppContext.getString(R.string.network_error));
         };
 
         mDataManager.createKey(
-                key -> convert(
-                        imageByte -> mDataManager.uploadRoomImage(key, imageByte,
-                                urlList -> push(key, urlList, std, gender, pet, smoking,
-                                        __ -> mDataManager.uploadLocationData(key, mAddress.getValue(),
-                                                ___ -> {
-                                                    mListener.isFinished();
-                                                    mListener.onSuccess("Success");
-                                                }
-                                                , errorHandler)
-                                        , errorHandler
-                                ), errorHandler
+                key -> mDataManager.uploadRoomImage(key, mImageList.getValue(),
+                        urlList -> push(key, urlList, std, gender, pet, smoking,
+                                __ -> mDataManager.uploadLocationData(key, mAddress.getValue(),
+                                        ___ -> {
+                                            mListener.isFinished();
+                                            mListener.onSuccess("Success");
+                                        }
+                                        , errorHandler)
+                                , errorHandler
                         ), errorHandler
                 ), errorHandler
         );
@@ -164,25 +157,21 @@ public class RoomsViewModel extends ReactiveViewModel {
         String defaultDate = mAppContext.getString(R.string.tv_write_date);
 
         if (mImageList.getValue() != null && mImageList.getValue().size() == 0) {
-            return EMPTY_ROOM_IMAGE;
+            return mAppContext.getString(R.string.empty_image_error);
         } else if (TextUtils.isEmpty(mPrice.getValue())) {
-            return EMPTY_PRICE_FIELD;
+            return mAppContext.getString(R.string.empty_price_error);
         } else if (TextUtils.equals(mFromDate.getValue(), defaultDate) ||
                 TextUtils.equals(mToDate.getValue(), defaultDate)) {
-            return NOT_SELECTION_DATE;
+            return mAppContext.getString(R.string.no_selection_date_error);
+        } else if (mAddress.getValue() == null) {
+            return mAppContext.getString(R.string.no_selection_address);
+        } else if (TextUtils.isEmpty(mSize.getValue())) {
+            return mAppContext.getString(R.string.empty_room_size_error);
         } else if (TextUtils.isEmpty(mTitle.getValue())) {
-            return EMPTY_TITLE_FIELD;
+            return mAppContext.getString(R.string.empty_title_error);
         } else {
             return "";
         }
-    }
-
-    private void convert(OnSuccessListener<List<byte[]>> onSuccessListener,
-                         OnFailedListener onFailedListener) {
-        AsyncTask<Uri, Void, List<byte[]>> mTask;
-        mTask = new ConvertImageTask(mAppContext, onSuccessListener, onFailedListener);
-        List<Uri> u = mImageList.getValue();
-        mTask.execute(u.toArray(new Uri[0]));
     }
 
     private void push(String key, List<String> urls,
@@ -218,7 +207,9 @@ public class RoomsViewModel extends ReactiveViewModel {
                 .doAfterTerminate(() -> mListener.isFinished())
                 .toObservable()
                 .flatMap(Observable::fromIterable)
-                .map(item -> new Address(item.name, item.getPOIAddress().replace("null", ""), item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()))
+                .map(item -> new Address(item.name,
+                        item.getPOIAddress().replace("null", ""),
+                        item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()))
                 .toList();
     }
 }

@@ -100,8 +100,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_sign_up_nick_name"
                     android:layout_width="@dimen/sign_in_et_width"
-                    android:inputType="text"
                     android:layout_height="wrap_content"
+                    android:inputType="text"
                     android:text="@={handler.mNickName}" />
 
             </com.google.android.material.textfield.TextInputLayout>

@@ -52,6 +52,11 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
     }
 
     private void viewInit() {
+        getBinding().tbPost.setNavigationIcon(R.drawable.action_back_white);
+        getBinding().tbPost.setNavigationOnClickListener(__ ->
+                finish()
+        );
+
         Room room = getIntent().getParcelableExtra(INTENT_ROOM);
         getBinding().setRoomData(room);
         mViewModel.setRoomData(room);
@@ -62,7 +67,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         getBinding().llPostTmapContainer.addView(mTMapView);
 
         getBinding().vpPost.setAdapter(
-                new ImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel)
+                new ImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel, getSupportFragmentManager())
         );
         getBinding().tabPost.setupWithViewPager(getBinding().vpPost, true);
 

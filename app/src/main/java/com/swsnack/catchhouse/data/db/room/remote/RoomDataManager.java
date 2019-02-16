@@ -1,5 +1,7 @@
 package com.swsnack.catchhouse.data.db.room.remote;
 
+import android.net.Uri;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -15,7 +17,7 @@ public interface RoomDataManager {
     void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
                    @NonNull OnFailedListener onFailedListener);
 
-    void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList,
+    void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList,
                          @NonNull OnSuccessListener<List<String>> onSuccessListener,
                          @NonNull OnFailedListener onFailedListener);
 

@@ -3,6 +3,7 @@ package com.swsnack.catchhouse;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.StringDef;
 
 import static com.swsnack.catchhouse.Constant.DatabaseKey.DATABASE_NAME;
@@ -37,11 +38,6 @@ import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
 import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_PRICE_FIELD;
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_ROOM_IMAGE;
-import static com.swsnack.catchhouse.Constant.PostException.EMPTY_TITLE_FIELD;
-import static com.swsnack.catchhouse.Constant.PostException.NETWORK_ERROR;
-import static com.swsnack.catchhouse.Constant.PostException.NOT_SELECTION_DATE;
 import static com.swsnack.catchhouse.Constant.SignInMethod.E_MAIL;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
@@ -53,12 +49,18 @@ import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PROFILE_SUCCESS;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_RATIO;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
 
 public class Constant {
 
-    public static final int GALLERY = 1003;
     public static final int GOOGLE_SIGN_IN = 1000;
+    public static final int PICK_IMAGE_MULTIPLE = 1002;
+    public static final int GALLERY = 1003;
     public static final int FILTER = 1005;
+
     public static final String INTENT_FILTER = "1006";
     public static final String INTENT_ROOM = "1007";
 
@@ -145,17 +147,6 @@ public class Constant {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({EMPTY_ROOM_IMAGE, EMPTY_PRICE_FIELD, NOT_SELECTION_DATE, EMPTY_TITLE_FIELD,
-            NETWORK_ERROR})
-    public @interface PostException {
-        String EMPTY_ROOM_IMAGE = "EmptyRoomImage";
-        String EMPTY_PRICE_FIELD = "EmptyPriceField";
-        String NOT_SELECTION_DATE = "NotSelectionDate";
-        String EMPTY_TITLE_FIELD = "EmptyTitleField";
-        String NETWORK_ERROR = "NetworkError";
-    }
-
-    @Retention(RetentionPolicy.SOURCE)
     @StringDef
     public @interface Chatting {
         String NO_CHAT_ROOM = "noChatRoom";
@@ -173,5 +164,14 @@ public class Constant {
     public @interface DatabaseKey {
         String DATABASE_NAME = "db_catch_house";
         String ROOM_TABLE = "my_favorite_room";
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({UCROP_WIDTH_MAX, UCROP_HEIGHT_MAX, UCROP_WIDTH_RATIO, UCROP_HEIGHT_RATIO})
+    public @interface Ucrop {
+        int UCROP_WIDTH_MAX = 1000;
+        int UCROP_HEIGHT_MAX = 600;
+        int UCROP_WIDTH_RATIO = 16;
+        int UCROP_HEIGHT_RATIO = 9;
     }
 }

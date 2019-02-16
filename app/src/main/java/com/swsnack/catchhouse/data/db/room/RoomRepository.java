@@ -1,5 +1,7 @@
 package com.swsnack.catchhouse.data.db.room;
 
+import android.net.Uri;
+
 import com.swsnack.catchhouse.data.db.room.local.AppFavoriteRoomDataManager;
 import com.swsnack.catchhouse.data.db.room.local.AppRecentRoomManager;
 import com.swsnack.catchhouse.data.db.room.local.FavoriteRoomManager;
@@ -45,7 +47,7 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager, Rec
     }
 
     @Override
-    public void uploadRoomImage(@NonNull String uuid, @NonNull List<byte[]> imageList, @NonNull OnSuccessListener<List<String>> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
+    public void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList, @NonNull OnSuccessListener<List<String>> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
         mRemoteRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
     }
 
