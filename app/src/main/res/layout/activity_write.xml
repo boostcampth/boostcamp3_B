@@ -118,49 +118,71 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/et_write_value" />
 
-                        <TextView
-                            android:id="@+id/tv_write_date_from"
-                            style="@style/tv.body"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tv_write_date_from_layout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:drawableEnd="@drawable/ic_date_range_black_24dp"
-                            android:text="@={handler.mFromDate}"
-                            android:textColor="@color/colorBottomNavDefault"
-                            android:textSize="14sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
+                            app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tv_write_date_from"
+                                style="@style/tv.body"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="0dp"
+                                android:drawableEnd="@drawable/ic_date_range_black_24dp"
+                                android:text="@={handler.mFromDate}"
+                                android:nextFocusDown="@id/tv_write_date_to"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/colorBottomNavDefault"
+                                android:textSize="12sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                         <TextView
                             android:id="@+id/tv_write_ripple"
                             style="@style/tv.body"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
                             android:text="@string/tv_write_ripple"
                             android:textColor="@color/colorBottomNavDefault"
                             android:textSize="14sp"
-                            app:layout_constraintStart_toEndOf="@+id/tv_write_date_from"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
+                            app:layout_constraintStart_toEndOf="@+id/tv_write_date_from_layout"
+                            app:layout_constraintTop_toTopOf="@+id/tv_write_date_to_layout" />
 
-                        <TextView
-                            android:id="@+id/tv_write_date_to"
-                            style="@style/tv.body"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:drawableEnd="@drawable/ic_date_range_black_24dp"
-                            android:text="@={handler.mToDate}"
-                            android:textColor="@color/colorBottomNavDefault"
-                            android:textSize="14sp"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tv_write_date_to_layout"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             app:layout_constraintStart_toEndOf="@+id/tv_write_ripple"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title" />
+                            app:layout_constraintTop_toBottomOf="@+id/tv_write_from_to_title">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/tv_write_date_to"
+                                style="@style/tv.body"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="0dp"
+                                android:drawableEnd="@drawable/ic_date_range_black_24dp"
+                                android:text="@={handler.mToDate}"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/colorBottomNavDefault"
+                                android:textSize="12sp" />
+                        </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
                             android:id="@+id/tv_write_expected_value_title"
                             style="@style/tv.title"
                             android:layout_marginStart="16dp"
-                            android:layout_marginTop="24dp"
+                            android:layout_marginTop="16dp"
                             android:text="@string/tv_write_expected_value"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_write_ripple" />
+                            app:layout_constraintTop_toBottomOf="@+id/tv_write_date_to_layout" />
 
                         <TextView
                             android:id="@+id/tv_write_expected_value"
@@ -230,8 +252,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="0dp"
                                 android:drawableStart="@drawable/ic_location_on_black_18dp"
-                                android:focusable="false"
-                                android:inputType="text"
                                 android:text="@string/et_write_address_hint"
                                 android:textAlignment="textStart"
                                 app:address="@{handler.mAddress}" />

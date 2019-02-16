@@ -2,17 +2,15 @@ package com.swsnack.catchhouse.view.activitity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.EditText;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
 import com.swsnack.catchhouse.data.APIManager;
@@ -20,7 +18,6 @@ import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
@@ -29,11 +26,12 @@ import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
-import com.yalantis.ucrop.UCrop;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
 
@@ -108,9 +106,12 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 }
         );
 
+        getBinding().tvWriteDateFrom.setKeyListener(null);
+        getBinding().tvWriteDateTo.setKeyListener(null);
         getBinding().tvWriteDateFrom.setOnClickListener(v -> createDatePicker(v));
         getBinding().tvWriteDateTo.setOnClickListener(v -> createDatePicker(v));
 
+        getBinding().etWriteAddress.setKeyListener(null);
         getBinding().etWriteAddress.setOnClickListener(__ ->
                 new AddressSearchFragment().show(getSupportFragmentManager(), "address selection")
         );
@@ -172,12 +173,18 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     }
 
     private void createDatePicker(View v) {
-        TextView textView = (TextView) v;
+        EditText editText = (EditText) v;
 
         DatePickerDialog dialog =
                 new DatePickerDialog(this,
                         (__, y, m, d) -> {
-                            textView.setText(DateCalculator.createDateString(y, m, d));
+                            editText.setText(DateCalculator.createDateString(y, m, d));
+                            if (editText.equals(getBinding().tvWriteDateFrom)) {
+                                getBinding().tvWriteDateTo.requestFocus();
+                            } else {
+                                getBinding().etWriteAddress.requestFocus();
+                            }
+
                             mViewModel.onChangePriceAndPeriod();
                         },
                         DateCalculator.getYear(),
@@ -191,6 +198,10 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     private void setObservableData() {
         mViewModel.mPrice.observe(this, __ ->
                 mViewModel.onChangePriceAndPeriod()
+        );
+
+        mViewModel.mAddress.observe(this, __ ->
+                getBinding().etWriteRoomSize.requestFocus()
         );
     }
 }
