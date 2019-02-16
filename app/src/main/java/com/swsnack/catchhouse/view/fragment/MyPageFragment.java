@@ -10,8 +10,7 @@ import android.view.View;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.adapter.roomadapter.FavoriteRoomAdapter;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.adapter.roomadapter.RoomListAdapter;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.DialogChangeNickNameBinding;
 import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
@@ -64,13 +63,17 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
             }
         }
 
-        FavoriteRoomAdapter favoriteRoomAdapter = new FavoriteRoomAdapter(getContext(), getViewModel());
-        getBinding().lyMyPageInclude.rvMyPageMyFavorite.setAdapter(favoriteRoomAdapter);
+        RoomListAdapter favoriteRoomListAdapter = new RoomListAdapter(getContext(), getViewModel());
+        getBinding().lyMyPageInclude.rvMyPageMyFavorite.setAdapter(favoriteRoomListAdapter);
         getBinding().lyMyPageInclude.rvMyPageMyFavorite.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        favoriteRoomAdapter.setOnItemClickListener((viewHolder, position) -> {
-            Room room = DataConverter.convertToRoom(favoriteRoomAdapter.getItem(position));
+        favoriteRoomListAdapter.setOnItemClickListener((viewHolder, position) -> {
+            Room room = favoriteRoomListAdapter.getItem(position);
             startActivity(new Intent(getContext(), PostActivity.class).putExtra(INTENT_ROOM, room));
         });
+
+        RoomListAdapter recentRoomListAdapter = new RoomListAdapter(getContext(), getViewModel());
+        getBinding().lyMyPageInclude.rvMyPageRecentlyVisit.setAdapter(recentRoomListAdapter);
+        getBinding().lyMyPageInclude.rvMyPageRecentlyVisit.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         getBinding().tvMyPageChangeNickName.setOnClickListener(v -> {
             DialogChangeNickNameBinding dialogBinding = DialogChangeNickNameBinding.inflate(getLayoutInflater());
@@ -120,6 +123,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     public void onStart() {
         super.onStart();
         getViewModel().getFavoriteRoom();
+        getViewModel().getRecentRoom();
     }
 
     @Override

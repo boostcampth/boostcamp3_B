@@ -25,6 +25,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -48,6 +49,7 @@ public class UserViewModel extends ReactiveViewModel {
     private ViewModelListener mListener;
     private Uri mProfileUri;
     private MutableLiveData<List<RoomEntity>> mFavoriteRoomList;
+    private MutableLiveData<List<Room>> mRecentRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
     public MutableLiveData<Boolean> mIsSigned;
@@ -60,6 +62,7 @@ public class UserViewModel extends ReactiveViewModel {
         super(dataManager, apiManager);
         this.mAppContext = application;
         this.mFavoriteRoomList = new MutableLiveData<>();
+        this.mRecentRoomList = new MutableLiveData<>();
         this.mUser = new MutableLiveData<>();
         this.mGender = new MutableLiveData<>();
         this.mIsSigned = new MutableLiveData<>();
@@ -272,11 +275,19 @@ public class UserViewModel extends ReactiveViewModel {
         mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
     }
 
+    public void getRecentRoom() {
+        mRecentRoomList.setValue(getDataManager().getRecentRoom());
+    }
+
     public LiveData<User> getUser() {
         return mUser;
     }
 
     public LiveData<List<RoomEntity>> getFavoriteRoomList() {
         return mFavoriteRoomList;
+    }
+
+    public LiveData<List<Room>> getRecentRoomList() {
+        return mRecentRoomList;
     }
 }

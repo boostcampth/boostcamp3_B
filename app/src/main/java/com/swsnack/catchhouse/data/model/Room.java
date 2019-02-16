@@ -9,6 +9,8 @@ import com.google.firebase.database.Exclude;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+
 public class Room implements Parcelable {
 
     private String key;
@@ -327,7 +329,23 @@ public class Room implements Parcelable {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-//
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if(!(obj instanceof  Room)) {
+            return false;
+        }
+
+        Room compareRoom = (Room) obj;
+        return this.key.equals(compareRoom.getKey());
+    }
+
+    @Override
+    public int hashCode() {
+        return key.hashCode();
+    }
+
+    //
 //    public Bitmap getImage() {
 //        return image;
 //    }

@@ -93,6 +93,7 @@ public class PostViewModel extends ReactiveViewModel {
     public void setRoomData(Room roomData) {
         mRoom.setValue(roomData);
         checkFavoriteRoom();
+        visitNewRoom();
     }
 
     public void addOrRemoveFavoriteRoom(View v) {
@@ -109,6 +110,11 @@ public class PostViewModel extends ReactiveViewModel {
                     .deleteFavoriteRoom(DataConverter.convertToRoomEntity(mRoom.getValue()));
             mIsFavorite.setValue(false);
         }
+    }
+
+    public void visitNewRoom() {
+        getDataManager()
+                .setRecentRoom(mRoom.getValue());
     }
 
     public LiveData<Boolean> isFavorite() {

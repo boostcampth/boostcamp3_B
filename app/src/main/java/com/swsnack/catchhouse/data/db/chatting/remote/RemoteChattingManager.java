@@ -78,6 +78,7 @@ public class RemoteChattingManager implements ChattingManager {
                                 return;
                             }
                         }
+                        onSuccessListener.onSuccess(null);
                     }
 
                     @Override
