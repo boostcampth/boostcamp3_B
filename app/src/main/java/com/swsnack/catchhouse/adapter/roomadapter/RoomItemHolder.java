@@ -8,12 +8,12 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
 import androidx.recyclerview.widget.RecyclerView;
 
- class FavoriteRoomItemHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
+ class RoomItemHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
 
     private ItemMyFavoriteRoomBinding mBinding;
     private LifecycleRegistry mLifeCycle = new LifecycleRegistry(this);
 
-    FavoriteRoomItemHolder(@NonNull ItemMyFavoriteRoomBinding binding) {
+    RoomItemHolder(@NonNull ItemMyFavoriteRoomBinding binding) {
         super(binding.getRoot());
         this.mBinding = binding;
         this.mLifeCycle.setCurrentState(Lifecycle.State.INITIALIZED);

@@ -3,7 +3,9 @@ package com.swsnack.catchhouse.data.db.room;
 import android.net.Uri;
 
 import com.swsnack.catchhouse.data.db.room.local.AppFavoriteRoomDataManager;
+import com.swsnack.catchhouse.data.db.room.local.AppRecentRoomManager;
 import com.swsnack.catchhouse.data.db.room.local.FavoriteRoomManager;
+import com.swsnack.catchhouse.data.db.room.local.RecentRoomManager;
 import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
 import com.swsnack.catchhouse.data.db.room.remote.RoomDataManager;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
@@ -16,11 +18,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class RoomRepository implements RoomDataManager, FavoriteRoomManager {
+public class RoomRepository implements RoomDataManager, FavoriteRoomManager, RecentRoomManager {
 
     private static RoomRepository INSTANCE;
     private FavoriteRoomManager mLocalRoomDataManager;
     private RoomDataManager mRemoteRoomDataManager;
+    private RecentRoomManager mRecentRoomDataManager;
 
     public static RoomRepository getInstance() {
         if(INSTANCE == null) {
@@ -35,6 +38,7 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager {
 
         mLocalRoomDataManager = AppFavoriteRoomDataManager.getInstance();
         mRemoteRoomDataManager = AppRoomRemoteDataManager.getInstance();
+        mRecentRoomDataManager = AppRecentRoomManager.getInstance();
     }
 
     @Override
@@ -75,5 +79,15 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager {
     @Override
     public RoomEntity getFavoriteRoom(String key) {
         return mLocalRoomDataManager.getFavoriteRoom(key);
+    }
+
+    @Override
+    public void setRecentRoom(Room room) {
+        mRecentRoomDataManager.setRecentRoom(room);
+    }
+
+    @Override
+    public List<Room> getRecentRoom() {
+        return mRecentRoomDataManager.getRecentRoom();
     }
 }

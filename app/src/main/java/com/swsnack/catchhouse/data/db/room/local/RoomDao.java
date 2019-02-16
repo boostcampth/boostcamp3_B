@@ -22,9 +22,9 @@ public interface RoomDao {
     @Delete
     void deleteFavoriteRoom(RoomEntity roomEntity);
 
-    @Query("SELECT * FROM " + ROOM_TABLE)
-    List<RoomEntity> loadFavoriteRoom();
+    @Query("SELECT * FROM my_favorite_room WHERE firebaseUuid = :userUuid")
+    List<RoomEntity> loadFavoriteRoom(String userUuid);
 
-    @Query("SELECT * FROM my_favorite_room WHERE room_uid = :key")
-    RoomEntity getFavoriteRoom(String key);
+    @Query("SELECT * FROM my_favorite_room WHERE room_uid = :key AND firebaseUuid = :userUuid")
+    RoomEntity getFavoriteRoom(String key, String userUuid);
 }

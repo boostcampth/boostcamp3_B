@@ -28,9 +28,9 @@ public class ChattingViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
-    private MutableLiveData<List<Chatting>> mChattingList;
-    private Boolean mIsListeningForchangedMessage;
+    private Boolean mIsListeningForChangedMessage;
     private String mRoomUid;
+    private MutableLiveData<List<Chatting>> mChattingList;
     private MutableLiveData<List<Message>> mMessageList;
     private MutableLiveData<User> mDestinationUserData;
 
@@ -38,7 +38,7 @@ public class ChattingViewModel extends ReactiveViewModel {
         super(dataManager, apiManager);
         this.mAppContext = AppApplication.getAppContext();
         this.mListener = bottomNavListener;
-        this.mIsListeningForchangedMessage = false;
+        this.mIsListeningForChangedMessage = false;
         this.mChattingList = new MutableLiveData<>();
         this.mMessageList = new MutableLiveData<>();
         this.mDestinationUserData = new MutableLiveData<>();
@@ -49,13 +49,13 @@ public class ChattingViewModel extends ReactiveViewModel {
             return;
         }
         getDataManager()
-                .getChattingList(list -> mChattingList.setValue(list),
+                .listeningChattingListChanged(list -> mChattingList.setValue(list),
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_database_exception)));
     }
 
     public void cancelChattingListChangingListening() {
         getDataManager()
-                .cancelChattingModelObserving();
+                .cancelObservingChattingList();
     }
 
     public void getUser(int position, OnSuccessListener<User> onSuccessListener, OnFailureListener onFailureListener) {
@@ -84,15 +84,15 @@ public class ChattingViewModel extends ReactiveViewModel {
                             mRoomUid = roomId;
                             getNewMessage();
                         },
-                        error -> mListener.onError("에러"));
+                        error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_load_list)));
     }
 
     public void getNewMessage() {
         getDataManager()
-                .listeningForChangedChatMessage(mRoomUid,
+                .listeningChatMessageChanged(mRoomUid,
                         messageList -> {
                             mMessageList.setValue(messageList);
-                            mIsListeningForchangedMessage = true;
+                            mIsListeningForChangedMessage = true;
                         },
                         error -> mListener.onError(StringUtil.getStringFromResource(R.string.snack_failed_load_list)));
     }
@@ -100,7 +100,8 @@ public class ChattingViewModel extends ReactiveViewModel {
     public void cancelChangingMessagesListening() {
         getDataManager()
                 .cancelMessageModelObserving();
-        mIsListeningForchangedMessage = false;
+        mIsListeningForChangedMessage = false;
+        mMessageList.setValue(null);
     }
 
     public void sendNewMessage(int messagesLength, String content) {
@@ -109,7 +110,7 @@ public class ChattingViewModel extends ReactiveViewModel {
                         roomUid -> {
                             mRoomUid = roomUid;
                             mListener.onSuccess(SEND_MESSAGE_SUCCESS);
-                            if (!mIsListeningForchangedMessage) {
+                            if (!mIsListeningForChangedMessage) {
                                 getNewMessage();
                             }
                         },
@@ -134,9 +135,7 @@ public class ChattingViewModel extends ReactiveViewModel {
             if (chatting.getMessages() != null) {
                 this.mMessageList.setValue(chatting.getMessages());
             }
-            return;
         }
-        mMessageList.setValue(new ArrayList<>());
     }
 
     public LiveData<User> getDestinationUserData() {
