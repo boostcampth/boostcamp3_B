@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.AppApplication;
+import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.roomadapter.RoomListAdapter;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
@@ -22,6 +23,10 @@ public class UserDataBinding {
 
     @BindingAdapter({"setProfile"})
     public static void setProfile(ImageView imageView, Bitmap profileBitmap) {
+        if(profileBitmap == null) {
+            imageView.setImageResource(R.drawable.profile);
+            return;
+        }
         Glide.with(imageView).load(profileBitmap).apply(RequestOptions.centerCropTransform()).into(imageView);
     }
 

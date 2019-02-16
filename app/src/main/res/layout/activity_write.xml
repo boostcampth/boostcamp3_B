@@ -24,7 +24,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="12dp"
-                app:title="@string/tb_write" />
+                app:title="@string/tb_write"
+                app:titleTextColor="@android:color/white"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -186,7 +187,6 @@
                             android:textSize="14sp"
                             app:layout_constraintStart_toEndOf="@+id/cb_write_standard"
                             app:layout_constraintTop_toBottomOf="@+id/tv_write_expected_value" />
-
 
                         <CheckBox
                             android:id="@+id/cb_write_pet"

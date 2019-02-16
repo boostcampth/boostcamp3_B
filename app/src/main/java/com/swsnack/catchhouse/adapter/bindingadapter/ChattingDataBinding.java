@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.AppApplication;
+import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListAdapter;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingMessageAdapter;
 import com.swsnack.catchhouse.data.model.Chatting;
@@ -43,9 +44,11 @@ public class ChattingDataBinding {
         }
 
         String uri = user.getProfile();
-        if (uri != null) {
-            Glide.with(AppApplication.getAppContext()).load(Uri.parse(uri)).apply(new RequestOptions().circleCrop()).into(imageView);
+        if (uri == null) {
+            imageView.setImageResource(R.drawable.profile);
+            return;
         }
+        Glide.with(AppApplication.getAppContext()).load(Uri.parse(uri)).apply(new RequestOptions().circleCrop()).into(imageView);
     }
 
     @BindingAdapter({"setChattingMessage"})

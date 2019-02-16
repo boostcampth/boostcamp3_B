@@ -1,5 +1,7 @@
 package com.swsnack.catchhouse.view.fragment;
 
+
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,7 +17,6 @@ import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.DialogChangeNickNameBinding;
 import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
-import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activitity.PostActivity;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
@@ -62,8 +63,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         getBinding().setHandler(getViewModel());
         getViewModel().getUserData();
 
-        getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
-        getBinding().ctlMyPage.setCollapsedTitleTextColor(Color.WHITE);
+        init();
 
         for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
             if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
@@ -74,7 +74,9 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         RoomListAdapter favoriteRoomListAdapter = new RoomListAdapter(getContext(), getViewModel());
         getBinding().lyMyPageInclude.rvMyPageMyFavorite.setAdapter(favoriteRoomListAdapter);
-        getBinding().lyMyPageInclude.rvMyPageMyFavorite.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        getBinding().lyMyPageInclude.rvMyPageMyFavorite
+                .setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
         favoriteRoomListAdapter.setOnItemClickListener((viewHolder, position) -> {
             Room room = favoriteRoomListAdapter.getItem(position);
             startActivity(new Intent(getContext(), PostActivity.class).putExtra(INTENT_ROOM, room));
@@ -82,50 +84,85 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         RoomListAdapter recentRoomListAdapter = new RoomListAdapter(getContext(), getViewModel());
         getBinding().lyMyPageInclude.rvMyPageRecentlyVisit.setAdapter(recentRoomListAdapter);
-        getBinding().lyMyPageInclude.rvMyPageRecentlyVisit.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        getBinding().lyMyPageInclude.rvMyPageRecentlyVisit
+                .setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
-        getBinding().tvMyPageChangeNickName.setOnClickListener(v -> {
-            DialogChangeNickNameBinding dialogBinding = DialogChangeNickNameBinding.inflate(getLayoutInflater());
-            dialogBinding.setHandler(getViewModel());
+        recentRoomListAdapter.setOnItemClickListener(((viewHolder, position) -> {
+            Room room = recentRoomListAdapter.getItem(position);
+            startActivity(new Intent(getContext(), PostActivity.class).putExtra(INTENT_ROOM, room));
+        }));
 
-            Dialog dialogChangeNickName = new Dialog(getContext());
-            dialogChangeNickName.setContentView(dialogBinding.getRoot());
-            dialogChangeNickName.show();
+        getBinding().tvMyPageChangeNickName.setOnClickListener(v -> onChangeNickNameBtnClicked());
 
-            dialogBinding.tvDialogChangeNickNameNegative.setOnClickListener(negative -> dialogChangeNickName.dismiss());
-            dialogBinding.tvDialogChangeNickNamePositive.setOnClickListener(positive -> {
-                getViewModel().changeNickName(dialogBinding.etDialogChangeNickName.getText().toString());
-                dialogChangeNickName.dismiss();
-            });
-        });
+        getBinding().tvMyPageChangePassword.setOnClickListener(v -> onChangePasswordBtnClicked());
 
-        getBinding().tvMyPageChangePassword.setOnClickListener(v -> {
-            DialogChangePasswordBinding dialogBinding = DialogChangePasswordBinding.inflate(getLayoutInflater());
-            dialogBinding.setHandler(getViewModel());
+        getBinding().tvMyPageChangeProfile.setOnClickListener(v ->
+                startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY));
 
-            Dialog dialogChangePassword = new Dialog(getContext());
-            dialogChangePassword.setContentView(dialogBinding.getRoot());
-            dialogChangePassword.show();
+        getBinding().tvMyPageDelete.setOnClickListener(v -> onDeleteUserBtnClicked());
 
-            dialogBinding.tvDialogChangePasswordNegative.setOnClickListener(negative -> dialogChangePassword.dismiss());
-            dialogBinding.tvDialogChangePasswordPositive.setOnClickListener(positive -> {
-                if (!dialogBinding.etDialogChangePasswordNewPassword.getText().toString()
-                        .equals(dialogBinding.etDialogChangePasswordNewPasswordConfirm.getText().toString())) {
-                    Snackbar.make(getBinding().getRoot(), R.string.snack_wrong_password, Snackbar.LENGTH_SHORT).show();
-                    return;
-                }
+        getBinding().tvMyPageSignOut.setOnClickListener(v -> onSignOutBtnClicked());
+    }
 
-                getViewModel().updatePassword(dialogBinding.etDialogChangePasswordExPassword.getText().toString(),
-                        dialogBinding.etDialogChangePasswordNewPassword.getText().toString());
-
-                dialogChangePassword.dismiss();
-            });
-        });
-
-        getBinding().tvMyPageChangeProfile.setOnClickListener(v -> startActivityForResult(new Intent(Intent.ACTION_PICK).setType("image/*"), GALLERY));
-
+    private void init() {
+        getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
+        getBinding().ctlMyPage.setCollapsedTitleTextColor(Color.WHITE);
         getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.GONE);
         getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.GONE);
+    }
+
+    private void onChangeNickNameBtnClicked() {
+        DialogChangeNickNameBinding dialogBinding = DialogChangeNickNameBinding.inflate(getLayoutInflater());
+        dialogBinding.setHandler(getViewModel());
+
+        Dialog dialogChangeNickName = new Dialog(getContext());
+        dialogChangeNickName.setContentView(dialogBinding.getRoot());
+        dialogChangeNickName.show();
+
+        dialogBinding.tvDialogChangeNickNameNegative.setOnClickListener(negative -> dialogChangeNickName.dismiss());
+        dialogBinding.tvDialogChangeNickNamePositive.setOnClickListener(positive -> {
+            getViewModel().changeNickName(dialogBinding.etDialogChangeNickName.getText().toString());
+            dialogChangeNickName.dismiss();
+        });
+    }
+
+    private void onChangePasswordBtnClicked() {
+        DialogChangePasswordBinding dialogBinding = DialogChangePasswordBinding.inflate(getLayoutInflater());
+        dialogBinding.setHandler(getViewModel());
+
+        Dialog dialogChangePassword = new Dialog(getContext());
+        dialogChangePassword.setContentView(dialogBinding.getRoot());
+        dialogChangePassword.show();
+
+        dialogBinding.tvDialogChangePasswordNegative.setOnClickListener(negative -> dialogChangePassword.dismiss());
+        dialogBinding.tvDialogChangePasswordPositive.setOnClickListener(positive -> {
+            if (!dialogBinding.etDialogChangePasswordNewPassword.getText().toString()
+                    .equals(dialogBinding.etDialogChangePasswordNewPasswordConfirm.getText().toString())) {
+                Snackbar.make(getBinding().getRoot(), R.string.snack_wrong_password, Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+
+            getViewModel().updatePassword(dialogBinding.etDialogChangePasswordExPassword.getText().toString(),
+                    dialogBinding.etDialogChangePasswordNewPassword.getText().toString());
+
+            dialogChangePassword.dismiss();
+        });
+    }
+
+    private void onDeleteUserBtnClicked() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.my_page_delete_user)
+                .setMessage(R.string.dialog_delete_user)
+                .setPositiveButton(R.string.dialog_positive, (dialog, which) -> getViewModel().deleteUser())
+                .create().show();
+    }
+
+    private void onSignOutBtnClicked() {
+        new AlertDialog.Builder(getContext())
+                .setTitle(R.string.my_page_delete_user)
+                .setMessage(R.string.dialog_sign_out)
+                .setPositiveButton(R.string.dialog_positive, (dialog, which) -> getViewModel().signOut())
+                .create().show();
     }
 
     @Override
