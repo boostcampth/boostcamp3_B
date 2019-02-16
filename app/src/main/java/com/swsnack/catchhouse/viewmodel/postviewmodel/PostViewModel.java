@@ -99,6 +99,7 @@ public class PostViewModel extends ReactiveViewModel {
     public void addOrRemoveFavoriteRoom(View v) {
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             mListener.onError(StringUtil.getStringFromResource(R.string.not_singed));
+            return;
         }
 
         if (!mIsFavorite.getValue()) {
