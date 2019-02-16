@@ -25,19 +25,19 @@
                 android:layout_height="wrap_content"
                 android:elevation="12dp"
                 app:title="@string/tb_write"
-                app:titleTextColor="@android:color/white"/>
+                app:titleTextColor="@android:color/white" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:orientation="vertical">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -56,7 +56,6 @@
                             android:id="@+id/vp_write"
                             android:layout_width="match_parent"
                             android:layout_height="320dp"
-                            android:layout_margin="8dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="16dp"
@@ -79,9 +78,10 @@
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/tv_write_gallery"
                             style="@style/btn"
+                            android:layout_marginStart="16dp"
                             android:text="@string/tv_write_gallery"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.08"
+                            app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tab_write" />
 
@@ -91,6 +91,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:hint="@string/et_write_value_hint"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -100,8 +101,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:drawableStart="@drawable/ic_attach_money_black_18dp"
+                                android:layout_marginStart="0dp"
                                 android:inputType="number"
                                 android:text="@={handler.mPrice}"
                                 android:textAlignment="textStart" />
@@ -120,7 +120,7 @@
                         <TextView
                             android:id="@+id/tv_write_date_from"
                             style="@style/tv.body"
-                            android:layout_marginStart="8dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:drawableEnd="@drawable/ic_date_range_black_24dp"
                             android:text="@={handler.mFromDate}"
@@ -164,6 +164,7 @@
                         <TextView
                             android:id="@+id/tv_write_expected_value"
                             style="@style/tv.title"
+                            android:layout_marginStart="16dp"
                             android:text="@{handler.mExpectedPrice}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv_write_expected_value_title" />
@@ -171,7 +172,7 @@
                         <CheckBox
                             android:id="@+id/cb_write_standard"
                             style="@style/tv.body"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:text="@string/cb_write_standard"
                             android:textSize="14sp"
@@ -191,7 +192,7 @@
                         <CheckBox
                             android:id="@+id/cb_write_pet"
                             style="@style/tv.body"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="4dp"
                             android:text="@string/cb_write_pet"
                             android:textSize="14sp"
@@ -201,11 +202,12 @@
                         <CheckBox
                             android:id="@+id/cb_write_smoking"
                             style="@style/tv.body"
+                            android:layout_width="118dp"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="4dp"
                             android:text="@string/cb_write_smoking"
                             android:textSize="14sp"
-                            app:layout_constraintStart_toEndOf="@+id/cb_write_standard"
+                            app:layout_constraintStart_toEndOf="@+id/cb_write_pet"
                             app:layout_constraintTop_toBottomOf="@+id/cb_write_gender" />
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -213,6 +215,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -223,8 +226,7 @@
                                 style="@style/tv.body"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_margin="0dp"
                                 android:drawableStart="@drawable/ic_location_on_black_18dp"
                                 android:focusable="false"
                                 android:inputType="text"
@@ -238,6 +240,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:hint="@string/et_write_room_size_hint"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -247,8 +250,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="0dp"
                                 android:drawableStart="@drawable/ic_straighten_black_18dp"
                                 android:inputType="number"
                                 android:text="@={handler.mSize}"
@@ -269,6 +272,7 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:hint="@string/et_write_title_hint"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -278,8 +282,8 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="8dp"
-                                android:layout_marginTop="8dp"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="0dp"
                                 android:inputType="text"
                                 android:text="@={handler.mTitle}"
                                 android:textAlignment="textStart" />
@@ -289,6 +293,7 @@
                             android:id="@+id/et_write_content"
                             style="@style/Basic_EditText"
                             android:layout_height="160dp"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="24dp"
                             android:layout_marginBottom="24dp"
                             android:background="@drawable/et_round_background"
