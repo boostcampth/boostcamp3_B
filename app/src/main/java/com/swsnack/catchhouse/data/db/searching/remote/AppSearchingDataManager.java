@@ -48,7 +48,7 @@ public class AppSearchingDataManager implements SearchingDataManager {
         return INSTANCE;
     }
 
-    public AppSearchingDataManager() {
+    private AppSearchingDataManager() {
         mTMapData = new TMapData();
         mRefLocation = FirebaseDatabase.getInstance().getReference().child(DB_LOCATION);
         mRefRoom = FirebaseDatabase.getInstance().getReference().child(DB_ROOM);
@@ -98,7 +98,7 @@ public class AppSearchingDataManager implements SearchingDataManager {
                                 .into(new SimpleTarget<Bitmap>() {
                                     @Override
                                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
-                                        room.setImage(resource);
+//                                        room.setImage(resource);
                                         roomList.add(room);
                                         Log.v("csh", "데이터 추가됨");
                                         if (--cnt == 0) {

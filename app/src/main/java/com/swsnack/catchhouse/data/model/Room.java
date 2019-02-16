@@ -70,12 +70,9 @@ public class Room implements Parcelable {
      * 흡연 옵션
      **/
     private boolean optionSmoking;
-    @Exclude
     private double latitude;
-    @Exclude
     private double longitude;
-    @Exclude
-    private Bitmap image;
+//    private Bitmap image;
 
     public Room() {
 
@@ -136,7 +133,7 @@ public class Room implements Parcelable {
     public Room(String key, String price, String from, String to, String title, String content,
                 List<String> images, String uuid, String address, String addressName, String size,
                 boolean optionStandard, boolean optionGender, boolean optionPet, boolean optionSmoking,
-                double latitude, double longitude, Bitmap image) {
+                double latitude, double longitude) {
         this.key = key;
         this.price = price;
         this.from = from;
@@ -154,7 +151,7 @@ public class Room implements Parcelable {
         this.optionSmoking = optionSmoking;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.image = image;
+//        this.image = image;
     }
 
     public String getKey() {
@@ -330,12 +327,12 @@ public class Room implements Parcelable {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
-    public Bitmap getImage() {
-        return image;
-    }
-
-    public void setImage(Bitmap image) {
-        this.image = image;
-    }
+//
+//    public Bitmap getImage() {
+//        return image;
+//    }
+//
+//    public void setImage(Bitmap image) {
+//        this.image = image;
+//    }
 }

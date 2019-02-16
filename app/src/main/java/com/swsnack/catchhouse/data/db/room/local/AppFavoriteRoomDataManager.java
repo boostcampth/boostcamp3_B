@@ -1,5 +1,6 @@
 package com.swsnack.catchhouse.data.db.room.local;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.data.AppDatabase;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
 
@@ -28,11 +29,13 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public void setFavoriteRoom(RoomEntity roomEntity) {
+        roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
         new FavoriteRoomHelper.AsyncSetFavoriteRoom(mRoomDao).execute(roomEntity);
     }
 
     @Override
     public void deleteFavoriteRoom(RoomEntity roomEntity) {
+        roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
         new FavoriteRoomHelper.AsyncDeleteFavoriteRoom(mRoomDao).execute(roomEntity);
 
     }
@@ -40,7 +43,7 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
     @Override
     public List<RoomEntity> getFavoriteRoomList() {
         try {
-            return new FavoriteRoomHelper.AsyncLoadFavoriteRoomList(mRoomDao).execute().get();
+            return new FavoriteRoomHelper.AsyncLoadFavoriteRoomList(mRoomDao).execute(FirebaseAuth.getInstance().getCurrentUser().getUid()).get();
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }
@@ -49,7 +52,7 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
     @Override
     public RoomEntity getFavoriteRoom(String key) {
         try {
-            return new FavoriteRoomHelper.AsyncLoadFavoriteRoom(mRoomDao).execute(key).get();
+            return new FavoriteRoomHelper.AsyncLoadFavoriteRoom(mRoomDao).execute(key, FirebaseAuth.getInstance().getCurrentUser().getUid()).get();
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }

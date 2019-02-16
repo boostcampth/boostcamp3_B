@@ -11,10 +11,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.roomadapter.FavoriteRoomAdapter;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.DialogChangeNickNameBinding;
 import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
+import com.swsnack.catchhouse.util.DataConverter;
 import com.swsnack.catchhouse.view.BaseFragment;
+import com.swsnack.catchhouse.view.activitity.PostActivity;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import androidx.annotation.NonNull;
@@ -22,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static com.swsnack.catchhouse.Constant.GALLERY;
+import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 
@@ -62,6 +67,10 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         FavoriteRoomAdapter favoriteRoomAdapter = new FavoriteRoomAdapter(getContext(), getViewModel());
         getBinding().lyMyPageInclude.rvMyPageMyFavorite.setAdapter(favoriteRoomAdapter);
         getBinding().lyMyPageInclude.rvMyPageMyFavorite.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+        favoriteRoomAdapter.setOnItemClickListener((viewHolder, position) -> {
+            Room room = DataConverter.convertToRoom(favoriteRoomAdapter.getItem(position));
+            startActivity(new Intent(getContext(), PostActivity.class).putExtra(INTENT_ROOM, room));
+        });
 
         getBinding().tvMyPageChangeNickName.setOnClickListener(v -> {
             DialogChangeNickNameBinding dialogBinding = DialogChangeNickNameBinding.inflate(getLayoutInflater());

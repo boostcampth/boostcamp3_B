@@ -13,6 +13,7 @@ import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.adapter.roomadapter.FavoriteRoomAdapter;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDataBinding {
@@ -24,11 +25,15 @@ public class UserDataBinding {
 
     @BindingAdapter({"setFavoriteRoom"})
     public static void setFavoriteRoom(RecyclerView recyclerView, List<RoomEntity> roomList) {
-        if(roomList == null) {
+        FavoriteRoomAdapter favoriteRoomAdapter = (FavoriteRoomAdapter) recyclerView.getAdapter();
+        if(favoriteRoomAdapter == null) {
             return;
         }
 
-        FavoriteRoomAdapter favoriteRoomAdapter = (FavoriteRoomAdapter) recyclerView.getAdapter();
+        if(roomList == null) {
+            favoriteRoomAdapter.setList(new ArrayList<>());
+        }
+
         favoriteRoomAdapter.setList(roomList);
     }
 
