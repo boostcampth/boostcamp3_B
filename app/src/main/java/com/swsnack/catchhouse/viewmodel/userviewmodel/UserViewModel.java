@@ -214,14 +214,16 @@ public class UserViewModel extends ReactiveViewModel {
                         });
     }
 
-    public void signOut(View v) {
+    public void signOut() {
+        mListener.isWorking();
         FirebaseAuth.getInstance().signOut();
         mListener.onSuccess(SIGN_OUT_SUCCESS);
         getDataManager().cancelMessageModelObserving();
         getDataManager().cancelObservingChattingList();
+        mListener.isFinished();
     }
 
-    public void deleteUser(View v) {
+    public void deleteUser() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             mListener.onError(getStringFromResource(R.string.snack_fb_not_signed_user));
             return;
