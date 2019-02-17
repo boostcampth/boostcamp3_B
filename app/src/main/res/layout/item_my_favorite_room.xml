@@ -39,7 +39,7 @@
 
             <TextView
                 android:id="@+id/tv_item_my_favorite_title"
-                style="@style/tv.header"
+                style="@style/tv.title"
                 android:layout_marginTop="16dp"
                 android:text="@{data.title}"
                 app:layout_constraintStart_toStartOf="parent"
