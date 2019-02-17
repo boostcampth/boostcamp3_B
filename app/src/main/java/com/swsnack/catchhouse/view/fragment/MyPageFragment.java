@@ -107,7 +107,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
     private void init() {
         getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
-        getBinding().ctlMyPage.setCollapsedTitleTextColor(Color.WHITE);
+        getBinding().ctlMyPage.setCollapsedTitleTextColor(getResources().getColor(R.color.colorPrimary));
         getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.GONE);
         getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.GONE);
     }
@@ -120,8 +120,8 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         dialogChangeNickName.setContentView(dialogBinding.getRoot());
         dialogChangeNickName.show();
 
-        dialogBinding.tvDialogChangeNickNameNegative.setOnClickListener(negative -> dialogChangeNickName.dismiss());
-        dialogBinding.tvDialogChangeNickNamePositive.setOnClickListener(positive -> {
+        dialogBinding.btnDialogChangeNickNameNegative.setOnClickListener(negative -> dialogChangeNickName.dismiss());
+        dialogBinding.btnDialogChangeNickNamePositive.setOnClickListener(positive -> {
             getViewModel().changeNickName(dialogBinding.etDialogChangeNickName.getText().toString());
             dialogChangeNickName.dismiss();
         });
@@ -160,7 +160,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
     private void onSignOutBtnClicked() {
         new AlertDialog.Builder(getContext())
-                .setTitle(R.string.my_page_delete_user)
+                .setTitle(R.string.my_page_sign_out)
                 .setMessage(R.string.dialog_sign_out)
                 .setPositiveButton(R.string.dialog_positive, (dialog, which) -> getViewModel().signOut())
                 .create().show();
@@ -177,7 +177,6 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (resultCode == RESULT_OK && requestCode == GALLERY) {
             String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             Uri destinationUri = Uri.fromFile(new File(getCacheDir(), fileName + "png"));

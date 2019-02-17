@@ -16,7 +16,8 @@
                 android:layout_height="?attr/actionBarSize"
                 android:fitsSystemWindows="true"
                 app:title="@string/home_title"
-                app:titleTextColor="@color/colorOnSecondary"/>
+                app:titleTextColor="@color/colorPrimary"
+                android:background="@android:color/white"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -27,7 +28,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tv_home_search"
-                style="@style/btn"
+                style="@style/btn.accent"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginStart="8dp"
@@ -43,7 +44,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/tv_home_post"
-                style="@style/btn"
+                style="@style/btn.accent"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginStart="8dp"

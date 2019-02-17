@@ -71,15 +71,15 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         );
         getBinding().tabPost.setupWithViewPager(getBinding().vpPost, true);
 
-        getBinding().tvPostChatting.setOnClickListener(__ -> {
-            if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-                Snackbar.make(getBinding().getRoot(), R.string.not_singed, Snackbar.LENGTH_SHORT).show();
-                return;
-            }
-            Intent intent = new Intent(this, ChattingMessageActivity.class);
-            intent.putExtra(UUID, room.getUuid());
-            startActivity(intent);
-        });
+//        getBinding().tvPostChatting.setOnClickListener(__ -> {
+//            if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+//                Snackbar.make(getBinding().getRoot(), R.string.not_singed, Snackbar.LENGTH_SHORT).show();
+//                return;
+//            }
+//            Intent intent = new Intent(this, ChattingMessageActivity.class);
+//            intent.putExtra(UUID, room.getUuid());
+//            startActivity(intent);
+//        });
 
         setTmapView(longitude, latitude);
         mViewModel.setInitRoomData(room);

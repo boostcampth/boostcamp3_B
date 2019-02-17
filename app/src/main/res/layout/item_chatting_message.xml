@@ -28,7 +28,8 @@
             style="@style/iv.round"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            bind:setChattingUserProfile="@{userData}" />
+            bind:setChattingUserProfile="@{userData}"
+            android:src="@drawable/profile"/>
 
         <TextView
             android:id="@+id/tv_item_message_destination"
@@ -36,9 +37,8 @@
             android:layout_width="0dp"
             android:layout_marginBottom="0dp"
             android:background="@drawable/tv_message_destination"
-            android:padding="3dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
             android:layout_marginStart="4dp"
             android:text="@{message.content}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -52,9 +52,8 @@
             android:layout_width="0dp"
             android:layout_marginBottom="0dp"
             android:background="@drawable/tv_message"
-            android:padding="3dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+            android:padding="5dp"
+            android:textColor="@android:color/white"
             android:text="@{message.content}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
