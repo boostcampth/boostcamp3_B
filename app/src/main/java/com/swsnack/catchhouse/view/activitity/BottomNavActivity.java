@@ -1,13 +1,16 @@
 package com.swsnack.catchhouse.view.activitity;
 
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.skt.Tmap.TMapTapi;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
@@ -47,6 +50,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
     private OnViewPagerChangedListener mViewPagerListener;
+    private long firstBackPressedTime;
 
     @Override
     protected int getLayout() {
@@ -104,7 +108,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.d("test22","create");
+        firstBackPressedTime = 0;
         createViewModels();
         mDisposable = new CompositeDisposable();
         mFragmentManager = getSupportFragmentManager();
@@ -172,7 +176,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("test22","stop");
+        Log.d("test22", "stop");
         mDisposable.dispose();
     }
 
@@ -224,4 +228,15 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         this.mViewPagerListener = onViewPagerChangedListener;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > firstBackPressedTime + 2000) {
+            firstBackPressedTime = System.currentTimeMillis();
+            Snackbar.make(getBinding().getRoot(), getString(R.string.snack_back_pressed), Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        if (System.currentTimeMillis() <= firstBackPressedTime + 2000) {
+            finish();
+        }
+    }
 }

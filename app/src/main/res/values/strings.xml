@@ -145,4 +145,5 @@
     <string name="tv_post_chatting">작성자랑 채팅하기</string>
     <string name="sign_in_login_google">구글 로그인</string>
     <string name="sign_in_login_facebook">페이스북 로그인</string>
+    <string name="snack_back_pressed">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
 </resources>

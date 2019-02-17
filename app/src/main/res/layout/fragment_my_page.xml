@@ -99,7 +99,7 @@
                     android:id="@+id/ly_my_page_change_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:background="@android:color/white"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -161,7 +161,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:background="@android:color/white"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
