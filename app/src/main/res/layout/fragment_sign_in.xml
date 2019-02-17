@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -17,138 +18,173 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="380dp"
-            android:fitsSystemWindows="true">
+            android:layout_height="?attr/actionBarSize"
+            android:fitsSystemWindows="true"
+            android:backgroundTint="@android:color/white">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/ctl_sign_in"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tb_sign_in"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                android:background="@color/colorDefaultGray"
-                app:title="로그인">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/tv_sign_in_title"
-                        style="@style/tv.header"
-                        android:paddingTop="40dp"
-                        android:paddingBottom="20dp"
-                        android:text="@string/main_title"
-                        android:textColor="@color/colorOnSecondary"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tvl_sign_in_email"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:hint="@string/sign_email"
-                        app:errorEnabled="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_sign_in_title">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_sign_up_email"
-                            android:layout_width="@dimen/sign_in_et_width"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
-                            android:nextFocusDown="@id/tvl_sign_up_password"
-                            android:text="@={handler.mEmail}" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/tvl_sign_up_password"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/sign_password"
-                        app:errorEnabled="true"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvl_sign_in_email">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_sign_up_password"
-                            android:layout_width="@dimen/sign_in_et_width"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPassword"
-                            android:text="@={handler.mPassword}" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <Button
-                        android:id="@+id/tv_sign_in_login"
-                        style="@style/btn"
-                        android:layout_width="0dp"
-                        android:onClick="@{handler::signInWithEmail}"
-                        android:text="@string/sign_in_login"
-                        app:layout_constraintEnd_toEndOf="@id/tvl_sign_up_password"
-                        app:layout_constraintStart_toStartOf="@id/tvl_sign_up_password"
-                        app:layout_constraintTop_toBottomOf="@id/tvl_sign_up_password" />
-
-                    <ImageView
-                        android:id="@+id/iv_sign_in_google"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/google"
-                        app:layout_constraintEnd_toStartOf="@+id/iv_sign_in_facebook"
-                        app:layout_constraintStart_toStartOf="@+id/tv_sign_in_login"
-                        app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />
-
-                    <ImageView
-                        android:id="@+id/iv_sign_in_facebook"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/facebook"
-                        app:layout_constraintEnd_toStartOf="@+id/iv_sign_in_email"
-                        app:layout_constraintStart_toEndOf="@+id/iv_sign_in_google"
-                        app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />
-
-                    <ImageView
-                        android:id="@+id/iv_sign_in_email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/email"
-                        app:layout_constraintEnd_toEndOf="@+id/tv_sign_in_login"
-                        app:layout_constraintStart_toEndOf="@+id/iv_sign_in_facebook"
-                        app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/tb_sign_in"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="parallax" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="parallax"
+                app:title="로그인"
+                app:titleTextColor="@color/colorPrimary"/>
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <include
-                layout="@layout/bottom_my_page"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:handler="@{handler}" />
+            <TextView
+                android:id="@+id/tv_sign_in_title"
+                style="@style/tv.header"
+                android:layout_marginTop="64dp"
+                android:paddingBottom="20dp"
+                android:text="@string/main_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.core.widget.NestedScrollView>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tvl_sign_in_email"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:hint="@string/sign_email"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_sign_in_title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_sign_up_email"
+                    android:layout_width="@dimen/sign_in_et_width"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:nextFocusDown="@id/tvl_sign_up_password"
+                    android:text="@={handler.mEmail}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tvl_sign_up_password"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/sign_password"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvl_sign_in_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_sign_up_password"
+                    android:layout_width="@dimen/sign_in_et_width"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:text="@={handler.mPassword}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/tv_sign_in_login"
+                style="@style/btn.accent"
+                android:layout_width="0dp"
+                android:onClick="@{handler::signInWithEmail}"
+                android:text="@string/sign_in_login"
+                app:layout_constraintEnd_toEndOf="@id/tvl_sign_up_password"
+                app:layout_constraintStart_toStartOf="@id/tvl_sign_up_password"
+                app:layout_constraintTop_toBottomOf="@id/tvl_sign_up_password" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_sign_in_sign_up"
+                style="@style/btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="회원가입"
+                app:layout_constraintEnd_toEndOf="@id/tv_sign_in_login"
+                app:layout_constraintStart_toStartOf="@id/tv_sign_in_login"
+                app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />
+
+            <ImageView
+                android:id="@+id/iv_sign_in_divider1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/divider"
+                app:layout_constraintBottom_toBottomOf="@id/tv_sign_in_divide_text"
+                app:layout_constraintEnd_toStartOf="@id/tv_sign_in_divide_text"
+                app:layout_constraintStart_toStartOf="@id/tv_sign_in_sign_up"
+                app:layout_constraintTop_toTopOf="@id/tv_sign_in_divide_text" />
+
+            <TextView
+                android:id="@+id/tv_sign_in_divide_text"
+                style="@style/tv.body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                app:layout_constraintEnd_toEndOf="@id/tv_sign_in_sign_up"
+                app:layout_constraintStart_toStartOf="@id/tv_sign_in_sign_up"
+                app:layout_constraintTop_toBottomOf="@id/tv_sign_in_sign_up" />
+
+            <ImageView
+                android:id="@+id/iv_sign_in_divider2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/divider"
+                app:layout_constraintBottom_toBottomOf="@id/tv_sign_in_divide_text"
+                app:layout_constraintEnd_toEndOf="@id/tv_sign_in_sign_up"
+                app:layout_constraintStart_toEndOf="@id/tv_sign_in_divide_text"
+                app:layout_constraintTop_toTopOf="@id/tv_sign_in_divide_text" />
+
+            <Button
+                android:id="@+id/btn_sign_in_google"
+                style="@style/btn"
+                android:layout_width="0dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@id/tv_sign_in_sign_up"
+                app:layout_constraintStart_toStartOf="@id/tv_sign_in_sign_up"
+                app:layout_constraintTop_toBottomOf="@id/tv_sign_in_divide_text" />
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_sign_in_google"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:src="@drawable/google"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/iv_sign_in_facebook"-->
+            <!--app:layout_constraintStart_toStartOf="@+id/tv_sign_in_login"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_sign_in_facebook"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:src="@drawable/facebook"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/iv_sign_in_email"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/iv_sign_in_google"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/iv_sign_in_email"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:src="@drawable/email"-->
+            <!--app:layout_constraintEnd_toEndOf="@+id/tv_sign_in_login"-->
+            <!--app:layout_constraintStart_toEndOf="@+id/iv_sign_in_facebook"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/tv_sign_in_login" />-->
+
+            <!--<include-->
+            <!--layout="@layout/bottom_my_page"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:handler="@{handler}" />-->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
