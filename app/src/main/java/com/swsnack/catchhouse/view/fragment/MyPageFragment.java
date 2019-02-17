@@ -154,6 +154,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
                 .setTitle(R.string.my_page_delete_user)
                 .setMessage(R.string.dialog_delete_user)
                 .setPositiveButton(R.string.dialog_positive, (dialog, which) -> getViewModel().deleteUser())
+                .setNeutralButton(R.string.negative, ((dialog, which) -> dialog.dismiss()))
                 .create().show();
     }
 
@@ -162,6 +163,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
                 .setTitle(R.string.my_page_sign_out)
                 .setMessage(R.string.dialog_sign_out)
                 .setPositiveButton(R.string.dialog_positive, (dialog, which) -> getViewModel().signOut())
+                .setNeutralButton(R.string.negative, ((dialog, which) -> dialog.dismiss()))
                 .create().show();
     }
 
