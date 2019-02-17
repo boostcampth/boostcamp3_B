@@ -27,4 +27,7 @@ public interface RoomDao {
 
     @Query("SELECT * FROM my_favorite_room WHERE room_uid = :key AND firebaseUuid = :userUuid")
     RoomEntity getFavoriteRoom(String key, String userUuid);
+
+    @Query("DELETE FROM my_Favorite_room WHERE firebaseUuid = :userUuid")
+    void deleteFavoriteRoom(String userUuid);
 }

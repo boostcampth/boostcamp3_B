@@ -7,8 +7,6 @@ import com.swsnack.catchhouse.data.entity.RoomEntity;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import androidx.lifecycle.LiveData;
-
 public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     private static AppFavoriteRoomDataManager INSTANCE;
@@ -59,6 +57,14 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }
+    }
+
+    @Override
+    public void deleteFavoriteRoom() {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return;
+        }
+        new FavoriteRoomHelper.AsyncDeleteUserFavoriteRoom(mRoomDao).execute(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
     @Override

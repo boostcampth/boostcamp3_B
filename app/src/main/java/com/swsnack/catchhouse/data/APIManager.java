@@ -2,8 +2,6 @@ package com.swsnack.catchhouse.data;
 
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
@@ -17,11 +15,13 @@ import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.data.db.room.RoomRepository;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
+import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
 import com.swsnack.catchhouse.data.model.User;
-import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.Constant.FacebookData.GENDER;
@@ -110,9 +110,8 @@ public class APIManager {
                 .addOnFailureListener(onFailedListener::onFailed);
     }
 
-    private void deleteUser
-            (@NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener
-                    onFailedListener) {
+    private void deleteUser(@NonNull OnSuccessListener<Void> onSuccessListener,
+                            @NonNull OnFailedListener onFailedListener) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             onFailedListener.onFailed(new FirebaseException(NOT_SIGNED_USER));
             return;
@@ -137,9 +136,25 @@ public class APIManager {
             return;
         }
 
+        mDataManager.cancelMessageModelObserving();
+        mDataManager.cancelObservingChattingList();
+        mDataManager.deleteRecentRoomList();
+        mDataManager.deleteFavoriteRoom();
+
         mDataManager.deleteUserData(uuid, user,
                 deleteUserSuccess -> deleteUser(onSuccessListener, onFailedListener),
                 onFailedListener);
+    }
+
+    public void firebaseSignOut() {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return;
+        }
+
+        FirebaseAuth.getInstance().signOut();
+        mDataManager.cancelMessageModelObserving();
+        mDataManager.cancelObservingChattingList();
+        mDataManager.deleteRecentRoomList();
     }
 
     public void updatePassword(@NonNull String oldPassword,

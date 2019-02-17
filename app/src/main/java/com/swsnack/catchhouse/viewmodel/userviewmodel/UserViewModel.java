@@ -1,12 +1,9 @@
 package com.swsnack.catchhouse.viewmodel.userviewmodel;
 
 import android.app.Application;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.RadioGroup;
 
@@ -29,12 +26,13 @@ import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
-import com.yalantis.ucrop.UCrop;
 
-import java.io.File;
 import java.util.List;
 
-import static com.facebook.FacebookSdk.getCacheDir;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
 import static com.swsnack.catchhouse.Constant.SuccessKey.DELETE_USER_SUCCESS;
@@ -44,10 +42,6 @@ import static com.swsnack.catchhouse.Constant.SuccessKey.SIGN_UP_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS;
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PROFILE_SUCCESS;
-import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
-import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_RATIO;
-import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
-import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
 import static com.swsnack.catchhouse.util.StringUtil.getStringFromResource;
 
 public class UserViewModel extends ReactiveViewModel {
@@ -140,7 +134,7 @@ public class UserViewModel extends ReactiveViewModel {
         getApiManager()
                 .getUserInfoFromFacebook(loginResult.getAccessToken(),
                         user -> {
-                            if(uri != null) {
+                            if (uri != null) {
                                 user.setProfile(uri.toString());
                             }
                             signUpWithCredential(FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken()), user);
@@ -223,11 +217,8 @@ public class UserViewModel extends ReactiveViewModel {
 
     public void signOut() {
         mListener.isWorking();
-        FirebaseAuth.getInstance().signOut();
+        getApiManager().firebaseSignOut();
         mListener.onSuccess(SIGN_OUT_SUCCESS);
-        getDataManager().cancelMessageModelObserving();
-        getDataManager().cancelObservingChattingList();
-        mListener.isFinished();
     }
 
     public void deleteUser() {
@@ -245,9 +236,6 @@ public class UserViewModel extends ReactiveViewModel {
                             mIsSigned.setValue(false);
                         },
                         error -> mListener.onError(getStringFromResource(R.string.snack_error_occured)));
-
-        getDataManager().cancelMessageModelObserving();
-        getDataManager().cancelObservingChattingList();
     }
 
     public void changeNickName(String changeNickName) {

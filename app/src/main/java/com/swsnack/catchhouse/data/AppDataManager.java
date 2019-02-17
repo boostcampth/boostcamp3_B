@@ -281,6 +281,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void deleteFavoriteRoom() {
+        mFavoriteRoomManager.deleteFavoriteRoom();
+    }
+
+    @Override
     public List<RoomEntity> getFavoriteRoomList() {
         return mFavoriteRoomManager.getFavoriteRoomList();
     }
@@ -298,5 +303,10 @@ public class AppDataManager implements DataManager {
     @Override
     public List<Room> getRecentRoom() {
         return mRecentRoomDataManager.getRecentRoom();
+    }
+
+    @Override
+    public void deleteRecentRoomList() {
+        mRecentRoomDataManager.deleteRecentRoomList();
     }
 }
