@@ -1,6 +1,6 @@
 package com.swsnack.catchhouse.data.db.room.local;
 
-import com.swsnack.catchhouse.data.AppDataCache;
+import com.swsnack.catchhouse.data.db.AppDataCache;
 import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.ArrayList;

@@ -87,6 +87,11 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager, Rec
     }
 
     @Override
+    public void updateRoom(RoomEntity roomEntity) {
+        mLocalRoomDataManager.updateRoom(roomEntity);
+    }
+
+    @Override
     public void setRecentRoom(Room room) {
         mRecentRoomDataManager.setRecentRoom(room);
     }

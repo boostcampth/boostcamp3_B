@@ -71,12 +71,27 @@ class FavoriteRoomHelper {
         private RoomDao mRoomDao;
 
         AsyncDeleteUserFavoriteRoom(RoomDao roomDao) {
-            mRoomDao = roomDao;
+            this.mRoomDao = roomDao;
         }
 
         @Override
         protected Void doInBackground(String... strings) {
             mRoomDao.deleteFavoriteRoom(strings[0]);
+            return null;
+        }
+    }
+
+    public static class AsyncUpdateFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
+
+        private RoomDao mRoomDao;
+
+        AsyncUpdateFavoriteRoom(RoomDao roomDao) {
+            this.mRoomDao = roomDao;
+        }
+
+        @Override
+        protected Void doInBackground(RoomEntity... roomEntities) {
+            mRoomDao.update(roomEntities[0]);
             return null;
         }
     }
