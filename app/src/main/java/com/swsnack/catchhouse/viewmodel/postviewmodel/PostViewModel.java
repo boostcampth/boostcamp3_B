@@ -23,7 +23,7 @@ public class PostViewModel extends ReactiveViewModel {
 
     public final MutableLiveData<List<String>> mImageList = new MutableLiveData<>();
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
-    public final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
+    private final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
     private MutableLiveData<Room> mRoom;
     private MutableLiveData<Boolean> mIsFavorite;
     private ViewModelListener mListener;
@@ -85,6 +85,7 @@ public class PostViewModel extends ReactiveViewModel {
         if (getDataManager()
                 .getFavoriteRoom(mRoom.getValue().getKey()) != null) {
             mIsFavorite.setValue(true);
+            getDataManager().updateRoom(DataConverter.convertToRoomEntity(mRoom.getValue()));
         } else {
             mIsFavorite.setValue(false);
         }
@@ -97,7 +98,7 @@ public class PostViewModel extends ReactiveViewModel {
     }
 
     public void addOrRemoveFavoriteRoom(View v) {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             mListener.onError(StringUtil.getStringFromResource(R.string.not_singed));
             return;
         }

@@ -17,4 +17,6 @@ public interface FavoriteRoomManager {
     void deleteFavoriteRoom();
 
     RoomEntity getFavoriteRoom(String key);
+
+    void updateRoom(RoomEntity roomEntity);
 }

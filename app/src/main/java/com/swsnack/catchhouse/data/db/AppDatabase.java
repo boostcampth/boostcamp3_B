@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.data;
+package com.swsnack.catchhouse.data.db;
 
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.db.room.local.RoomDao;
