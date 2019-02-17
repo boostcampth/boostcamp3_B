@@ -1,11 +1,14 @@
 package com.swsnack.catchhouse.view.activitity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
@@ -28,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 
+import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
 public class PostActivity extends BaseActivity<ActivityPostBinding> {
@@ -57,7 +61,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         AppBarLayout appBarLayout = getBinding().appbarLayout;
         appBarLayout.addOnOffsetChangedListener((__, offset) -> {
 
-            Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.action_back_white, null);
+            Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back_black_24dp, null);
             if (offset < -200) {
                 upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                 getBinding().tbPost.setNavigationIcon(upArrow);
@@ -68,7 +72,6 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
 
         });
 
-        getBinding().tbPost.setNavigationIcon(R.drawable.action_back_white);
         getBinding().tbPost.setNavigationOnClickListener(__ ->
                 finish()
         );
@@ -87,15 +90,17 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         );
         getBinding().tabPost.setupWithViewPager(getBinding().vpPost, true);
 
-//        getBinding().tvPostChatting.setOnClickListener(__ -> {
-//            if(FirebaseAuth.getInstance().getCurrentUser() == null) {
-//                Snackbar.make(getBinding().getRoot(), R.string.not_singed, Snackbar.LENGTH_SHORT).show();
-//                return;
-//            }
-//            Intent intent = new Intent(this, ChattingMessageActivity.class);
-//            intent.putExtra(UUID, room.getUuid());
-//            startActivity(intent);
-//        });
+        getBinding().tvPostChatting.setOnClickListener(__ -> {
+                    if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                        Snackbar.make(getBinding().getRoot(), R.string.not_singed, Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    Intent intent = new Intent(this, ChattingMessageActivity.class);
+                    intent.putExtra(UUID, room.getUuid());
+                    startActivity(intent);
+                }
+        );
 
         setTmapView(longitude, latitude);
         mViewModel.setInitRoomData(room);

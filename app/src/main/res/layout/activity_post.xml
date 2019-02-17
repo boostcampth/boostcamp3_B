@@ -12,6 +12,10 @@
         <variable
             name="roomData"
             type="com.swsnack.catchhouse.data.model.Room" />
+
+        <variable
+            name="user"
+            type="com.swsnack.catchhouse.data.model.User" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -27,7 +31,7 @@
             android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/ctl_my_page"
+                android:id="@+id/ctl_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
@@ -96,7 +100,8 @@
                         style="@style/iv.round"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:src="@drawable/profile" />
+                        android:src="@drawable/profile"
+                        bind:setProfile="@{handler.mProfile}" />
 
                     <TextView
                         android:id="@+id/tv_post_writer"
@@ -106,16 +111,8 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="4dp"
-                        android:text="이름" />
+                        android:text="@{@string/formatted_user_info(handler.mNickName, handler.mGender)}" />
 
-                    <TextView
-                        android:id="@+id/tv_post_gender"
-                        style="@style/tv.body"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="0dp"
-                        android:text="성별"
-                        android:textSize="@dimen/text_14" />
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -353,32 +350,28 @@
                 android:src="@drawable/divider" />
 
             <TextView
-                android:id="@+id/tv_post_chatting"
                 style="@style/tv.body"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.4"
                 android:gravity="center"
-                android:text="test" />
+                android:text="@{@string/formatted_period_bottom(roomData.from, roomData.to)}"
+                android:textSize="12sp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/tv_post_chatting"
                 style="@style/btn.accent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
                 android:layout_gravity="center"
+                android:layout_marginEnd="16dp"
                 android:layout_weight="0.4"
-                android:text="test" />
-
+                android:text="@string/tv_post_chatting"
+                android:textSize="12sp" />
         </LinearLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
-
-    <!--<ImageViewandroid:layout_width="wrap_content"android:layout_height="wrap_content"android:layout_gravity="center"android:onClick="@{handler::addOrRemoveFavoriteRoom}"android:src="@drawable/favorite_default"bind:isFavorite="@{handler.isFavorite}" />-->
-
-
-    <!--<TextView--><!--android:id="@+id/tv_post_chatting"--><!--style="@style/tv.body"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:drawableStart="@drawable/message_24"--><!--android:gravity="center"--><!--android:text="@string/tv_post_chatting" />-->

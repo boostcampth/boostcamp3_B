@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
@@ -32,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
@@ -56,7 +61,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     @Override
     public void onError(String errorMessage) {
 
-        clrearErrorMessage();
+        clearErrorMessage();
 
         switch (errorMessage) {
 
@@ -101,14 +106,14 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     @Override
     public void isWorking() {
         super.isWorking();
-        getBinding().pgWrite.setVisibility(View.VISIBLE);
+        //getBinding().pgWrite.setVisibility(View.VISIBLE);
         getBinding().getRoot().setAlpha(0.6f);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     @Override
     public void isFinished() {
-        getBinding().pgWrite.setVisibility(View.INVISIBLE);
+        //getBinding().pgWrite.setVisibility(View.INVISIBLE);
         getBinding().getRoot().setAlpha(1.0f);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
@@ -140,7 +145,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         getBinding().vpWrite.setAdapter(new DeletableImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
         getBinding().tabWrite.setupWithViewPager(getBinding().vpWrite, true);
 
-        getBinding().tbWrite.setNavigationIcon(R.drawable.action_back_white);
+        getBinding().tbWrite.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         getBinding().tbWrite.setNavigationOnClickListener(__ ->
                 finish()
         );
@@ -280,7 +285,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         );
     }
 
-    private void clrearErrorMessage() {
+    private void clearErrorMessage() {
         getBinding().etWriteValue.setError(null);
         getBinding().tvWriteDateFrom.setError(null);
         getBinding().tvWriteDateTo.setError(null);
