@@ -1,10 +1,11 @@
 package com.swsnack.catchhouse.view.activitity;
 
-import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.appbar.AppBarLayout;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
@@ -24,9 +25,9 @@ import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 
-import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
 public class PostActivity extends BaseActivity<ActivityPostBinding> {
@@ -52,6 +53,21 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
     }
 
     private void viewInit() {
+
+        AppBarLayout appBarLayout = getBinding().appbarLayout;
+        appBarLayout.addOnOffsetChangedListener((__, offset) -> {
+
+            Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.action_back_white, null);
+            if (offset < -200) {
+                upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+                getBinding().tbPost.setNavigationIcon(upArrow);
+            } else {
+                upArrow.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP);
+                getBinding().tbPost.setNavigationIcon(upArrow);
+            }
+
+        });
+
         getBinding().tbPost.setNavigationIcon(R.drawable.action_back_white);
         getBinding().tbPost.setNavigationOnClickListener(__ ->
                 finish()

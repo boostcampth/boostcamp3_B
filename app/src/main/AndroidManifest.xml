@@ -40,7 +40,9 @@
         <activity android:name=".view.activitity.WriteActivity" />
         <activity android:name=".view.activitity.PostActivity" />
         <activity android:name=".view.activitity.ChattingMessageActivity" />
-        <activity android:name=".view.activitity.SplashActivity">
+        <activity
+            android:name=".view.activitity.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
