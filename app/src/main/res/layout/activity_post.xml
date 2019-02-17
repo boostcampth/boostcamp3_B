@@ -56,8 +56,7 @@
                         android:id="@+id/vp_post"
                         android:layout_width="match_parent"
                         android:layout_height="320dp"
-                        android:layout_margin="8dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginTop="8dp"
                         app:adapter="@{handler.mImageList}" />
 
                     <com.google.android.material.tabs.TabLayout
@@ -71,12 +70,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_margin="0dp"
                             android:onClick="@{handler::addOrRemoveFavoriteRoom}"
                             android:src="@drawable/favorite_default"
                             bind:isFavorite="@{handler.isFavorite}" />
@@ -86,7 +88,8 @@
                             style="@style/tv.body"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="0dp"
+                            android:layout_margin="0dp"
+                            android:paddingEnd="16dp"
                             android:gravity="center"
                             android:onClick="@{handler::addOrRemoveFavoriteRoom}"
                             android:text="@string/tv_post_favorite" />
@@ -94,6 +97,7 @@
                         <TextView
                             android:id="@+id/tv_post_chatting"
                             style="@style/tv.body"
+                            android:layout_margin="0dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawableStart="@drawable/message_24"
@@ -105,6 +109,7 @@
                     <TextView
                         style="@style/tv.title"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="0dp"
                         android:gravity="center"
                         android:text="@string/tv_post_price" />
 
@@ -112,6 +117,7 @@
                         android:id="@+id/tv_post_price"
                         style="@style/tv.body"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="0dp"
                         android:gravity="center"
                         android:text="@{handler.mExpectedPrice}" />
 
@@ -119,23 +125,30 @@
                         android:id="@+id/tv_post_option_tag"
                         style="@style/tv.body"
                         android:layout_gravity="center"
+                        android:layout_marginBottom="0dp"
                         android:gravity="center"
                         android:text="@{handler.mOptionTag}"
                         android:textColor="@color/colorSecondary" />
 
                     <TextView
                         style="@style/tv.title"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="0dp"
                         android:text="@string/tv_post_room_info" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:orientation="horizontal">
 
                         <TextView
                             style="@style/tv.body"
                             android:layout_width="0dp"
+                            android:layout_marginStart="0dp"
                             android:layout_weight="0.25"
                             android:text="@string/tv_post_address" />
 
@@ -151,11 +164,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:orientation="horizontal">
 
                         <TextView
                             style="@style/tv.body"
                             android:layout_width="0dp"
+                            android:layout_marginStart="0dp"
                             android:layout_weight="0.25"
                             android:text="@string/tv_post_size" />
 
@@ -171,11 +188,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:orientation="horizontal">
 
                         <TextView
                             style="@style/tv.body"
                             android:layout_width="0dp"
+                            android:layout_marginStart="0dp"
                             android:layout_weight="0.25"
                             android:text="@string/tv_post_date" />
 
@@ -191,14 +212,18 @@
 
                     <TextView
                         style="@style/tv.title"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="0dp"
                         android:text="@string/tv_post_map" />
 
                     <LinearLayout
                         android:id="@+id/ll_post_tmap_container"
                         android:layout_width="match_parent"
                         android:layout_height="240dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:orientation="vertical"
                         android:paddingStart="24dp"
                         android:paddingEnd="24dp" />
@@ -208,7 +233,9 @@
                         style="@style/tv.body"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
-                        android:layout_marginTop="24dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@drawable/et_round_background"
                         android:backgroundTint="@android:color/white"
                         android:elevation="4dp"
