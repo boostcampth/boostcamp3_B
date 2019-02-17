@@ -57,7 +57,7 @@ public class UserDataBinding {
 
         Glide.with(AppApplication.getAppContext())
                 .load(Uri.parse(uriList.get(0)))
-                .apply(new RequestOptions().override(800, 450).centerCrop())
+                .apply(new RequestOptions().override(150, 150).centerCrop())
                 .into(imageView);
     }
 

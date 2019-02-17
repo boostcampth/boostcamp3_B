@@ -16,9 +16,8 @@ import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +26,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getCacheDir;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_RATIO;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_SQUARE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
 
@@ -69,11 +69,13 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
 
         if (resultCode == RESULT_OK) {
             if (requestCode == Constant.GALLERY) {
-                Uri destinationUri = Uri.fromFile(new File(getCacheDir(), "cache_profile.jpeg"));
+                String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                Uri destinationUri = Uri.fromFile(new File(getCacheDir(), fileName + "png"));
                 UCrop.of(data.getData(), destinationUri)
-                        .withAspectRatio(UCROP_WIDTH_RATIO, UCROP_HEIGHT_RATIO)
+                        .withAspectRatio(UCROP_SQUARE, UCROP_SQUARE)
                         .withMaxResultSize(UCROP_WIDTH_MAX, UCROP_HEIGHT_MAX)
                         .start(getActivity(), this);
+
             } else if (requestCode == UCrop.REQUEST_CROP) {
                 getViewModel().getProfileFromUri(UCrop.getOutput(data));
             }

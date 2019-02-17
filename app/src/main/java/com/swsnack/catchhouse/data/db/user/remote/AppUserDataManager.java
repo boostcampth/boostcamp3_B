@@ -3,8 +3,6 @@ package com.swsnack.catchhouse.data.db.user.remote;
 import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -21,15 +19,18 @@ import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.AppApplication;
+import com.swsnack.catchhouse.data.db.user.UserDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.db.user.UserDataManager;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.util.DataConverter;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.swsnack.catchhouse.Constant.ExceptionReason.DUPLICATE;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.FAILED_UPDATE;
@@ -70,7 +71,7 @@ public class AppUserDataManager implements UserDataManager {
         getProfile(imageUri,
                 bitmap -> {
                     try {
-                        UploadTask uploadTask = reference.putBytes(DataConverter.getByteArray(DataConverter.getScaledBitmap(bitmap)));
+                        UploadTask uploadTask = reference.putBytes(DataConverter.getByteArray(bitmap));
                         uploadTask.continueWithTask(task -> {
                             if (!task.isSuccessful()) {
                                 onFailedListener.onFailed(new Exception(FAILED_UPDATE));

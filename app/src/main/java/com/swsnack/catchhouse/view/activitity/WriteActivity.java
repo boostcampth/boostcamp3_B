@@ -2,17 +2,20 @@ package com.swsnack.catchhouse.view.activitity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
+import android.widget.EditText;
 
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
 import com.swsnack.catchhouse.data.APIManager;
@@ -20,7 +23,6 @@ import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
@@ -29,13 +31,22 @@ import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
-import com.yalantis.ucrop.UCrop;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.lifecycle.ViewModelProviders;
+
 import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NETWORK;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_ADDRESS;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_DATE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_IMAGE;
 
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
@@ -49,20 +60,60 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     @Override
     public void onError(String errorMessage) {
-        Snackbar.make(getBinding().getRoot(), errorMessage, Snackbar.LENGTH_SHORT).show();
+
+        clearErrorMessage();
+
+        switch (errorMessage) {
+
+            case ERROR_NO_SELECTION_IMAGE:
+                Snackbar.make(getBinding().getRoot(), getString(R.string.empty_image_error)
+                        , Snackbar.LENGTH_SHORT).show();
+                break;
+
+            case ERROR_NETWORK:
+                Snackbar.make(getBinding().getRoot(), getString(R.string.network_error)
+                        , Snackbar.LENGTH_SHORT).show();
+                break;
+
+            case ERROR_EMPTY_PRICE:
+                getBinding().etWriteValue.setError(getString(R.string.empty_price_error));
+                getBinding().etWriteValue.requestFocus();
+                break;
+
+            case ERROR_NO_SELECTION_DATE:
+                getBinding().tvWriteDateTo.setError(getString(R.string.no_selection_date_error));
+                getBinding().tvWriteDateFrom.setError(getString(R.string.no_selection_date_error));
+                getBinding().tvWriteDateFrom.requestFocus();
+                break;
+
+            case ERROR_NO_SELECTION_ADDRESS:
+                getBinding().etWriteAddress.setError(getString(R.string.no_selection_address));
+                getBinding().etWriteAddress.requestFocus();
+                break;
+
+            case ERROR_EMPTY_ROOM_SIZE:
+                getBinding().etWriteRoomSize.setError(getString(R.string.empty_room_size_error));
+                getBinding().etWriteRoomSize.requestFocus();
+                break;
+
+            case ERROR_EMPTY_TITLE:
+                getBinding().etWriteTitle.setError(getString(R.string.empty_title_error));
+                getBinding().etWriteTitle.requestFocus();
+                break;
+        }
     }
 
     @Override
     public void isWorking() {
         super.isWorking();
-        getBinding().pgWrite.setVisibility(View.VISIBLE);
+        //getBinding().pgWrite.setVisibility(View.VISIBLE);
         getBinding().getRoot().setAlpha(0.6f);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
     @Override
     public void isFinished() {
-        getBinding().pgWrite.setVisibility(View.INVISIBLE);
+        //getBinding().pgWrite.setVisibility(View.INVISIBLE);
         getBinding().getRoot().setAlpha(1.0f);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
@@ -94,7 +145,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         getBinding().vpWrite.setAdapter(new DeletableImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
         getBinding().tabWrite.setupWithViewPager(getBinding().vpWrite, true);
 
-        getBinding().tbWrite.setNavigationIcon(R.drawable.action_back_white);
+        getBinding().tbWrite.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         getBinding().tbWrite.setNavigationOnClickListener(__ ->
                 finish()
         );
@@ -108,23 +159,53 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 }
         );
 
-        getBinding().tvWriteDateFrom.setOnClickListener(v -> createDatePicker(v));
-        getBinding().tvWriteDateTo.setOnClickListener(v -> createDatePicker(v));
+        getBinding().tvWriteDateFrom.setKeyListener(null);
+        getBinding().tvWriteDateTo.setKeyListener(null);
+        getBinding().tvWriteDateFrom.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        createDatePicker(v);
+                    }
+                    return false;
+                }
+        );
+        getBinding().tvWriteDateTo.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        createDatePicker(v);
+                    }
+                    return false;
+                }
+        );
 
-        getBinding().etWriteAddress.setOnClickListener(__ ->
-                new AddressSearchFragment().show(getSupportFragmentManager(), "address selection")
+
+        getBinding().etWriteAddress.setKeyListener(null);
+        getBinding().etWriteAddress.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        new AddressSearchFragment().show(getSupportFragmentManager(),
+                                "address selection");
+                    }
+                    return false;
+                }
+
         );
 
         getBinding().tvWritePost.setOnClickListener(__ ->
                 mViewModel.onClickPost(
+
                         getBinding().cbWriteStandard.isChecked(),
+
                         getBinding().cbWriteGender.isChecked(),
+
                         getBinding().cbWritePet.isChecked(),
+
                         getBinding().cbWriteSmoking.isChecked()
                 )
         );
 
         setObservableData();
+
     }
 
     @Override
@@ -172,12 +253,18 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     }
 
     private void createDatePicker(View v) {
-        TextView textView = (TextView) v;
+        EditText editText = (EditText) v;
 
         DatePickerDialog dialog =
                 new DatePickerDialog(this,
                         (__, y, m, d) -> {
-                            textView.setText(DateCalculator.createDateString(y, m, d));
+                            editText.setText(DateCalculator.createDateString(y, m, d));
+                            if (editText.equals(getBinding().tvWriteDateFrom)) {
+                                getBinding().tvWriteDateTo.requestFocus();
+                            } else {
+                                getBinding().etWriteAddress.requestFocus();
+                            }
+
                             mViewModel.onChangePriceAndPeriod();
                         },
                         DateCalculator.getYear(),
@@ -192,5 +279,17 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         mViewModel.mPrice.observe(this, __ ->
                 mViewModel.onChangePriceAndPeriod()
         );
+
+        mViewModel.mAddress.observe(this, __ ->
+                getBinding().etWriteRoomSize.requestFocus()
+        );
+    }
+
+    private void clearErrorMessage() {
+        getBinding().etWriteValue.setError(null);
+        getBinding().tvWriteDateFrom.setError(null);
+        getBinding().tvWriteDateTo.setError(null);
+        getBinding().etWriteAddress.setError(null);
+        getBinding().etWriteRoomSize.setError(null);
     }
 }

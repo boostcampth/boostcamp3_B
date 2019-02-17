@@ -25,6 +25,14 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NETWORK;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_ADDRESS;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_DATE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_IMAGE;
+
 public class RoomsViewModel extends ReactiveViewModel {
 
     private static final String TAG = RoomsViewModel.class.getSimpleName();
@@ -121,7 +129,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
         OnFailedListener errorHandler = error -> {
             mListener.isFinished();
-            mListener.onError(mAppContext.getString(R.string.network_error));
+            mListener.onError(ERROR_NETWORK);
         };
 
         mDataManager.createKey(
@@ -157,18 +165,25 @@ public class RoomsViewModel extends ReactiveViewModel {
         String defaultDate = mAppContext.getString(R.string.tv_write_date);
 
         if (mImageList.getValue() != null && mImageList.getValue().size() == 0) {
-            return mAppContext.getString(R.string.empty_image_error);
+            return ERROR_NO_SELECTION_IMAGE;
+
         } else if (TextUtils.isEmpty(mPrice.getValue())) {
-            return mAppContext.getString(R.string.empty_price_error);
+            return ERROR_EMPTY_PRICE;
+
         } else if (TextUtils.equals(mFromDate.getValue(), defaultDate) ||
-                TextUtils.equals(mToDate.getValue(), defaultDate)) {
-            return mAppContext.getString(R.string.no_selection_date_error);
+                TextUtils.equals(mToDate.getValue(), defaultDate) ||
+                ep.getDiffDays() <= 0) {
+            return ERROR_NO_SELECTION_DATE;
+
         } else if (mAddress.getValue() == null) {
-            return mAppContext.getString(R.string.no_selection_address);
+            return ERROR_NO_SELECTION_ADDRESS;
+
         } else if (TextUtils.isEmpty(mSize.getValue())) {
-            return mAppContext.getString(R.string.empty_room_size_error);
+            return ERROR_EMPTY_ROOM_SIZE;
+
         } else if (TextUtils.isEmpty(mTitle.getValue())) {
-            return mAppContext.getString(R.string.empty_title_error);
+            return ERROR_EMPTY_TITLE;
+
         } else {
             return "";
         }
