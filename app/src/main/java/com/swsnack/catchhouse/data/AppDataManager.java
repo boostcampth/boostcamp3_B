@@ -284,6 +284,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void updateRoom(RoomEntity roomEntity) {
+        mFavoriteRoomManager.updateRoom(roomEntity);
+    }
+
+    @Override
     public void setRecentRoom(Room room) {
         mRecentRoomDataManager.setRecentRoom(room);
     }

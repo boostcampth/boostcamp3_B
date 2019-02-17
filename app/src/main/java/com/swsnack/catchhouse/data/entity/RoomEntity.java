@@ -16,13 +16,14 @@ import androidx.room.TypeConverters;
 import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
 
 @Entity(tableName = ROOM_TABLE,
+        primaryKeys = {"room_uid", "firebaseUuid"},
         indices = {@Index(value = {"room_uid"})})
 public class RoomEntity {
 
-    @PrimaryKey
     @ColumnInfo(name = "room_uid")
     @NonNull
     private String roomUid;
+    @NonNull
     private String firebaseUuid;
     private String price;
     private String from;

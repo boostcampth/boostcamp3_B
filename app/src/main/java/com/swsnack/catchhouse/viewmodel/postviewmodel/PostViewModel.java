@@ -32,6 +32,7 @@ public class PostViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mGender = new MutableLiveData<>();
     public final MutableLiveData<Bitmap> mProfile = new MutableLiveData<>();
 
+    private final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
     private MutableLiveData<Room> mRoom;
     private MutableLiveData<Boolean> mIsFavorite;
     private ViewModelListener mListener;
@@ -121,6 +122,7 @@ public class PostViewModel extends ReactiveViewModel {
         if (getDataManager()
                 .getFavoriteRoom(mRoom.getValue().getKey()) != null) {
             mIsFavorite.setValue(true);
+            getDataManager().updateRoom(DataConverter.convertToRoomEntity(mRoom.getValue()));
         } else {
             mIsFavorite.setValue(false);
         }

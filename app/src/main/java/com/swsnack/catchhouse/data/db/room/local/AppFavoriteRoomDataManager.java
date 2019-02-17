@@ -1,7 +1,7 @@
 package com.swsnack.catchhouse.data.db.room.local;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.swsnack.catchhouse.data.AppDatabase;
+import com.swsnack.catchhouse.data.db.AppDatabase;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public void setFavoriteRoom(RoomEntity roomEntity) {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
 
@@ -37,7 +37,7 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public void deleteFavoriteRoom(RoomEntity roomEntity) {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
 
@@ -48,7 +48,7 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public List<RoomEntity> getFavoriteRoomList() {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return null;
         }
 
@@ -61,7 +61,7 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public void deleteFavoriteRoom() {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
         new FavoriteRoomHelper.AsyncDeleteUserFavoriteRoom(mRoomDao).execute(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -69,7 +69,7 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
 
     @Override
     public RoomEntity getFavoriteRoom(String key) {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return null;
         }
 
@@ -78,5 +78,16 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }
+    }
+
+    @Override
+    public void updateRoom(RoomEntity roomEntity) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return;
+        }
+
+        roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        new FavoriteRoomHelper.AsyncUpdateFavoriteRoom(mRoomDao).execute(roomEntity);
     }
 }

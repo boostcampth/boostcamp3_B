@@ -10,6 +10,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
 
@@ -30,4 +31,7 @@ public interface RoomDao {
 
     @Query("DELETE FROM my_Favorite_room WHERE firebaseUuid = :userUuid")
     void deleteFavoriteRoom(String userUuid);
+
+    @Update
+    void update(RoomEntity roomEntity);
 }
