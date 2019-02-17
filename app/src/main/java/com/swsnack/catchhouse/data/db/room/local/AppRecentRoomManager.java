@@ -30,7 +30,7 @@ public class AppRecentRoomManager implements RecentRoomManager {
 
     @Override
     public void setRecentRoom(Room room) {
-        if (mRecentRoomCache.size() < 2) {
+        if (mRecentRoomCache.size() < 5) {
             mRecentRoomCache.put(room, new Date().getTime());
             return;
         }
@@ -47,11 +47,15 @@ public class AppRecentRoomManager implements RecentRoomManager {
         return reversedSortedRoom;
     }
 
-    public List<Room> sortByTimeStampRoom() {
+    @Override
+    public void deleteRecentRoomList() {
+        mRecentRoomCache.clear();
+    }
+
+    private List<Room> sortByTimeStampRoom() {
         List<Room> sortingList = new ArrayList<>(mRecentRoomCache.keySet());
         Collections.sort(sortingList, (oldRoom, newRoom) ->
                 Objects.requireNonNull(mRecentRoomCache.get(oldRoom)).compareTo(Objects.requireNonNull(mRecentRoomCache.get(newRoom))));
         return sortingList;
     }
-
 }

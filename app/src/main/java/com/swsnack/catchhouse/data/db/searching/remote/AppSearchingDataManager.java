@@ -21,7 +21,7 @@ import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.data.pojo.Filter;
+import com.swsnack.catchhouse.data.model.Filter;
 
 import java.util.ArrayList;
 import java.util.List;

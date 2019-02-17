@@ -26,6 +26,8 @@ import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.util.DataConverter;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,15 +37,14 @@ import static com.swsnack.catchhouse.Constant.ExceptionReason.FAILED_UPDATE;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.SIGNED;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_PROFILE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
 
 public class AppUserDataManager implements UserDataManager {
 
     private DatabaseReference db;
-    private DatabaseReference dbRooms;
     private StorageReference fs;
-    private StorageReference fsRooms;
     private Application mAppContext;
 
     private static AppUserDataManager INSTANCE;
@@ -57,9 +58,7 @@ public class AppUserDataManager implements UserDataManager {
 
     private AppUserDataManager() {
         db = FirebaseDatabase.getInstance().getReference().child(DB_USER);
-        dbRooms = FirebaseDatabase.getInstance().getReference().child(DB_ROOM);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_PROFILE);
-        fsRooms = FirebaseStorage.getInstance().getReference().child(STORAGE_ROOM_IMAGE);
         mAppContext = AppApplication.getAppContext();
     }
 
@@ -88,14 +87,16 @@ public class AppUserDataManager implements UserDataManager {
                 onFailedListener);
     }
 
-    private void deleteUser(@NonNull String uuid,
+    @Override
+    public void deleteUser(@NonNull String uuid,
                             @NonNull OnSuccessListener<Void> onSuccessListener,
                             @NonNull OnFailedListener onFailedListener) {
 
-        FirebaseDatabase.getInstance()
-                .getReference(DB_USER)
-                .child(uuid)
-                .removeValue()
+        Map<String, Object> deleteField = new HashMap<>();
+        deleteField.put(SIGNED, 0);
+
+        db.child(uuid)
+                .updateChildren(deleteField)
                 .addOnSuccessListener(onSuccessListener::onSuccess)
                 .addOnFailureListener(onFailedListener::onFailed);
     }
@@ -224,40 +225,6 @@ public class AppUserDataManager implements UserDataManager {
                     onFailedListener.onFailed(error);
                 });
 
-    }
-
-    @Override
-    public void deleteUserData(@NonNull String uuid,
-                               @NonNull User user,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailedListener onFailedListener) {
-
-        if (user.getProfile() == null) {
-            deleteUser(uuid, onSuccessListener, onFailedListener);
-            return;
-        }
-
-        deleteUser(uuid,
-                deleteDbSuccess -> deleteProfile(uuid,
-                        onSuccessListener,
-                        error -> {
-                            if (error instanceof StorageException) {
-                                onSuccessListener.onSuccess(null);
-                                return;
-                            }
-                            onFailedListener.onFailed(error);
-                        }),
-                onFailedListener);
-    }
-
-    @Override
-    public void deleteProfile(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        FirebaseStorage.getInstance()
-                .getReference(STORAGE_PROFILE)
-                .child(uuid)
-                .delete()
-                .addOnSuccessListener(onSuccessListener::onSuccess)
-                .addOnFailureListener(onFailedListener::onFailed);
     }
 
     @Override

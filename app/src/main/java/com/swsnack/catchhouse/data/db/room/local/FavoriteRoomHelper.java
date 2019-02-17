@@ -65,4 +65,19 @@ class FavoriteRoomHelper {
             return mRoomDao.getFavoriteRoom(strings[0], strings[1]);
         }
     }
+
+    public static class AsyncDeleteUserFavoriteRoom extends AsyncTask<String, Void, Void> {
+
+        private RoomDao mRoomDao;
+
+        AsyncDeleteUserFavoriteRoom(RoomDao roomDao) {
+            mRoomDao = roomDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            mRoomDao.deleteFavoriteRoom(strings[0]);
+            return null;
+        }
+    }
 }

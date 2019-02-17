@@ -9,4 +9,6 @@ public interface RecentRoomManager {
     void setRecentRoom(Room room);
 
     List<Room> getRecentRoom();
+
+    void deleteRecentRoomList();
 }
