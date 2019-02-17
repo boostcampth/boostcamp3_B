@@ -33,7 +33,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            bind:setChattingUserProfile="@{userData}" />
+            bind:setChattingUserProfile="@{userData}"
+            android:src="@drawable/profile"/>
 
         <TextView
             android:id="@+id/tv_chatting_list_item_nick_name"

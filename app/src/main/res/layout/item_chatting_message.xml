@@ -28,7 +28,8 @@
             style="@style/iv.round"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            bind:setChattingUserProfile="@{userData}" />
+            bind:setChattingUserProfile="@{userData}"
+            android:src="@drawable/profile"/>
 
         <TextView
             android:id="@+id/tv_item_message_destination"

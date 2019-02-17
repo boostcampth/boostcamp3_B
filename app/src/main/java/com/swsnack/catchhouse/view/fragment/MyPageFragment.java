@@ -106,7 +106,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
     private void init() {
         getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
-        getBinding().ctlMyPage.setCollapsedTitleTextColor(Color.WHITE);
+        getBinding().ctlMyPage.setCollapsedTitleTextColor(getResources().getColor(R.color.colorPrimary));
         getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.GONE);
         getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.GONE);
     }
@@ -119,8 +119,8 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         dialogChangeNickName.setContentView(dialogBinding.getRoot());
         dialogChangeNickName.show();
 
-        dialogBinding.tvDialogChangeNickNameNegative.setOnClickListener(negative -> dialogChangeNickName.dismiss());
-        dialogBinding.tvDialogChangeNickNamePositive.setOnClickListener(positive -> {
+        dialogBinding.btnDialogChangeNickNameNegative.setOnClickListener(negative -> dialogChangeNickName.dismiss());
+        dialogBinding.btnDialogChangeNickNamePositive.setOnClickListener(positive -> {
             getViewModel().changeNickName(dialogBinding.etDialogChangeNickName.getText().toString());
             dialogChangeNickName.dismiss();
         });
@@ -159,7 +159,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
     private void onSignOutBtnClicked() {
         new AlertDialog.Builder(getContext())
-                .setTitle(R.string.my_page_delete_user)
+                .setTitle(R.string.my_page_sign_out)
                 .setMessage(R.string.dialog_sign_out)
                 .setPositiveButton(R.string.dialog_positive, (dialog, which) -> getViewModel().signOut())
                 .create().show();
@@ -179,7 +179,6 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         if (resultCode == RESULT_OK) {
             if (requestCode == GALLERY) {
                 Uri destinationUri = Uri.fromFile(new File(getCacheDir(), "cache_profile.jpeg"));
-
                 UCrop.of(data.getData(), destinationUri)
                         .withAspectRatio(UCROP_WIDTH_RATIO, UCROP_HEIGHT_RATIO)
                         .withMaxResultSize(UCROP_WIDTH_MAX, UCROP_HEIGHT_MAX)

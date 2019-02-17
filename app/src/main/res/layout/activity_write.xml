@@ -287,7 +287,8 @@
 
                         <EditText
                             android:id="@+id/et_write_content"
-                            style="@style/Basic_EditText"
+                            style="@style/tv.body"
+                            android:layout_width="match_parent"
                             android:layout_height="160dp"
                             android:layout_marginTop="24dp"
                             android:layout_marginBottom="24dp"

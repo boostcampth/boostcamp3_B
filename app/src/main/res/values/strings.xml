@@ -143,4 +143,6 @@
     <string formatted="false" name="formatted_room_size">%s평</string>
     <string name="tv_post_favorite">좋아요</string>
     <string name="tv_post_chatting">작성자랑 채팅하기</string>
+    <string name="sign_in_login_google">구글 로그인</string>
+    <string name="sign_in_login_facebook">페이스북 로그인</string>
 </resources>

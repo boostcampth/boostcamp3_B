@@ -26,7 +26,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:title="@string/sign_up"
-                app:titleTextColor="@color/colorOnSecondary" />
+                android:background="@android:color/white"
+                app:titleTextColor="@color/colorPrimary" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -140,7 +141,7 @@
             </RadioGroup>
 
             <com.google.android.material.button.MaterialButton
-                style="@style/btn"
+                style="@style/btn.accent"
                 android:layout_width="0dp"
                 android:onClick="@{handler::signUpWithEmail}"
                 android:text="@string/sign_up"

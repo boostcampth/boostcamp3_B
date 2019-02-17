@@ -13,13 +13,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="250dp">
 
         <ImageView
             android:id="@+id/iv_dialog_change_nick_name_top"
             android:layout_width="350dp"
             android:layout_height="60dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="@string/my_page_change_nick_name"
+            android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="@id/iv_dialog_change_nick_name_top"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,39 +69,28 @@
                 android:textAlignment="textStart" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/tv_dialog_change_nick_name_positive"
-            style="@style/tv.title"
+        <Button
+            android:id="@+id/btn_dialog_change_nick_name_positive"
+            style="@style/btn.accent"
             android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:gravity="center"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
             android:text="@string/change"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toStartOf="@id/iv_dialog_change_nick_name_divider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_dialog_change_nick_name_negative"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_dialog_change_nick_name_layout" />
 
-        <ImageView
-            android:id="@+id/iv_dialog_change_nick_name_divider"
-            android:layout_width="1dp"
+        <Button
+            android:id="@+id/btn_dialog_change_nick_name_negative"
+            style="@style/btn"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/divider"
+            android:layout_margin="8dp"
+            android:text="@string/cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_dialog_change_nick_name_layout" />
-
-        <TextView
-            android:id="@+id/tv_dialog_change_nick_name_negative"
-            style="@style/tv.title"
-            android:layout_width="0dp"
-            android:layout_height="80dp"
-            android:gravity="center"
-            android:text="@string/cancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/iv_dialog_change_nick_name_divider"
+            app:layout_constraintStart_toEndOf="@id/btn_dialog_change_nick_name_positive"
             app:layout_constraintTop_toBottomOf="@id/et_dialog_change_nick_name_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
