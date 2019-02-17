@@ -1,15 +1,24 @@
 package com.swsnack.catchhouse.viewmodel.userviewmodel;
 
 import android.app.Application;
+
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import androidx.annotation.NonNull;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -274,6 +283,7 @@ public class UserViewModel extends ReactiveViewModel {
 
     public void updateProfile(Uri uri) {
         mListener.isWorking();
+
         getDataManager().
                 updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri, mUser.getValue(),
                         result -> mListener.onSuccess(UPDATE_PROFILE_SUCCESS),

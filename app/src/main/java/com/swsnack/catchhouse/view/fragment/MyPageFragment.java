@@ -23,6 +23,8 @@ import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,9 +37,8 @@ import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
-import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_RATIO;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_SQUARE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
-import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
 
@@ -172,23 +173,21 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         getViewModel().getRecentRoom();
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            if (requestCode == GALLERY) {
-                Uri destinationUri = Uri.fromFile(new File(getCacheDir(), "cache_profile.jpeg"));
+        if (resultCode == RESULT_OK && requestCode == GALLERY) {
+            String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            Uri destinationUri = Uri.fromFile(new File(getCacheDir(), fileName + "png"));
+            UCrop.of(data.getData(), destinationUri)
+                    .withAspectRatio(UCROP_SQUARE, UCROP_SQUARE)
+                    .withMaxResultSize(UCROP_WIDTH_MAX, UCROP_HEIGHT_MAX)
+                    .start(getActivity(), this);
 
-                UCrop.of(data.getData(), destinationUri)
-                        .withAspectRatio(UCROP_WIDTH_RATIO, UCROP_HEIGHT_RATIO)
-                        .withMaxResultSize(UCROP_WIDTH_MAX, UCROP_HEIGHT_MAX)
-                        .start(getActivity(), this);
-
-            } else if (requestCode == UCrop.REQUEST_CROP) {
-                final Uri resultUri = UCrop.getOutput(data);
-                getViewModel().updateProfile(resultUri);
-            }
+        } else if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            getViewModel().updateProfile(UCrop.getOutput(data));
         }
     }
 }
