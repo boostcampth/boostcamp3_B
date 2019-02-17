@@ -1,33 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="popupTheme" parent="Theme.AppCompat.DayNight.Dialog">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-
     <style name="noActionBarStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="colorPrimaryDark">@color/colorDefaultGray</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="colorAccent">@color/colorPrimaryVariant</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
 
     <style name="toolbar">
-        <item name="android:textColor">@color/colorOnSecondary</item>
+        <!--<item name="android:textColor">@color/colorOnSecondary</item>-->
     </style>
 
     <style name="tv">
@@ -38,7 +22,7 @@
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
-        <item name="android:fontFamily">@font/godo</item>
+        <item name="android:fontFamily">@font/youth</item>
     </style>
 
     <style name="tv.header">
@@ -62,12 +46,17 @@
     </style>
 
     <style name="btn" parent="Base.TextAppearance.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/colorPrimaryVariant</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">@dimen/text_16</item>
-        <item name="android:textColor">@color/colorOnSecondary</item>
-        <item name="fontFamily">@font/godo</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="fontFamily">@font/youth</item>
+    </style>
+
+    <style name="btn.accent">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
     </style>
 
     <style name="tb" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
@@ -162,7 +151,7 @@
     <style name="Basic_EditText" parent="TextStyle.Regular.Medium">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:backgroundTint">@color/colorAccent</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
     </style>
 
 </resources>

@@ -128,7 +128,7 @@
                         android:layout_marginBottom="0dp"
                         android:gravity="center"
                         android:text="@{handler.mOptionTag}"
-                        android:textColor="@color/colorSecondary" />
+                        android:textColor="@color/colorPrimary" />
 
                     <TextView
                         style="@style/tv.title"
