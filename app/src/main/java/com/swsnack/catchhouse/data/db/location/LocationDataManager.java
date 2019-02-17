@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.model.Address;
 
 public interface LocationDataManager {
 

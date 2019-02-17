@@ -230,7 +230,7 @@ public class UserViewModel extends ReactiveViewModel {
 
         String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         getApiManager()
-                .firebaseDeleteUser(uuid, mUser.getValue(),
+                .firebaseDeleteUser(uuid,
                         deleteResult -> {
                             mListener.onSuccess(DELETE_USER_SUCCESS);
                             mIsSigned.setValue(false);

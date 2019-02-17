@@ -34,6 +34,7 @@ import static com.swsnack.catchhouse.Constant.FirebaseKey.NICK_NAME;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_PROFILE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.SIGNED;
 import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
@@ -102,7 +103,7 @@ public class Constant {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({DB_USER, STORAGE_PROFILE, STORAGE_ROOM_IMAGE, NICK_NAME, CHATTING,
-            MESSAGE, UUID})
+            MESSAGE, UUID, SIGNED})
     public @interface FirebaseKey {
         String DB_USER = "users";
         String DB_ROOM = "rooms";
@@ -113,6 +114,7 @@ public class Constant {
         String CHATTING = "chatting";
         String MESSAGE = "messages";
         String UUID = "uuid";
+        String SIGNED = "isSigned";
     }
 
     @Retention(RetentionPolicy.SOURCE)

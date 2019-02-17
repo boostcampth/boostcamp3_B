@@ -127,7 +127,6 @@ public class APIManager {
     }
 
     public void firebaseDeleteUser(@NonNull String uuid,
-                                   @NonNull User user,
                                    @NonNull OnSuccessListener<Void> onSuccessListener,
                                    @NonNull OnFailedListener onFailedListener) {
 
@@ -141,13 +140,13 @@ public class APIManager {
         mDataManager.deleteRecentRoomList();
         mDataManager.deleteFavoriteRoom();
 
-        mDataManager.deleteUserData(uuid, user,
+        mDataManager.deleteUser(uuid,
                 deleteUserSuccess -> deleteUser(onSuccessListener, onFailedListener),
                 onFailedListener);
     }
 
     public void firebaseSignOut() {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
 
@@ -173,7 +172,6 @@ public class APIManager {
                         .addOnSuccessListener(onSuccessListener::onSuccess)
                         .addOnFailureListener(onFailedListener::onFailed))
                 .addOnFailureListener(onFailedListener::onFailed);
-
     }
 
     public void getUserInfoFromFacebook(@NonNull AccessToken accessToken,

@@ -1,9 +1,4 @@
-package com.swsnack.catchhouse.data.pojo;
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.firebase.geofire.GeoLocation;
+package com.swsnack.catchhouse.data.model;
 
 public class Filter {
     private String priceFrom;

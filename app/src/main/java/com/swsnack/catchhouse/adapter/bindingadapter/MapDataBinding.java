@@ -10,7 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
-import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.model.Address;
 
 import java.util.List;
 @InverseBindingMethods({

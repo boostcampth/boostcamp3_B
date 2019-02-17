@@ -6,14 +6,12 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
-import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.model.Address;
 
 import java.util.List;
 
