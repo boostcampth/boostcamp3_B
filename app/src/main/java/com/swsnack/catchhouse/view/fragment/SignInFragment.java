@@ -62,7 +62,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
         mFragmentManager = getActivity().getSupportFragmentManager();
 
         getBinding().setHandler(getViewModel());
-        getBinding().ivSignInGoogle.setOnClickListener(__ -> {
+        getBinding().btnSignInGoogle.setOnClickListener(__ -> {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()
@@ -71,10 +71,10 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
             startActivityForResult(intent, Constant.GOOGLE_SIGN_IN);
         });
 
-        getBinding().ivSignInFacebook.setOnClickListener(__ ->
+        getBinding().btnSignInFacebook.setOnClickListener(__ ->
                 LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(E_MAIL, PROFILE)));
 
-        getBinding().ivSignInEmail.setOnClickListener(__ ->
+        getBinding().tvSignInSignUp.setOnClickListener(__ ->
                 mFragmentManager
                         .beginTransaction()
                         .replace(R.id.fl_sign_container, new SignUpFragment())
@@ -116,8 +116,5 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                 Snackbar.make(getBinding().getRoot(), R.string.snack_try_again, Snackbar.LENGTH_SHORT).show();
             }
         });
-
-        getBinding().ctlSignIn.setCollapsedTitleTextColor(Color.WHITE);
-        getBinding().ctlSignIn.setExpandedTitleColor(Color.TRANSPARENT);
     }
 }

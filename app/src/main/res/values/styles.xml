@@ -1,33 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="popupTheme" parent="Theme.AppCompat.DayNight.Dialog">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-
     <style name="noActionBarStyle" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="colorPrimaryDark">@color/colorDefaultGray</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="colorAccent">@color/colorPrimaryVariant</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
 
     <style name="toolbar">
-        <item name="android:textColor">@color/colorOnSecondary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@android:color/white</item>
     </style>
 
     <style name="tv">
@@ -38,7 +23,7 @@
         <item name="android:layout_marginTop">8dp</item>
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:layout_marginEnd">8dp</item>
-        <item name="android:fontFamily">@font/godo</item>
+        <item name="android:fontFamily">@font/youth</item>
     </style>
 
     <style name="tv.header">
@@ -59,58 +44,30 @@
 
     <style name="tv.body">
         <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:textColor">@color/colorTextBody</item>
     </style>
 
     <style name="btn" parent="Base.TextAppearance.MaterialComponents.Button">
-        <item name="android:backgroundTint">@color/colorPrimaryVariant</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">@dimen/text_16</item>
-        <item name="android:textColor">@color/colorOnSecondary</item>
-        <item name="fontFamily">@font/godo</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:backgroundTint">@android:color/white</item>
+        <item name="fontFamily">@font/youth</item>
+    </style>
+
+    <style name="btn.accent">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="btn.second">
+        <item name="android:backgroundTint">@color/colorOnSecondary</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="tb" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
         <item name="android:titleTextColor">@color/colorOnSecondary</item>
-    </style>
-
-    <style name="tv.round">
-        <item name="android:background">@drawable/round_corner</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/aller_default</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:layout_width">@dimen/sign_in_et_width</item>
-        <item name="android:layout_height">@dimen/sign_in_et_height</item>
-        <item name="android:textSize">@dimen/sign_in_et_text_size</item>
-        <item name="android:textAlignment">textStart</item>
-        <item name="android:gravity">center</item>
-        <item name="android:backgroundTint">@android:color/white</item>
-        <item name="android:paddingStart">20dp</item>
-        <item name="android:paddingEnd">20dp</item>
-    </style>
-
-    <style name="tv.accent">
-        <item name="android:background">@drawable/tv_accent</item>
-        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/aller_default</item>
-        <item name="android:layout_width">@dimen/sign_in_et_width</item>
-        <item name="android:layout_height">@dimen/sign_in_et_height</item>
-        <item name="android:textSize">@dimen/sign_in_et_text_size</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@android:color/white</item>
-    </style>
-
-    <style name="tv.accent.small">
-        <item name="android:layout_width">@dimen/write_tv_width</item>
-        <item name="android:layout_height">@dimen/write_tv_height</item>
-        <item name="android:textSize">@dimen/write_tv_text_size</item>
-    </style>
-
-    <style name="tv.menu">
-        <item name="android:layout_height">32dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:background">@drawable/tv_background_menu</item>
-        <item name="android:textColor">@color/colorMenu</item>
     </style>
 
     <style name="iv">
@@ -125,44 +82,6 @@
     <style name="cd">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-    </style>
-
-
-    /* Text Style Base */
-    <style name="TextStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_marginBottom">4dp</item>
-        <item name="android:layout_marginLeft">8dp</item>
-        <item name="android:layout_marginRight">8dp</item>
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-
-    <style name="TextStyle.Regular">
-        <item name="android:fontFamily">sans-serif</item>
-    </style>
-
-    <style name="TextStyle.Bold">
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="TextStyle.Regular.Title"><item name="android:textSize">@dimen/text_size_H5</item></style>
-    <style name="TextStyle.Regular.SubTitle"><item name="android:textSize">@dimen/text_size_H6</item></style>
-    <style name="TextStyle.Regular.Medium"><item name="android:textSize">@dimen/text_size_m</item></style>
-    <style name="TextStyle.Regular.Small"><item name="android:textSize">@dimen/text_size_s</item></style>
-
-    <style name="TextStyle.Bold.Title"><item name="android:textSize">@dimen/text_size_H5</item></style>
-    <style name="TextStyle.Bold.SubTitle"><item name="android:textSize">@dimen/text_size_H6</item></style>
-    <style name="TextStyle.Bold.Medium"><item name="android:textSize">@dimen/text_size_m</item></style>
-    <style name="TextStyle.Bold.Small"><item name="android:textSize">@dimen/text_size_s</item></style>
-
-    /* Edit Text */
-    <style name="Basic_EditText" parent="TextStyle.Regular.Medium">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
-        <item name="android:backgroundTint">@color/colorAccent</item>
     </style>
 
 </resources>

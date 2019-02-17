@@ -71,13 +71,13 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
                 )
                 .into(binding.ivImagePager);
 
-        binding.ivImagePager.setOnClickListener(v ->
-                mFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fl_post_container, new PhotoViewFragment())
-                        .addToBackStack("")
-                        .commit()
-        );
+//        binding.ivImagePager.setOnClickListener(v ->
+//                mFragmentManager
+//                        .beginTransaction()
+//                        .replace(R.id.fl_post_container, new PhotoViewFragment())
+//                        .addToBackStack("")
+//                        .commit()
+//        );
 
         container.addView(binding.getRoot());
         return binding.getRoot();

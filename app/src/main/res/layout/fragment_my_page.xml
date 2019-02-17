@@ -25,10 +25,10 @@
                 android:id="@+id/ctl_my_page"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@android:color/transparent"
                 android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
+                app:contentScrim="@android:color/white"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                android:background="@color/colorDefaultGray"
                 app:title="마이페이지">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -51,7 +51,7 @@
                         style="@style/tv.header"
                         android:paddingTop="12dp"
                         android:text="@{handler.user.nickName}"
-                        android:textColor="@color/colorOnSecondary"
+                        android:textColor="@color/colorPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/tv_my_page_gender" />
 
@@ -59,7 +59,7 @@
                         android:id="@+id/tv_my_page_gender"
                         style="@style/tv.title"
                         android:text="@{handler.user.gender}"
-                        android:textColor="@color/colorOnSecondary"
+                        android:textColor="@color/colorPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -69,6 +69,7 @@
                     android:id="@+id/tb_my_page"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:background="@android:color/transparent"
                     app:layout_collapseMode="pin" />
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -98,7 +99,7 @@
                     android:id="@+id/ly_my_page_change_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:background="@android:color/white"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +125,7 @@
 
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="0.2dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="80dp"
                         android:layout_marginEnd="20dp"
@@ -141,7 +142,7 @@
 
                     <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="0.2dp"
                         android:layout_gravity="end"
                         android:layout_marginStart="80dp"
                         android:layout_marginEnd="20dp"
@@ -160,7 +161,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:background="@android:color/white"
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -169,7 +170,7 @@
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/tv_my_page_delete"
-                        style="@style/btn"
+                        style="@style/btn.accent"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_margin="8dp"
