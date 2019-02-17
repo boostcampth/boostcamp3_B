@@ -11,7 +11,7 @@
     </style>
 
     <style name="toolbar">
-        <!--<item name="android:textColor">@color/colorOnSecondary</item>-->
+        <item name="android:textColor">@color/colorOnSecondary</item>
     </style>
 
     <style name="tv">
@@ -57,6 +57,11 @@
     <style name="btn.accent">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="btn.second">
+        <item name="android:backgroundTint">@color/colorOnSecondary</item>
+        <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="tb" parent="ThemeOverlay.MaterialComponents.Toolbar.Surface">
