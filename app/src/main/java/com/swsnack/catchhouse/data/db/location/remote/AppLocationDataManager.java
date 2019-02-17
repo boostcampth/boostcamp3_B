@@ -8,7 +8,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.swsnack.catchhouse.data.db.location.LocationDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.model.Address;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
 

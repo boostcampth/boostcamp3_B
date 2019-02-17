@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.data.pojo;
+package com.swsnack.catchhouse.data.model;
 
 public class Address {
     private String name;

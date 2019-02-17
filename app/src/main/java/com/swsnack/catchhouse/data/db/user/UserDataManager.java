@@ -45,14 +45,9 @@ public interface UserDataManager {
                        @NonNull OnSuccessListener<Void> onSuccessListener,
                        @NonNull OnFailedListener onFailedListener);
 
-    void deleteUserData(@NonNull String uuid,
-                        @NonNull User user,
-                        @NonNull OnSuccessListener<Void> onSuccessListener,
-                        @NonNull OnFailedListener onFailedListener);
-
-    void deleteProfile(@NonNull String uuid,
-                       @NonNull OnSuccessListener<Void> onSuccessListener,
-                       @NonNull OnFailedListener onFailedListener);
+    void deleteUser(@NonNull String uuid,
+                    @NonNull OnSuccessListener<Void> onSuccessListener,
+                    @NonNull OnFailedListener onFailedListener);
 
     void getProfile(@NonNull Uri uri,
                     @NonNull OnSuccessListener<Bitmap> onSuccessListener,

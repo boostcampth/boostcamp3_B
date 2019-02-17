@@ -2,7 +2,7 @@ package com.swsnack.catchhouse.data.db.searching;
 
 import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.data.pojo.Filter;
+import com.swsnack.catchhouse.data.model.Filter;
 
 import java.util.List;
 

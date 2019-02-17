@@ -77,6 +77,11 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager, Rec
     }
 
     @Override
+    public void deleteFavoriteRoom() {
+        mLocalRoomDataManager.deleteFavoriteRoom();
+    }
+
+    @Override
     public RoomEntity getFavoriteRoom(String key) {
         return mLocalRoomDataManager.getFavoriteRoom(key);
     }
@@ -89,5 +94,10 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager, Rec
     @Override
     public List<Room> getRecentRoom() {
         return mRecentRoomDataManager.getRecentRoom();
+    }
+
+    @Override
+    public void deleteRecentRoomList() {
+        mRecentRoomDataManager.deleteRecentRoomList();
     }
 }

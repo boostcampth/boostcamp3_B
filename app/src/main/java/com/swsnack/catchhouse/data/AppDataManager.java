@@ -19,9 +19,9 @@ import com.swsnack.catchhouse.data.db.location.LocationDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.db.room.remote.RoomDataManager;
-import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.data.pojo.Filter;
+import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.db.user.UserDataManager;
 import com.swsnack.catchhouse.data.model.User;
 
@@ -82,6 +82,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void deleteUser(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
+        mUserDataManager.deleteUser(uuid, onSuccessListener, onFailedListener);
+    }
+
+    @Override
     public void getUserAndListeningForChanging(@NonNull String uuid,
                                                @NonNull OnSuccessListener<User> onSuccessListener,
                                                @NonNull OnFailedListener onFailedListener) {
@@ -121,23 +126,6 @@ public class AppDataManager implements DataManager {
                                         @NonNull OnFailedListener onFailedListener) {
 
         mUserDataManager.setUserNotAlreadySigned(uuid, user, onSuccessListener, onFailedListener);
-    }
-
-    @Override
-    public void deleteUserData(@NonNull String uuid,
-                               @NonNull User user,
-                               @NonNull OnSuccessListener<Void> onSuccessListener,
-                               @NonNull OnFailedListener onFailedListener) {
-
-        mUserDataManager.deleteUserData(uuid, user, onSuccessListener, onFailedListener);
-    }
-
-    @Override
-    public void deleteProfile(@NonNull String uuid,
-                              @NonNull OnSuccessListener<Void> onSuccessListener,
-                              @NonNull OnFailedListener onFailedListener) {
-
-        mUserDataManager.deleteProfile(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -281,6 +269,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public void deleteFavoriteRoom() {
+        mFavoriteRoomManager.deleteFavoriteRoom();
+    }
+
+    @Override
     public List<RoomEntity> getFavoriteRoomList() {
         return mFavoriteRoomManager.getFavoriteRoomList();
     }
@@ -298,5 +291,10 @@ public class AppDataManager implements DataManager {
     @Override
     public List<Room> getRecentRoom() {
         return mRecentRoomDataManager.getRecentRoom();
+    }
+
+    @Override
+    public void deleteRecentRoomList() {
+        mRecentRoomDataManager.deleteRecentRoomList();
     }
 }

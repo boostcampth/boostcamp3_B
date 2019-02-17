@@ -10,8 +10,8 @@ import android.widget.Toast;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.data.pojo.Address;
-import com.swsnack.catchhouse.data.pojo.Filter;
+import com.swsnack.catchhouse.data.model.Address;
+import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 

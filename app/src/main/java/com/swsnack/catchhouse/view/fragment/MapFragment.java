@@ -29,7 +29,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
-import com.swsnack.catchhouse.data.pojo.Address;
+import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.databinding.FragmentMapBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activitity.PostActivity;
