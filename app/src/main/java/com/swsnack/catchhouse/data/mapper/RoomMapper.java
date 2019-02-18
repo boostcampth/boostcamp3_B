@@ -29,7 +29,7 @@ public class RoomMapper implements Mapper<RoomEntity, Room> {
                 from.getLongitude());
     }
 
-    public List<Room> mapList(List<RoomEntity> from) {
+    public List<Room> mapToList(List<RoomEntity> from) {
         List<Room> roomList = new ArrayList<>();
         for (RoomEntity item : from) {
             roomList.add(map(item));
