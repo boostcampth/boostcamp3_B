@@ -10,21 +10,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class AppRecentRoomManager implements RecentRoomManager {
+public class LocalRecentRoomImpl implements RecentRoomDataSource {
 
     private HashMap<Room, Long> mRecentRoomCache;
-    private static AppRecentRoomManager INSTANCE;
+    private static LocalRecentRoomImpl INSTANCE;
 
-    public static AppRecentRoomManager getInstance() {
+    public static LocalRecentRoomImpl getInstance() {
         if (INSTANCE == null) {
-            synchronized (AppRecentRoomManager.class) {
-                INSTANCE = new AppRecentRoomManager();
+            synchronized (LocalRecentRoomImpl.class) {
+                INSTANCE = new LocalRecentRoomImpl();
             }
         }
         return INSTANCE;
     }
 
-    private AppRecentRoomManager() {
+    private LocalRecentRoomImpl() {
         mRecentRoomCache = AppDataCache.getInstance().getRecentRoomCache();
     }
 

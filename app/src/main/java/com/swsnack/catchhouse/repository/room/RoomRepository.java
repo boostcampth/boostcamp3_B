@@ -2,31 +2,30 @@ package com.swsnack.catchhouse.repository.room;
 
 import android.net.Uri;
 
-import com.swsnack.catchhouse.repository.room.local.AppFavoriteRoomDataManager;
-import com.swsnack.catchhouse.repository.room.local.AppRecentRoomManager;
-import com.swsnack.catchhouse.repository.room.local.FavoriteRoomManager;
-import com.swsnack.catchhouse.repository.room.local.RecentRoomManager;
-import com.swsnack.catchhouse.repository.room.remote.AppRoomRemoteDataManager;
-import com.swsnack.catchhouse.repository.room.remote.RoomDataManager;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
-import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDataSource;
+import com.swsnack.catchhouse.repository.room.local.LocalFavoriteRoomImpl;
+import com.swsnack.catchhouse.repository.room.local.LocalRecentRoomImpl;
+import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
+import com.swsnack.catchhouse.repository.room.remote.AppRoomRemoteDataManager;
+import com.swsnack.catchhouse.repository.room.remote.RoomDataManager;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class RoomRepository implements RoomDataManager, FavoriteRoomManager, RecentRoomManager {
+public class RoomRepository implements RoomDataManager, FavoriteRoomDataSource, RecentRoomDataSource {
 
     private static RoomRepository INSTANCE;
-    private FavoriteRoomManager mLocalRoomDataManager;
+    private FavoriteRoomDataSource mLocalRoomDataManager;
     private RoomDataManager mRemoteRoomDataManager;
-    private RecentRoomManager mRecentRoomDataManager;
+    private RecentRoomDataSource mRecentRoomDataManager;
 
     public static RoomRepository getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             synchronized (RoomRepository.class) {
                 INSTANCE = new RoomRepository();
             }
@@ -36,9 +35,9 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager, Rec
 
     private RoomRepository() {
 
-        mLocalRoomDataManager = AppFavoriteRoomDataManager.getInstance();
+        mLocalRoomDataManager = LocalFavoriteRoomImpl.getInstance();
         mRemoteRoomDataManager = AppRoomRemoteDataManager.getInstance();
-        mRecentRoomDataManager = AppRecentRoomManager.getInstance();
+        mRecentRoomDataManager = LocalRecentRoomImpl.getInstance();
     }
 
     @Override
@@ -62,17 +61,17 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager, Rec
     }
 
     @Override
-    public void setFavoriteRoom(RoomEntity roomEntity) {
-        mLocalRoomDataManager.setFavoriteRoom(roomEntity);
+    public void setFavoriteRoom(Room room) {
+        mLocalRoomDataManager.setFavoriteRoom(room);
     }
 
     @Override
-    public void deleteFavoriteRoom(RoomEntity roomEntity) {
-        mLocalRoomDataManager.deleteFavoriteRoom(roomEntity);
+    public void deleteFavoriteRoom(Room room) {
+        mLocalRoomDataManager.deleteFavoriteRoom(room);
     }
 
     @Override
-    public List<RoomEntity> getFavoriteRoomList() {
+    public List<Room> getFavoriteRoomList() {
         return mLocalRoomDataManager.getFavoriteRoomList();
     }
 
@@ -82,13 +81,13 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomManager, Rec
     }
 
     @Override
-    public RoomEntity getFavoriteRoom(String key) {
+    public Room getFavoriteRoom(String key) {
         return mLocalRoomDataManager.getFavoriteRoom(key);
     }
 
     @Override
-    public void updateRoom(RoomEntity roomEntity) {
-        mLocalRoomDataManager.updateRoom(roomEntity);
+    public void updateRoom(Room room) {
+        mLocalRoomDataManager.updateRoom(room);
     }
 
     @Override

@@ -19,11 +19,10 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataManager;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataDataSource;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -49,7 +48,7 @@ public class UserViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private ViewModelListener mListener;
     private Uri mProfileUri;
-    private MutableLiveData<List<RoomEntity>> mFavoriteRoomList;
+    private MutableLiveData<List<Room>> mFavoriteRoomList;
     private MutableLiveData<List<Room>> mRecentRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
@@ -59,7 +58,7 @@ public class UserViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mNickName;
     public MutableLiveData<Bitmap> mProfile;
 
-    UserViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+    UserViewModel(Application application, DataDataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         this.mAppContext = application;
         this.mFavoriteRoomList = new MutableLiveData<>();
@@ -281,7 +280,7 @@ public class UserViewModel extends ReactiveViewModel {
         return mUser;
     }
 
-    public LiveData<List<RoomEntity>> getFavoriteRoomList() {
+    public LiveData<List<Room>> getFavoriteRoomList() {
         return mFavoriteRoomList;
     }
 

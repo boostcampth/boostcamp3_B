@@ -10,7 +10,7 @@ import com.swsnack.catchhouse.repository.OnSuccessListener;
 
 import java.util.List;
 
-public interface ChattingManager {
+public interface ChattingDataSource {
 
     void getChattingRoom(@NonNull String destinationUuid,
                          @NonNull OnSuccessListener<String> onSuccessListener,

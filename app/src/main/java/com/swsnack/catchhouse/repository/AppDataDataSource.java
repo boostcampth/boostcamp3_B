@@ -10,11 +10,11 @@ import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
-import com.swsnack.catchhouse.repository.chatting.ChattingManager;
+import com.swsnack.catchhouse.repository.chatting.ChattingDataSource;
 import com.swsnack.catchhouse.repository.location.LocationDataManager;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
-import com.swsnack.catchhouse.repository.room.local.FavoriteRoomManager;
-import com.swsnack.catchhouse.repository.room.local.RecentRoomManager;
+import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDataSource;
+import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
 import com.swsnack.catchhouse.repository.room.remote.RoomDataManager;
 import com.swsnack.catchhouse.repository.searching.SearchingDataManager;
 import com.swsnack.catchhouse.repository.user.UserDataManager;
@@ -25,41 +25,41 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
-public class AppDataManager implements DataManager {
+public class AppDataDataSource implements DataDataSource {
 
     private UserDataManager mUserDataManager;
-    private ChattingManager mRemoteChattingManager;
+    private ChattingDataSource mRemoteChattingDataSource;
     private RoomDataManager mRoomDataManager;
-    private FavoriteRoomManager mFavoriteRoomManager;
-    private RecentRoomManager mRecentRoomDataManager;
+    private FavoriteRoomDataSource mFavoriteRoomDataSource;
+    private RecentRoomDataSource mRecentRoomDataManager;
     private LocationDataManager mLocationDataManager;
     private SearchingDataManager mSearchingDataManager;
 
-    private AppDataManager(UserDataManager userDataManager,
-                           ChattingManager remoteChattingManager,
-                           RoomRepository roomRepository,
-                           LocationDataManager locationDataManager,
-                           SearchingDataManager searchingDataManager) {
+    private AppDataDataSource(UserDataManager userDataManager,
+                              ChattingDataSource remoteChattingDataSource,
+                              RoomRepository roomRepository,
+                              LocationDataManager locationDataManager,
+                              SearchingDataManager searchingDataManager) {
 
         mUserDataManager = userDataManager;
-        mRemoteChattingManager = remoteChattingManager;
+        mRemoteChattingDataSource = remoteChattingDataSource;
         mRoomDataManager = roomRepository;
-        mFavoriteRoomManager = roomRepository;
+        mFavoriteRoomDataSource = roomRepository;
         mRecentRoomDataManager = roomRepository;
         mLocationDataManager = locationDataManager;
         mSearchingDataManager = searchingDataManager;
     }
 
-    private static AppDataManager INSTANCE;
+    private static AppDataDataSource INSTANCE;
 
-    public static synchronized AppDataManager getInstance(@NonNull UserDataManager userDataManager,
-                                                          @NonNull ChattingManager remoteChattingManager,
-                                                          @NonNull RoomRepository roomRepository,
-                                                          @NonNull LocationDataManager locationDataManager,
-                                                          @NonNull SearchingDataManager searchingDataManager) {
+    public static synchronized AppDataDataSource getInstance(@NonNull UserDataManager userDataManager,
+                                                             @NonNull ChattingDataSource remoteChattingDataSource,
+                                                             @NonNull RoomRepository roomRepository,
+                                                             @NonNull LocationDataManager locationDataManager,
+                                                             @NonNull SearchingDataManager searchingDataManager) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataManager(userDataManager,
-                    remoteChattingManager,
+            INSTANCE = new AppDataDataSource(userDataManager,
+                    remoteChattingDataSource,
                     roomRepository,
                     locationDataManager,
                     searchingDataManager);
@@ -146,19 +146,19 @@ public class AppDataManager implements DataManager {
                                 @NonNull OnSuccessListener onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.getChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.getChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void listeningChattingListChanged(@NonNull OnSuccessListener onSuccessListener,
                                              @NonNull OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.listeningChattingListChanged(onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.listeningChattingListChanged(onSuccessListener, onFailedListener);
     }
 
     @Override
     public void cancelObservingChattingList() {
-        mRemoteChattingManager.cancelObservingChattingList();
+        mRemoteChattingDataSource.cancelObservingChattingList();
     }
 
     @Override
@@ -166,13 +166,13 @@ public class AppDataManager implements DataManager {
                                             @NonNull OnSuccessListener<List<Message>> onSuccessListener,
                                             OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.listeningChatMessageChanged(chatRoomId, onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.listeningChatMessageChanged(chatRoomId, onSuccessListener, onFailedListener);
 
     }
 
     @Override
     public void cancelMessageModelObserving() {
-        mRemoteChattingManager.cancelMessageModelObserving();
+        mRemoteChattingDataSource.cancelMessageModelObserving();
     }
 
     @Override
@@ -180,7 +180,7 @@ public class AppDataManager implements DataManager {
                                 @NonNull OnSuccessListener<String> onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.setChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.setChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -191,7 +191,7 @@ public class AppDataManager implements DataManager {
                                @NonNull OnSuccessListener<String> onSuccessListener,
                                @NonNull OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailedListener);
 
     }
 
@@ -245,34 +245,34 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void setFavoriteRoom(RoomEntity roomEntity) {
-        mFavoriteRoomManager.setFavoriteRoom(roomEntity);
+    public void setFavoriteRoom(Room room) {
+        mFavoriteRoomDataSource.setFavoriteRoom(room);
     }
 
     @Override
-    public void deleteFavoriteRoom(RoomEntity roomEntity) {
-        mFavoriteRoomManager.deleteFavoriteRoom(roomEntity);
+    public void deleteFavoriteRoom(Room room) {
+        mFavoriteRoomDataSource.deleteFavoriteRoom(room);
 
     }
 
     @Override
     public void deleteFavoriteRoom() {
-        mFavoriteRoomManager.deleteFavoriteRoom();
+        mFavoriteRoomDataSource.deleteFavoriteRoom();
     }
 
     @Override
-    public List<RoomEntity> getFavoriteRoomList() {
-        return mFavoriteRoomManager.getFavoriteRoomList();
+    public List<Room> getFavoriteRoomList() {
+        return mFavoriteRoomDataSource.getFavoriteRoomList();
     }
 
     @Override
-    public RoomEntity getFavoriteRoom(String key) {
-        return mFavoriteRoomManager.getFavoriteRoom(key);
+    public Room getFavoriteRoom(String key) {
+        return mFavoriteRoomDataSource.getFavoriteRoom(key);
     }
 
     @Override
-    public void updateRoom(RoomEntity roomEntity) {
-        mFavoriteRoomManager.updateRoom(roomEntity);
+    public void updateRoom(Room room) {
+        mFavoriteRoomDataSource.updateRoom(room);
     }
 
     @Override

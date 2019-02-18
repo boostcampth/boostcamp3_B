@@ -4,7 +4,7 @@ import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
 
-public interface RecentRoomManager {
+public interface RecentRoomDataSource {
 
     void setRecentRoom(Room room);
 

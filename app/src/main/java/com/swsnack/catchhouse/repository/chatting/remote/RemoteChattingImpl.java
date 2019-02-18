@@ -13,7 +13,7 @@ import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.firebase.DBListValueHelper;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
-import com.swsnack.catchhouse.repository.chatting.ChattingManager;
+import com.swsnack.catchhouse.repository.chatting.ChattingDataSource;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +28,7 @@ import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 
-public class RemoteChattingManager implements ChattingManager {
+public class RemoteChattingImpl implements ChattingDataSource {
 
     private DatabaseReference db;
     private Query mChattingListQuery;
@@ -36,16 +36,16 @@ public class RemoteChattingManager implements ChattingManager {
     private ValueEventListener mChattingObservingListener;
     private ValueEventListener mMessageObservingListener;
 
-    private static RemoteChattingManager INSTANCE;
+    private static RemoteChattingImpl INSTANCE;
 
-    public static synchronized RemoteChattingManager getInstance() {
+    public static synchronized RemoteChattingImpl getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new RemoteChattingManager();
+            INSTANCE = new RemoteChattingImpl();
         }
         return INSTANCE;
     }
 
-    private RemoteChattingManager() {
+    private RemoteChattingImpl() {
         this.db = FirebaseDatabase.getInstance().getReference().child(CHATTING);
     }
 

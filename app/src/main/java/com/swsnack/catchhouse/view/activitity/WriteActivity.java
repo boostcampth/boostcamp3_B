@@ -16,8 +16,8 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.AppDataManager;
-import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.repository.AppDataDataSource;
+import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
 import com.swsnack.catchhouse.repository.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
 import com.swsnack.catchhouse.repository.searching.remote.AppSearchingDataManager;
@@ -231,9 +231,9 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         mViewModel = ViewModelProviders.of(this,
                 new RoomsViewModelFactory(
                         getApplication(),
-                        AppDataManager.getInstance(
+                        AppDataDataSource.getInstance(
                                 AppUserDataManager.getInstance(),
-                                RemoteChattingManager.getInstance(),
+                                RemoteChattingImpl.getInstance(),
                                 RoomRepository.getInstance(),
                                 AppLocationDataManager.getInstance(),
                                 AppSearchingDataManager.getInstance()

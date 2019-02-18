@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataManager;
+import com.swsnack.catchhouse.repository.DataDataSource;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
@@ -39,7 +39,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
-    private DataManager mDataManager;
+    private DataDataSource mDataManager;
 
     public final MutableLiveData<List<Address>> mSearchResultList = new MutableLiveData<>();
     public final MutableLiveData<List<Uri>> mImageList = new MutableLiveData<>();
@@ -58,7 +58,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     private ExpectedPrice ep;
 
-    RoomsViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+    RoomsViewModel(Application application, DataDataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         mAppContext = application;
         mListener = listener;

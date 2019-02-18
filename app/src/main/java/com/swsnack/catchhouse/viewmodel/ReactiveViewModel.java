@@ -3,17 +3,17 @@ package com.swsnack.catchhouse.viewmodel;
 import androidx.lifecycle.ViewModel;
 
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataManager;
+import com.swsnack.catchhouse.repository.DataDataSource;
 
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ReactiveViewModel extends ViewModel {
 
     private CompositeDisposable mDisposables;
-    private DataManager mDataManager;
+    private DataDataSource mDataManager;
     private APIManager mApiManager;
 
-    public ReactiveViewModel(DataManager dataManager, APIManager apiManager) {
+    public ReactiveViewModel(DataDataSource dataManager, APIManager apiManager) {
         mDisposables = new CompositeDisposable();
         mDataManager = dataManager;
         mApiManager = apiManager;
@@ -29,7 +29,7 @@ public class ReactiveViewModel extends ViewModel {
         return mDisposables;
     }
 
-    protected DataManager getDataManager() {
+    protected DataDataSource getDataManager() {
         return mDataManager;
     }
 

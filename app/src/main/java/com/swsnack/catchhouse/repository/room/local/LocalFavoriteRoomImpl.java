@@ -3,57 +3,70 @@ package com.swsnack.catchhouse.repository.room.local;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.data.db.AppDatabase;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.mapper.RoomEntityMapper;
+import com.swsnack.catchhouse.data.mapper.RoomMapper;
+import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
+public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
 
-    private static AppFavoriteRoomDataManager INSTANCE;
+    private static LocalFavoriteRoomImpl INSTANCE;
     private RoomDao mRoomDao;
 
-    public static AppFavoriteRoomDataManager getInstance() {
+    public static LocalFavoriteRoomImpl getInstance() {
         if (INSTANCE == null) {
-            synchronized (AppFavoriteRoomDataManager.class) {
-                INSTANCE = new AppFavoriteRoomDataManager();
+            synchronized (LocalFavoriteRoomImpl.class) {
+                INSTANCE = new LocalFavoriteRoomImpl();
             }
         }
         return INSTANCE;
     }
 
-    private AppFavoriteRoomDataManager() {
+    private LocalFavoriteRoomImpl() {
         mRoomDao = AppDatabase.getInstance().getRoomDataAccessor();
     }
 
     @Override
-    public void setFavoriteRoom(RoomEntity roomEntity) {
+    public void setFavoriteRoom(Room room) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
-
+        RoomEntity roomEntity = new RoomEntityMapper().map(room);
         roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
         new FavoriteRoomHelper.AsyncSetFavoriteRoom(mRoomDao).execute(roomEntity);
     }
 
     @Override
-    public void deleteFavoriteRoom(RoomEntity roomEntity) {
+    public void deleteFavoriteRoom(Room room) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
 
+        RoomEntity roomEntity = new RoomEntityMapper().map(room);
         roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
         new FavoriteRoomHelper.AsyncDeleteFavoriteRoom(mRoomDao).execute(roomEntity);
 
     }
 
     @Override
-    public List<RoomEntity> getFavoriteRoomList() {
+    public List<Room> getFavoriteRoomList() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return null;
         }
 
         try {
-            return new FavoriteRoomHelper.AsyncLoadFavoriteRoomList(mRoomDao).execute(FirebaseAuth.getInstance().getCurrentUser().getUid()).get();
+            List<RoomEntity> roomEntityList = new FavoriteRoomHelper
+                    .AsyncLoadFavoriteRoomList(mRoomDao)
+                    .execute(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .get();
+
+            if (roomEntityList != null) {
+                return new RoomMapper().mapToList(roomEntityList);
+            }
+            return null;
+
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }
@@ -68,24 +81,32 @@ public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
     }
 
     @Override
-    public RoomEntity getFavoriteRoom(String key) {
+    public Room getFavoriteRoom(String key) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return null;
         }
 
         try {
-            return new FavoriteRoomHelper.AsyncLoadFavoriteRoom(mRoomDao).execute(key, FirebaseAuth.getInstance().getCurrentUser().getUid()).get();
+            RoomEntity roomEntity = new FavoriteRoomHelper
+                    .AsyncLoadFavoriteRoom(mRoomDao)
+                    .execute(key, FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .get();
+            if (roomEntity != null) {
+                return new RoomMapper().map(roomEntity);
+            }
+            return null;
+
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }
     }
 
     @Override
-    public void updateRoom(RoomEntity roomEntity) {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+    public void updateRoom(Room room) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
-
+        RoomEntity roomEntity = new RoomEntityMapper().map(room);
         roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         new FavoriteRoomHelper.AsyncUpdateFavoriteRoom(mRoomDao).execute(roomEntity);

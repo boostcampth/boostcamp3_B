@@ -11,7 +11,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.Constant;
-import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
 import com.swsnack.catchhouse.repository.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
 import com.swsnack.catchhouse.repository.searching.remote.AppSearchingDataManager;
@@ -28,12 +28,12 @@ import static com.swsnack.catchhouse.Constant.FacebookData.NAME;
 public class APIManager {
 
     private static APIManager INSTANCE;
-    private DataManager mDataManager;
+    private DataDataSource mDataManager;
 
     public static synchronized APIManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new APIManager(AppDataManager.getInstance(AppUserDataManager.getInstance(),
-                    RemoteChattingManager.getInstance(),
+            INSTANCE = new APIManager(AppDataDataSource.getInstance(AppUserDataManager.getInstance(),
+                    RemoteChattingImpl.getInstance(),
                     RoomRepository.getInstance(),
                     AppLocationDataManager.getInstance(),
                     AppSearchingDataManager.getInstance()));
@@ -41,7 +41,7 @@ public class APIManager {
         return INSTANCE;
     }
 
-    private APIManager(DataManager dataManager) {
+    private APIManager(DataDataSource dataManager) {
         mDataManager = dataManager;
     }
 

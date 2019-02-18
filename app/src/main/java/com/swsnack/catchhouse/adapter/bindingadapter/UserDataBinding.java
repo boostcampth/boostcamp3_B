@@ -9,9 +9,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.roomadapter.RoomListAdapter;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.util.DataConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ public class UserDataBinding {
 
     @BindingAdapter({"setProfile"})
     public static void setProfile(ImageView imageView, Bitmap profileBitmap) {
-        if(profileBitmap == null) {
+        if (profileBitmap == null) {
             imageView.setImageResource(R.drawable.profile);
             return;
         }
@@ -31,7 +29,7 @@ public class UserDataBinding {
     }
 
     @BindingAdapter({"setFavoriteRoom"})
-    public static void setFavoriteRoom(RecyclerView recyclerView, List<RoomEntity> roomEntityList) {
+    public static void setFavoriteRoom(RecyclerView recyclerView, List<Room> roomEntityList) {
         RoomListAdapter roomListAdapter = (RoomListAdapter) recyclerView.getAdapter();
         if (roomListAdapter == null) {
             return;
@@ -43,8 +41,8 @@ public class UserDataBinding {
         }
 
         List<Room> roomList = new ArrayList<>();
-        for (RoomEntity roomEntity : roomEntityList) {
-            roomList.add(DataConverter.convertToRoom(roomEntity));
+        for (Room room : roomEntityList) {
+            roomList.add(room);
         }
         roomListAdapter.setList(roomList);
     }

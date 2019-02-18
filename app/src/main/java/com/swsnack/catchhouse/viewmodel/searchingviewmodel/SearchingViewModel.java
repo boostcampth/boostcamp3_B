@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataManager;
+import com.swsnack.catchhouse.repository.DataDataSource;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.Filter;
@@ -43,7 +43,7 @@ public class SearchingViewModel extends ReactiveViewModel {
     public MutableLiveData<Boolean> mFilterOptionSmoking;
 
 
-    SearchingViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+    SearchingViewModel(Application application, DataDataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         mAppContext = application;
         mListener = listener;
