@@ -6,7 +6,7 @@ import com.swsnack.catchhouse.data.model.Message;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MessageMapper implements FirebaseMapper<DataSnapshot, Message> {
+public class MessageMapper implements FirebaseMapper<Message> {
 
     @Override
     public List<Message> mapToList(DataSnapshot from) {
@@ -15,6 +15,11 @@ public class MessageMapper implements FirebaseMapper<DataSnapshot, Message> {
             messageList.add(map(snapshot));
         }
         return messageList;
+    }
+
+    @Override
+    public String mapFromKey(DataSnapshot from) {
+        return from.getKey();
     }
 
     @Override

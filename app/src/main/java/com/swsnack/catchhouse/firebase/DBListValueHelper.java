@@ -4,11 +4,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.swsnack.catchhouse.data.mapper.FirebaseMapper;
-import com.swsnack.catchhouse.data.mapper.Mapper;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,10 +29,6 @@ public class DBListValueHelper<T> implements ValueEventListener {
 
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//        List<T> result = new ArrayList<>();
-//        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//            result.add((T) mMapper.map(snapshot));
-//        }
         mOnSuccessListener.onSuccess(mMapper.mapToList(dataSnapshot));
     }
 

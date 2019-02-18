@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 
 public class GlideUtil {
 
-    public Bitmap getBitmapFromUri(Uri uri) throws ExecutionException, InterruptedException {
+    public static Bitmap getBitmapFromUri(Uri uri) throws ExecutionException, InterruptedException {
         return new AsyncGetBitmap().execute(uri).get();
     }
 

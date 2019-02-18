@@ -1,8 +1,12 @@
 package com.swsnack.catchhouse.data.mapper;
 
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.List;
 
-public interface FirebaseMapper<T, K> extends Mapper<T, K> {
+public interface FirebaseMapper<T> extends Mapper<DataSnapshot, T> {
 
-    List<K> mapToList(T from);
+    List<T> mapToList(DataSnapshot from);
+
+    String mapFromKey(DataSnapshot from);
 }

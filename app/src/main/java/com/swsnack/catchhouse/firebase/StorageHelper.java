@@ -21,7 +21,7 @@ public class StorageHelper {
         this.mData = data;
     }
 
-    public void getStorageStatus(@NonNull OnSuccessListener onSuccessListener,
+    public void getStorageStatus(@NonNull OnSuccessListener<Uri> onSuccessListener,
                                  @NonNull OnFailedListener onFailedListener) {
 
         UploadTask uploadTask = mStorageReference.putFile(mData);

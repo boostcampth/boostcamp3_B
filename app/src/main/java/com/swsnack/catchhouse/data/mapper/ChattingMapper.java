@@ -6,7 +6,7 @@ import com.swsnack.catchhouse.data.model.Chatting;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChattingMapper implements FirebaseMapper<DataSnapshot, Chatting> {
+public class ChattingMapper implements FirebaseMapper<Chatting> {
 
     @Override
     public Chatting map(DataSnapshot from) {
@@ -22,5 +22,10 @@ public class ChattingMapper implements FirebaseMapper<DataSnapshot, Chatting> {
             chattingList.add(map(snapshot));
         }
         return chattingList;
+    }
+
+    @Override
+    public String mapFromKey(DataSnapshot from) {
+        return from.getKey();
     }
 }
