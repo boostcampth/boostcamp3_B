@@ -2,8 +2,8 @@ package com.swsnack.catchhouse.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataManager;
 
 import io.reactivex.disposables.CompositeDisposable;
 

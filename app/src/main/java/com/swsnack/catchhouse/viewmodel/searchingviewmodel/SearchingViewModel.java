@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataManager;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.Filter;

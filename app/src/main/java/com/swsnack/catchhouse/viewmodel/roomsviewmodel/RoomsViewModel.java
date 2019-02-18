@@ -6,10 +6,10 @@ import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.listener.OnFailedListener;
-import com.swsnack.catchhouse.data.listener.OnSuccessListener;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataManager;
+import com.swsnack.catchhouse.repository.OnFailedListener;
+import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.Address;

@@ -1,22 +1,19 @@
 package com.swsnack.catchhouse.view.activitity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
-import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.AppDataManager;
+import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.repository.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.repository.room.RoomRepository;
+import com.swsnack.catchhouse.repository.searching.remote.AppSearchingDataManager;
+import com.swsnack.catchhouse.repository.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.ActivityPostBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
@@ -26,7 +23,6 @@ import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
 public class PostActivity extends BaseActivity<ActivityPostBinding> {

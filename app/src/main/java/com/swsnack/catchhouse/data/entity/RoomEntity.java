@@ -1,8 +1,6 @@
 package com.swsnack.catchhouse.data.entity;
 
-import com.google.firebase.database.Exclude;
-import com.swsnack.catchhouse.data.db.room.local.TypeConverter;
-import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.repository.room.local.TypeConverter;
 
 import java.util.List;
 
@@ -10,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
-import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
 import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;

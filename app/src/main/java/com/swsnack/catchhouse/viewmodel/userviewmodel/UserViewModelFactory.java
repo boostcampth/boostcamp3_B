@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataManager;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 public class UserViewModelFactory extends ViewModelProvider.NewInstanceFactory {

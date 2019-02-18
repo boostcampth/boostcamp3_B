@@ -15,23 +15,20 @@ import android.widget.TextView;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
-import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
-import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.AppDataManager;
+import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.repository.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.repository.room.RoomRepository;
+import com.swsnack.catchhouse.repository.searching.remote.AppSearchingDataManager;
+import com.swsnack.catchhouse.repository.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModelFactory;
-import com.yalantis.ucrop.UCrop;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 

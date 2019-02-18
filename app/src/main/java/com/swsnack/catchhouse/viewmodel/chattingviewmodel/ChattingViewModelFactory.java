@@ -5,14 +5,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
-import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
-import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.AppDataManager;
+import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingManager;
+import com.swsnack.catchhouse.repository.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.repository.room.RoomRepository;
+import com.swsnack.catchhouse.repository.searching.remote.AppSearchingDataManager;
+import com.swsnack.catchhouse.repository.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 public class ChattingViewModelFactory extends ViewModelProvider.NewInstanceFactory {

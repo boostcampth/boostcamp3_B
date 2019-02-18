@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.fragment.app.Fragment;
 
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataManager;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import io.reactivex.annotations.NonNull;

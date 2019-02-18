@@ -1,8 +1,8 @@
 package com.swsnack.catchhouse.data.db;
 
 import com.swsnack.catchhouse.AppApplication;
-import com.swsnack.catchhouse.data.db.room.local.RoomDao;
-import com.swsnack.catchhouse.data.db.room.local.TypeConverter;
+import com.swsnack.catchhouse.repository.room.local.RoomDao;
+import com.swsnack.catchhouse.repository.room.local.TypeConverter;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
 
 import androidx.room.Database;
