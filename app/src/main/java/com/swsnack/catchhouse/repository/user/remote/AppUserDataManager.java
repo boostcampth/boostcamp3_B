@@ -4,9 +4,6 @@ import android.app.Application;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -18,16 +15,19 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.swsnack.catchhouse.AppApplication;
+import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.firebase.DBValueHelper;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.repository.user.UserDataManager;
-import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.util.DataConverter;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import static com.swsnack.catchhouse.Constant.ExceptionReason.FAILED_UPDATE;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
