@@ -4,9 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -14,7 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
@@ -36,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
