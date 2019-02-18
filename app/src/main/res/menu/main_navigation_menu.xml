@@ -1,30 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/account2"
-            android:title="글쓰기" />
+
+    <group
+        android:id="@+id/nav_g1"
+        android:checkableBehavior="single">
 
         <item
-            android:id="@+id/account"
-            android:title="닉네임 변경" />
+            android:id="@+id/write"
+            android:title="@string/write_option" />
+    </group>
+
+
+    <group
+        android:id="@+id/nav_g2"
+        android:checkableBehavior="single">
 
         <item
-            android:id="@+id/star"
-            android:title="비밀번호 변경" />
+            android:id="@+id/change_nickname"
+            android:title="@string/change_nickname_option" />
 
         <item
-            android:id="@+id/star2"
-            android:title="프로필 이미지 변경ㅇ" />
+            android:id="@+id/change_password"
+            android:title="@string/change_password_option" />
 
         <item
-            android:id="@+id/test1"
-            android:title="로그 아웃" />
+            android:id="@+id/change_profile"
+            android:title="@string/change_profile_option" />
 
         <item
-            android:id="@+id/test2"
-            android:title="회원 탈퇴" />
+            android:id="@+id/delete_account"
+            android:title="@string/delete_account_option" />
+    </group>
+
+
+    <group android:id="@+id/nav_g3"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/logout"
+            android:title="@string/logout_option" />
     </group>
 
 

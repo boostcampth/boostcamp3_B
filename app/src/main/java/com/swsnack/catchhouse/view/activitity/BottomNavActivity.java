@@ -1,7 +1,6 @@
 package com.swsnack.catchhouse.view.activitity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -173,11 +172,11 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("test22", "stop");
         mDisposable.dispose();
     }
 
     private void init() {
+
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(mFragmentManager);
         List<Fragment> list = new ArrayList<>();
 

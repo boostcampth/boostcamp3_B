@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="handler"
             type="com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel" />

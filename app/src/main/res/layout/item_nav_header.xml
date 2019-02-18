@@ -14,20 +14,20 @@
         android:layout_height="230dp"
         android:background="@color/colorPrimary">
 
-        <TextView
-            android:id="@+id/test1"
-            style="@style/tv.title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/iv_header_profile"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@{userViewModel.mEmail}"
-            android:textColor="@android:color/white"
+            android:layout_marginTop="34dp"
+            android:background="@drawable/circular_image_view"
+            android:src="@drawable/profile"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            bind:setChattingUserProfile="@{userViewModel.user}" />
 
         <TextView
-            android:id="@+id/test2"
+            android:id="@+id/tv_header_nickname"
             style="@style/tv.title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,29 +36,20 @@
             android:text="@{userViewModel.user.nickName}"
             android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/test1" />
+            app:layout_constraintTop_toBottomOf="@id/iv_header_profile" />
+
 
         <TextView
-            android:id="@+id/test3"
-            style="@style/tv.title"
+            android:id="@+id/tv_header_email"
+            style="@style/tv.body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="@{userViewModel.user.gender}"
+            android:layout_marginTop="8dp"
+            android:text="@{userViewModel.mEmail}"
             android:textColor="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/test2" />
-
-        <ImageView
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            bind:setProfile="@{userViewModel.mProfile}" />
+            app:layout_constraintTop_toBottomOf="@id/tv_header_nickname" />
 
         <ImageView
             android:id="@+id/nav_header_back"

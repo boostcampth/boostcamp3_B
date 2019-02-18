@@ -149,4 +149,16 @@
     <string name="sign_in_login_google">구글 로그인</string>
     <string name="sign_in_login_facebook">페이스북 로그인</string>
     <string name="snack_back_pressed">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
+
+    /* navigation drawer */
+    <string name="write_option">방 공유 하기</string>
+    <string name="change_nickname_option">닉네임 변경</string>
+    <string name="change_password_option">비밀번호 변경</string>
+    <string name="change_profile_option">프로필 이미지 변경</string>
+    <string name="logout_option">로그 아웃</string>
+    <string name="delete_account_option">회원 탈퇴</string>
+    <string formatted="false" name="formatted_nickname">닉네임: %s</string>
+    <string formatted="false" name="formatted_email">아이디: %s</string>
+    <string name="menu_title_account">회원 관리</string>
+
 </resources>

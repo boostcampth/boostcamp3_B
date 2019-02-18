@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
@@ -33,14 +32,12 @@ import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
 import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
 
 public class ChatListFragment extends BaseFragment<FragmentChatListBinding, ChattingViewModel> {
-
-    UserViewModel mUserViewModel;
-    ItemNavHeaderBinding mItemNavHeaderBinding;
 
     @Override
     protected int getLayout() {
@@ -62,45 +59,15 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        MenuInflater menuInflater = getActivity().getMenuInflater();
-        menuInflater.inflate(R.menu.main_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-        return;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        if (item.getItemId() == R.id.menu_search) {
-            getBinding().drawerLayout.openDrawer(GravityCompat.END);
-            return true;
-        }
-        return true;
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /* navigation init */
-        setHasOptionsMenu(true);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(getBinding().tbChatList);
-
-        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
-        mItemNavHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_nav_header, getBinding().navView, false);
-        mItemNavHeaderBinding.setUserViewModel(mUserViewModel);
-        mItemNavHeaderBinding.setLifecycleOwner(this);
-        getBinding().navView.addHeaderView(mItemNavHeaderBinding.getRoot());
-
-        mItemNavHeaderBinding.navHeaderBack.setOnClickListener(__ -> {
-            getBinding().drawerLayout.closeDrawer(GravityCompat.END);
-        });
+        setNavigationDrawer();
 
         getBinding().setHandler(getViewModel());
         ChattingListAdapter chattingListAdapter = new ChattingListAdapter(getContext(), getViewModel());
         getBinding().rvChatList.setAdapter(chattingListAdapter);
-        getBinding().rvChatList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayout.VERTICAL, false));
+        getBinding().rvChatList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         chattingListAdapter.setOnItemClickListener((v, position) -> {
             Chatting chatting = chattingListAdapter.getItem(position);
@@ -141,5 +108,41 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
             getViewModel().getChattingRoomList();
             getBinding().tvChatListNotSigned.setVisibility(View.GONE);
         }
+    }
+
+    private void setNavigationDrawer() {
+        UserViewModel mUserViewModel;
+        ItemNavHeaderBinding mItemNavHeaderBinding;
+
+        setHasOptionsMenu(true);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(getBinding().tbChatList);
+
+        mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
+        mItemNavHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_nav_header, getBinding().navView, false);
+        mItemNavHeaderBinding.setUserViewModel(mUserViewModel);
+        mItemNavHeaderBinding.setLifecycleOwner(this);
+        getBinding().navView.addHeaderView(mItemNavHeaderBinding.getRoot());
+
+        mItemNavHeaderBinding.navHeaderBack.setOnClickListener(__ -> {
+            getBinding().drawerLayout.closeDrawer(GravityCompat.END);
+        });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        MenuInflater menuInflater = getActivity().getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        return;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == R.id.menu_search) {
+            getBinding().drawerLayout.openDrawer(GravityCompat.END);
+            return true;
+        }
+        return true;
     }
 }
