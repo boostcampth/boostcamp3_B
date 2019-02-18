@@ -4,9 +4,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -14,10 +11,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
+import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.AppDataManager;
 import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingManager;
@@ -25,7 +22,6 @@ import com.swsnack.catchhouse.repository.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
 import com.swsnack.catchhouse.repository.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.repository.user.remote.AppUserDataManager;
-import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
@@ -36,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
@@ -50,7 +45,6 @@ import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_
 
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
-    private static final String TAG = WriteActivity.class.getSimpleName();
     private RoomsViewModel mViewModel;
 
     @Override

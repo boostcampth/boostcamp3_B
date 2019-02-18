@@ -3,6 +3,7 @@ package com.swsnack.catchhouse.firebase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+import com.swsnack.catchhouse.data.mapper.Mapper;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 
@@ -13,14 +14,17 @@ import androidx.annotation.NonNull;
 
 public class DBListValueHelper<T> implements ValueEventListener {
 
-    private Class<T> mDataClass;
+    private Mapper mMapper;
     private OnSuccessListener<List<T>> mOnSuccessListener;
     private OnFailedListener mOnFailedListener;
 
-    public DBListValueHelper(Class<T> data, OnSuccessListener<List<T>> onSuccessListener, OnFailedListener onFailedListener) {
+    public DBListValueHelper(@NonNull Mapper mapper,
+                             @NonNull OnSuccessListener<List<T>> onSuccessListener,
+                             @NonNull OnFailedListener onFailedListener) {
+
+        mMapper = mapper;
         mOnSuccessListener = onSuccessListener;
         mOnFailedListener = onFailedListener;
-        mDataClass = data;
     }
 
 
@@ -28,9 +32,9 @@ public class DBListValueHelper<T> implements ValueEventListener {
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         List<T> result = new ArrayList<>();
         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-            result.add(snapshot.getValue(mDataClass));
+            result.add((T) mMapper.map(snapshot));
         }
-        if(result.size() == 0) {
+        if (result.size() == 0) {
             mOnSuccessListener.onSuccess(null);
             return;
         }

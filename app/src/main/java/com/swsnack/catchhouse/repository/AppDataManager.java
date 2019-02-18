@@ -2,29 +2,27 @@ package com.swsnack.catchhouse.repository;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.skt.Tmap.TMapPOIItem;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.model.Address;
+import com.swsnack.catchhouse.data.model.Filter;
+import com.swsnack.catchhouse.data.model.Message;
+import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.repository.chatting.ChattingManager;
+import com.swsnack.catchhouse.repository.location.LocationDataManager;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
 import com.swsnack.catchhouse.repository.room.local.FavoriteRoomManager;
 import com.swsnack.catchhouse.repository.room.local.RecentRoomManager;
-import com.swsnack.catchhouse.repository.searching.SearchingDataManager;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
-import com.swsnack.catchhouse.data.model.Chatting;
-import com.swsnack.catchhouse.data.model.Message;
-import com.swsnack.catchhouse.repository.location.LocationDataManager;
 import com.swsnack.catchhouse.repository.room.remote.RoomDataManager;
-import com.swsnack.catchhouse.data.model.Address;
-import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.data.model.Filter;
+import com.swsnack.catchhouse.repository.searching.SearchingDataManager;
 import com.swsnack.catchhouse.repository.user.UserDataManager;
-import com.swsnack.catchhouse.data.model.User;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
 public class AppDataManager implements DataManager {
@@ -145,15 +143,15 @@ public class AppDataManager implements DataManager {
 
     @Override
     public void getChattingRoom(@NonNull String destinationUuid,
-                                @NonNull com.google.android.gms.tasks.OnSuccessListener<String> onSuccessListener,
-                                @NonNull OnFailureListener onFailedListener) {
+                                @NonNull OnSuccessListener onSuccessListener,
+                                @NonNull OnFailedListener onFailedListener) {
 
         mRemoteChattingManager.getChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void listeningChattingListChanged(@NonNull com.google.android.gms.tasks.OnSuccessListener<List<Chatting>> onSuccessListener,
-                                             @NonNull OnFailureListener onFailedListener) {
+    public void listeningChattingListChanged(@NonNull OnSuccessListener onSuccessListener,
+                                             @NonNull OnFailedListener onFailedListener) {
 
         mRemoteChattingManager.listeningChattingListChanged(onSuccessListener, onFailedListener);
     }
@@ -165,8 +163,8 @@ public class AppDataManager implements DataManager {
 
     @Override
     public void listeningChatMessageChanged(@NonNull String chatRoomId,
-                                            @NonNull com.google.android.gms.tasks.OnSuccessListener<List<Message>> onSuccessListener,
-                                            @NonNull OnFailureListener onFailedListener) {
+                                            @NonNull OnSuccessListener<List<Message>> onSuccessListener,
+                                            OnFailedListener onFailedListener) {
 
         mRemoteChattingManager.listeningChatMessageChanged(chatRoomId, onSuccessListener, onFailedListener);
 
@@ -179,8 +177,8 @@ public class AppDataManager implements DataManager {
 
     @Override
     public void setChattingRoom(@NonNull String destinationUuid,
-                                @NonNull com.google.android.gms.tasks.OnSuccessListener<String> onSuccessListener,
-                                @NonNull OnFailureListener onFailedListener) {
+                                @NonNull OnSuccessListener<String> onSuccessListener,
+                                @NonNull OnFailedListener onFailedListener) {
 
         mRemoteChattingManager.setChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
     }
@@ -190,8 +188,8 @@ public class AppDataManager implements DataManager {
                                @Nullable String roomUid,
                                @NonNull String destinationUid,
                                @NonNull String content,
-                               @NonNull com.google.android.gms.tasks.OnSuccessListener<String> onSuccessListener,
-                               @NonNull OnFailureListener onFailedListener) {
+                               @NonNull OnSuccessListener<String> onSuccessListener,
+                               @NonNull OnFailedListener onFailedListener) {
 
         mRemoteChattingManager.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailedListener);
 
