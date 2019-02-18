@@ -1,11 +1,6 @@
 package com.swsnack.catchhouse.view.activitity;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +15,6 @@ import com.swsnack.catchhouse.data.AppDataManager;
 import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
 import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
 import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.room.remote.AppRoomRemoteDataManager;
 import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
 import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
@@ -42,6 +36,9 @@ import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModelFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.ViewPager;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/account2"
+            android:title="글쓰기" />
+
+        <item
+            android:id="@+id/account"
+            android:title="닉네임 변경" />
+
+        <item
+            android:id="@+id/star"
+            android:title="비밀번호 변경" />
+
+        <item
+            android:id="@+id/star2"
+            android:title="프로필 이미지 변경ㅇ" />
+
+        <item
+            android:id="@+id/test1"
+            android:title="로그 아웃" />
+
+        <item
+            android:id="@+id/test2"
+            android:title="회원 탈퇴" />
+    </group>
+
+
+</menu>
