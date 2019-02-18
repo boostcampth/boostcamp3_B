@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
@@ -18,10 +19,10 @@ import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.AppDataDataSource;
 import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
-import com.swsnack.catchhouse.repository.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
-import com.swsnack.catchhouse.repository.searching.remote.AppSearchingDataManager;
-import com.swsnack.catchhouse.repository.user.remote.AppUserDataManager;
+import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
+import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
 import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
@@ -46,7 +47,6 @@ import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     private RoomsViewModel mViewModel;
-
     @Override
     protected int getLayout() {
         return R.layout.activity_write;
@@ -100,16 +100,12 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     @Override
     public void isWorking() {
         super.isWorking();
-        //getBinding().pgWrite.setVisibility(View.VISIBLE);
-        getBinding().getRoot().setAlpha(0.6f);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
     }
 
     @Override
     public void isFinished() {
-        //getBinding().pgWrite.setVisibility(View.INVISIBLE);
-        getBinding().getRoot().setAlpha(1.0f);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        super.isFinished();
     }
 
     @Override
@@ -133,6 +129,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         createViewModels();
 
@@ -232,11 +229,11 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 new RoomsViewModelFactory(
                         getApplication(),
                         AppDataDataSource.getInstance(
-                                AppUserDataManager.getInstance(),
+                                UserDataImpl.getInstance(),
                                 RemoteChattingImpl.getInstance(),
                                 RoomRepository.getInstance(),
-                                AppLocationDataManager.getInstance(),
-                                AppSearchingDataManager.getInstance()
+                                RemoteLocationImpl.getInstance(),
+                                SearchingDataImpl.getInstance()
                         ),
                         APIManager.getInstance(),
                         this

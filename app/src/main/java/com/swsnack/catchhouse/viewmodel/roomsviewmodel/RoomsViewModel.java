@@ -98,8 +98,10 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     public void onSearchAddress(String keyword) {
         getCompositeDisposable().add(searchAddress(keyword)
-                .subscribe(list ->
-                                mSearchResultList.postValue(list)
+                .subscribe(list -> {
+                            mSearchResultList.postValue(list);
+                            mListener.isFinished();
+                        }
                         , exception ->
                                 mListener.onError("error")
                 )
@@ -219,6 +221,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(__ -> mListener.isWorking())
+                .doOnSuccess(__ -> mListener.isFinished())
                 .doAfterTerminate(() -> mListener.isFinished())
                 .toObservable()
                 .flatMap(Observable::fromIterable)

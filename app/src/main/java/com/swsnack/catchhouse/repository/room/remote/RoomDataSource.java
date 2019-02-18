@@ -12,7 +12,7 @@ import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
 
-public interface RoomDataManager {
+public interface RoomDataSource {
 
     void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
                    @NonNull OnFailedListener onFailedListener);

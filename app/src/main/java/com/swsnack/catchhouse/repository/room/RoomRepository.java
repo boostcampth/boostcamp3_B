@@ -9,19 +9,19 @@ import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDataSource;
 import com.swsnack.catchhouse.repository.room.local.LocalFavoriteRoomImpl;
 import com.swsnack.catchhouse.repository.room.local.LocalRecentRoomImpl;
 import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
-import com.swsnack.catchhouse.repository.room.remote.AppRoomRemoteDataManager;
-import com.swsnack.catchhouse.repository.room.remote.RoomDataManager;
+import com.swsnack.catchhouse.repository.room.remote.RoomDataImpl;
+import com.swsnack.catchhouse.repository.room.remote.RoomDataSource;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class RoomRepository implements RoomDataManager, FavoriteRoomDataSource, RecentRoomDataSource {
+public class RoomRepository implements RoomDataSource, FavoriteRoomDataSource, RecentRoomDataSource {
 
     private static RoomRepository INSTANCE;
     private FavoriteRoomDataSource mLocalRoomDataManager;
-    private RoomDataManager mRemoteRoomDataManager;
+    private RoomDataSource mRemoteRoomDataSource;
     private RecentRoomDataSource mRecentRoomDataManager;
 
     public static RoomRepository getInstance() {
@@ -36,28 +36,28 @@ public class RoomRepository implements RoomDataManager, FavoriteRoomDataSource, 
     private RoomRepository() {
 
         mLocalRoomDataManager = LocalFavoriteRoomImpl.getInstance();
-        mRemoteRoomDataManager = AppRoomRemoteDataManager.getInstance();
+        mRemoteRoomDataSource = RoomDataImpl.getInstance();
         mRecentRoomDataManager = LocalRecentRoomImpl.getInstance();
     }
 
     @Override
     public void createKey(@NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        mRemoteRoomDataManager.createKey(onSuccessListener, onFailedListener);
+        mRemoteRoomDataSource.createKey(onSuccessListener, onFailedListener);
     }
 
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList, @NonNull OnSuccessListener<List<String>> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        mRemoteRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
+        mRemoteRoomDataSource.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void setRoom(@NonNull String key, @NonNull Room room, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailedListener onFailedListener) {
-        mRemoteRoomDataManager.setRoom(key, room, onSuccessListener, onFailedListener);
+        mRemoteRoomDataSource.setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void getRoom(@NonNull String key, @Nullable OnSuccessListener<Room> onSuccessListener, @Nullable OnFailedListener onFailedListener) {
-        mRemoteRoomDataManager.getRoom(key, onSuccessListener, onFailedListener);
+        mRemoteRoomDataSource.getRoom(key, onSuccessListener, onFailedListener);
     }
 
     @Override

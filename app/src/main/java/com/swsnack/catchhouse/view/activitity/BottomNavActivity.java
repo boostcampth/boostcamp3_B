@@ -18,10 +18,10 @@ import com.swsnack.catchhouse.adapter.ViewPagerAdapter;
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.AppDataDataSource;
 import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
-import com.swsnack.catchhouse.repository.location.remote.AppLocationDataManager;
+import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
-import com.swsnack.catchhouse.repository.searching.remote.AppSearchingDataManager;
-import com.swsnack.catchhouse.repository.user.remote.AppUserDataManager;
+import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
+import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
@@ -128,20 +128,20 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
                 AppDataDataSource.getInstance(
-                        AppUserDataManager.getInstance(),
+                        UserDataImpl.getInstance(),
                         RemoteChattingImpl.getInstance(),
                         RoomRepository.getInstance(),
-                        AppLocationDataManager.getInstance(),
-                        AppSearchingDataManager.getInstance()),
+                        RemoteLocationImpl.getInstance(),
+                        SearchingDataImpl.getInstance()),
                 APIManager.getInstance(),
                 this));
         createViewModel(SearchingViewModel.class, new SearchingViewModelFactory(getApplication(),
                 AppDataDataSource.getInstance(
-                        AppUserDataManager.getInstance(),
+                        UserDataImpl.getInstance(),
                         RemoteChattingImpl.getInstance(),
                         RoomRepository.getInstance(),
-                        AppLocationDataManager.getInstance(),
-                        AppSearchingDataManager.getInstance()), APIManager.getInstance(), this));
+                        RemoteLocationImpl.getInstance(),
+                        SearchingDataImpl.getInstance()), APIManager.getInstance(), this));
         createViewModel(ChattingViewModel.class, new ChattingViewModelFactory(this));
     }
 

@@ -8,7 +8,7 @@ import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.User;
 
-public interface UserDataManager {
+public interface UserDataSource {
 
     void getUserAndListeningForChanging(@NonNull String uuid,
                                         @NonNull OnSuccessListener<User> onSuccessListener,

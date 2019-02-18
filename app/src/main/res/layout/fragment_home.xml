@@ -6,20 +6,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
+        <!--<com.google.android.material.appbar.AppBarLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize">-->
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tb_home"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:fitsSystemWindows="true"
-                app:title="@string/home_title"
-                app:titleTextColor="@color/colorPrimary"
-                android:background="@android:color/white"/>
+            <!--<androidx.appcompat.widget.Toolbar-->
+                <!--android:id="@+id/tb_home"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="?attr/actionBarSize"-->
+                <!--android:fitsSystemWindows="true"-->
+                <!--app:title="@string/home_title"-->
+                <!--app:titleTextColor="@color/colorPrimary"-->
+                <!--android:background="@android:color/white"/>-->
 
-        </com.google.android.material.appbar.AppBarLayout>
+        <!--</com.google.android.material.appbar.AppBarLayout>-->
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"

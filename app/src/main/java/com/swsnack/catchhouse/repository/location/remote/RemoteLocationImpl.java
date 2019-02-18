@@ -5,27 +5,27 @@ import androidx.annotation.NonNull;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.FirebaseDatabase;
-import com.swsnack.catchhouse.repository.location.LocationDataManager;
+import com.swsnack.catchhouse.repository.location.LocationDataSource;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.Address;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
 
-public class AppLocationDataManager implements LocationDataManager {
+public class RemoteLocationImpl implements LocationDataSource {
 
     private GeoFire gf;
 
-    private static AppLocationDataManager INSTANCE;
+    private static RemoteLocationImpl INSTANCE;
 
-    public static synchronized AppLocationDataManager getInstance() {
+    public static synchronized RemoteLocationImpl getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new AppLocationDataManager();
+            INSTANCE = new RemoteLocationImpl();
         }
         return INSTANCE;
     }
 
-    private AppLocationDataManager() {
+    private RemoteLocationImpl() {
         gf = new GeoFire(FirebaseDatabase.getInstance().getReference().child(DB_LOCATION));
     }
 

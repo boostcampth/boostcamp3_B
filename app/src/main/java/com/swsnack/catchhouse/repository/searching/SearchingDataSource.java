@@ -9,7 +9,7 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 
-public interface SearchingDataManager {
+public interface SearchingDataSource {
 
     @NonNull
     Single<List<TMapPOIItem>> getPOIList(@NonNull String keyword);

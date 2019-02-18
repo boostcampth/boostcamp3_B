@@ -138,14 +138,19 @@ public class PostViewModel extends ReactiveViewModel {
             return;
         }
 
+        mListener.isWorking();
+
         if (!mIsFavorite.getValue()) {
             getDataManager()
                     .setFavoriteRoom(mRoom.getValue());
             mIsFavorite.setValue(true);
+            mListener.isFinished();
         } else {
             getDataManager()
                     .deleteFavoriteRoom(mRoom.getValue());
             mIsFavorite.setValue(false);
+            mListener.isFinished();
+
         }
     }
 

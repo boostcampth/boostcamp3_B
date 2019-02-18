@@ -19,7 +19,7 @@ import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.Constant;
-import com.swsnack.catchhouse.repository.searching.SearchingDataManager;
+import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.Filter;
 
@@ -32,23 +32,23 @@ import io.reactivex.annotations.NonNull;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 
-public class AppSearchingDataManager implements SearchingDataManager {
+public class SearchingDataImpl implements SearchingDataSource {
 
-    private static AppSearchingDataManager INSTANCE;
+    private static SearchingDataImpl INSTANCE;
     private TMapData mTMapData;
     private DatabaseReference mRefLocation;
     private DatabaseReference mRefRoom;
     private GeoFire mGeoFire;
     private int cnt;
 
-    public static synchronized AppSearchingDataManager getInstance() {
+    public static synchronized SearchingDataImpl getInstance() {
         if(INSTANCE == null) {
-            INSTANCE = new AppSearchingDataManager();
+            INSTANCE = new SearchingDataImpl();
         }
         return INSTANCE;
     }
 
-    private AppSearchingDataManager() {
+    private SearchingDataImpl() {
         mTMapData = new TMapData();
         mRefLocation = FirebaseDatabase.getInstance().getReference().child(DB_LOCATION);
         mRefRoom = FirebaseDatabase.getInstance().getReference().child(DB_ROOM);

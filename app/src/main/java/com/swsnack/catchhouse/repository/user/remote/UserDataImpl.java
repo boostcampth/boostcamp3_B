@@ -19,7 +19,7 @@ import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.firebase.DBValueHelper;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
-import com.swsnack.catchhouse.repository.user.UserDataManager;
+import com.swsnack.catchhouse.repository.user.UserDataSource;
 import com.swsnack.catchhouse.util.DataConverter;
 
 import java.io.IOException;
@@ -35,22 +35,22 @@ import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.SIGNED;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_PROFILE;
 
-public class AppUserDataManager implements UserDataManager {
+public class UserDataImpl implements UserDataSource {
 
     private DatabaseReference db;
     private StorageReference fs;
     private Application mAppContext;
 
-    private static AppUserDataManager INSTANCE;
+    private static UserDataImpl INSTANCE;
 
-    public static synchronized AppUserDataManager getInstance() {
+    public static synchronized UserDataImpl getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new AppUserDataManager();
+            INSTANCE = new UserDataImpl();
         }
         return INSTANCE;
     }
 
-    private AppUserDataManager() {
+    private UserDataImpl() {
         db = FirebaseDatabase.getInstance().getReference().child(DB_USER);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_PROFILE);
         mAppContext = AppApplication.getAppContext();

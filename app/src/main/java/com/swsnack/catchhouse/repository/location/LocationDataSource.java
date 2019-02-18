@@ -6,7 +6,7 @@ import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.Address;
 
-public interface LocationDataManager {
+public interface LocationDataSource {
 
     void uploadLocationData(@NonNull String uuid, @NonNull Address address,
                             @NonNull OnSuccessListener<String> onSuccessListener,
