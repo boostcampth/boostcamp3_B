@@ -108,6 +108,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     @Override
     public void isFinished() {
+        super.isFinished();
         //getBinding().pgWrite.setVisibility(View.INVISIBLE);
         getBinding().getRoot().setAlpha(1.0f);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
@@ -138,6 +139,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         createViewModels();
 
         getBinding().vpWrite.setAdapter(new DeletableImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
+
         getBinding().tabWrite.setupWithViewPager(getBinding().vpWrite, true);
 
         getBinding().tbWrite.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);

@@ -37,16 +37,30 @@
                     android:background="@android:color/white"
                     android:orientation="vertical">
 
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/vp_write"
+                    <FrameLayout
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        android:layout_height="320dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@android:color/white"
-                        app:adapter="@{handler.mImageList}" />
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vp_write"
+                            android:layout_width="match_parent"
+
+                            android:layout_height="320dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@android:color/white"
+                            app:adapter="@{handler.mImageList}" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="320dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:padding="92dp"
+                            android:src="@drawable/viewpager_placeholder" />
+                    </FrameLayout>
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tab_write"
