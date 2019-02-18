@@ -20,6 +20,7 @@ public class ExpectedPrice {
     private String price;
     private String fromDate;
     private String toDate;
+    private int diffDays;
 
     public ExpectedPrice(String price, String from, String to) {
         this.price = price;
@@ -40,8 +41,6 @@ public class ExpectedPrice {
     }
 
     public void onChangePriceAndInterval() {
-        int diffDays;
-
         if (isPriceAndDateValid()) {
             try {
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
@@ -58,6 +57,11 @@ public class ExpectedPrice {
         } else {
             expectedPrice = "";
         }
+    }
+
+
+    public int getDiffDays() {
+        return diffDays;
     }
 
     public String getExpectedPrice() {

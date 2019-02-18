@@ -52,8 +52,16 @@ import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS
 import static com.swsnack.catchhouse.Constant.SuccessKey.UPDATE_PROFILE_SUCCESS;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_RATIO;
+import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_SQUARE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NETWORK;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_ADDRESS;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_DATE;
+import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_IMAGE;
 
 public class Constant {
 
@@ -169,11 +177,25 @@ public class Constant {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({UCROP_WIDTH_MAX, UCROP_HEIGHT_MAX, UCROP_WIDTH_RATIO, UCROP_HEIGHT_RATIO})
+    @IntDef({UCROP_WIDTH_MAX, UCROP_HEIGHT_MAX, UCROP_WIDTH_RATIO, UCROP_HEIGHT_RATIO, UCROP_SQUARE})
     public @interface Ucrop {
-        int UCROP_WIDTH_MAX = 1000;
-        int UCROP_HEIGHT_MAX = 600;
+        int UCROP_WIDTH_MAX = 800;
+        int UCROP_HEIGHT_MAX = 450;
         int UCROP_WIDTH_RATIO = 16;
         int UCROP_HEIGHT_RATIO = 9;
+        int UCROP_SQUARE = 1;
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @StringDef({ERROR_NO_SELECTION_IMAGE, ERROR_NETWORK, ERROR_EMPTY_PRICE, ERROR_NO_SELECTION_DATE,
+            ERROR_NO_SELECTION_ADDRESS, ERROR_EMPTY_ROOM_SIZE, ERROR_EMPTY_TITLE})
+    public @interface WriteException {
+        String ERROR_NO_SELECTION_IMAGE = "image";
+        String ERROR_NETWORK = "network";
+        String ERROR_EMPTY_PRICE = "price";
+        String ERROR_NO_SELECTION_DATE = "date";
+        String ERROR_NO_SELECTION_ADDRESS = "address";
+        String ERROR_EMPTY_ROOM_SIZE = "room size";
+        String ERROR_EMPTY_TITLE = "title";
     }
 }

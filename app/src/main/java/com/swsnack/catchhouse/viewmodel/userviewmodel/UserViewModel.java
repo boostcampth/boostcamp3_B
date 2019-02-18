@@ -262,6 +262,7 @@ public class UserViewModel extends ReactiveViewModel {
 
     public void updateProfile(Uri uri) {
         mListener.isWorking();
+
         getDataManager().
                 updateProfile(FirebaseAuth.getInstance().getCurrentUser().getUid(), uri, mUser.getValue(),
                         result -> mListener.onSuccess(UPDATE_PROFILE_SUCCESS),
