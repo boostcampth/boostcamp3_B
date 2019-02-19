@@ -2,10 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_home"
-        android:icon="@drawable/bottom_nav_item_home"
-        android:title="@string/bottom_nav_home"
-        app:showAsAction="always" />
+        android:id="@+id/action_my_page"
+        android:icon="@drawable/bottom_nav_item_my_page"
+        android:title="@string/bottom_nav_my_page"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_map"
         android:icon="@drawable/bottom_nav_item_map"
@@ -16,11 +17,5 @@
         android:id="@+id/action_message"
         android:icon="@drawable/bottom_nav_item_message"
         android:title="@string/bottom_nav_message"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/action_my_page"
-        android:icon="@drawable/bottom_nav_item_my_page"
-        android:title="@string/bottom_nav_my_page"
         app:showAsAction="ifRoom" />
 </menu>

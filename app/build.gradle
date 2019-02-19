@@ -41,6 +41,8 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:$rootProject.ext.supportVersion"
     implementation "com.google.android.material:$rootProject.ext.material"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.ext.constraintVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.ext.runnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.espressoVersion"

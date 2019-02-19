@@ -34,7 +34,7 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
+import static com.swsnack.catchhouse.Constant.RequestCode.PICK_IMAGE_MULTIPLE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;
@@ -140,7 +140,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         getBinding().vpWrite.setAdapter(new DeletableImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
         getBinding().tabWrite.setupWithViewPager(getBinding().vpWrite, true);
 
-        getBinding().tbWrite.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        getBinding().tbWrite.setNavigationIcon(R.drawable.back_button_primary);
         getBinding().tbWrite.setNavigationOnClickListener(__ ->
                 finish()
         );
