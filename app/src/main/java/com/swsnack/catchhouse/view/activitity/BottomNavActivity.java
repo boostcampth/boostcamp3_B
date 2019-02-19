@@ -2,7 +2,6 @@ package com.swsnack.catchhouse.view.activitity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.skt.Tmap.TMapTapi;
@@ -19,7 +18,6 @@ import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
-import com.swsnack.catchhouse.view.fragment.HomeFragmentListener;
 import com.swsnack.catchhouse.view.fragment.SearchFragment;
 import com.swsnack.catchhouse.view.fragment.MyPageFragment;
 import com.swsnack.catchhouse.view.fragment.SignFragment;
@@ -42,7 +40,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 import static com.google.firebase.analytics.FirebaseAnalytics.Event.SEARCH;
 
-public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements HomeFragmentListener {
+public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
@@ -81,11 +79,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 showSnackMessage(getString(R.string.snack_change_nick_name_success));
                 break;
         }
-    }
-
-    @Override
-    public void openMapFragment() {
-        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
     }
 
     @Override
