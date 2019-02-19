@@ -9,8 +9,10 @@ import android.widget.ImageView;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
+import com.swsnack.catchhouse.adapter.RoomCardListAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
+import com.swsnack.catchhouse.data.model.RoomCard;
 import com.swsnack.catchhouse.data.model.Address;
 
 import java.util.List;
