@@ -7,9 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -20,7 +17,6 @@ import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.DialogChangeNickNameBinding;
 import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
-import com.swsnack.catchhouse.databinding.ItemNavHeaderBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activitity.PostActivity;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
@@ -32,9 +28,6 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static android.app.Activity.RESULT_OK;
@@ -72,7 +65,6 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         getViewModel().getUserData();
 
         init();
-
         for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
             if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
                 getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
@@ -200,34 +192,4 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
             getViewModel().updateProfile(UCrop.getOutput(data));
         }
     }
-
-//    private void setNavigationDrawer() {
-//        setHasOptionsMenu(true);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(getBinding().tbMyPage);
-//
-//        ItemNavHeaderBinding itemNavHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_nav_header, getBinding().navView, false);
-//        getBinding().navView.addHeaderView(itemNavHeaderBinding.getRoot());
-//        itemNavHeaderBinding.setUserViewModel(getViewModel());
-//
-//        itemNavHeaderBinding.navHeaderBack.setOnClickListener(__ -> {
-//            getBinding().drawerLayout.closeDrawer(GravityCompat.END);
-//        });
-//    }
-//
-//    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        MenuInflater menuInflater = getActivity().getMenuInflater();
-//        menuInflater.inflate(R.menu.main_menu, menu);
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//
-//        if (item.getItemId() == R.id.menu_search) {
-//            getBinding().drawerLayout.openDrawer(GravityCompat.END);
-//            return true;
-//        }
-//        return true;
-//    }
 }

@@ -133,15 +133,13 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     }
 
     private void setNavigationDrawer() {
-        ItemNavHeaderBinding mItemNavHeaderBinding;
-
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(getBinding().tbChatList);
 
-        mItemNavHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_nav_header, getBinding().navView, false);
-        mItemNavHeaderBinding.setUserViewModel(mUserViewModel);
-        mItemNavHeaderBinding.setLifecycleOwner(this);
-        getBinding().navView.addHeaderView(mItemNavHeaderBinding.getRoot());
+        ItemNavHeaderBinding itemNavHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_nav_header, getBinding().navView, false);
+        itemNavHeaderBinding.setUserViewModel(mUserViewModel);
+        itemNavHeaderBinding.setLifecycleOwner(this);
+        getBinding().navView.addHeaderView(itemNavHeaderBinding.getRoot());
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             getBinding().navView.inflateMenu(R.menu.navigation_menu_firebase);
@@ -154,7 +152,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
             }
         }
 
-        mItemNavHeaderBinding.navHeaderBack.setOnClickListener(__ ->
+        itemNavHeaderBinding.navHeaderBack.setOnClickListener(__ ->
                 getBinding().drawerLayout.closeDrawer(GravityCompat.END));
 
         getBinding().navView.setNavigationItemSelectedListener(item -> {
