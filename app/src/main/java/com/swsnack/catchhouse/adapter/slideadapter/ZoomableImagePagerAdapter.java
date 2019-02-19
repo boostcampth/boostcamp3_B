@@ -21,8 +21,9 @@ public class ZoomableImagePagerAdapter extends BaseViewPagerAdapter<String, Post
     Application mApplication;
 
     public ZoomableImagePagerAdapter(List<String> imageList, PostViewModel postViewModel) {
-        super(imageList, postViewModel);
+        super(postViewModel);
         mApplication = AppApplication.getAppContext();
+        mList = imageList;
     }
 
     @NonNull

@@ -1,20 +1,20 @@
 package com.swsnack.catchhouse.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
 
 public abstract class BaseViewPagerAdapter<T, VM> extends PagerAdapter {
 
     protected VM mViewModel;
     protected List<T> mList;
 
-    public BaseViewPagerAdapter(List<T> list, VM viewModel) {
+    public BaseViewPagerAdapter(VM viewModel) {
         mViewModel = viewModel;
-        mList = list;
     }
 
     public void setItem(List<T> items) {
@@ -23,6 +23,9 @@ public abstract class BaseViewPagerAdapter<T, VM> extends PagerAdapter {
 
     @Override
     public int getCount() {
+        if (mList == null) {
+            return 0;
+        }
         return mList.size();
     }
 

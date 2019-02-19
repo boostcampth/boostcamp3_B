@@ -68,6 +68,7 @@ public class Constant {
     public static final int GOOGLE_SIGN_IN = 1000;
     public static final int PICK_IMAGE_MULTIPLE = 1002;
     public static final int GALLERY = 1003;
+    public static final int MODIFY = 1004;
     public static final int FILTER = 1005;
 
     public static final String INTENT_FILTER = "1006";
