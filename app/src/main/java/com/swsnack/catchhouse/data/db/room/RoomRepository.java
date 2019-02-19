@@ -58,7 +58,27 @@ public class RoomRepository implements RoomDataManager, LocalRoomDataSource, Rec
 
     @Override
     public void setRoom(@NonNull String key, @NonNull Room room, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailedListener onFailedListener) {
-        mRemoteRoomDataManager.setRoom(key, room, onSuccessListener, onFailedListener);
+        mRemoteRoomDataManager.setRoom(key, room, success -> {
+            setSellRoom(new SellRoomEntity(key,
+                    room.getPrice(),
+                    room.getFrom(),
+                    room.getTo(),
+                    room.getTitle(),
+                    room.getContent(),
+                    room.getImages(),
+                    room.getUuid(),
+                    room.getAddress(),
+                    room.getAddressName(),
+                    room.getSize(),
+                    room.isOptionStandard(),
+                    room.isOptionGender(),
+                    room.isOptionPet(),
+                    room.isOptionSmoking(),
+                    room.getLatitude(),
+                    room.getLongitude()));
+            onSuccessListener.onSuccess(success);
+        }, onFailedListener);
+
     }
 
     @Override
