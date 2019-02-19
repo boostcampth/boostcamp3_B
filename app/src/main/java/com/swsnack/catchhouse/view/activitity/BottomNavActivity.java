@@ -2,7 +2,6 @@ package com.swsnack.catchhouse.view.activitity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.skt.Tmap.TMapTapi;
@@ -19,7 +18,6 @@ import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
-import com.swsnack.catchhouse.view.fragment.HomeFragmentListener;
 import com.swsnack.catchhouse.view.fragment.SearchFragment;
 import com.swsnack.catchhouse.view.fragment.MyPageFragment;
 import com.swsnack.catchhouse.view.fragment.SignFragment;
