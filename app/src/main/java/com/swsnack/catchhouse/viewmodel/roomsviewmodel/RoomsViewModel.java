@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
@@ -132,6 +133,7 @@ public class RoomsViewModel extends ReactiveViewModel {
             mListener.onError(ERROR_NETWORK);
         };
 
+        //FIXME Mapper이용하여 변경하기
         mDataManager.createKey(
                 key -> mDataManager.uploadRoomImage(key, mImageList.getValue(),
                         urlList -> push(key, urlList, std, gender, pet, smoking,
@@ -139,6 +141,24 @@ public class RoomsViewModel extends ReactiveViewModel {
                                         ___ -> {
                                             mListener.isFinished();
                                             mListener.onSuccess("Success");
+//                                            getDataManager()
+//                                                    .setSellRoom(new SellRoomEntity(key,
+//                                                            mPrice.getValue(),
+//                                                            mFromDate.getValue(),
+//                                                            mToDate.getValue(),
+//                                                            mTitle.getValue(),
+//                                                            mContent.getValue(),
+//                                                            ,
+//                                                            room.getValue().getUuid(),
+//                                                            room.getValue().getAddress(),
+//                                                            room.getValue().getAddressName(),
+//                                                            room.getValue().getSize(),
+//                                                            room.getValue().isOptionStandard(),
+//                                                            room.getValue().isOptionGender(),
+//                                                            room.getValue().isOptionPet(),
+//                                                            room.getValue().isOptionSmoking(),
+//                                                            room.getValue().getLatitude(),
+//                                                            room.getValue().getLongitude()));
                                         }
                                         , errorHandler)
                                 , errorHandler
