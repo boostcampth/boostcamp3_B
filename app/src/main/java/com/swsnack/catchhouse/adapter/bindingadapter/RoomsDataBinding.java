@@ -28,11 +28,9 @@ public class RoomsDataBinding {
                 viewPager.setVisibility(View.VISIBLE);
                 viewPager.bringToFront();
                 adapter.setItem(items);
-                adapter.notifyDataSetChanged();
             } else {
                 viewPager.setVisibility(View.INVISIBLE);
                 adapter.setItem(items);
-                adapter.notifyDataSetChanged();
             }
         }
     }
@@ -43,7 +41,6 @@ public class RoomsDataBinding {
 
         if (adapter != null && items != null) {
             adapter.setItem(items);
-            adapter.notifyDataSetChanged();
         }
     }
 

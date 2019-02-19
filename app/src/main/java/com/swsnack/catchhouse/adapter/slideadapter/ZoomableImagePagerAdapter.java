@@ -14,13 +14,14 @@ import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 
 public class ZoomableImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewModel> {
 
     Application mApplication;
 
-    public ZoomableImagePagerAdapter(List<String> imageList, PostViewModel postViewModel) {
+    public ZoomableImagePagerAdapter(@Nullable List<String> imageList, @Nullable PostViewModel postViewModel) {
         super(postViewModel);
         mApplication = AppApplication.getAppContext();
         mList = imageList;
@@ -34,7 +35,7 @@ public class ZoomableImagePagerAdapter extends BaseViewPagerAdapter<String, Post
                 DataBindingUtil.bind(inflater.inflate(R.layout.item_zoomable_image_pager,
                         container, false));
 
-        if(binding == null) {
+        if (binding == null) {
             return container;
         }
 

@@ -56,7 +56,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
         createViewModels();
 
-
         /* check modify mode */
         Room room = getIntent().getParcelableExtra(INTENT_ROOM);
         if (room != null) {

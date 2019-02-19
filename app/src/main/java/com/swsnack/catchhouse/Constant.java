@@ -182,6 +182,8 @@ public class Constant {
     public @interface ParcelableData {
         String USER_DATA = "userData";
         String CHATTING_DATA = "chattingData";
+        String IMAGE_LIST_DATA = "imageListData";
+        String VIEWPAGER_CURRENT_POSITION = "viewPagerCurrentPosition";
     }
 
     @Retention(RetentionPolicy.SOURCE)
