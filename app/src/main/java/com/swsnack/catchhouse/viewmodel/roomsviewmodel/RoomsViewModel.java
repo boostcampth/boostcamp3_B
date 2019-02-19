@@ -11,9 +11,9 @@ import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
+import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -44,19 +44,22 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     public final MutableLiveData<List<Address>> mSearchResultList = new MutableLiveData<>();
     public final MutableLiveData<List<Uri>> mImageList = new MutableLiveData<>();
-
     public final MutableLiveData<String> mPrice = new MutableLiveData<>();
     public final MutableLiveData<String> mFromDate = new MutableLiveData<>();
     public final MutableLiveData<String> mToDate = new MutableLiveData<>();
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
-
     public final MutableLiveData<String> mSize = new MutableLiveData<>();
     public final MutableLiveData<Address> mAddress = new MutableLiveData<>();
     public final MutableLiveData<String> mTitle = new MutableLiveData<>();
     public final MutableLiveData<String> mContent = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionStd = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionGender = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionPet = new MutableLiveData<>();
+    public final MutableLiveData<Boolean> mOptionSmoking = new MutableLiveData<>();
 
-    public final MutableLiveData<Room> room = new MutableLiveData<>();//
+    public final MutableLiveData<Room> room = new MutableLiveData<>();
 
+    private String myKey = "";
     private ExpectedPrice ep;
 
     RoomsViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
@@ -118,7 +121,7 @@ public class RoomsViewModel extends ReactiveViewModel {
         }
     }
 
-    public void onClickPost(boolean std, boolean gender, boolean pet, boolean smoking) {
+    public void onClickPost() {
         String validResult = isRoomDataValid();
 
         if (!TextUtils.isEmpty(validResult)) {
@@ -133,20 +136,19 @@ public class RoomsViewModel extends ReactiveViewModel {
             mListener.onError(ERROR_NETWORK);
         };
 
-        //FIXME Mapper이용하여 변경하기
-        mDataManager.createKey(
-                key -> mDataManager.uploadRoomImage(key, mImageList.getValue(),
-                        urlList -> push(key, urlList, std, gender, pet, smoking,
-                                __ -> mDataManager.uploadLocationData(key, mAddress.getValue(),
-                                        ___ -> {
-                                            mListener.isFinished();
-                                            mListener.onSuccess("Success");
-                                        }
-                                        , errorHandler)
-                                , errorHandler
-                        ), errorHandler
-                ), errorHandler
-        );
+        if (TextUtils.isEmpty(myKey)) {
+            myKey = getDataManager().createKey();
+        }
+
+        mDataManager.uploadRoomImage(myKey, mImageList.getValue(),
+                uriList -> push(myKey, uriList,
+                        __ -> mDataManager.uploadLocationData(myKey, mAddress.getValue(),
+                                ___ -> {
+                                    mListener.isFinished();
+                                    mListener.onSuccess("");
+                                }, errorHandler)
+                        , errorHandler)
+                , errorHandler);
     }
 
     private void init() {
@@ -158,7 +160,10 @@ public class RoomsViewModel extends ReactiveViewModel {
         mExpectedPrice.setValue(mAppContext.getString(R.string.tv_write_expected_value_default));
         mTitle.setValue("");
         mContent.setValue("");
-
+        mOptionStd.setValue(false);
+        mOptionGender.setValue(false);
+        mOptionPet.setValue(false);
+        mOptionSmoking.setValue(false);
         mImageList.setValue(new ArrayList<>());
         ep = new ExpectedPrice("", "", "");
     }
@@ -192,28 +197,34 @@ public class RoomsViewModel extends ReactiveViewModel {
     }
 
     private void push(String key, List<String> urls,
-                      boolean std, boolean gender, boolean pet, boolean smoking,
                       OnSuccessListener<Void> onSuccessListener,
                       OnFailedListener onFailedListener) {
 
         String UUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Room room = new Room(
-                mPrice.getValue(),
-                mFromDate.getValue(),
-                mToDate.getValue(),
-                mTitle.getValue(),
-                mContent.getValue(),
-                urls,
-                UUID,
-                mSize.getValue(),
-                mAddress.getValue().getAddress(),
-                mAddress.getValue().getName(),
-                std,
-                gender,
-                pet,
-                smoking
+
+        room.setValue(new Room(
+                        key,
+                        mPrice.getValue(),
+                        mFromDate.getValue(),
+                        mToDate.getValue(),
+                        mTitle.getValue(),
+                        mContent.getValue(),
+                        urls,
+                        UUID,
+                        mAddress.getValue().getAddress(),
+                        mAddress.getValue().getName(),
+                        mSize.getValue(),
+                        mOptionStd.getValue(),
+                        mOptionGender.getValue(),
+                        mOptionPet.getValue(),
+                        mOptionSmoking.getValue(),
+                        mAddress.getValue().getLatitude(),
+                        mAddress.getValue().getLongitude(),
+                        false
+                )
         );
-        getDataManager().setRoom(key, room, onSuccessListener, onFailedListener);
+
+        getDataManager().setRoom(key, room.getValue(), onSuccessListener, onFailedListener);
     }
 
     private Single<List<Address>> searchAddress(String keyword) {
@@ -228,5 +239,23 @@ public class RoomsViewModel extends ReactiveViewModel {
                         item.getPOIAddress().replace("null", ""),
                         item.getPOIPoint().getLongitude(), item.getPOIPoint().getLatitude()))
                 .toList();
+    }
+
+    public void setRoomData(Room room) {
+        if (room.getKey() != null) {
+            myKey = room.getKey();
+        }
+        mPrice.setValue(room.getPrice());
+        mFromDate.setValue(room.getFrom());
+        mToDate.setValue(room.getTo());
+        mOptionStd.setValue(room.isOptionStandard());
+        mOptionGender.setValue(room.isOptionGender());
+        mOptionPet.setValue(room.isOptionPet());
+        mOptionSmoking.setValue(room.isOptionSmoking());
+        mAddress.setValue(new Address(room.getAddressName(), room.getAddress()
+                , room.getLongitude(), room.getLatitude()));
+        mSize.setValue(room.getSize());
+        mTitle.setValue(room.getTitle());
+        mContent.setValue(room.getContent());
     }
 }

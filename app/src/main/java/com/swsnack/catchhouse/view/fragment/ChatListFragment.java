@@ -74,7 +74,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-            if (context instanceof BottomNavActivity) {
+        if (context instanceof BottomNavActivity) {
             ((BottomNavActivity) Objects.requireNonNull(getActivity())).setViewPagerListener(this::getChattingList);
         }
     }
@@ -91,15 +91,16 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
         getBinding().rvChatList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
         chattingListAdapter.setOnItemClickListener((v, position) -> {
-            Chatting chatting = chattingListAdapter.getItem(position);
-            User user = ((ChattingListItemHolder) v).getBinding().getUserData();
+                    Chatting chatting = chattingListAdapter.getItem(position);
+                    User user = ((ChattingListItemHolder) v).getBinding().getUserData();
 
-            startActivity(
-                    new Intent(getContext(),
-                            ChattingMessageActivity.class)
-                            .putExtra(CHATTING_DATA, chatting)
-                            .putExtra(USER_DATA, user));
-        });
+                    startActivity(
+                            new Intent(getContext(),
+                                    ChattingMessageActivity.class)
+                                    .putExtra(CHATTING_DATA, chatting)
+                                    .putExtra(USER_DATA, user));
+                }
+        );
     }
 
     @Override
@@ -260,7 +261,6 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
         MenuInflater menuInflater = getActivity().getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-        return;
     }
 
     @Override

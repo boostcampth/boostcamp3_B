@@ -11,6 +11,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.signature.ObjectKey;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseViewPagerAdapter;
 import com.swsnack.catchhouse.databinding.ItemImagePagerBinding;
@@ -29,8 +30,8 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
 
     private FragmentManager mFragmentManager;
 
-    public ImagePagerAdapter(List<String> url, PostViewModel postViewModel, FragmentManager fragmentManager) {
-        super(url, postViewModel);
+    public ImagePagerAdapter(PostViewModel postViewModel, FragmentManager fragmentManager) {
+        super(postViewModel);
         mFragmentManager = fragmentManager;
     }
 
@@ -45,6 +46,7 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
         Glide.with(container.getContext())
                 .load(mList.get(position))
                 .thumbnail(0.2f)
+                .apply(new RequestOptions().override(1000, 600).centerCrop())
                 .listener(new RequestListener<Drawable>() {
                               @Override
                               public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
@@ -82,5 +84,11 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
         container.addView(binding.getRoot());
         return binding.getRoot();
 
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        super.getItemPosition(object);
+        return POSITION_NONE;
     }
 }

@@ -37,16 +37,29 @@
                     android:background="@android:color/white"
                     android:orientation="vertical">
 
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/vp_write"
+                    <FrameLayout
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        android:layout_height="320dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@android:color/white"
-                        app:adapter="@{handler.mImageList}" />
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vp_write"
+                            android:layout_width="match_parent"
+                            android:layout_height="320dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:background="@android:color/white"
+                            app:adapter="@{handler.mImageList}" />
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="320dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="16dp"
+                            android:padding="92dp"
+                            android:src="@drawable/viewpager_placeholder" />
+                    </FrameLayout>
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tab_write"
@@ -226,6 +239,7 @@
                         style="@style/tv.body"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
+                        android:checked="@={handler.mOptionStd}"
                         android:text="@string/cb_write_standard"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -236,6 +250,7 @@
                         style="@style/tv.body"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="16dp"
+                        android:checked="@={handler.mOptionGender}"
                         android:text="@string/cb_write_gender"
                         android:textSize="14sp"
                         app:layout_constraintStart_toEndOf="@+id/cb_write_standard"
@@ -246,6 +261,7 @@
                         style="@style/tv.body"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
+                        android:checked="@={handler.mOptionPet}"
                         android:text="@string/cb_write_pet"
                         android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -257,6 +273,7 @@
                         android:layout_width="118dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
+                        android:checked="@={handler.mOptionSmoking}"
                         android:text="@string/cb_write_smoking"
                         android:textSize="14sp"
                         app:layout_constraintStart_toEndOf="@+id/cb_write_pet"

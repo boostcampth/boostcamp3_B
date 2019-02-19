@@ -47,8 +47,8 @@ public class RoomRepository implements RoomDataManager, LocalRoomDataSource, Rec
     }
 
     @Override
-    public void createKey(@NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        mRemoteRoomDataManager.createKey(onSuccessListener, onFailedListener);
+    public String createKey() {
+        return mRemoteRoomDataManager.createKey();
     }
 
     @Override

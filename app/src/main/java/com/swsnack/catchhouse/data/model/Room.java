@@ -1,10 +1,7 @@
 package com.swsnack.catchhouse.data.model;
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,73 +11,47 @@ import androidx.annotation.Nullable;
 public class Room implements Parcelable {
 
     private String key;
-    /**
-     * 가격(1박)
-     **/
+
     private String price;
-    /**
-     * 시작 날짜
-     **/
+
     private String from;
-    /**
-     * 종료 날짜
-     **/
+
     private String to;
-    /**
-     * 제목
-     **/
+
     private String title;
-    /**
-     * 내용
-     **/
+
     private String content;
-    /**
-     * 이미지들 링크
-     **/
+
     private List<String> images;
-    /**
-     * 작성자
-     **/
+
     private String uuid;
-    /**
-     * 주소
-     **/
+
     private String address;
-    /**
-     * 주소 명
-     **/
+
     private String addressName;
-    /**
-     * 방 사이즈
-     */
+
     private String size;
 
-    /* 옵션 선택하지 않을경우 false */
-    /**
-     * 기본 옵션
-     **/
     private boolean optionStandard;
-    /**
-     * 성별 옵션
-     **/
+
     private boolean optionGender;
-    /**
-     * 반려동물 옵션
-     **/
+
     private boolean optionPet;
-    /**
-     * 흡연 옵션
-     **/
+
     private boolean optionSmoking;
+
     private double latitude;
+
     private double longitude;
-//    private Bitmap image;
+
+    private boolean isDeleted;
 
     public Room() {
 
     }
 
-    public Room(String price,
+    public Room(String key,
+                String price,
                 String from,
                 String to,
                 String title,
@@ -94,6 +65,7 @@ public class Room implements Parcelable {
                 boolean optionGender,
                 boolean optionPet,
                 boolean optionSmoking) {
+        this.key = key;
         this.price = price;
         this.from = from;
         this.to = to;
@@ -112,7 +84,6 @@ public class Room implements Parcelable {
 
     private Room(Parcel in) {
         images = new ArrayList<>();
-
         key = in.readString();
         price = in.readString();
         from = in.readString();
@@ -130,12 +101,13 @@ public class Room implements Parcelable {
         optionSmoking = in.readByte() != 0;
         latitude = in.readDouble();
         longitude = in.readDouble();
+        isDeleted = in.readByte() != 0;
     }
 
     public Room(String key, String price, String from, String to, String title, String content,
                 List<String> images, String uuid, String address, String addressName, String size,
                 boolean optionStandard, boolean optionGender, boolean optionPet, boolean optionSmoking,
-                double latitude, double longitude) {
+                double latitude, double longitude, boolean isDeleted) {
         this.key = key;
         this.price = price;
         this.from = from;
@@ -153,7 +125,7 @@ public class Room implements Parcelable {
         this.optionSmoking = optionSmoking;
         this.latitude = latitude;
         this.longitude = longitude;
-//        this.image = image;
+        this.isDeleted = isDeleted;
     }
 
     public String getKey() {
@@ -216,6 +188,11 @@ public class Room implements Parcelable {
         return optionSmoking;
     }
 
+    /**********************************************************************************************/
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
     public void setPrice(String price) {
         this.price = price;
     }
@@ -276,6 +253,10 @@ public class Room implements Parcelable {
         this.optionSmoking = optionSmoking;
     }
 
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
     public static final Creator<Room> CREATOR = new Creator<Room>() {
         @Override
         public Room createFromParcel(Parcel in) {
@@ -312,6 +293,7 @@ public class Room implements Parcelable {
         dest.writeByte((byte) (optionSmoking ? 1 : 0));
         dest.writeDouble(latitude);
         dest.writeDouble(longitude);
+        dest.writeByte((byte) (isDeleted ? 1 : 0));
     }
 
     public double getLatitude() {
@@ -332,7 +314,7 @@ public class Room implements Parcelable {
 
     @Override
     public boolean equals(@Nullable Object obj) {
-        if(!(obj instanceof  Room)) {
+        if (!(obj instanceof Room)) {
             return false;
         }
 
@@ -345,12 +327,4 @@ public class Room implements Parcelable {
         return key.hashCode();
     }
 
-    //
-//    public Bitmap getImage() {
-//        return image;
-//    }
-//
-//    public void setImage(Bitmap image) {
-//        this.image = image;
-//    }
 }

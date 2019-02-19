@@ -2,34 +2,34 @@ package com.swsnack.catchhouse.data;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.data.db.chatting.ChattingManager;
+import com.swsnack.catchhouse.data.db.location.LocationDataManager;
 import com.swsnack.catchhouse.data.db.room.RoomRepository;
 import com.swsnack.catchhouse.data.db.room.local.LocalRoomDataSource;
 import com.swsnack.catchhouse.data.db.room.local.LocalSellRoomDataSource;
 import com.swsnack.catchhouse.data.db.room.local.RecentRoomManager;
 import com.swsnack.catchhouse.data.db.room.local.SellRoomImpl;
+import com.swsnack.catchhouse.data.db.room.remote.RoomDataManager;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
+import com.swsnack.catchhouse.data.db.user.UserDataManager;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
-import com.swsnack.catchhouse.data.model.Chatting;
-import com.swsnack.catchhouse.data.model.Message;
-import com.swsnack.catchhouse.data.db.location.LocationDataManager;
 import com.swsnack.catchhouse.data.listener.OnFailedListener;
 import com.swsnack.catchhouse.data.listener.OnSuccessListener;
-import com.swsnack.catchhouse.data.db.room.remote.RoomDataManager;
 import com.swsnack.catchhouse.data.model.Address;
-import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.data.model.Chatting;
 import com.swsnack.catchhouse.data.model.Filter;
-import com.swsnack.catchhouse.data.db.user.UserDataManager;
+import com.swsnack.catchhouse.data.model.Message;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
 public class AppDataManager implements DataManager {
@@ -214,10 +214,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
-                          @NonNull OnFailedListener onFailedListener) {
-
-        mRoomDataManager.createKey(onSuccessListener, onFailedListener);
+    public String createKey() {
+        return mRoomDataManager.createKey();
     }
 
     @Override
