@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="none">
+        <group
+            android:id="@+id/nav_g1"
+            android:checkableBehavior="none">
+
+            <item
+                android:id="@+id/write"
+                android:title="@string/write_option" />
+        </group>
+
+
+        <group
+            android:id="@+id/nav_g2"
+            android:checkableBehavior="none">
+
+            <item
+                android:id="@+id/change_nickname"
+                android:title="@string/change_nickname_option" />
+
+            <item
+                android:id="@+id/change_profile"
+                android:title="@string/change_profile_option" />
+
+            <item
+                android:id="@+id/delete_account"
+                android:title="@string/delete_account_option" />
+        </group>
+
+
+        <group android:id="@+id/nav_g3"
+            android:checkableBehavior="none">
+            <item
+                android:id="@+id/logout"
+                android:title="@string/logout_option" />
+        </group>
+
+    </group>
+
+</menu>

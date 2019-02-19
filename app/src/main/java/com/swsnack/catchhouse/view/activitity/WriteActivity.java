@@ -36,7 +36,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
-import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
+import static com.swsnack.catchhouse.Constant.RequestCode.PICK_IMAGE_MULTIPLE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;

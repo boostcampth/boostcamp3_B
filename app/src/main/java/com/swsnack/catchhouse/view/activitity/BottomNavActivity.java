@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.skt.Tmap.TMapTapi;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
@@ -19,9 +18,7 @@ import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
-import com.swsnack.catchhouse.view.fragment.HomeFragment;
-import com.swsnack.catchhouse.view.fragment.HomeFragmentListener;
-import com.swsnack.catchhouse.view.fragment.MapFragment;
+import com.swsnack.catchhouse.view.fragment.SearchFragment;
 import com.swsnack.catchhouse.view.fragment.MyPageFragment;
 import com.swsnack.catchhouse.view.fragment.SignFragment;
 import com.swsnack.catchhouse.view.fragment.SignInFragment;
@@ -41,12 +38,13 @@ import androidx.viewpager.widget.ViewPager;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements HomeFragmentListener {
+import static com.google.firebase.analytics.FirebaseAnalytics.Event.SEARCH;
+
+public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
     private OnViewPagerChangedListener mViewPagerListener;
-    private long firstBackPressedTime;
 
     @Override
     protected int getLayout() {
@@ -84,11 +82,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     }
 
     @Override
-    public void openMapFragment() {
-        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
-    }
-
-    @Override
     protected void freezeUI() {
         super.freezeUI();
         getBinding().pgBottomNav.setVisibility(View.VISIBLE);
@@ -104,7 +97,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        firstBackPressedTime = 0;
         createViewModels();
         mDisposable = new CompositeDisposable();
         mFragmentManager = getSupportFragmentManager();
@@ -148,7 +140,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 .map(MenuItem::getItemId)
                 .subscribe(id -> {
                     switch (id) {
-                        case R.id.action_home:
+                        case R.id.action_my_page:
                             getBinding().vpBottomNav.setCurrentItem(0);
                             break;
                         case R.id.action_map:
@@ -156,9 +148,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                             break;
                         case R.id.action_message:
                             getBinding().vpBottomNav.setCurrentItem(2);
-                            break;
-                        case R.id.action_my_page:
-                            getBinding().vpBottomNav.setCurrentItem(3);
                             break;
                     }
                 }));
@@ -180,13 +169,12 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(mFragmentManager);
         List<Fragment> list = new ArrayList<>();
 
-        list.add(new HomeFragment());
-        list.add(new MapFragment());
-        list.add(new ChatListFragment());
         list.add(new SignFragment());
+        list.add(new SearchFragment());
+        list.add(new ChatListFragment());
 
         getBinding().vpBottomNav.setAdapter(viewPagerAdapter);
-        getBinding().vpBottomNav.setOffscreenPageLimit(4);
+        getBinding().vpBottomNav.setOffscreenPageLimit(3);
         getBinding().vpBottomNav.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int i, float v, int i1) {
@@ -197,7 +185,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             public void onPageSelected(int i) {
                 switch (i) {
                     case 0:
-                        getBinding().bottomNav.setSelectedItemId(R.id.action_home);
+                        getBinding().bottomNav.setSelectedItemId(R.id.action_my_page);
                         break;
                     case 1:
                         getBinding().bottomNav.setSelectedItemId(R.id.action_map);
@@ -205,9 +193,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                     case 2:
                         getBinding().bottomNav.setSelectedItemId(R.id.action_message);
                         mViewPagerListener.onViewPagerChanged();
-                        break;
-                    case 3:
-                        getBinding().bottomNav.setSelectedItemId(R.id.action_my_page);
                         break;
                 }
             }
@@ -218,6 +203,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
             }
         });
         viewPagerAdapter.setItems(list);
+        if (getIntent().getStringExtra(SEARCH) != null) {
+            getBinding().vpBottomNav.setCurrentItem(1);
+        }
     }
 
     public void setViewPagerListener(OnViewPagerChangedListener onViewPagerChangedListener) {
@@ -226,13 +214,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
     @Override
     public void onBackPressed() {
-        if (System.currentTimeMillis() > firstBackPressedTime + 2000) {
-            firstBackPressedTime = System.currentTimeMillis();
-            Snackbar.make(getBinding().getRoot(), getString(R.string.snack_back_pressed), Snackbar.LENGTH_SHORT).show();
-            return;
-        }
-        if (System.currentTimeMillis() <= firstBackPressedTime + 2000) {
-            finish();
-        }
+        super.onBackPressed();
     }
 }

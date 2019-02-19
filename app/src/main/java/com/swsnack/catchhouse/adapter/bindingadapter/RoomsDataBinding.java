@@ -24,7 +24,7 @@ public class RoomsDataBinding {
         DeletableImagePagerAdapter adapter = (DeletableImagePagerAdapter) viewPager.getAdapter();
 
         if (adapter != null && items != null) {
-            if (items.size() >0) {
+            if (items.size() > 0) {
                 viewPager.setVisibility(View.VISIBLE);
                 viewPager.bringToFront();
                 adapter.setItem(items);

@@ -131,7 +131,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
         AppBarLayout appBarLayout = getBinding().appbarLayout;
         appBarLayout.addOnOffsetChangedListener((__, offset) -> {
 
-            Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back_black_24dp, null);
+            Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.back_button_primary, null);
             if (offset < -200) {
                 upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                 getBinding().tbPost.setNavigationIcon(upArrow);
