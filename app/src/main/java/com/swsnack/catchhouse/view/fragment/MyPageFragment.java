@@ -87,8 +87,19 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         getBinding().lyMyPageInclude.rvMyPageRecentlyVisit
                 .setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
+
         recentRoomListAdapter.setOnItemClickListener(((viewHolder, position) -> {
             Room room = recentRoomListAdapter.getItem(position);
+            startActivity(new Intent(getContext(), PostActivity.class).putExtra(INTENT_ROOM, room));
+        }));
+
+        RoomListAdapter sellRoomListAdapter = new RoomListAdapter(getContext(), getViewModel());
+        getBinding().lyMyPageInclude.rvMyPageMySell.setAdapter(sellRoomListAdapter);
+        getBinding().lyMyPageInclude.rvMyPageMySell
+                .setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+
+        sellRoomListAdapter.setOnItemClickListener(((viewHolder, position) -> {
+            Room room = sellRoomListAdapter.getItem(position);
             startActivity(new Intent(getContext(), PostActivity.class).putExtra(INTENT_ROOM, room));
         }));
 
@@ -105,12 +116,8 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     }
 
     private void init() {
-        //setNavigationDrawer();
-
         getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
         getBinding().ctlMyPage.setCollapsedTitleTextColor(getResources().getColor(R.color.colorPrimary));
-        getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.GONE);
-        getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.GONE);
     }
 
     private void onChangeNickNameBtnClicked() {
@@ -174,6 +181,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         super.onStart();
         getViewModel().getFavoriteRoom();
         getViewModel().getRecentRoom();
+        getViewModel().getSellRoom();
     }
 
 

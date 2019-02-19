@@ -7,21 +7,21 @@ import com.swsnack.catchhouse.data.entity.RoomEntity;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class AppFavoriteRoomDataManager implements FavoriteRoomManager {
+public class FavoriteRoomImpl implements LocalRoomDataSource {
 
-    private static AppFavoriteRoomDataManager INSTANCE;
+    private static FavoriteRoomImpl INSTANCE;
     private RoomDao mRoomDao;
 
-    public static AppFavoriteRoomDataManager getInstance() {
+    public static FavoriteRoomImpl getInstance() {
         if (INSTANCE == null) {
-            synchronized (AppFavoriteRoomDataManager.class) {
-                INSTANCE = new AppFavoriteRoomDataManager();
+            synchronized (FavoriteRoomImpl.class) {
+                INSTANCE = new FavoriteRoomImpl();
             }
         }
         return INSTANCE;
     }
 
-    private AppFavoriteRoomDataManager() {
+    private FavoriteRoomImpl() {
         mRoomDao = AppDatabase.getInstance().getRoomDataAccessor();
     }
 

@@ -6,7 +6,8 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
-public interface FavoriteRoomManager {
+//FIXME : Entity MarkingInterface 사용해서 묶기, Dao인터페이스 추상화해보기, Helper클래스 추상화 해보기
+public interface LocalRoomDataSource {
 
     void setFavoriteRoom(RoomEntity roomEntity);
 

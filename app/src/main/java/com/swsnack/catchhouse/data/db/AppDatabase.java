@@ -2,8 +2,10 @@ package com.swsnack.catchhouse.data.db;
 
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.db.room.local.RoomDao;
+import com.swsnack.catchhouse.data.db.room.local.SellRoomDao;
 import com.swsnack.catchhouse.data.db.room.local.TypeConverter;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -12,7 +14,7 @@ import androidx.room.TypeConverters;
 
 import static com.swsnack.catchhouse.Constant.DatabaseKey.DATABASE_NAME;
 
-@Database(entities = {RoomEntity.class}, version =  1, exportSchema = false)
+@Database(entities = {RoomEntity.class, SellRoomEntity.class}, version = 1, exportSchema = false)
 @TypeConverters({TypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -29,5 +31,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-     public abstract RoomDao getRoomDataAccessor();
+    public abstract RoomDao getRoomDataAccessor();
+
+    public abstract SellRoomDao getSellRoomDataAccessor();
 }
