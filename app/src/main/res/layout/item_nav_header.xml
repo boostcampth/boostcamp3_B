@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="userViewModel"
+            type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:background="@color/colorPrimary">
+
+        <ImageView
+            android:id="@+id/iv_header_profile"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_marginTop="34dp"
+            android:background="@drawable/circular_image_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:src="@drawable/profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            bind:setChattingUserProfile="@{userViewModel.user}" />
+
+        <TextView
+            android:id="@+id/tv_header_nickname"
+            style="@style/tv.title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@{userViewModel.user.nickName}"
+            android:layout_marginEnd="4dp"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/iv_header_profile"
+            app:layout_constraintEnd_toStartOf="@id/tv_header_gender"/>
+
+        <TextView
+            android:id="@+id/tv_header_gender"
+            style="@style/tv.body"
+            android:text="@{userViewModel.user.gender}"
+            android:layout_marginStart="4dp"
+            android:textSize="@dimen/text_14"
+            app:layout_constraintStart_toEndOf="@id/tv_header_nickname"
+            app:layout_constraintBottom_toBottomOf="@id/tv_header_nickname"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            android:layout_marginBottom="0dp"/>
+
+        <TextView
+            android:id="@+id/tv_header_email"
+            style="@style/tv.body"
+            android:layout_marginTop="8dp"
+            android:text="@{userViewModel.mEmail}"
+            android:textColor="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_header_nickname" />
+
+        <ImageView
+            android:id="@+id/nav_header_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/back_button_white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

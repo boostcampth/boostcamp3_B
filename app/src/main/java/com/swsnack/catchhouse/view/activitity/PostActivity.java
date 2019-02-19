@@ -1,5 +1,6 @@
 package com.swsnack.catchhouse.view.activitity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -33,16 +34,12 @@ import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
+import static com.swsnack.catchhouse.Constant.MODIFY;
 
 public class PostActivity extends BaseActivity<ActivityPostBinding> {
 
     private PostViewModel mViewModel;
     private TMapView mTMapView;
-
-    @Override
-    protected int getLayout() {
-        return R.layout.activity_post;
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,16 +49,91 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
 
         getBinding().setHandler(mViewModel);
         getBinding().setLifecycleOwner(this);
-
         viewInit();
+
+        setObservableData();
+    }
+
+    @Override
+    protected int getLayout() {
+        return R.layout.activity_post;
+    }
+
+
+    @Override
+    public void onSuccess(String success) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder
+                .setMessage(getString(R.string.dl_delete_finish))
+                .setOnDismissListener(__ -> finish())
+                .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) -> finish());
+
+        AlertDialog alert = builder.create();
+
+        if (!isFinishing()) {
+            alert.show();
+        }
     }
 
     private void viewInit() {
+        Room room = getIntent().getParcelableExtra(INTENT_ROOM);
 
+        if (room.isDeleted()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.dl_deleted_post))
+                    .setOnDismissListener(__ -> finish())
+                    .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) -> finish());
+            AlertDialog alert = builder.create();
+            if (!isFinishing()) {
+                alert.show();
+            }
+        } else {
+            mViewModel.setRoomData(room);
+
+            setToolbar();
+            setViewPager();
+            setListener();
+            setTmapView();
+        }
+    }
+
+    private void setObservableData() {
+        mViewModel.room.observe(this, room ->
+                updateMarker(room.getLongitude(), room.getLatitude())
+        );
+    }
+
+    private void setViewPager() {
+        getBinding().vpPost.setAdapter(
+                new ImagePagerAdapter(mViewModel, getSupportFragmentManager())
+        );
+        getBinding().tabPost.setupWithViewPager(getBinding().vpPost, true);
+
+    }
+
+    private void setTmapView() {
+        mTMapView = new TMapView(this);
+        getBinding().llPostTmapContainer.addView(mTMapView);
+        mTMapView.setUserScrollZoomEnable(true);
+    }
+
+    private void updateMarker(double longitude, double latitude) {
+        mTMapView.removeAllMarkerItem();
+
+        TMapMarkerItem markerItem = new TMapMarkerItem();
+        TMapPoint point = new TMapPoint(latitude, longitude);
+        markerItem.setTMapPoint(point);
+        markerItem.setPosition(0.5f, 1.0f);
+        mTMapView.addMarkerItem("center", markerItem);
+        mTMapView.setCenterPoint(longitude, latitude, true);
+    }
+
+    private void setToolbar() {
         AppBarLayout appBarLayout = getBinding().appbarLayout;
         appBarLayout.addOnOffsetChangedListener((__, offset) -> {
 
-            Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.ic_arrow_back_black_24dp, null);
+            Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.back_button_primary, null);
             if (offset < -200) {
                 upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
                 getBinding().tbPost.setNavigationIcon(upArrow);
@@ -71,24 +143,12 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
             }
 
         });
+    }
 
+    private void setListener() {
         getBinding().tbPost.setNavigationOnClickListener(__ ->
                 finish()
         );
-
-        Room room = getIntent().getParcelableExtra(INTENT_ROOM);
-        getBinding().setRoomData(room);
-        mViewModel.setRoomData(room);
-        double longitude = room.getLongitude();
-        double latitude = room.getLatitude();
-
-        mTMapView = new TMapView(this);
-        getBinding().llPostTmapContainer.addView(mTMapView);
-
-        getBinding().vpPost.setAdapter(
-                new ImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel, getSupportFragmentManager())
-        );
-        getBinding().tabPost.setupWithViewPager(getBinding().vpPost, true);
 
         getBinding().tvPostChatting.setOnClickListener(__ -> {
                     if (FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -97,24 +157,18 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
                     }
 
                     Intent intent = new Intent(this, ChattingMessageActivity.class);
-                    intent.putExtra(UUID, room.getUuid());
+                    intent.putExtra(UUID, mViewModel.room.getValue().getUuid());
                     startActivity(intent);
                 }
         );
 
-        setTmapView(longitude, latitude);
-        mViewModel.setInitRoomData(room);
-    }
+        getBinding().btPostModify.setOnClickListener(__ -> {
+                    Intent intent = new Intent(this, WriteActivity.class);
+                    intent.putExtra(INTENT_ROOM, mViewModel.room.getValue());
+                    startActivityForResult(intent, MODIFY);
+                }
+        );
 
-    private void setTmapView(double longitude, double latitude) {
-        mTMapView.setCenterPoint(longitude, latitude, true);
-        mTMapView.setUserScrollZoomEnable(true);
-
-        TMapMarkerItem markerItem = new TMapMarkerItem();
-        TMapPoint point = new TMapPoint(latitude, longitude);
-        markerItem.setTMapPoint(point);
-        markerItem.setPosition(0.5f, 1.0f);
-        mTMapView.addMarkerItem("center", markerItem);
     }
 
     private void createViewModels() {
@@ -129,5 +183,15 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
                         APIManager.getInstance(),
                         this))
                 .get(PostViewModel.class);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == MODIFY && resultCode == RESULT_OK && data != null) {
+            Room room = data.getParcelableExtra(INTENT_ROOM);
+            mViewModel.setRoomData(room);
+        }
     }
 }

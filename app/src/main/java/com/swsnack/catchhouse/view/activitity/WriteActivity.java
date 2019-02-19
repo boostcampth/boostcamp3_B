@@ -8,13 +8,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.AppDataDataSource;
@@ -35,7 +34,8 @@ import java.util.List;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import static com.swsnack.catchhouse.Constant.PICK_IMAGE_MULTIPLE;
+import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
+import static com.swsnack.catchhouse.Constant.RequestCode.PICK_IMAGE_MULTIPLE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;
@@ -47,6 +47,29 @@ import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     private RoomsViewModel mViewModel;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        createViewModels();
+
+
+        /* check modify mode */
+        Room room = getIntent().getParcelableExtra(INTENT_ROOM);
+        if (room != null) {
+            mViewModel.setRoomData(room);
+        }
+
+        /* viewpager set */
+        getBinding().vpWrite.setAdapter(new DeletableImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
+        getBinding().tabWrite.setupWithViewPager(getBinding().vpWrite, true);
+
+        setClickListener();
+        setObservableData();
+
+    }
+
     @Override
     protected int getLayout() {
         return R.layout.activity_write;
@@ -115,8 +138,12 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         builder
                 .setMessage(getString(R.string.dl_write_finish))
                 .setOnDismissListener(__ -> finish())
-                .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) ->
-                        finish()
+                .setPositiveButton(getString(R.string.dl_write_ok), (__, ___) -> {
+                            Intent intent = new Intent();
+                            intent.putExtra(INTENT_ROOM, mViewModel.room.getValue());
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
                 );
 
         AlertDialog alert = builder.create();
@@ -124,79 +151,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         if (!isFinishing()) {
             alert.show();
         }
-    }
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-        createViewModels();
-
-        getBinding().vpWrite.setAdapter(new DeletableImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
-        getBinding().tabWrite.setupWithViewPager(getBinding().vpWrite, true);
-
-        getBinding().tbWrite.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-        getBinding().tbWrite.setNavigationOnClickListener(__ ->
-                finish()
-        );
-
-        getBinding().tvWriteGallery.setOnClickListener(__ -> {
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
-                }
-        );
-
-        getBinding().tvWriteDateFrom.setKeyListener(null);
-        getBinding().tvWriteDateTo.setKeyListener(null);
-        getBinding().tvWriteDateFrom.setOnTouchListener((v, event) -> {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        v.performClick();
-                        createDatePicker(v);
-                    }
-                    return false;
-                }
-        );
-        getBinding().tvWriteDateTo.setOnTouchListener((v, event) -> {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        v.performClick();
-                        createDatePicker(v);
-                    }
-                    return false;
-                }
-        );
-
-
-        getBinding().etWriteAddress.setKeyListener(null);
-        getBinding().etWriteAddress.setOnTouchListener((v, event) -> {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        v.performClick();
-                        new AddressSearchFragment().show(getSupportFragmentManager(),
-                                "address selection");
-                    }
-                    return false;
-                }
-
-        );
-
-        getBinding().tvWritePost.setOnClickListener(__ ->
-                mViewModel.onClickPost(
-
-                        getBinding().cbWriteStandard.isChecked(),
-
-                        getBinding().cbWriteGender.isChecked(),
-
-                        getBinding().cbWritePet.isChecked(),
-
-                        getBinding().cbWriteSmoking.isChecked()
-                )
-        );
-
-        setObservableData();
-
     }
 
     @Override
@@ -282,5 +236,59 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         getBinding().tvWriteDateTo.setError(null);
         getBinding().etWriteAddress.setError(null);
         getBinding().etWriteRoomSize.setError(null);
+    }
+
+    private void setClickListener() {
+        /* back button */
+        getBinding().tbWrite.setNavigationIcon(R.drawable.back_button_primary);
+        getBinding().tbWrite.setNavigationOnClickListener(__ ->
+                finish()
+        );
+
+        /* gallery button */
+        getBinding().tvWriteGallery.setOnClickListener(__ -> {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_MULTIPLE);
+                }
+        );
+
+        /* date pick button */
+        getBinding().tvWriteDateFrom.setKeyListener(null);
+        getBinding().tvWriteDateTo.setKeyListener(null);
+        getBinding().tvWriteDateFrom.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        createDatePicker(v);
+                    }
+                    return false;
+                }
+        );
+        getBinding().tvWriteDateTo.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        createDatePicker(v);
+                    }
+                    return false;
+                }
+        );
+
+        /* search address button */
+        getBinding().etWriteAddress.setKeyListener(null);
+        getBinding().etWriteAddress.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        new AddressSearchFragment().show(getSupportFragmentManager(),
+                                "address selection");
+                    }
+                    return false;
+                }
+
+        );
+
+        /* post button */
+        getBinding().tvWritePost.setOnClickListener(__ -> mViewModel.onClickPost());
     }
 }

@@ -64,7 +64,8 @@ public class DataConverter {
                 room.isOptionPet(),
                 room.isOptionSmoking(),
                 room.getLatitude(),
-                room.getLongitude());
+                room.getLongitude(),
+                room.isDeleted());
     }
 
     public static Room convertToRoom(RoomEntity roomEntity) {
@@ -84,6 +85,7 @@ public class DataConverter {
                 roomEntity.isOptionPet(),
                 roomEntity.isOptionSmoking(),
                 roomEntity.getLatitude(),
-                roomEntity.getLongitude());
+                roomEntity.getLongitude(),
+                roomEntity.isDeleted());
     }
 }

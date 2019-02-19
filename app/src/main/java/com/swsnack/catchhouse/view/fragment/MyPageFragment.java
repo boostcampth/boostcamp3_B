@@ -32,8 +32,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getCacheDir;
-import static com.swsnack.catchhouse.Constant.GALLERY;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
+import static com.swsnack.catchhouse.Constant.RequestCode.GALLERY;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
@@ -65,7 +65,6 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         getViewModel().getUserData();
 
         init();
-
         for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
             if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
                 getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
@@ -106,6 +105,8 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     }
 
     private void init() {
+        //setNavigationDrawer();
+
         getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
         getBinding().ctlMyPage.setCollapsedTitleTextColor(getResources().getColor(R.color.colorPrimary));
         getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.GONE);

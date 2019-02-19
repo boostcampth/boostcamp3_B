@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
@@ -136,10 +138,6 @@ public class FilterFragment extends DialogFragment {
         if(v == mBinding.etFilterPriceFrom || v == mBinding.etFilterPriceTo) {
             mPriceEditText = (EditText)v;
         }
-    }
-
-    private void updatePreview(int value) {
-        //mBinding.tvFilterDistanceShow.setText(String.valueOf(value)+"km");
     }
 
 }

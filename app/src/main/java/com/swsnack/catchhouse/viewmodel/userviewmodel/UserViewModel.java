@@ -95,7 +95,7 @@ public class UserViewModel extends ReactiveViewModel {
                                 return;
                             }
                             mUser.setValue(user);
-                            mEmail.setValue(user.getEMail());
+                            mEmail.setValue(user.getEmail());
                             mNickName.setValue(user.getNickName());
                             mGender.setValue(user.getGender());
                             if (user.getProfile() != null) {
@@ -217,7 +217,19 @@ public class UserViewModel extends ReactiveViewModel {
     public void signOut() {
         mListener.isWorking();
         getApiManager().firebaseSignOut();
+        mIsSigned.setValue(false);
+        clear();
         mListener.onSuccess(SIGN_OUT_SUCCESS);
+    }
+
+    private void clear() {
+        mIsSigned.setValue(false);
+        mUser.setValue(null);
+        mGender.setValue("");
+        mEmail.setValue("");
+        mProfile.setValue(null);
+        mPassword.setValue("");
+        mNickName.setValue("");
     }
 
     public void deleteUser() {
@@ -231,8 +243,8 @@ public class UserViewModel extends ReactiveViewModel {
         getApiManager()
                 .firebaseDeleteUser(uuid,
                         deleteResult -> {
+                            clear();
                             mListener.onSuccess(DELETE_USER_SUCCESS);
-                            mIsSigned.setValue(false);
                         },
                         error -> mListener.onError(getStringFromResource(R.string.snack_error_occured)));
     }

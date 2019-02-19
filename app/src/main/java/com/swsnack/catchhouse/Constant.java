@@ -39,6 +39,11 @@ import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
 import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
+import static com.swsnack.catchhouse.Constant.RequestCode.FILTER;
+import static com.swsnack.catchhouse.Constant.RequestCode.GALLERY;
+import static com.swsnack.catchhouse.Constant.RequestCode.GOOGLE_SIGN_IN;
+import static com.swsnack.catchhouse.Constant.RequestCode.PICK_IMAGE_MULTIPLE;
+import static com.swsnack.catchhouse.Constant.RequestCode.SEARCH;
 import static com.swsnack.catchhouse.Constant.SignInMethod.E_MAIL;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
@@ -68,13 +73,23 @@ public class Constant {
     public static final int GOOGLE_SIGN_IN = 1000;
     public static final int PICK_IMAGE_MULTIPLE = 1002;
     public static final int GALLERY = 1003;
+    public static final int MODIFY = 1004;
     public static final int FILTER = 1005;
-
     public static final String INTENT_FILTER = "1006";
     public static final String INTENT_ROOM = "1007";
 
     public static final String MSG_ERROR_GET_ADDRESS = "주소를 찾을 수 없습니다.";
     public static final String DEFAULT_DATE_STRING = "YYYY-MM-DD";
+
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({GOOGLE_SIGN_IN, PICK_IMAGE_MULTIPLE, GALLERY, FILTER, SEARCH})
+    public @interface RequestCode {
+        int GOOGLE_SIGN_IN = 1000;
+        int PICK_IMAGE_MULTIPLE = 1002;
+        int GALLERY = 1003;
+        int FILTER = 1005;
+        int SEARCH = 1006;
+    }
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({SIGN_IN_SUCCESS, SIGN_UP_SUCCESS, DELETE_USER_SUCCESS, UPDATE_NICK_NAME_SUCCESS,

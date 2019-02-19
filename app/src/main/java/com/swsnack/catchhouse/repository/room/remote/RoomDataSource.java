@@ -14,8 +14,7 @@ import java.util.List;
 
 public interface RoomDataSource {
 
-    void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
-                   @NonNull OnFailedListener onFailedListener);
+    String createKey();
 
     void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList,
                          @NonNull OnSuccessListener<List<String>> onSuccessListener,

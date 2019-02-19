@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentSignUpBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
@@ -24,11 +23,10 @@ import androidx.annotation.Nullable;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getCacheDir;
+import static com.swsnack.catchhouse.Constant.RequestCode.GALLERY;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;
-import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_RATIO;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_SQUARE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
-import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_RATIO;
 
 public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserViewModel> {
 
@@ -46,7 +44,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        getBinding().tbSignIn.setNavigationIcon(R.drawable.action_back_white);
+        getBinding().tbSignIn.setNavigationIcon(R.drawable.back_button_primary);
         getBinding().tbSignIn.setNavigationOnClickListener(__ -> getActivity().getSupportFragmentManager().popBackStack());
         return getBinding().getRoot();
     }
@@ -59,7 +57,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         getBinding().ivSignUpProfile.setOnClickListener(__ -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
-            startActivityForResult(intent, Constant.GALLERY);
+            startActivityForResult(intent, GALLERY);
         });
     }
 
@@ -68,7 +66,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK) {
-            if (requestCode == Constant.GALLERY) {
+            if (requestCode == GALLERY) {
                 String fileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 Uri destinationUri = Uri.fromFile(new File(getCacheDir(), fileName + "png"));
                 UCrop.of(data.getData(), destinationUri)

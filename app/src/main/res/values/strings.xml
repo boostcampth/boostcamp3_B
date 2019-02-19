@@ -140,13 +140,32 @@
     <string name="tv_post_size">크기</string>
     <string name="tv_post_chat">쪽지보내기</string>
     <string name="tv_post_map">지도</string>
-    <string formatted="false" name="formatted_period_bottom">%s \n ~ %s</string>
-    <string formatted="false" name="formatted_period">%s ~ %s</string>
-    <string formatted="false" name="formatted_room_size">%s평</string>
-    <string formatted="false" name="formatted_user_info">닉네임: %s \n성별: %s</string>
+    <string name="formatted_period_bottom" formatted="false">%s \n ~ %s</string>
+    <string name="formatted_period" formatted="false">%s ~ %s</string>
+    <string name="formatted_room_size" formatted="false">%s평</string>
+    <string name="formatted_user_info" formatted="false">닉네임: %s \n성별: %s</string>
     <string name="tv_post_favorite">좋아요</string>
     <string name="tv_post_chatting">작성자랑 채팅하기</string>
     <string name="sign_in_login_google">구글 로그인</string>
     <string name="sign_in_login_facebook">페이스북 로그인</string>
     <string name="snack_back_pressed">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
+    <string name="btn_modify">수정하기</string>
+    <string name="btn_delete">삭제하기</string>
+    <string name="dl_delete_finish">삭제 되었습니다.</string>
+    <string name="dl_deleted_post">삭제된 글입니다.</string>
+
+    /* navigation drawer */
+    <string name="write_option">방 공유 하기</string>
+    <string name="change_nickname_option">닉네임 변경</string>
+    <string name="change_password_option">비밀번호 변경</string>
+    <string name="change_profile_option">프로필 이미지 변경</string>
+    <string name="logout_option">로그 아웃</string>
+    <string name="delete_account_option">회원 탈퇴</string>
+    <string name="formatted_nickname" formatted="false">닉네임: %s</string>
+    <string name="formatted_email" formatted="false">아이디: %s</string>
+    <string name="menu_title_account">회원 관리</string>
+    <string name="home_sell">판매하기</string>
+    <string name="home_search">검색하기</string>
+    <string name="no_chatting">새로운 채팅을 시작해 보세요</string>
+
 </resources>

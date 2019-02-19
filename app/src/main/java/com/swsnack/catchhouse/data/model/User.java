@@ -9,7 +9,7 @@ public class User implements Parcelable {
 
     @Nullable
     private String uuid;
-    private String eMail;
+    private String email;
     private String nickName;
     private String gender;
     private String profile;
@@ -29,14 +29,14 @@ public class User implements Parcelable {
     }
 
     public User(String eMail, String nickName, String gender) {
-        this.eMail = eMail;
+        this.email = eMail;
         this.nickName = nickName;
         this.gender = gender;
         this.isSigned = 1;
     }
 
     protected User(Parcel in) {
-        eMail = in.readString();
+        email = in.readString();
         nickName = in.readString();
         gender = in.readString();
         profile = in.readString();
@@ -63,7 +63,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(eMail);
+        dest.writeString(email);
         dest.writeString(nickName);
         dest.writeString(gender);
         dest.writeString(profile);
@@ -78,10 +78,6 @@ public class User implements Parcelable {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
-    }
-
-    public String getEMail() {
-        return eMail;
     }
 
     public String getNickName() {
@@ -110,5 +106,13 @@ public class User implements Parcelable {
 
     public void setIsSigned(int isSigned) {
         this.isSigned = isSigned;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

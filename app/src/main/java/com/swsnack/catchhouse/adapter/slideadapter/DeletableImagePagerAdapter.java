@@ -21,7 +21,8 @@ import androidx.databinding.DataBindingUtil;
 public class DeletableImagePagerAdapter extends BaseViewPagerAdapter<Uri, RoomsViewModel> {
 
     public DeletableImagePagerAdapter(List<Uri> uris, RoomsViewModel roomsViewModel) {
-        super(uris, roomsViewModel);
+        super(roomsViewModel);
+        mList = uris;
     }
 
     @NonNull

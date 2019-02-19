@@ -2,21 +2,18 @@ package com.swsnack.catchhouse.viewmodel.postviewmodel;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataDataSource;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.util.DataConverter;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataDataSource;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -25,53 +22,28 @@ import static com.swsnack.catchhouse.util.StringUtil.getStringFromResource;
 
 public class PostViewModel extends ReactiveViewModel {
 
-    public final MutableLiveData<List<String>> mImageList = new MutableLiveData<>();
     public final MutableLiveData<String> mExpectedPrice = new MutableLiveData<>();
     public final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
     public final MutableLiveData<String> mNickName = new MutableLiveData<>();
     public final MutableLiveData<String> mGender = new MutableLiveData<>();
     public final MutableLiveData<Bitmap> mProfile = new MutableLiveData<>();
-    private MutableLiveData<Room> mRoom;
+    public final MutableLiveData<Boolean> mIsWriter = new MutableLiveData<>();
+
+    public MutableLiveData<Room> room;
     private MutableLiveData<Boolean> mIsFavorite;
     private ViewModelListener mListener;
 
     PostViewModel(DataDataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         init();
-        mRoom = new MutableLiveData<>();
+        room = new MutableLiveData<>();
         mIsFavorite = new MutableLiveData<>();
         mListener = listener;
     }
 
-    public void setInitRoomData(Room room) {
-        mImageList.setValue(room.getImages());
-        ExpectedPrice expectedPrice =
-                new ExpectedPrice(room.getPrice(), room.getFrom(), room.getTo());
+    //TODO: 1
+    public void deleteMyPost() {
 
-        mExpectedPrice.setValue(expectedPrice.getExpectedPrice());
-
-        mOptionTag.setValue(
-                createOptionString(
-                        room.isOptionStandard(),
-                        room.isOptionGender(),
-                        room.isOptionPet(),
-                        room.isOptionSmoking()
-                )
-        );
-
-        getDataManager()
-                .getUserAndListeningForChanging(room.getUuid(),
-                        user -> {
-                            if (user == null) {
-                                return;
-                            }
-                            mNickName.setValue(user.getNickName());
-                            mGender.setValue(user.getGender());
-                            if (user.getProfile() != null) {
-                                getProfileFromUri(Uri.parse(user.getProfile()));
-                            }
-                        },
-                        error -> mListener.onError(getStringFromResource(R.string.snack_database_exception)));
     }
 
     private void getProfileFromUri(Uri uri) {
@@ -86,7 +58,6 @@ public class PostViewModel extends ReactiveViewModel {
     }
 
     private void init() {
-        mImageList.setValue(new ArrayList<>());
         mExpectedPrice.setValue("");
         mOptionTag.setValue("");
         mNickName.setValue("");
@@ -118,18 +89,46 @@ public class PostViewModel extends ReactiveViewModel {
 
     private void checkFavoriteRoom() {
         if (getDataManager()
-                .getFavoriteRoom(mRoom.getValue().getKey()) != null) {
+                .getFavoriteRoom(room.getValue().getKey()) != null) {
             mIsFavorite.setValue(true);
-            getDataManager().updateRoom(mRoom.getValue());
+            getDataManager().updateRoom(room.getValue());
         } else {
             mIsFavorite.setValue(false);
         }
     }
 
     public void setRoomData(Room roomData) {
-        mRoom.setValue(roomData);
+        room.setValue(roomData);
         checkFavoriteRoom();
         visitNewRoom();
+
+        mIsWriter.setValue(checkIsWriter(roomData.getUuid()));
+        ExpectedPrice expectedPrice =
+                new ExpectedPrice(roomData.getPrice(), roomData.getFrom(), roomData.getTo());
+        mExpectedPrice.setValue(expectedPrice.getExpectedPrice());
+
+        mOptionTag.setValue(
+                createOptionString(
+                        roomData.isOptionStandard(),
+                        roomData.isOptionGender(),
+                        roomData.isOptionPet(),
+                        roomData.isOptionSmoking()
+                )
+        );
+
+        getDataManager()
+                .getUserAndListeningForChanging(roomData.getUuid(),
+                        user -> {
+                            if (user == null) {
+                                return;
+                            }
+                            mNickName.setValue(user.getNickName());
+                            mGender.setValue(user.getGender());
+                            if (user.getProfile() != null) {
+                                getProfileFromUri(Uri.parse(user.getProfile()));
+                            }
+                        },
+                        error -> mListener.onError(getStringFromResource(R.string.snack_database_exception)));
     }
 
     public void addOrRemoveFavoriteRoom(View v) {
@@ -142,25 +141,40 @@ public class PostViewModel extends ReactiveViewModel {
 
         if (!mIsFavorite.getValue()) {
             getDataManager()
-                    .setFavoriteRoom(mRoom.getValue());
+                    .setFavoriteRoom(room.getValue());
             mIsFavorite.setValue(true);
             mListener.isFinished();
         } else {
             getDataManager()
-                    .deleteFavoriteRoom(mRoom.getValue());
+                    .deleteFavoriteRoom(room.getValue());
             mIsFavorite.setValue(false);
             mListener.isFinished();
 
         }
     }
 
+    public void onClickDeleteButton(View view) {
+        Room deletingRoom = room.getValue();
+        deletingRoom.setDeleted(true);
+
+        getDataManager().setRoom(deletingRoom.getKey(), deletingRoom,
+                __ -> mListener.onSuccess(""),
+                error -> mListener.onError(error.getMessage())
+        );
+    }
+
     private void visitNewRoom() {
         getDataManager()
-                .setRecentRoom(mRoom.getValue());
+                .setRecentRoom(room.getValue());
     }
 
     public LiveData<Boolean> isFavorite() {
         return mIsFavorite;
     }
 
+    private boolean checkIsWriter(String uuid) {
+        String myKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        return TextUtils.equals(uuid, myKey);
+    }
 }
