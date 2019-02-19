@@ -33,9 +33,9 @@ public class PhotoViewFragment extends BaseFragment<FragmentPhotoViewBinding, Po
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getBinding().vpPhoto.setAdapter(
-                new ZoomableImagePagerAdapter(getViewModel().mImageList.getValue(), getViewModel()));
-        getBinding().tabPhoto.setupWithViewPager(getBinding().vpPhoto, true);
+////        getBinding().vpPhoto.setAdapter(
+////                new ZoomableImagePagerAdapter(getViewModel().mImageList.getValue(), getViewModel()));
+//        getBinding().tabPhoto.setupWithViewPager(getBinding().vpPhoto, true);
 
     }
 }

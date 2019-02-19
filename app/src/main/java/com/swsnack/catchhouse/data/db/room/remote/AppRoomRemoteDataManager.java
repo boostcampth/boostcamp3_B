@@ -56,26 +56,9 @@ public class AppRoomRemoteDataManager implements RoomDataManager {
     }
 
     @Override
-    public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
-                          @NonNull OnFailedListener onFailedListener) {
-        db.push().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String key = dataSnapshot.getKey();
-                if (key != null) {
-                    onSuccessListener.onSuccess(key);
-                } else {
-                    onFailedListener.onFailed(new RuntimeException());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                onFailedListener.onFailed(new RuntimeException());
-            }
-        });
+    public String createKey() {
+        return db.push().getKey();
     }
-
 
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList,

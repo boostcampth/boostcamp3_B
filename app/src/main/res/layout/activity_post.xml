@@ -5,13 +5,11 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="handler"
             type="com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel" />
-
-        <variable
-            name="roomData"
-            type="com.swsnack.catchhouse.data.model.Room" />
 
         <variable
             name="user"
@@ -48,7 +46,7 @@
                         android:id="@+id/vp_post"
                         android:layout_width="match_parent"
                         android:layout_height="320dp"
-                        app:adapter="@{handler.mImageList}" />
+                        app:adapter="@{handler.room.images}" />
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tab_post"
@@ -132,7 +130,7 @@
                         android:layout_gravity="start"
                         android:layout_margin="8dp"
                         android:layout_marginStart="16dp"
-                        android:text="@{roomData.title}"
+                        android:text="@{handler.room.title}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -173,7 +171,7 @@
                         android:id="@+id/tv_post_period"
                         style="@style/tv.body"
                         android:layout_marginStart="16dp"
-                        android:text="@{@string/formatted_period(roomData.from, roomData.to)}"
+                        android:text="@{@string/formatted_period(handler.room.from, handler.room.to)}"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/tv_post_period_title" />
 
@@ -228,7 +226,7 @@
                         android:id="@+id/tv_post_address"
                         style="@style/tv.body"
                         android:layout_marginStart="32dp"
-                        android:text="@{roomData.address}"
+                        android:text="@{handler.room.address}"
                         app:layout_constraintBottom_toBottomOf="@id/tv_post_address_title"
                         app:layout_constraintStart_toEndOf="@id/tv_post_address_title"
                         app:layout_constraintTop_toTopOf="@id/tv_post_address_title" />
@@ -245,7 +243,7 @@
                         android:id="@+id/tv_post_size"
                         style="@style/tv.body"
                         android:layout_marginStart="0dp"
-                        android:text="@{@string/formatted_room_size(roomData.size)}"
+                        android:text="@{@string/formatted_room_size(handler.room.size)}"
                         app:layout_constraintBottom_toBottomOf="@id/tv_post_size_title"
                         app:layout_constraintStart_toStartOf="@id/tv_post_address"
                         app:layout_constraintTop_toTopOf="@id/tv_post_size_title" />
@@ -316,7 +314,7 @@
                         android:layout_marginTop="16dp"
                         android:background="@drawable/et_round_background"
                         android:backgroundTint="@android:color/white"
-                        android:text="@{roomData.content}" />
+                        android:text="@{handler.room.content}" />
 
                 </LinearLayout>
 
@@ -324,52 +322,98 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:layout_gravity="bottom"
-            android:background="@android:color/white"
-            android:elevation="16dp"
-            android:gravity="bottom"
-            android:orientation="horizontal">
+            android:background="@android:color/white">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.2"
-                android:onClick="@{handler::addOrRemoveFavoriteRoom}"
-                android:src="@drawable/favorite_default"
-                bind:isFavorite="@{handler.isFavorite}" />
+            <LinearLayout
+                android:id="@+id/ll_post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:background="@android:color/white"
+                android:elevation="16dp"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:visibility="@{safeUnbox(handler.mIsWriter)? View.GONE : View.VISIBLE, default=visible}">
 
-            <ImageView
-                android:layout_width="1dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center"
-                android:background="@color/colorDefaultGray"
-                android:src="@drawable/divider" />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.2"
+                    android:onClick="@{handler::addOrRemoveFavoriteRoom}"
+                    android:src="@drawable/favorite_default"
+                    bind:isFavorite="@{handler.isFavorite}" />
 
-            <TextView
-                style="@style/tv.body"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.4"
-                android:gravity="center"
-                android:text="@{@string/formatted_period_bottom(roomData.from, roomData.to)}"
-                android:textSize="12sp" />
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:background="@color/colorDefaultGray"
+                    android:src="@drawable/divider" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/tv_post_chatting"
-                style="@style/btn.accent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="16dp"
-                android:layout_weight="0.4"
-                android:text="@string/tv_post_chatting"
-                android:textSize="12sp" />
-        </LinearLayout>
+                <TextView
+                    style="@style/tv.body"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.4"
+                    android:gravity="center"
+                    android:text="@{@string/formatted_period_bottom(handler.room.from, handler.room.to)}"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/tv_post_chatting"
+                    style="@style/btn.accent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.4"
+                    android:text="@string/tv_post_chatting"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_post_writer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:background="@android:color/white"
+                android:elevation="16dp"
+                android:gravity="bottom"
+                android:orientation="horizontal"
+                android:visibility="@{safeUnbox(handler.mIsWriter)? View.VISIBLE : View.GONE, default=gone}">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bt_post_modify"
+                    style="@style/btn.accent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/btn_modify"
+                    android:textSize="12sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/bt_post_delete"
+                    style="@style/btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.5"
+                    android:onClick="@{handler::onClickDeleteButton}"
+                    android:text="@string/btn_delete"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </FrameLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

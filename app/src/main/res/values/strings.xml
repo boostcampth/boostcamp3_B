@@ -149,6 +149,10 @@
     <string name="sign_in_login_google">구글 로그인</string>
     <string name="sign_in_login_facebook">페이스북 로그인</string>
     <string name="snack_back_pressed">뒤로가기 버튼을 한 번 더 누르면 종료됩니다.</string>
+    <string name="btn_modify">수정하기</string>
+    <string name="btn_delete">삭제하기</string>
+    <string name="dl_delete_finish">삭제 되었습니다.</string>
+    <string name="dl_deleted_post">삭제된 글입니다.</string>
 
     /* navigation drawer */
     <string name="write_option">방 공유 하기</string>
