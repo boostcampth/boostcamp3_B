@@ -10,4 +10,5 @@
     <color name="colorMenu">#64B5F6</color>
     <color name="colorDestinationMessage">#fc859e</color>
     <color name="colorTextBody">#535353</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>

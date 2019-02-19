@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="handler"
+            type="com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel"/>
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_map_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorWhite">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/sv_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/appBarLayout" />
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <EditText
+                android:id="@+id/et_map_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:text="@={handler.keyword}" />
+
+            <com.naver.maps.map.MapView
+                android:id="@+id/nm_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                bindViewModel="@{handler}"
+                setNaverMapMarker="@{handler.getMarkerList()}"
+                setPosition="@{handler.getPosition()}" />
+
+            <!--<Button-->
+                <!--android:id="@+id/bt_map_near"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:text="@string/map_see_rooms"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent" />-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_map_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="47dp"
+                android:visibility="@{handler.finish}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+                bind:setAddressList="@{handler.addressList}" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fb_map_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="8dp"
+                android:scaleType="center"
+                android:src="@drawable/filter"
+                android:backgroundTint="@color/colorWhite"
+                android:padding="0dp"
+                android:elevation="0dp"
+                app:fabSize="mini"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+            <!--<Button-->
+                <!--android:id="@+id/bt_plus"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginTop="80dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:padding="0dp"-->
+                <!--android:backgroundTint="@color/colorWhite"-->
+                <!--android:text="+"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/fb_map_filter" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/bt_minus"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:layout_marginTop="110dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:padding="0dp"-->
+                <!--android:backgroundTint="@color/colorWhite"-->
+                <!--android:text="-"-->
+                <!--android:textColor="@color/colorPrimary"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/fb_map_filter" />-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_map_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal"
+                app:isCardShow="@{handler.isCardShow()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                bind:setRoomCardList="@{handler.roomCardList}" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
