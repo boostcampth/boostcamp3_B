@@ -10,6 +10,8 @@ import com.swsnack.catchhouse.data.model.Room;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import androidx.annotation.Nullable;
+
 public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
 
     private static LocalFavoriteRoomImpl INSTANCE;
@@ -50,6 +52,7 @@ public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
 
     }
 
+    @Nullable
     @Override
     public List<Room> getFavoriteRoomList() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -80,6 +83,7 @@ public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
         new FavoriteRoomHelper.AsyncDeleteUserFavoriteRoom(mRoomDao).execute(FirebaseAuth.getInstance().getCurrentUser().getUid());
     }
 
+    @Nullable
     @Override
     public Room getFavoriteRoom(String key) {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
