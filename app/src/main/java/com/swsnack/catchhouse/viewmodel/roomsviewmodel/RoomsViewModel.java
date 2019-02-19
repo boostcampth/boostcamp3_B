@@ -10,7 +10,7 @@ import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataDataSource;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
@@ -39,7 +39,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
-    private DataDataSource mDataManager;
+    private DataSource mDataManager;
 
     public final MutableLiveData<List<Address>> mSearchResultList = new MutableLiveData<>();
     public final MutableLiveData<List<Uri>> mImageList = new MutableLiveData<>();
@@ -61,7 +61,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     private String myKey = "";
     private ExpectedPrice ep;
 
-    RoomsViewModel(Application application, DataDataSource dataManager, APIManager apiManager, ViewModelListener listener) {
+    RoomsViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         mAppContext = application;
         mListener = listener;

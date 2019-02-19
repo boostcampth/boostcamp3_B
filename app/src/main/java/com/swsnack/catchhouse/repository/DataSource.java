@@ -8,7 +8,7 @@ import com.swsnack.catchhouse.repository.room.remote.RoomDataSource;
 import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
 import com.swsnack.catchhouse.repository.user.UserDataSource;
 
-public interface DataDataSource extends UserDataSource,
+public interface DataSource extends UserDataSource,
         ChattingDataSource,
         RoomDataSource,
         FavoriteRoomDataSource,

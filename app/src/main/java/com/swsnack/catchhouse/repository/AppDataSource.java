@@ -24,7 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
-public class AppDataDataSource implements DataDataSource {
+public class AppDataSource implements DataSource {
 
     private UserDataSource mUserDataSource;
     private ChattingDataSource mRemoteChattingDataSource;
@@ -34,11 +34,11 @@ public class AppDataDataSource implements DataDataSource {
     private LocationDataSource mLocationDataSource;
     private SearchingDataSource mSearchingDataSource;
 
-    private AppDataDataSource(UserDataSource userDataSource,
-                              ChattingDataSource remoteChattingDataSource,
-                              RoomRepository roomRepository,
-                              LocationDataSource locationDataSource,
-                              SearchingDataSource searchingDataSource) {
+    private AppDataSource(UserDataSource userDataSource,
+                          ChattingDataSource remoteChattingDataSource,
+                          RoomRepository roomRepository,
+                          LocationDataSource locationDataSource,
+                          SearchingDataSource searchingDataSource) {
 
         mUserDataSource = userDataSource;
         mRemoteChattingDataSource = remoteChattingDataSource;
@@ -49,15 +49,15 @@ public class AppDataDataSource implements DataDataSource {
         mSearchingDataSource = searchingDataSource;
     }
 
-    private static AppDataDataSource INSTANCE;
+    private static AppDataSource INSTANCE;
 
-    public static synchronized AppDataDataSource getInstance(@NonNull UserDataSource userDataSource,
-                                                             @NonNull ChattingDataSource remoteChattingDataSource,
-                                                             @NonNull RoomRepository roomRepository,
-                                                             @NonNull LocationDataSource locationDataSource,
-                                                             @NonNull SearchingDataSource searchingDataSource) {
+    public static synchronized AppDataSource getInstance(@NonNull UserDataSource userDataSource,
+                                                         @NonNull ChattingDataSource remoteChattingDataSource,
+                                                         @NonNull RoomRepository roomRepository,
+                                                         @NonNull LocationDataSource locationDataSource,
+                                                         @NonNull SearchingDataSource searchingDataSource) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataDataSource(userDataSource,
+            INSTANCE = new AppDataSource(userDataSource,
                     remoteChattingDataSource,
                     roomRepository,
                     locationDataSource,
@@ -195,10 +195,8 @@ public class AppDataDataSource implements DataDataSource {
     }
 
     @Override
-    public void createKey(@NonNull OnSuccessListener<String> onSuccessListener,
-                          @NonNull OnFailedListener onFailedListener) {
-
-        mRoomDataSource.createKey(onSuccessListener, onFailedListener);
+    public String createKey() {
+        return mRoomDataSource.createKey();
     }
 
     @Override

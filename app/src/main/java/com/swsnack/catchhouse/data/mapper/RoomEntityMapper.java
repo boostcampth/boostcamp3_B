@@ -23,6 +23,7 @@ public class RoomEntityMapper implements Mapper<Room, RoomEntity> {
                 from.isOptionPet(),
                 from.isOptionSmoking(),
                 from.getLatitude(),
-                from.getLongitude());
+                from.getLongitude(),
+                from.isDeleted());
     }
 }

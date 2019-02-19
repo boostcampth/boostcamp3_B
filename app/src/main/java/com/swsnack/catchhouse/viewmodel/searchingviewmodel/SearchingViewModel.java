@@ -14,7 +14,7 @@ import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.RoomCard;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataDataSource;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -57,7 +57,7 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
     public MutableLiveData<Boolean> mFilterOptionSmoking = new MutableLiveData<>();
 
 
-    SearchingViewModel(Application application, DataDataSource dataManager, APIManager apiManager, ViewModelListener listener) {
+    SearchingViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         mAppContext = application;
         mListener = listener;

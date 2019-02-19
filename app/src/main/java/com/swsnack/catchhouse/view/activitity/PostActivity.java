@@ -16,7 +16,7 @@ import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.AppDataDataSource;
+import com.swsnack.catchhouse.repository.AppDataSource;
 import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
 import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
@@ -174,7 +174,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
     private void createViewModels() {
         mViewModel = ViewModelProviders.of(this,
                 new PostViewModelFactory(
-                        AppDataDataSource.getInstance(
+                        AppDataSource.getInstance(
                                 UserDataImpl.getInstance(),
                                 RemoteChattingImpl.getInstance(),
                                 RoomRepository.getInstance(),

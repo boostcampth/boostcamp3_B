@@ -41,8 +41,8 @@ public class RoomRepository implements RoomDataSource, FavoriteRoomDataSource, R
     }
 
     @Override
-    public void createKey(@NonNull OnSuccessListener<String> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        mRemoteRoomDataSource.createKey(onSuccessListener, onFailedListener);
+    public String createKey() {
+        return mRemoteRoomDataSource.createKey();
     }
 
     @Override

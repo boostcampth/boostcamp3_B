@@ -7,17 +7,17 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataDataSource;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 public class UserViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private Application mApplication;
-    private DataDataSource mDatamanager;
+    private DataSource mDatamanager;
     private APIManager mApiManager;
     private ViewModelListener mListener;
 
-    public UserViewModelFactory(@NonNull Application application, DataDataSource dataManager, APIManager apiManager, ViewModelListener listener) {
+    public UserViewModelFactory(@NonNull Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         this.mApplication = application;
         this.mDatamanager = dataManager;
         this.mApiManager = apiManager;

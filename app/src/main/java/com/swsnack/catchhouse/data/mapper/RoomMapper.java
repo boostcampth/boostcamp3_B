@@ -26,7 +26,8 @@ public class RoomMapper implements Mapper<RoomEntity, Room> {
                 from.isOptionPet(),
                 from.isOptionSmoking(),
                 from.getLatitude(),
-                from.getLongitude());
+                from.getLongitude(),
+                from.isDeleted());
     }
 
     public List<Room> mapToList(List<RoomEntity> from) {

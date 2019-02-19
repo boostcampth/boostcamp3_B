@@ -10,7 +10,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.ViewPagerAdapter;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.AppDataDataSource;
+import com.swsnack.catchhouse.repository.AppDataSource;
 import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
 import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
@@ -116,7 +116,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
-                AppDataDataSource.getInstance(
+                AppDataSource.getInstance(
                         UserDataImpl.getInstance(),
                         RemoteChattingImpl.getInstance(),
                         RoomRepository.getInstance(),
@@ -125,7 +125,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
                 APIManager.getInstance(),
                 this));
         createViewModel(SearchingViewModel.class, new SearchingViewModelFactory(getApplication(),
-                AppDataDataSource.getInstance(
+                AppDataSource.getInstance(
                         UserDataImpl.getInstance(),
                         RemoteChattingImpl.getInstance(),
                         RoomRepository.getInstance(),

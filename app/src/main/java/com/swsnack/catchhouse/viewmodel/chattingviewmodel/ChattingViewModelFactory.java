@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.AppDataDataSource;
+import com.swsnack.catchhouse.repository.AppDataSource;
 import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
 import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
@@ -27,7 +27,7 @@ public class ChattingViewModelFactory extends ViewModelProvider.NewInstanceFacto
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(ChattingViewModel.class)) {
-            return (T) new ChattingViewModel(AppDataDataSource.getInstance(
+            return (T) new ChattingViewModel(AppDataSource.getInstance(
                     UserDataImpl.getInstance(),
                     RemoteChattingImpl.getInstance(),
                     RoomRepository.getInstance(),

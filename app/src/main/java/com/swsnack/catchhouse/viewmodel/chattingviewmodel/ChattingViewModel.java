@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataDataSource;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.data.model.Chatting;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.model.User;
@@ -33,7 +33,7 @@ public class ChattingViewModel extends ReactiveViewModel {
     private MutableLiveData<List<Message>> mMessageList;
     private MutableLiveData<User> mDestinationUserData;
 
-    ChattingViewModel(DataDataSource dataManager, APIManager apiManager, ViewModelListener bottomNavListener) {
+    ChattingViewModel(DataSource dataManager, APIManager apiManager, ViewModelListener bottomNavListener) {
         super(dataManager, apiManager);
         this.mAppContext = AppApplication.getAppContext();
         this.mListener = bottomNavListener;

@@ -28,11 +28,11 @@ import static com.swsnack.catchhouse.Constant.FacebookData.NAME;
 public class APIManager {
 
     private static APIManager INSTANCE;
-    private DataDataSource mDataManager;
+    private DataSource mDataManager;
 
     public static synchronized APIManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new APIManager(AppDataDataSource.getInstance(UserDataImpl.getInstance(),
+            INSTANCE = new APIManager(AppDataSource.getInstance(UserDataImpl.getInstance(),
                     RemoteChattingImpl.getInstance(),
                     RoomRepository.getInstance(),
                     RemoteLocationImpl.getInstance(),
@@ -41,7 +41,7 @@ public class APIManager {
         return INSTANCE;
     }
 
-    private APIManager(DataDataSource dataManager) {
+    private APIManager(DataSource dataManager) {
         mDataManager = dataManager;
     }
 

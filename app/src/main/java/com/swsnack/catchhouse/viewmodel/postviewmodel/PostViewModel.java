@@ -10,7 +10,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.DataDataSource;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -33,7 +33,7 @@ public class PostViewModel extends ReactiveViewModel {
     private MutableLiveData<Boolean> mIsFavorite;
     private ViewModelListener mListener;
 
-    PostViewModel(DataDataSource dataManager, APIManager apiManager, ViewModelListener listener) {
+    PostViewModel(DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         init();
         room = new MutableLiveData<>();
