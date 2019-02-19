@@ -78,6 +78,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
 
     private void viewInit() {
         Room room = getIntent().getParcelableExtra(INTENT_ROOM);
+
         if (room.isDeleted()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(getString(R.string.dl_deleted_post))
@@ -87,13 +88,14 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
             if (!isFinishing()) {
                 alert.show();
             }
-        }
-        mViewModel.setRoomData(room);
+        } else {
+            mViewModel.setRoomData(room);
 
-        setToolbar();
-        setViewPager();
-        setListener();
-        setTmapView();
+            setToolbar();
+            setViewPager();
+            setListener();
+            setTmapView();
+        }
     }
 
     private void setObservableData() {

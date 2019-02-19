@@ -247,7 +247,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     private void setClickListener() {
         /* back button */
-        getBinding().tbWrite.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        getBinding().tbWrite.setNavigationIcon(R.drawable.back_button_primary);
         getBinding().tbWrite.setNavigationOnClickListener(__ ->
                 finish()
         );
