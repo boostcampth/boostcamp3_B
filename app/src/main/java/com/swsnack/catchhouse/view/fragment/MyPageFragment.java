@@ -116,12 +116,8 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     }
 
     private void init() {
-        //setNavigationDrawer();
-
         getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
         getBinding().ctlMyPage.setCollapsedTitleTextColor(getResources().getColor(R.color.colorPrimary));
-        getBinding().lyMyPageInclude.tvMyPageRecentlyVisitSubTitle.setVisibility(View.GONE);
-        getBinding().lyMyPageInclude.tvMyPageMyFavoriteSubTitle.setVisibility(View.GONE);
     }
 
     private void onChangeNickNameBtnClicked() {
