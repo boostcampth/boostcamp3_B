@@ -213,27 +213,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                 pet,
                 smoking
         );
-        getDataManager().setRoom(key, room, success -> {
-            getDataManager()
-                    .setSellRoom(new SellRoomEntity(key,
-                            mPrice.getValue(),
-                            mFromDate.getValue(),
-                            mToDate.getValue(),
-                            mTitle.getValue(),
-                            mContent.getValue(),
-                            urls,
-                            FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                            mAddress.getValue().getAddress(),
-                            mAddress.getValue().getName(),
-                            mSize.getValue(),
-                            std,
-                            gender,
-                            pet,
-                            smoking,
-                            mAddress.getValue().getLatitude(),
-                            mAddress.getValue().getLongitude()));
-            onSuccessListener.onSuccess(success);
-        }, onFailedListener);
+        getDataManager().setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
     private Single<List<Address>> searchAddress(String keyword) {
