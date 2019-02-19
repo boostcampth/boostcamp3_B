@@ -2,6 +2,7 @@ package com.swsnack.catchhouse.view.activitity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -21,7 +22,7 @@ import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
 import com.swsnack.catchhouse.view.fragment.HomeFragment;
 import com.swsnack.catchhouse.view.fragment.HomeFragmentListener;
-import com.swsnack.catchhouse.view.fragment.MapFragment;
+import com.swsnack.catchhouse.view.fragment.SearchFragment;
 import com.swsnack.catchhouse.view.fragment.MyPageFragment;
 import com.swsnack.catchhouse.view.fragment.SignFragment;
 import com.swsnack.catchhouse.view.fragment.SignInFragment;
@@ -119,7 +120,19 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
 
         TMapTapi tApi = new TMapTapi(getApplicationContext());
         tApi.setSKTMapAuthentication(getResources().getString(R.string.tmap_api_key));
-
+/*
+        getBinding().vpBottomNav.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(getBinding().vpBottomNav.getCurrentItem() == 1) {
+                    getBinding().vpBottomNav.setCurrentItem(0, true);
+                    getBinding().vpBottomNav.setCurrentItem(1, false);
+                    return true;
+                }
+                return false;
+            }
+        });
+*/
     }
 
     private void createViewModels() {
@@ -181,7 +194,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
         List<Fragment> list = new ArrayList<>();
 
         list.add(new HomeFragment());
-        list.add(new MapFragment());
+        list.add(new SearchFragment());
         list.add(new ChatListFragment());
         list.add(new SignFragment());
 
