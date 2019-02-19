@@ -110,7 +110,8 @@ public class UserDataBinding {
                     roomEntity.isOptionPet(),
                     roomEntity.isOptionSmoking(),
                     roomEntity.getLatitude(),
-                    roomEntity.getLongitude()));
+                    roomEntity.getLongitude(),
+                    false));
         }
 
         roomListAdapter.setList(roomList);
