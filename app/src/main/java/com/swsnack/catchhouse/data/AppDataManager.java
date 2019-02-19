@@ -9,10 +9,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.skt.Tmap.TMapPOIItem;
 import com.swsnack.catchhouse.data.db.chatting.ChattingManager;
 import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.room.local.FavoriteRoomManager;
+import com.swsnack.catchhouse.data.db.room.local.LocalRoomDataSource;
+import com.swsnack.catchhouse.data.db.room.local.LocalSellRoomDataSource;
 import com.swsnack.catchhouse.data.db.room.local.RecentRoomManager;
+import com.swsnack.catchhouse.data.db.room.local.SellRoomImpl;
 import com.swsnack.catchhouse.data.db.searching.SearchingDataManager;
 import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Chatting;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.db.location.LocationDataManager;
@@ -34,10 +37,11 @@ public class AppDataManager implements DataManager {
     private UserDataManager mUserDataManager;
     private ChattingManager mRemoteChattingManager;
     private RoomDataManager mRoomDataManager;
-    private FavoriteRoomManager mFavoriteRoomManager;
+    private LocalRoomDataSource mLocalRoomDataSource;
     private RecentRoomManager mRecentRoomDataManager;
     private LocationDataManager mLocationDataManager;
     private SearchingDataManager mSearchingDataManager;
+    private LocalSellRoomDataSource mLocalSellRoomManager;
 
     private AppDataManager(UserDataManager userDataManager,
                            ChattingManager remoteChattingManager,
@@ -48,10 +52,11 @@ public class AppDataManager implements DataManager {
         mUserDataManager = userDataManager;
         mRemoteChattingManager = remoteChattingManager;
         mRoomDataManager = roomRepository;
-        mFavoriteRoomManager = roomRepository;
+        mLocalRoomDataSource = roomRepository;
         mRecentRoomDataManager = roomRepository;
         mLocationDataManager = locationDataManager;
         mSearchingDataManager = searchingDataManager;
+        mLocalSellRoomManager = SellRoomImpl.getInstance();
     }
 
     private static AppDataManager INSTANCE;
@@ -259,33 +264,33 @@ public class AppDataManager implements DataManager {
 
     @Override
     public void setFavoriteRoom(RoomEntity roomEntity) {
-        mFavoriteRoomManager.setFavoriteRoom(roomEntity);
+        mLocalRoomDataSource.setFavoriteRoom(roomEntity);
     }
 
     @Override
     public void deleteFavoriteRoom(RoomEntity roomEntity) {
-        mFavoriteRoomManager.deleteFavoriteRoom(roomEntity);
+        mLocalRoomDataSource.deleteFavoriteRoom(roomEntity);
 
     }
 
     @Override
     public void deleteFavoriteRoom() {
-        mFavoriteRoomManager.deleteFavoriteRoom();
+        mLocalRoomDataSource.deleteFavoriteRoom();
     }
 
     @Override
     public List<RoomEntity> getFavoriteRoomList() {
-        return mFavoriteRoomManager.getFavoriteRoomList();
+        return mLocalRoomDataSource.getFavoriteRoomList();
     }
 
     @Override
     public RoomEntity getFavoriteRoom(String key) {
-        return mFavoriteRoomManager.getFavoriteRoom(key);
+        return mLocalRoomDataSource.getFavoriteRoom(key);
     }
 
     @Override
     public void updateRoom(RoomEntity roomEntity) {
-        mFavoriteRoomManager.updateRoom(roomEntity);
+        mLocalRoomDataSource.updateRoom(roomEntity);
     }
 
     @Override
@@ -301,5 +306,35 @@ public class AppDataManager implements DataManager {
     @Override
     public void deleteRecentRoomList() {
         mRecentRoomDataManager.deleteRecentRoomList();
+    }
+
+    @Override
+    public void setSellRoom(SellRoomEntity sellRoomEntity) {
+        mLocalSellRoomManager.setSellRoom(sellRoomEntity);
+    }
+
+    @Override
+    public void deleteSellRoom(SellRoomEntity sellRoomEntity) {
+        mLocalSellRoomManager.deleteSellRoom(sellRoomEntity);
+    }
+
+    @Override
+    public List<SellRoomEntity> getSellRoomList() {
+        return mLocalSellRoomManager.getSellRoomList();
+    }
+
+    @Override
+    public void deleteSellRoom() {
+        mLocalSellRoomManager.deleteSellRoom();
+    }
+
+    @Override
+    public SellRoomEntity getSellRoom(String key) {
+        return mLocalSellRoomManager.getSellRoom(key);
+    }
+
+    @Override
+    public void updateRoom(SellRoomEntity sellRoomEntity) {
+        mLocalSellRoomManager.updateRoom(sellRoomEntity);
     }
 }

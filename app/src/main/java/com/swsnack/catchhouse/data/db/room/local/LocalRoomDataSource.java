@@ -6,7 +6,7 @@ import java.util.List;
 
 import androidx.lifecycle.LiveData;
 
-public interface FavoriteRoomManager {
+public interface LocalRoomDataSource {
 
     void setFavoriteRoom(RoomEntity roomEntity);
 

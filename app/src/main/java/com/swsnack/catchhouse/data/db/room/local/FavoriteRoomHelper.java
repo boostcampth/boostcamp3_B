@@ -52,7 +52,7 @@ class FavoriteRoomHelper {
         }
     }
 
-    public static class  AsyncLoadFavoriteRoom extends AsyncTask<String, Void, RoomEntity> {
+    public static class AsyncLoadFavoriteRoom extends AsyncTask<String, Void, RoomEntity> {
 
         private RoomDao mRoomDao;
 
