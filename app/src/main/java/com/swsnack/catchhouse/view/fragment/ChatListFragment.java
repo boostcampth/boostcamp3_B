@@ -47,9 +47,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getCacheDir;
-import static com.swsnack.catchhouse.Constant.GALLERY;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
 import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
+import static com.swsnack.catchhouse.Constant.RequestCode.GALLERY;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;

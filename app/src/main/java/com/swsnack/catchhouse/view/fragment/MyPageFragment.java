@@ -32,8 +32,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static android.app.Activity.RESULT_OK;
 import static com.facebook.FacebookSdk.getCacheDir;
-import static com.swsnack.catchhouse.Constant.GALLERY;
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
+import static com.swsnack.catchhouse.Constant.RequestCode.GALLERY;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
 import static com.swsnack.catchhouse.Constant.SignInMethod.GOOGLE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_HEIGHT_MAX;

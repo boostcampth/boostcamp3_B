@@ -3,12 +3,7 @@ package com.swsnack.catchhouse.view.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,16 +16,21 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.databinding.FragmentSignInBinding;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
 import java.util.Arrays;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+
 import static com.swsnack.catchhouse.Constant.FacebookData.E_MAIL;
 import static com.swsnack.catchhouse.Constant.FacebookData.PROFILE;
+import static com.swsnack.catchhouse.Constant.RequestCode.GOOGLE_SIGN_IN;
 
 public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserViewModel> {
 
@@ -68,7 +68,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                     .requestEmail()
                     .build();
             Intent intent = GoogleSignIn.getClient(getContext(), gso).getSignInIntent();
-            startActivityForResult(intent, Constant.GOOGLE_SIGN_IN);
+            startActivityForResult(intent, GOOGLE_SIGN_IN);
         });
 
         getBinding().btnSignInFacebook.setOnClickListener(__ ->
@@ -85,7 +85,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == Constant.GOOGLE_SIGN_IN) {
+        if (requestCode == GOOGLE_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 getViewModel().signInWithGoogle(data);
             }
