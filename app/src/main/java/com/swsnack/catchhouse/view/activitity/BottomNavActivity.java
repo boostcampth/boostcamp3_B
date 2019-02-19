@@ -42,7 +42,7 @@ import io.reactivex.disposables.CompositeDisposable;
 
 import static com.google.firebase.analytics.FirebaseAnalytics.Event.SEARCH;
 
-public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> implements HomeFragmentListener {
+public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
     private FragmentManager mFragmentManager;
     private CompositeDisposable mDisposable;
@@ -81,11 +81,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> im
                 showSnackMessage(getString(R.string.snack_change_nick_name_success));
                 break;
         }
-    }
-
-    @Override
-    public void openMapFragment() {
-        getBinding().bottomNav.setSelectedItemId(R.id.action_map);
     }
 
     @Override
