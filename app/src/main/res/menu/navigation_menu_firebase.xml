@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+<group
+    android:checkableBehavior="none">
     <group
         android:id="@+id/nav_g1"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
 
         <item
             android:id="@+id/write"
@@ -14,7 +15,7 @@
 
     <group
         android:id="@+id/nav_g2"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
 
         <item
             android:id="@+id/change_nickname"
@@ -35,11 +36,12 @@
 
 
     <group android:id="@+id/nav_g3"
-        android:checkableBehavior="single">
+        android:checkableBehavior="none">
         <item
             android:id="@+id/logout"
             android:title="@string/logout_option" />
     </group>
 
+    </group>
 
 </menu>

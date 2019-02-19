@@ -20,10 +20,6 @@ public class User implements Parcelable {
     public User() {
     }
 
-    public String getEmail() {
-        return email;
-    }
-
     public User(String name) {
         this(name, null);
     }
@@ -84,7 +80,6 @@ public class User implements Parcelable {
         this.uuid = uuid;
     }
 
-
     public String getNickName() {
         return nickName;
     }
@@ -111,5 +106,13 @@ public class User implements Parcelable {
 
     public void setIsSigned(int isSigned) {
         this.isSigned = isSigned;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
