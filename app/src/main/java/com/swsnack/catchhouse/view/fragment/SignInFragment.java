@@ -116,5 +116,7 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                 Snackbar.make(getBinding().getRoot(), R.string.snack_try_again, Snackbar.LENGTH_SHORT).show();
             }
         });
+        getBinding().tbSignIn.setNavigationIcon(R.drawable.back_button_primary);
+        getBinding().tbSignIn.setNavigationOnClickListener(__ -> getActivity().finish());
     }
 }

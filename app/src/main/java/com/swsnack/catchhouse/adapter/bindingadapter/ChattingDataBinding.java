@@ -3,10 +3,14 @@ package com.swsnack.catchhouse.adapter.bindingadapter;
 import androidx.databinding.BindingAdapter;
 import android.net.Uri;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingListAdapter;
@@ -37,9 +41,27 @@ public class ChattingDataBinding {
         chattingListAdapter.setList(orderedList);
     }
 
+    @BindingAdapter({"showNoChat"})
+    public static void shoNoChatting(TextView textView, List<Chatting> chattingList) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            textView.setVisibility(View.GONE);
+            return;
+        }
+        if(chattingList == null) {
+            textView.setVisibility(View.VISIBLE);
+            return;
+        }
+        if(chattingList.size() == 0) {
+            textView.setVisibility(View.VISIBLE);
+            return;
+        }
+        textView.setVisibility(View.GONE);
+    }
+
     @BindingAdapter({"setChattingUserProfile"})
     public static void setProfile(ImageView imageView, User user) {
         if (user == null) {
+            imageView.setImageResource(R.drawable.profile);
             return;
         }
 

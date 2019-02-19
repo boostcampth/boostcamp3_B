@@ -74,7 +74,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof BottomNavActivity) {
+            if (context instanceof BottomNavActivity) {
             ((BottomNavActivity) Objects.requireNonNull(getActivity())).setViewPagerListener(this::getChattingList);
         }
     }
@@ -82,7 +82,6 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         mUserViewModel = ViewModelProviders.of(getActivity()).get(UserViewModel.class);
         setNavigationDrawer();
 
@@ -138,7 +137,7 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
 
         ItemNavHeaderBinding itemNavHeaderBinding = DataBindingUtil.inflate(getLayoutInflater(), R.layout.item_nav_header, getBinding().navView, false);
         itemNavHeaderBinding.setUserViewModel(mUserViewModel);
-        itemNavHeaderBinding.setLifecycleOwner(this);
+        itemNavHeaderBinding.setLifecycleOwner(getActivity());
         getBinding().navView.addHeaderView(itemNavHeaderBinding.getRoot());
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -235,6 +234,9 @@ public class ChatListFragment extends BaseFragment<FragmentChatListBinding, Chat
             }
             return true;
         });
+
+        getBinding().tbChatList.setNavigationIcon(R.drawable.back_button_primary);
+        getBinding().tbChatList.setNavigationOnClickListener(v -> getActivity().finish());
     }
 
     @Override

@@ -140,7 +140,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         getBinding().vpWrite.setAdapter(new DeletableImagePagerAdapter(mViewModel.mImageList.getValue(), mViewModel));
         getBinding().tabWrite.setupWithViewPager(getBinding().vpWrite, true);
 
-        getBinding().tbWrite.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        getBinding().tbWrite.setNavigationIcon(R.drawable.back_button_primary);
         getBinding().tbWrite.setNavigationOnClickListener(__ ->
                 finish()
         );
