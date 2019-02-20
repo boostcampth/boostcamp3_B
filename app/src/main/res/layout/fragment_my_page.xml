@@ -45,7 +45,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        bind:setProfile="@{handler.mProfile}" />
+                        bind:setProfileImageCenterCrop="@{handler.mProfileUri}" />
 
                     <TextView
                         android:id="@+id/tv_my_page_nick_name"

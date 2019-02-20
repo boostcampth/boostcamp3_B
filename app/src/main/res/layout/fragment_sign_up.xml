@@ -45,7 +45,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                bind:setProfile="@{handler.mProfile}" />
+                bind:setProfileImageCircle="@{handler.mProfileUri}" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tvl_sign_up_email"

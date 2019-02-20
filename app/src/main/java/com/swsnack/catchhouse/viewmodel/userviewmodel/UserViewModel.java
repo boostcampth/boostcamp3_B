@@ -2,7 +2,6 @@ package com.swsnack.catchhouse.viewmodel.userviewmodel;
 
 import android.app.Application;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -19,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.repository.APIManager;
@@ -48,7 +46,7 @@ public class UserViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
-    private Uri mProfileUri;
+    public MutableLiveData<Uri> mProfileUri;
     private MutableLiveData<List<Room>> mFavoriteRoomList;
     private MutableLiveData<List<Room>> mSellRoomList;
     private MutableLiveData<List<Room>> mRecentRoomList;
@@ -58,11 +56,11 @@ public class UserViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
     public MutableLiveData<String> mNickName;
-    public MutableLiveData<Bitmap> mProfile;
 
     UserViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         this.mAppContext = application;
+        this.mProfileUri = new MutableLiveData<>();
         this.mSellRoomList = new MutableLiveData<>();
         this.mFavoriteRoomList = new MutableLiveData<>();
         this.mRecentRoomList = new MutableLiveData<>();
@@ -72,27 +70,15 @@ public class UserViewModel extends ReactiveViewModel {
         this.mEmail = new MutableLiveData<>();
         this.mPassword = new MutableLiveData<>();
         this.mNickName = new MutableLiveData<>();
-        this.mProfile = new MutableLiveData<>();
         mIsSigned.setValue(false);
         this.mListener = listener;
-    }
-
-    public void getProfileFromUri(Uri uri) {
-        mListener.isWorking();
-        mProfileUri = uri;
-        getDataManager()
-                .getProfile(uri,
-                        bitmap -> {
-                            mListener.isFinished();
-                            mProfile.setValue(bitmap);
-                        },
-                        error -> mListener.onError(getStringFromResource(R.string.snack_failed_load_image)));
     }
 
     public void getUserData() {
         mIsSigned.setValue(true);
         getDataManager()
                 .getUserAndListeningForChanging(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+
                         user -> {
                             if (user == null) {
                                 return;
@@ -102,7 +88,7 @@ public class UserViewModel extends ReactiveViewModel {
                             mNickName.setValue(user.getNickName());
                             mGender.setValue(user.getGender());
                             if (user.getProfile() != null) {
-                                getProfileFromUri(Uri.parse(user.getProfile()));
+                                mProfileUri.setValue(Uri.parse(user.getProfile()));
                             }
                             mIsSigned.setValue(true);
                         },
@@ -173,7 +159,7 @@ public class UserViewModel extends ReactiveViewModel {
                 .firebaseSignUp(mEmail.getValue(),
                         mPassword.getValue(),
                         newUser,
-                        mProfileUri,
+                        mProfileUri.getValue(),
                         result -> mListener.onSuccess(SIGN_UP_SUCCESS),
                         error -> {
                             if (error instanceof FirebaseAuthUserCollisionException) {
@@ -230,7 +216,7 @@ public class UserViewModel extends ReactiveViewModel {
         mUser.setValue(null);
         mGender.setValue("");
         mEmail.setValue("");
-        mProfile.setValue(null);
+//        mProfileUri.setValue(null);
         mPassword.setValue("");
         mNickName.setValue("");
     }
@@ -286,6 +272,7 @@ public class UserViewModel extends ReactiveViewModel {
     public void getSellRoom() {
         mSellRoomList.setValue(getDataManager().getSellRoomList());
     }
+
     public void getFavoriteRoom() {
         mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
     }
@@ -308,5 +295,9 @@ public class UserViewModel extends ReactiveViewModel {
 
     public LiveData<List<Room>> getSellRoomList() {
         return mSellRoomList;
+    }
+
+    private LiveData<Uri> getProfileUri() {
+        return mProfileUri;
     }
 }

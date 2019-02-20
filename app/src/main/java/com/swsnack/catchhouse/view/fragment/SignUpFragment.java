@@ -75,7 +75,7 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
                         .start(getActivity(), this);
 
             } else if (requestCode == UCrop.REQUEST_CROP) {
-                getViewModel().getProfileFromUri(UCrop.getOutput(data));
+                getViewModel().mProfileUri.setValue(UCrop.getOutput(data));
             }
         }
 

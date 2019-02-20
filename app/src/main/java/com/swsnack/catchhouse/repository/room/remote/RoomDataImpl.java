@@ -12,7 +12,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.swsnack.catchhouse.AppApplication;
+import com.swsnack.catchhouse.data.mapper.FirebaseRoomMapper;
 import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.firebase.DBValueHelper;
 import com.swsnack.catchhouse.firebase.StorageHelper;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
@@ -101,6 +103,11 @@ public class RoomDataImpl implements RemoteRoomDataSource {
                 onFailedListener.onFailed(new RuntimeException(databaseError.getMessage()));
             }
         });
+
+        db.child(key).addListenerForSingleValueEvent(
+                new DBValueHelper<>(new FirebaseRoomMapper(),
+                        onSuccessListener,
+                        onFailedListener));
     }
 
     @Override

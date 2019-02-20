@@ -103,7 +103,7 @@
                             android:layout_width="48dp"
                             android:layout_height="48dp"
                             android:src="@drawable/profile"
-                            bind:setProfile="@{handler.mProfile}" />
+                            bind:setProfileImageCircle="@{handler.mProfile}"/>
 
                         <TextView
                             android:id="@+id/tv_post_writer"

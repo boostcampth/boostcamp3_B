@@ -1,35 +1,23 @@
 package com.swsnack.catchhouse.repository.user.remote;
 
-import android.app.Application;
-import android.graphics.Bitmap;
 import android.net.Uri;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.firebase.DBValueHelper;
+import com.swsnack.catchhouse.firebase.StorageHelper;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.repository.user.UserDataSource;
-import com.swsnack.catchhouse.util.DataConverter;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
-import static com.swsnack.catchhouse.Constant.ExceptionReason.FAILED_UPDATE;
 import static com.swsnack.catchhouse.Constant.ExceptionReason.NOT_SIGNED_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.SIGNED;
@@ -39,7 +27,6 @@ public class UserDataImpl implements UserDataSource {
 
     private DatabaseReference db;
     private StorageReference fs;
-    private Application mAppContext;
 
     private static UserDataImpl INSTANCE;
 
@@ -53,7 +40,6 @@ public class UserDataImpl implements UserDataSource {
     private UserDataImpl() {
         db = FirebaseDatabase.getInstance().getReference().child(DB_USER);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_PROFILE);
-        mAppContext = AppApplication.getAppContext();
     }
 
     private void uploadProfile(@NonNull String uuid,
@@ -62,23 +48,8 @@ public class UserDataImpl implements UserDataSource {
                                @NonNull OnFailedListener onFailedListener) {
 
         StorageReference reference = fs.child(uuid);
-        getProfile(imageUri,
-                bitmap -> {
-                    try {
-                        UploadTask uploadTask = reference.putBytes(DataConverter.getByteArray(DataConverter.getScaledBitmap(bitmap)));
-                        uploadTask.continueWithTask(task -> {
-                            if (!task.isSuccessful()) {
-                                onFailedListener.onFailed(new Exception(FAILED_UPDATE));
-                                return null;
-                            }
-                            return reference.getDownloadUrl();
-                        }).addOnSuccessListener(onSuccessListener::onSuccess)
-                                .addOnFailureListener(onFailedListener::onFailed);
-                    } catch (IOException e) {
-                        onFailedListener.onFailed(e);
-                    }
-                },
-                onFailedListener);
+        new StorageHelper(reference, imageUri)
+                .getStorageStatus(onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -102,7 +73,6 @@ public class UserDataImpl implements UserDataSource {
 
         db.child(uuid)
                 .addValueEventListener(new DBValueHelper<>(User.class, onSuccessListener, onFailedListener));
-
     }
 
     @Override
@@ -111,26 +81,6 @@ public class UserDataImpl implements UserDataSource {
                                           @NonNull OnFailedListener onFailedListener) {
 
         db.child(uuid).addListenerForSingleValueEvent(new DBValueHelper<>(User.class, onSuccessListener, onFailedListener));
-    }
-
-    @Override
-    public void getProfile(@NonNull Uri uri, @NonNull OnSuccessListener<Bitmap> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        Glide.with(mAppContext)
-                .asBitmap()
-                .load(uri)
-                .listener(new RequestListener<Bitmap>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
-                        onFailedListener.onFailed(e);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
-                        onSuccessListener.onSuccess(resource);
-                        return true;
-                    }
-                }).submit();
     }
 
     @Override
