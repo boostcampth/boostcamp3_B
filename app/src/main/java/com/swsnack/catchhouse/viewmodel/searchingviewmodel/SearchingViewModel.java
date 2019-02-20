@@ -218,6 +218,7 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                     Log.v("csh", "Single Error" + throwable.getMessage());
                     //Toast.makeText(mAppContext, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     mRoomCardList.postValue(new ArrayList<>());
+                    mTotal.postValue("검색된 매물 수 : "+0);
                     mListener.onError(throwable.getMessage());
                 }));
     }
