@@ -3,6 +3,7 @@ package com.swsnack.catchhouse.repository;
 import com.swsnack.catchhouse.repository.chatting.ChattingDataSource;
 import com.swsnack.catchhouse.repository.location.LocationDataSource;
 import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDataSource;
+import com.swsnack.catchhouse.repository.room.local.LocalSellRoomDataSource;
 import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
 import com.swsnack.catchhouse.repository.room.remote.RoomDataSource;
 import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
@@ -14,6 +15,7 @@ public interface DataSource extends UserDataSource,
         FavoriteRoomDataSource,
         LocationDataSource,
         SearchingDataSource,
-        RecentRoomDataSource {
+        RecentRoomDataSource,
+        LocalSellRoomDataSource {
 
 }

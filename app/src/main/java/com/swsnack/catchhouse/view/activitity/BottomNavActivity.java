@@ -10,6 +10,7 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.ViewPagerAdapter;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.AppDataSource;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
 import com.swsnack.catchhouse.view.fragment.MyPageFragment;
@@ -110,11 +111,11 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
-                AppDataManager.getInstance(),
+                AppDataSource.getInstance(),
                 APIManager.getInstance(),
                 this));
         createViewModel(SearchingViewModel.class, new SearchingViewModelFactory(getApplication(),
-                AppDataManager.getInstance(), APIManager.getInstance(), this));
+                AppDataSource.getInstance(), APIManager.getInstance(), this));
         createViewModel(ChattingViewModel.class, new ChattingViewModelFactory(this));
     }
 

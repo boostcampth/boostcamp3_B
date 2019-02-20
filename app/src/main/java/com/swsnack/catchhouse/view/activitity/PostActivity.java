@@ -18,6 +18,7 @@ import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.ActivityPostBinding;
 import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.AppDataSource;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
@@ -168,7 +169,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
     private void createViewModels() {
         mViewModel = ViewModelProviders.of(this,
                 new PostViewModelFactory(
-                        AppDataManager.getInstance(),
+                        AppDataSource.getInstance(),
                         APIManager.getInstance(),
                         this))
                 .get(PostViewModel.class);

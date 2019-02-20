@@ -27,7 +27,7 @@ public class APIManager {
 
     public static synchronized APIManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new APIManager(AppDataManager.getInstance());
+            INSTANCE = new APIManager(AppDataSource.getInstance());
         }
         return INSTANCE;
     }

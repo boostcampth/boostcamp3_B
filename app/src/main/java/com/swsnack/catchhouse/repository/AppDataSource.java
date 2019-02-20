@@ -4,19 +4,26 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.skt.Tmap.TMapPOIItem;
+import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.repository.chatting.ChattingDataSource;
+import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
 import com.swsnack.catchhouse.repository.location.LocationDataSource;
+import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
 import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDataSource;
+import com.swsnack.catchhouse.repository.room.local.LocalSellRoomDataSource;
 import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
+import com.swsnack.catchhouse.repository.room.local.SellRoomImpl;
 import com.swsnack.catchhouse.repository.room.remote.RoomDataSource;
 import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
+import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
 import com.swsnack.catchhouse.repository.user.UserDataSource;
+import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
 
 import java.util.List;
 
@@ -25,7 +32,7 @@ import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
 public class AppDataSource implements DataSource {
-
+//FIXME : 이 클래스 삭제할겁니다. 사용해주지 마시고 레포에서 써주세요
     private UserDataSource mUserDataSource;
     private ChattingDataSource mRemoteChattingDataSource;
     private RoomDataSource mRoomDataSource;
@@ -33,35 +40,25 @@ public class AppDataSource implements DataSource {
     private RecentRoomDataSource mRecentRoomDataManager;
     private LocationDataSource mLocationDataSource;
     private SearchingDataSource mSearchingDataSource;
+    private LocalSellRoomDataSource mSellRoomDataSource;
 
-    private AppDataSource(UserDataSource userDataSource,
-                          ChattingDataSource remoteChattingDataSource,
-                          RoomRepository roomRepository,
-                          LocationDataSource locationDataSource,
-                          SearchingDataSource searchingDataSource) {
+    private AppDataSource() {
 
-        mUserDataSource = userDataSource;
-        mRemoteChattingDataSource = remoteChattingDataSource;
-        mRoomDataSource = roomRepository;
-        mFavoriteRoomDataSource = roomRepository;
-        mRecentRoomDataManager = roomRepository;
-        mLocationDataSource = locationDataSource;
-        mSearchingDataSource = searchingDataSource;
+        mUserDataSource = UserDataImpl.getInstance();
+        mRemoteChattingDataSource = RemoteChattingImpl.getInstance();
+        mRoomDataSource = RoomRepository.getInstance();
+        mFavoriteRoomDataSource = RoomRepository.getInstance();
+        mRecentRoomDataManager = RoomRepository.getInstance();
+        mLocationDataSource = RemoteLocationImpl.getInstance();
+        mSearchingDataSource = SearchingDataImpl.getInstance();
+        mSellRoomDataSource = SellRoomImpl.getInstance();
     }
 
     private static AppDataSource INSTANCE;
 
-    public static synchronized AppDataSource getInstance(@NonNull UserDataSource userDataSource,
-                                                         @NonNull ChattingDataSource remoteChattingDataSource,
-                                                         @NonNull RoomRepository roomRepository,
-                                                         @NonNull LocationDataSource locationDataSource,
-                                                         @NonNull SearchingDataSource searchingDataSource) {
+    public static synchronized AppDataSource getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataSource(userDataSource,
-                    remoteChattingDataSource,
-                    roomRepository,
-                    locationDataSource,
-                    searchingDataSource);
+            INSTANCE = new AppDataSource();
         }
         return INSTANCE;
     }
@@ -285,5 +282,35 @@ public class AppDataSource implements DataSource {
     @Override
     public void deleteRecentRoomList() {
         mRecentRoomDataManager.deleteRecentRoomList();
+    }
+
+    @Override
+    public void setSellRoom(SellRoomEntity sellRoomEntity) {
+        mSellRoomDataSource.setSellRoom(sellRoomEntity);
+    }
+
+    @Override
+    public void deleteSellRoom(SellRoomEntity sellRoomEntity) {
+        mSellRoomDataSource.deleteSellRoom(sellRoomEntity);
+    }
+
+    @Override
+    public List<SellRoomEntity> getSellRoomList() {
+        return mSellRoomDataSource.getSellRoomList();
+    }
+
+    @Override
+    public void deleteSellRoom() {
+        mSellRoomDataSource.deleteSellRoom();
+    }
+
+    @Override
+    public SellRoomEntity getSellRoom(String key) {
+        return mSellRoomDataSource.getSellRoom(key);
+    }
+
+    @Override
+    public void updateRoom(SellRoomEntity sellRoomEntity) {
+        mSellRoomDataSource.updateRoom(sellRoomEntity);
     }
 }
