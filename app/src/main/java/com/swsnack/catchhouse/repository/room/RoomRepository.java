@@ -3,30 +3,31 @@ package com.swsnack.catchhouse.repository.room;
 import android.net.Uri;
 
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
+import com.swsnack.catchhouse.data.mapper.SellRoomMapper;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDataSource;
-import com.swsnack.catchhouse.repository.room.local.LocalFavoriteRoomImpl;
+import com.swsnack.catchhouse.repository.room.local.FavoriteRoomImpl;
 import com.swsnack.catchhouse.repository.room.local.LocalRecentRoomImpl;
-import com.swsnack.catchhouse.repository.room.local.LocalSellRoomDataSource;
 import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
+import com.swsnack.catchhouse.repository.room.local.SellRoomDataSource;
 import com.swsnack.catchhouse.repository.room.local.SellRoomImpl;
+import com.swsnack.catchhouse.repository.room.remote.RemoteRoomDataSource;
 import com.swsnack.catchhouse.repository.room.remote.RoomDataImpl;
-import com.swsnack.catchhouse.repository.room.remote.RoomDataSource;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class RoomRepository implements RoomDataSource, FavoriteRoomDataSource, RecentRoomDataSource, LocalSellRoomDataSource {
+public class RoomRepository implements RemoteRoomDataSource, FavoriteRoomDataSource, RecentRoomDataSource, SellRoomDataSource {
 
     private static RoomRepository INSTANCE;
     private FavoriteRoomDataSource mLocalRoomDataManager;
-    private RoomDataSource mRemoteRoomDataSource;
+    private RemoteRoomDataSource mRemoteRoomDataSource;
     private RecentRoomDataSource mRecentRoomDataManager;
-    private LocalSellRoomDataSource mLocalSellRoomManager;
+    private SellRoomDataSource mLocalSellRoomManager;
 
     public static RoomRepository getInstance() {
         if (INSTANCE == null) {
@@ -39,7 +40,7 @@ public class RoomRepository implements RoomDataSource, FavoriteRoomDataSource, R
 
     private RoomRepository() {
 
-        mLocalRoomDataManager = LocalFavoriteRoomImpl.getInstance();
+        mLocalRoomDataManager = FavoriteRoomImpl.getInstance();
         mRemoteRoomDataSource = RoomDataImpl.getInstance();
         mRecentRoomDataManager = LocalRecentRoomImpl.getInstance();
         mLocalSellRoomManager = SellRoomImpl.getInstance();
@@ -58,23 +59,8 @@ public class RoomRepository implements RoomDataSource, FavoriteRoomDataSource, R
     @Override
     public void setRoom(@NonNull String key, @NonNull Room room, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailedListener onFailedListener) {
         mRemoteRoomDataSource.setRoom(key, room, success -> {
-                    setSellRoom(new SellRoomEntity(key,
-                            room.getPrice(),
-                            room.getFrom(),
-                            room.getTo(),
-                            room.getTitle(),
-                            room.getContent(),
-                            room.getImages(),
-                            room.getUuid(),
-                            room.getAddress(),
-                            room.getAddressName(),
-                            room.getSize(),
-                            room.isOptionStandard(),
-                            room.isOptionGender(),
-                            room.isOptionPet(),
-                            room.isOptionSmoking(),
-                            room.getLatitude(),
-                            room.getLongitude()));
+                    SellRoomEntity sellRoomEntity = new SellRoomMapper().map(room);
+                    sellRoomEntity.setRoomUid(key);
                     onSuccessListener.onSuccess(success);
                 }
                 , onFailedListener);
@@ -83,6 +69,15 @@ public class RoomRepository implements RoomDataSource, FavoriteRoomDataSource, R
     @Override
     public void getRoom(@NonNull String key, @Nullable OnSuccessListener<Room> onSuccessListener, @Nullable OnFailedListener onFailedListener) {
         mRemoteRoomDataSource.getRoom(key, onSuccessListener, onFailedListener);
+    }
+
+    @Override
+    public void delete(@NonNull String key, @NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
+        mRemoteRoomDataSource.delete(key, room, success -> {
+                    deleteSellRoom(room);
+                    onSuccessListener.onSuccess(success);
+                }
+                , onFailedListener);
     }
 
     @Override
@@ -131,17 +126,17 @@ public class RoomRepository implements RoomDataSource, FavoriteRoomDataSource, R
     }
 
     @Override
-    public void setSellRoom(SellRoomEntity sellRoomEntity) {
-        mLocalSellRoomManager.setSellRoom(sellRoomEntity);
+    public void setSellRoom(Room room) {
+        mLocalSellRoomManager.setSellRoom(room);
     }
 
     @Override
-    public void deleteSellRoom(SellRoomEntity sellRoomEntity) {
-        mLocalSellRoomManager.deleteSellRoom(sellRoomEntity);
+    public void deleteSellRoom(Room room) {
+        mLocalSellRoomManager.deleteSellRoom(room);
     }
 
     @Override
-    public List<SellRoomEntity> getSellRoomList() {
+    public List<Room> getSellRoomList() {
         return mLocalSellRoomManager.getSellRoomList();
     }
 
@@ -151,12 +146,8 @@ public class RoomRepository implements RoomDataSource, FavoriteRoomDataSource, R
     }
 
     @Override
-    public SellRoomEntity getSellRoom(String key) {
+    public Room getSellRoom(String key) {
         return mLocalSellRoomManager.getSellRoom(key);
     }
 
-    @Override
-    public void updateRoom(SellRoomEntity sellRoomEntity) {
-        mLocalSellRoomManager.updateRoom(sellRoomEntity);
-    }
 }

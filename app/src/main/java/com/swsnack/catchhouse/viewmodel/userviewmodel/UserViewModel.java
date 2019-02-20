@@ -50,7 +50,7 @@ public class UserViewModel extends ReactiveViewModel {
     private ViewModelListener mListener;
     private Uri mProfileUri;
     private MutableLiveData<List<Room>> mFavoriteRoomList;
-    private MutableLiveData<List<SellRoomEntity>> mSellRoomList;
+    private MutableLiveData<List<Room>> mSellRoomList;
     private MutableLiveData<List<Room>> mRecentRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
@@ -306,7 +306,7 @@ public class UserViewModel extends ReactiveViewModel {
         return mRecentRoomList;
     }
 
-    public LiveData<List<SellRoomEntity>> getSellRoomList() {
+    public LiveData<List<Room>> getSellRoomList() {
         return mSellRoomList;
     }
 }

@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.skt.Tmap.TMapPOIItem;
-import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.model.Message;
@@ -16,10 +15,10 @@ import com.swsnack.catchhouse.repository.location.LocationDataSource;
 import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
 import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDataSource;
-import com.swsnack.catchhouse.repository.room.local.LocalSellRoomDataSource;
 import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
+import com.swsnack.catchhouse.repository.room.local.SellRoomDataSource;
 import com.swsnack.catchhouse.repository.room.local.SellRoomImpl;
-import com.swsnack.catchhouse.repository.room.remote.RoomDataSource;
+import com.swsnack.catchhouse.repository.room.remote.RemoteRoomDataSource;
 import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
 import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
 import com.swsnack.catchhouse.repository.user.UserDataSource;
@@ -32,21 +31,21 @@ import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
 public class AppDataSource implements DataSource {
-//FIXME : 이 클래스 삭제할겁니다. 사용해주지 마시고 레포에서 써주세요
+    //FIXME : 이 클래스 삭제할겁니다. 사용해주지 마시고 레포에서 써주세요
     private UserDataSource mUserDataSource;
     private ChattingDataSource mRemoteChattingDataSource;
-    private RoomDataSource mRoomDataSource;
+    private RemoteRoomDataSource mRemoteRoomDataSource;
     private FavoriteRoomDataSource mFavoriteRoomDataSource;
     private RecentRoomDataSource mRecentRoomDataManager;
     private LocationDataSource mLocationDataSource;
     private SearchingDataSource mSearchingDataSource;
-    private LocalSellRoomDataSource mSellRoomDataSource;
+    private SellRoomDataSource mSellRoomDataSource;
 
     private AppDataSource() {
 
         mUserDataSource = UserDataImpl.getInstance();
         mRemoteChattingDataSource = RemoteChattingImpl.getInstance();
-        mRoomDataSource = RoomRepository.getInstance();
+        mRemoteRoomDataSource = RoomRepository.getInstance();
         mFavoriteRoomDataSource = RoomRepository.getInstance();
         mRecentRoomDataManager = RoomRepository.getInstance();
         mLocationDataSource = RemoteLocationImpl.getInstance();
@@ -193,7 +192,7 @@ public class AppDataSource implements DataSource {
 
     @Override
     public String createKey() {
-        return mRoomDataSource.createKey();
+        return mRemoteRoomDataSource.createKey();
     }
 
     @Override
@@ -201,7 +200,7 @@ public class AppDataSource implements DataSource {
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
 
-        mRoomDataSource.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
+        mRemoteRoomDataSource.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -209,7 +208,7 @@ public class AppDataSource implements DataSource {
                         @NonNull OnSuccessListener<Void> onSuccessListener,
                         @NonNull OnFailedListener onFailedListener) {
 
-        mRoomDataSource.setRoom(key, room, onSuccessListener, onFailedListener);
+        mRemoteRoomDataSource.setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
 
@@ -217,7 +216,12 @@ public class AppDataSource implements DataSource {
     public void getRoom(@NonNull String key,
                         @NonNull OnSuccessListener<Room> onSuccessListener,
                         @NonNull OnFailedListener onFailedListener) {
-        mRoomDataSource.getRoom(key, onSuccessListener, onFailedListener);
+        mRemoteRoomDataSource.getRoom(key, onSuccessListener, onFailedListener);
+    }
+
+    @Override
+    public void delete(@NonNull String key, @NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
+        mRemoteRoomDataSource.delete(key, room, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -285,17 +289,17 @@ public class AppDataSource implements DataSource {
     }
 
     @Override
-    public void setSellRoom(SellRoomEntity sellRoomEntity) {
-        mSellRoomDataSource.setSellRoom(sellRoomEntity);
+    public void setSellRoom(Room room) {
+        mSellRoomDataSource.setSellRoom(room);
     }
 
     @Override
-    public void deleteSellRoom(SellRoomEntity sellRoomEntity) {
-        mSellRoomDataSource.deleteSellRoom(sellRoomEntity);
+    public void deleteSellRoom(Room room) {
+        mSellRoomDataSource.deleteSellRoom(room);
     }
 
     @Override
-    public List<SellRoomEntity> getSellRoomList() {
+    public List<Room> getSellRoomList() {
         return mSellRoomDataSource.getSellRoomList();
     }
 
@@ -305,12 +309,8 @@ public class AppDataSource implements DataSource {
     }
 
     @Override
-    public SellRoomEntity getSellRoom(String key) {
+    public Room getSellRoom(String key) {
         return mSellRoomDataSource.getSellRoom(key);
     }
 
-    @Override
-    public void updateRoom(SellRoomEntity sellRoomEntity) {
-        mSellRoomDataSource.updateRoom(sellRoomEntity);
-    }
 }

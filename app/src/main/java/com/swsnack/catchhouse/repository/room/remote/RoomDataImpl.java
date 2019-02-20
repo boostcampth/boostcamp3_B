@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
 
-public class RoomDataImpl implements RoomDataSource {
+public class RoomDataImpl implements RemoteRoomDataSource {
 
     private DatabaseReference db;
     private StorageReference fs;
@@ -101,5 +101,16 @@ public class RoomDataImpl implements RoomDataSource {
                 onFailedListener.onFailed(new RuntimeException(databaseError.getMessage()));
             }
         });
+    }
+
+    @Override
+    public void delete(@NonNull String key,
+                       @NonNull Room room,
+                       @NonNull OnSuccessListener<Void> onSuccessListener,
+                       @NonNull OnFailedListener onFailedListener) {
+
+        room.setDeleted(true);
+        setRoom(key, room, onSuccessListener, onFailedListener);
+
     }
 }

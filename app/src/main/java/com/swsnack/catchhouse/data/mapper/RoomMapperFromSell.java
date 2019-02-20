@@ -1,15 +1,15 @@
 package com.swsnack.catchhouse.data.mapper;
 
-import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomMapper implements Mapper<RoomEntity, Room> {
+public class RoomMapperFromSell implements Mapper<SellRoomEntity, Room> {
 
     @Override
-    public Room map(RoomEntity from) {
+    public Room map(SellRoomEntity from) {
         return new Room(from.getRoomUid(),
                 from.getPrice(),
                 from.getFrom(),
@@ -27,12 +27,12 @@ public class RoomMapper implements Mapper<RoomEntity, Room> {
                 from.isOptionSmoking(),
                 from.getLatitude(),
                 from.getLongitude(),
-                from.isDeleted());
+                false);
     }
 
-    public List<Room> mapToList(List<RoomEntity> from) {
+    public List<Room> mapToList(List<SellRoomEntity> from) {
         List<Room> roomList = new ArrayList<>();
-        for (RoomEntity item : from) {
+        for (SellRoomEntity item : from) {
             roomList.add(map(item));
         }
         return roomList;
