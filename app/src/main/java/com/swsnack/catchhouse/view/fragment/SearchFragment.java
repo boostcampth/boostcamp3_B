@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.adapter.RoomCardListAdapter;
@@ -91,6 +92,11 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
                             getViewModel().setCardShow(false);
                         }
                         break;
+                    case MotionEvent.ACTION_UP:
+
+
+
+                        break;
                 }
                 return false;
             }
@@ -99,7 +105,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
         getBinding().fbMapFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("csh","asd");
+                Log.v("csh", "asd");
             }
         });
 
@@ -131,9 +137,22 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
             startActivity(intent);
         }));
 
+        getBinding().fbMapFilter.setOnClickListener(v -> {
+            new FilterFragment().show(mFragmentManager, "address selection");
+        });
 
     }
 
+    /*
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Constant.FILTER) {
+            Log.v("csh","필터옴");
+        }
+    }
+*/
     @Override
     public void onStart() {
         super.onStart();
@@ -144,6 +163,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
     public void onResume() {
         super.onResume();
         getBinding().nmMap.onResume();
+        getViewModel().onUpdateMap();
     }
 
     @Override
