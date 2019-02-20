@@ -11,4 +11,6 @@
     <color name="colorDestinationMessage">#fc859e</color>
     <color name="colorTextBody">#535353</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorTransYellow">#33fae100</color>
+    <color name="colorTransOrange">#99ff784e</color>
 </resources>

@@ -1,18 +1,32 @@
 package com.swsnack.catchhouse.viewmodel.searchingviewmodel;
 
 import android.app.Application;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.geometry.LatLngBounds;
+import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
+import com.naver.maps.map.overlay.CircleOverlay;
+import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
-import com.swsnack.catchhouse.data.model.Address;
-import com.swsnack.catchhouse.data.model.Filter;
+import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.RoomCard;
+import com.swsnack.catchhouse.data.model.Address;
+import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
@@ -21,27 +35,32 @@ import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyCallback {
     private Application mAppContext;
     private ViewModelListener mListener;
     private MutableLiveData<String> mKeyword = new MutableLiveData<>();
-    private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>();
+    private MutableLiveData<List<Address>> mAddressList = new MutableLiveData<>(
+
+    );
     private MutableLiveData<Boolean> mFinish = new MutableLiveData<>(); // 주소검색 끝났을때
     private MutableLiveData<List<Room>> mRoomList = new MutableLiveData<>();
     private MutableLiveData<List<Room>> mRoomCardList = new MutableLiveData<>();
 
     /* Naver Map */
     private MutableLiveData<List<Marker>> mMarkerList = new MutableLiveData<>();
-    private MutableLiveData<LatLng> mPosition = new MutableLiveData<>();
+    private MutableLiveData<LatLngBounds> mPosition = new MutableLiveData<>();
     private MutableLiveData<NaverMap> mNaverMap = new MutableLiveData<>();
     private MutableLiveData<Boolean> mCardShow = new MutableLiveData<>();
+    private MutableLiveData<CircleOverlay> mCircle = new MutableLiveData<>();
+    private MutableLiveData<Marker> mSelectedMarker = new MutableLiveData<>();
+    private MutableLiveData<InfoWindow> mSelectedInfo = new MutableLiveData<>();
 
     /* FILTER */
     public MutableLiveData<Boolean> mFilterUpdate = new MutableLiveData<>(); // 필터 업데이트
@@ -128,12 +147,22 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
         getDataManager().getNearRoomList(filter)
                 .doOnSubscribe(__ -> {
                     mListener.isWorking();
-                    //removeAllMarker();
+                    removeAllOverlay();
+                    CircleOverlay circleOverlay = new CircleOverlay();
+                    circleOverlay.setCenter(new LatLng(latitude, longitude));
+                    circleOverlay.setRadius(filter.getDistance()*1000);
+                    circleOverlay.setColor(ContextCompat.getColor(mAppContext,R.color.colorTransYellow));
+                    circleOverlay.setOutlineColor(ContextCompat.getColor(mAppContext,R.color.colorTransOrange));
+                    circleOverlay.setOutlineWidth(5);
+                    mCircle.postValue(circleOverlay);
+
+
                 })
                 .doAfterTerminate(() -> {
                     mListener.isFinished();
+                    /*
                     LatLng latLng = new LatLng(latitude, longitude);
-                    mPosition.postValue(latLng); // Move map
+                    mPosition.postValue(latLng); // Move map*/
                     mCardShow.postValue(true);
                 })
                 .subscribe(roomDataList -> {
@@ -146,10 +175,15 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
 
 
                     //////////////////////
+                    LatLngBounds bounds = new LatLngBounds.Builder()
+                            .include(new LatLng(latitude, longitude))
+                            .build();
+
                     List<Marker> markerList = new ArrayList<>();
                     for (int i = 0; i < roomDataList.size(); i++) {
                         Room room = roomDataList.get(i);
-                        Marker marker = new Marker(new LatLng(room.getLatitude(), room.getLongitude()));
+                        LatLng latLng = new LatLng(room.getLatitude(), room.getLongitude());
+                        Marker marker = new Marker(latLng);
                         /*
                         InfoWindow infoWindow = new InfoWindow();
                         infoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(mAppContext) {
@@ -162,8 +196,12 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                         });
                         infoWindow.open(marker);*/
                         marker.setTag(room);
+                        //marker.setCaptionText(room.getAddressName());
                         markerList.add(marker);
+                        bounds = bounds.expand(latLng);
+                        Log.v("csh","테스트:"+latLng.latitude+","+latLng.longitude);
                     }
+                    mPosition.postValue(bounds);
                     mMarkerList.postValue(markerList);
                     //////////////////////
 
@@ -194,23 +232,46 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                 });
     }
 
-    public void onClickMarker(String data) {
-        Log.v("csh","마커:"+data);
+    public void onClickMarker(Marker marker, InfoWindow infoWindow) {
+        if(mCardShow.getValue() == false) {
+            mCardShow.postValue(true);
+            mSelectedMarker.postValue(marker);
+
+            if(mSelectedInfo.getValue() != null) {
+                Log.v("csh", "지움");
+                mSelectedInfo.getValue().close();
+            }
+            mSelectedInfo.postValue(infoWindow);
+
+        }
+        //Log.v("csh","마커:"+data);
     }
 
-
+    public void onUpdateMap() {
+        if(mNaverMap.getValue() != null) {
+            CameraPosition cameraPosition = mNaverMap.getValue().getCameraPosition();
+            LatLng latLng = cameraPosition.target;
+            updateData(latLng.latitude, latLng.longitude);
+        }
+    }
 
     public void setCardShow(boolean value) {
         mCardShow.postValue(value);
     }
 
-    /*
-    private void removeAllMarker() {
-        for (int i = 0; i < mMarkerList.getValue().size(); i++) {
-            Marker marker = mMarkerList.getValue().get(i);
-            marker.setMap(null);
+
+    private void removeAllOverlay() {
+        if(mMarkerList.getValue() != null) {
+            for (int i = 0; i < mMarkerList.getValue().size(); i++) {
+                Marker marker = mMarkerList.getValue().get(i);
+                marker.setMap(null);
+            }
         }
-    }*/
+
+        if(mCircle.getValue() != null) {
+            mCircle.getValue().setMap(null);
+        }
+    }
 
     public LiveData<List<Address>> getAddressList() {
         return this.mAddressList;
@@ -246,12 +307,16 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
 
     public LiveData<List<Marker>> getMarkerList() { return this.mMarkerList; }
 
-    public LiveData<LatLng> getPosition() { return this.mPosition; }
+    public LiveData<LatLngBounds> getPosition() { return this.mPosition; }
 
     public LiveData<Boolean> isCardShow() { return this.mCardShow; }
 
     public void setFilterUpdate(boolean value) {
         this.mFilterUpdate.postValue(value);
+    }
+
+    public LiveData<CircleOverlay> getCircle() {
+        return this.mCircle;
     }
 
     public String getFilterPriceFrom() {
@@ -302,6 +367,14 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
         return mFilterOptionSmoking.getValue();
     }
 
+    public LiveData<Marker> getSelectedMarker() {
+        return this.mSelectedMarker;
+    }
+
+    public LiveData<InfoWindow> getSelectedInfo() {
+        return this.mSelectedInfo;
+    }
+
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
@@ -311,20 +384,13 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
         uiSettings.setCompassEnabled(true);
 
         Log.v("csh","onMapReady!!!!!!!!!!!!!!!!!!!");
-        /*
-        mNaverMap = naverMap;
-        Log.v("csh", "onMapReadyyyyyyyyyyyyyyyyy");
-        Log.v("csh 1",""+naverMap.toString());
 
-        getBinding().nmMap.getMapAsync(nm -> {
-            Log.v("csh 1",""+nm.toString());
-            UiSettings uiSettings = nm.getUiSettings();
-            uiSettings.setZoomControlEnabled(false);
-            uiSettings.setCompassEnabled(true);
-        });*/
-
-
+        // 최초 업데이트
+        CameraPosition cameraPosition = naverMap.getCameraPosition();
+        LatLng latLng = cameraPosition.target;
+        updateData(latLng.latitude, latLng.longitude);
     }
+
 
 
 
