@@ -1,236 +1,84 @@
 package com.swsnack.catchhouse.data.entity;
 
-import com.swsnack.catchhouse.repository.room.local.TypeConverter;
-
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.Index;
-import androidx.room.TypeConverters;
 
-import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
+public interface RoomEntity {
 
-@Entity(tableName = ROOM_TABLE,
-        primaryKeys = {"room_uid", "firebaseUuid"},
-        indices = {@Index(value = {"room_uid"})})
-public class RoomEntity {
+    String getRoomUid();
 
-    @ColumnInfo(name = "room_uid")
-    @NonNull
-    private String roomUid;
-    @NonNull
-    private String firebaseUuid;
-    private String price;
-    private String from;
-    private String to;
-    private String title;
-    private String content;
-    @TypeConverters({TypeConverter.class})
-    private List<String> images;
-    @ColumnInfo(name = "writer_uuid")
-    private String uuid;
-    private String address;
-    private String addressName;
-    private String size;
-    private boolean optionStandard;
-    private boolean optionGender;
-    private boolean optionPet;
-    private boolean optionSmoking;
-    private double latitude;
-    private double longitude;
-    private boolean isDeleted;
+    void setRoomUid(@NonNull String roomUid);
 
-    public RoomEntity(@NonNull String roomUid,
-                      String price,
-                      String from,
-                      String to,
-                      String title,
-                      String content,
-                      List<String> images,
-                      String uuid,
-                      String address,
-                      String addressName,
-                      String size,
-                      boolean optionStandard,
-                      boolean optionGender,
-                      boolean optionPet,
-                      boolean optionSmoking,
-                      double latitude,
-                      double longitude,
-                      boolean isDeleted) {
+    String getFirebaseUuid();
 
-        this.roomUid = roomUid;
-        this.price = price;
-        this.from = from;
-        this.to = to;
-        this.title = title;
-        this.content = content;
-        this.images = images;
-        this.uuid = uuid;
-        this.address = address;
-        this.addressName = addressName;
-        this.size = size;
-        this.optionStandard = optionStandard;
-        this.optionGender = optionGender;
-        this.optionPet = optionPet;
-        this.optionSmoking = optionSmoking;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.isDeleted = isDeleted;
-    }
+    void setFirebaseUuid(String firebaseUuid);
 
-    @NonNull
-    public String getRoomUid() {
-        return roomUid;
-    }
+    String getPrice();
 
-    public void setRoomUid(@NonNull String roomUid) {
-        this.roomUid = roomUid;
-    }
+    void setPrice(String price);
 
-    public String getFirebaseUuid() {
-        return firebaseUuid;
-    }
+    String getFrom();
 
-    public void setFirebaseUuid(String firebaseUuid) {
-        this.firebaseUuid = firebaseUuid;
-    }
+    void setFrom(String from);
 
-    public String getPrice() {
-        return price;
-    }
+    String getTo();
 
-    public void setPrice(String price) {
-        this.price = price;
-    }
+    void setTo(String to);
 
-    public String getFrom() {
-        return from;
-    }
+    String getTitle();
 
-    public void setFrom(String from) {
-        this.from = from;
-    }
+    void setTitle(String title);
 
-    public String getTo() {
-        return to;
-    }
+    String getContent();
 
-    public void setTo(String to) {
-        this.to = to;
-    }
+    void setContent(String content);
 
-    public String getTitle() {
-        return title;
-    }
+    List<String> getImages();
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    void setImages(List<String> images);
 
-    public String getContent() {
-        return content;
-    }
+    String getUuid();
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+    void setUuid(String uuid);
 
-    public List<String> getImages() {
-        return images;
-    }
+    String getAddress();
 
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
+    void setAddress(String address);
 
-    public String getUuid() {
-        return uuid;
-    }
+    String getAddressName();
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+    void setAddressName(String addressName);
 
-    public String getAddress() {
-        return address;
-    }
+    String getSize();
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+    void setSize(String size);
 
-    public String getAddressName() {
-        return addressName;
-    }
+    boolean isOptionStandard();
 
-    public void setAddressName(String addressName) {
-        this.addressName = addressName;
-    }
+    void setOptionStandard(boolean optionStandard);
 
-    public String getSize() {
-        return size;
-    }
+    boolean isOptionGender();
 
-    public void setSize(String size) {
-        this.size = size;
-    }
+    void setOptionGender(boolean optionGender);
 
-    public boolean isOptionStandard() {
-        return optionStandard;
-    }
+    boolean isOptionPet();
 
-    public void setOptionStandard(boolean optionStandard) {
-        this.optionStandard = optionStandard;
-    }
+    void setOptionPet(boolean optionPet);
 
-    public boolean isOptionGender() {
-        return optionGender;
-    }
+    boolean isOptionSmoking();
 
-    public void setOptionGender(boolean optionGender) {
-        this.optionGender = optionGender;
-    }
+    void setOptionSmoking(boolean optionSmoking);
 
-    public boolean isOptionPet() {
-        return optionPet;
-    }
+    double getLatitude();
 
-    public void setOptionPet(boolean optionPet) {
-        this.optionPet = optionPet;
-    }
+    void setLatitude(double latitude);
 
-    public boolean isOptionSmoking() {
-        return optionSmoking;
-    }
+    double getLongitude();
 
-    public void setOptionSmoking(boolean optionSmoking) {
-        this.optionSmoking = optionSmoking;
-    }
+    void setLongitude(double longitude);
 
-    public double getLatitude() {
-        return latitude;
-    }
+    boolean isDeleted();
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
+    void setDeleted(boolean deleted);
 }

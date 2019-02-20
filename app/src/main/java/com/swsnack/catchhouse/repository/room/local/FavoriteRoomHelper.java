@@ -2,13 +2,13 @@ package com.swsnack.catchhouse.repository.room.local;
 
 import android.os.AsyncTask;
 
-import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.entity.FavoriteRoomEntity;
 
 import java.util.List;
 
 class FavoriteRoomHelper {
 
-    public static class AsyncSetFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
+    public static class AsyncSetFavoriteRoom extends AsyncTask<FavoriteRoomEntity, Void, Void> {
 
         private RoomDao mRoomDao;
 
@@ -17,13 +17,13 @@ class FavoriteRoomHelper {
         }
 
         @Override
-        protected Void doInBackground(RoomEntity... roomEntities) {
+        protected Void doInBackground(FavoriteRoomEntity... roomEntities) {
             mRoomDao.setFavoriteRoom(roomEntities[0]);
             return null;
         }
     }
 
-    public static class AsyncDeleteFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
+    public static class AsyncDeleteFavoriteRoom extends AsyncTask<FavoriteRoomEntity, Void, Void> {
 
         private RoomDao mRoomDao;
 
@@ -32,13 +32,13 @@ class FavoriteRoomHelper {
         }
 
         @Override
-        protected Void doInBackground(RoomEntity... roomEntities) {
+        protected Void doInBackground(FavoriteRoomEntity... roomEntities) {
             mRoomDao.deleteFavoriteRoom(roomEntities[0]);
             return null;
         }
     }
 
-    public static class AsyncLoadFavoriteRoomList extends AsyncTask<String, Void, List<RoomEntity>> {
+    public static class AsyncLoadFavoriteRoomList extends AsyncTask<String, Void, List<FavoriteRoomEntity>> {
 
         private RoomDao mRoomDao;
 
@@ -47,12 +47,12 @@ class FavoriteRoomHelper {
         }
 
         @Override
-        protected List<RoomEntity> doInBackground(String... strings) {
+        protected List<FavoriteRoomEntity> doInBackground(String... strings) {
             return mRoomDao.loadFavoriteRoom(strings[0]);
         }
     }
 
-    public static class  AsyncLoadFavoriteRoom extends AsyncTask<String, Void, RoomEntity> {
+    public static class  AsyncLoadFavoriteRoom extends AsyncTask<String, Void, FavoriteRoomEntity> {
 
         private RoomDao mRoomDao;
 
@@ -61,7 +61,7 @@ class FavoriteRoomHelper {
         }
 
         @Override
-        protected RoomEntity doInBackground(String... strings) {
+        protected FavoriteRoomEntity doInBackground(String... strings) {
             return mRoomDao.getFavoriteRoom(strings[0], strings[1]);
         }
     }
@@ -81,7 +81,7 @@ class FavoriteRoomHelper {
         }
     }
 
-    public static class AsyncUpdateFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
+    public static class AsyncUpdateFavoriteRoom extends AsyncTask<FavoriteRoomEntity, Void, Void> {
 
         private RoomDao mRoomDao;
 
@@ -90,7 +90,7 @@ class FavoriteRoomHelper {
         }
 
         @Override
-        protected Void doInBackground(RoomEntity... roomEntities) {
+        protected Void doInBackground(FavoriteRoomEntity... roomEntities) {
             mRoomDao.update(roomEntities[0]);
             return null;
         }

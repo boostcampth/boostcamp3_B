@@ -1,6 +1,6 @@
 package com.swsnack.catchhouse.repository.room.local;
 
-import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.entity.FavoriteRoomEntity;
 
 import java.util.List;
 
@@ -15,20 +15,20 @@ import androidx.room.Update;
 public interface RoomDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void setFavoriteRoom(RoomEntity roomEntity);
+    void setFavoriteRoom(FavoriteRoomEntity favoriteRoomEntity);
 
     @Delete
-    void deleteFavoriteRoom(RoomEntity roomEntity);
+    void deleteFavoriteRoom(FavoriteRoomEntity favoriteRoomEntity);
 
     @Query("SELECT * FROM my_favorite_room WHERE firebaseUuid = :userUuid")
-    List<RoomEntity> loadFavoriteRoom(String userUuid);
+    List<FavoriteRoomEntity> loadFavoriteRoom(String userUuid);
 
     @Query("SELECT * FROM my_favorite_room WHERE room_uid = :key AND firebaseUuid = :userUuid")
-    RoomEntity getFavoriteRoom(String key, String userUuid);
+    FavoriteRoomEntity getFavoriteRoom(String key, String userUuid);
 
-    @Query("DELETE FROM my_Favorite_room WHERE firebaseUuid = :userUuid")
+    @Query("DELETE FROM my_favorite_room WHERE firebaseUuid = :userUuid")
     void deleteFavoriteRoom(String userUuid);
 
     @Update
-    void update(RoomEntity roomEntity);
+    void update(FavoriteRoomEntity favoriteRoomEntity);
 }
