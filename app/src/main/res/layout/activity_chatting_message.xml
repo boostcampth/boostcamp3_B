@@ -22,6 +22,7 @@
                 android:id="@+id/tb_chat_message"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/white"
                 android:elevation="12dp"
                 app:layout_collapseMode="pin">
 
@@ -29,6 +30,7 @@
                     style="@style/tv.title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
                     android:text="@{handler.getDestinationUserData.nickName}" />
             </androidx.appcompat.widget.Toolbar>
 

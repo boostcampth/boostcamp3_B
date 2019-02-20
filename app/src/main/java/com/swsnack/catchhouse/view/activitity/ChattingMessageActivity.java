@@ -72,7 +72,7 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
         });
 
         setSupportActionBar(getBinding().tbChatMessage);
-        getBinding().tbChatMessage.setNavigationIcon(R.drawable.back_button_white);
+        getBinding().tbChatMessage.setNavigationIcon(R.drawable.back_button_primary);
         getBinding().tbChatMessage.setNavigationOnClickListener(__ ->
                 finish()
         );
