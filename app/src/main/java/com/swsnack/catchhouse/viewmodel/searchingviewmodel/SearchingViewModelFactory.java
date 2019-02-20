@@ -7,18 +7,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 public class SearchingViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private Application mApplication;
-    private DataManager mDataManager;
+    private DataSource mDataManager;
     private APIManager mApiManager;
     private ViewModelListener mListener;
 
-    public SearchingViewModelFactory(@NonNull Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+    public SearchingViewModelFactory(@NonNull Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         this.mApplication = application;
         this.mDataManager = dataManager;
         this.mApiManager = apiManager;

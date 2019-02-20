@@ -10,8 +10,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.data.model.Chatting;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.model.User;
@@ -19,7 +19,6 @@ import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.swsnack.catchhouse.Constant.SuccessKey.SEND_MESSAGE_SUCCESS;
@@ -34,7 +33,7 @@ public class ChattingViewModel extends ReactiveViewModel {
     private MutableLiveData<List<Message>> mMessageList;
     private MutableLiveData<User> mDestinationUserData;
 
-    ChattingViewModel(DataManager dataManager, APIManager apiManager, ViewModelListener bottomNavListener) {
+    ChattingViewModel(DataSource dataManager, APIManager apiManager, ViewModelListener bottomNavListener) {
         super(dataManager, apiManager);
         this.mAppContext = AppApplication.getAppContext();
         this.mListener = bottomNavListener;

@@ -115,7 +115,8 @@ public class FilterFragment extends DialogFragment {
         mBinding.etFilterPriceFrom.addTextChangedListener(watcher);
         mBinding.etFilterPriceTo.addTextChangedListener(watcher);
         mBinding.btFilterApply.setOnClickListener(v -> {
-            mViewModel.mFilterUpdate.setValue(true);
+            //mViewModel.mFilterUpdate.setValue(true);
+            mViewModel.onUpdateMap();
             dismiss();
         });
     }

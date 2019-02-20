@@ -4,19 +4,19 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.fragment.app.Fragment;
 
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import io.reactivex.annotations.NonNull;
 
 public class PostViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
-    private DataManager mDataManager;
+    private DataSource mDataManager;
     private APIManager mApiManager;
     private ViewModelListener mListener;
 
-    public PostViewModelFactory(DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+    public PostViewModelFactory(DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         this.mDataManager = dataManager;
         this.mApiManager = apiManager;
         this.mListener = listener;

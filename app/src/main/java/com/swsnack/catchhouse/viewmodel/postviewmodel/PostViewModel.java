@@ -7,11 +7,10 @@ import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.util.DataConverter;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.util.StringUtil;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
@@ -34,7 +33,7 @@ public class PostViewModel extends ReactiveViewModel {
     private MutableLiveData<Boolean> mIsFavorite;
     private ViewModelListener mListener;
 
-    PostViewModel(DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+    PostViewModel(DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         init();
         room = new MutableLiveData<>();
@@ -87,7 +86,7 @@ public class PostViewModel extends ReactiveViewModel {
         if (getDataManager()
                 .getFavoriteRoom(room.getValue().getKey()) != null) {
             mIsFavorite.setValue(true);
-            getDataManager().updateRoom(DataConverter.convertToRoomEntity(room.getValue()));
+            getDataManager().updateRoom(room.getValue());
         } else {
             mIsFavorite.setValue(false);
         }
@@ -133,14 +132,19 @@ public class PostViewModel extends ReactiveViewModel {
             return;
         }
 
+        mListener.isWorking();
+
         if (!mIsFavorite.getValue()) {
             getDataManager()
-                    .setFavoriteRoom(DataConverter.convertToRoomEntity(room.getValue()));
+                    .setFavoriteRoom(room.getValue());
             mIsFavorite.setValue(true);
+            mListener.isFinished();
         } else {
             getDataManager()
-                    .deleteFavoriteRoom(DataConverter.convertToRoomEntity(room.getValue()));
+                    .deleteFavoriteRoom(room.getValue());
             mIsFavorite.setValue(false);
+            mListener.isFinished();
+
         }
     }
 
@@ -148,7 +152,7 @@ public class PostViewModel extends ReactiveViewModel {
         Room deletingRoom = room.getValue();
         deletingRoom.setDeleted(true);
 
-        getDataManager().setRoom(deletingRoom.getKey(), deletingRoom,
+        getDataManager().delete(deletingRoom.getKey(), deletingRoom,
                 __ -> mListener.onSuccess(""),
                 error -> mListener.onError(error.getMessage())
         );
@@ -162,7 +166,6 @@ public class PostViewModel extends ReactiveViewModel {
     public LiveData<Boolean> isFavorite() {
         return mIsFavorite;
     }
-//    public MutableLiveData<Room> getRoom() { return room; }
 
     private boolean checkIsWriter(String uuid) {
         String myKey = FirebaseAuth.getInstance().getCurrentUser().getUid();

@@ -19,11 +19,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -49,7 +49,8 @@ public class UserViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private ViewModelListener mListener;
     private Uri mProfileUri;
-    private MutableLiveData<List<RoomEntity>> mFavoriteRoomList;
+    private MutableLiveData<List<Room>> mFavoriteRoomList;
+    private MutableLiveData<List<Room>> mSellRoomList;
     private MutableLiveData<List<Room>> mRecentRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
@@ -59,9 +60,10 @@ public class UserViewModel extends ReactiveViewModel {
     public MutableLiveData<String> mNickName;
     public MutableLiveData<Bitmap> mProfile;
 
-    UserViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+    UserViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         this.mAppContext = application;
+        this.mSellRoomList = new MutableLiveData<>();
         this.mFavoriteRoomList = new MutableLiveData<>();
         this.mRecentRoomList = new MutableLiveData<>();
         this.mUser = new MutableLiveData<>();
@@ -281,6 +283,9 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
     }
 
+    public void getSellRoom() {
+        mSellRoomList.setValue(getDataManager().getSellRoomList());
+    }
     public void getFavoriteRoom() {
         mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
     }
@@ -293,11 +298,15 @@ public class UserViewModel extends ReactiveViewModel {
         return mUser;
     }
 
-    public LiveData<List<RoomEntity>> getFavoriteRoomList() {
+    public LiveData<List<Room>> getFavoriteRoomList() {
         return mFavoriteRoomList;
     }
 
     public LiveData<List<Room>> getRecentRoomList() {
         return mRecentRoomList;
+    }
+
+    public LiveData<List<Room>> getSellRoomList() {
+        return mSellRoomList;
     }
 }

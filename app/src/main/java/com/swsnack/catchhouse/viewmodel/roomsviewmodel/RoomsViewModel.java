@@ -6,13 +6,13 @@ import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.listener.OnFailedListener;
-import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.DataSource;
+import com.swsnack.catchhouse.repository.OnFailedListener;
+import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
@@ -39,7 +39,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     private Application mAppContext;
     private ViewModelListener mListener;
-    private DataManager mDataManager;
+    private DataSource mDataManager;
 
     public final MutableLiveData<List<Address>> mSearchResultList = new MutableLiveData<>();
     public final MutableLiveData<List<Uri>> mImageList = new MutableLiveData<>();
@@ -61,7 +61,7 @@ public class RoomsViewModel extends ReactiveViewModel {
     private String myKey = "";
     private ExpectedPrice ep;
 
-    RoomsViewModel(Application application, DataManager dataManager, APIManager apiManager, ViewModelListener listener) {
+    RoomsViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         mAppContext = application;
         mListener = listener;
@@ -101,8 +101,10 @@ public class RoomsViewModel extends ReactiveViewModel {
 
     public void onSearchAddress(String keyword) {
         getCompositeDisposable().add(searchAddress(keyword)
-                .subscribe(list ->
-                                mSearchResultList.postValue(list)
+                .subscribe(list -> {
+                            mSearchResultList.postValue(list);
+                            mListener.isFinished();
+                        }
                         , exception ->
                                 mListener.onError(mAppContext.getString(R.string.network_error))
                 )
@@ -231,6 +233,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(__ -> mListener.isWorking())
+                .doOnSuccess(__ -> mListener.isFinished())
                 .doAfterTerminate(() -> mListener.isFinished())
                 .toObservable()
                 .flatMap(Observable::fromIterable)

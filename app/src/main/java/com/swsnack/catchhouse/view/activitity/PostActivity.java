@@ -15,15 +15,10 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.ImagePagerAdapter;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
-import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.ActivityPostBinding;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.AppDataSource;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModelFactory;
@@ -181,12 +176,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
     private void createViewModels() {
         mViewModel = ViewModelProviders.of(this,
                 new PostViewModelFactory(
-                        AppDataManager.getInstance(
-                                AppUserDataManager.getInstance(),
-                                RemoteChattingManager.getInstance(),
-                                RoomRepository.getInstance(),
-                                AppLocationDataManager.getInstance(),
-                                AppSearchingDataManager.getInstance()),
+                        AppDataSource.getInstance(),
                         APIManager.getInstance(),
                         this))
                 .get(PostViewModel.class);

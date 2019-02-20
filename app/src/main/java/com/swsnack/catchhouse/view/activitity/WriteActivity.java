@@ -16,15 +16,10 @@ import android.widget.EditText;
 import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.slideadapter.DeletableImagePagerAdapter;
-import com.swsnack.catchhouse.data.APIManager;
-import com.swsnack.catchhouse.data.AppDataManager;
-import com.swsnack.catchhouse.data.db.chatting.remote.RemoteChattingManager;
-import com.swsnack.catchhouse.data.db.location.remote.AppLocationDataManager;
-import com.swsnack.catchhouse.data.db.room.RoomRepository;
-import com.swsnack.catchhouse.data.db.searching.remote.AppSearchingDataManager;
-import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
+import com.swsnack.catchhouse.repository.APIManager;
+import com.swsnack.catchhouse.repository.AppDataSource;
 import com.swsnack.catchhouse.util.DateCalculator;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
@@ -48,7 +43,6 @@ import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_
 
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
-    private static final String TAG = WriteActivity.class.getSimpleName();
     private RoomsViewModel mViewModel;
 
     @Override
@@ -179,13 +173,7 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         mViewModel = ViewModelProviders.of(this,
                 new RoomsViewModelFactory(
                         getApplication(),
-                        AppDataManager.getInstance(
-                                AppUserDataManager.getInstance(),
-                                RemoteChattingManager.getInstance(),
-                                RoomRepository.getInstance(),
-                                AppLocationDataManager.getInstance(),
-                                AppSearchingDataManager.getInstance()
-                        ),
+                        AppDataSource.getInstance(),
                         APIManager.getInstance(),
                         this
                 )).get(RoomsViewModel.class);

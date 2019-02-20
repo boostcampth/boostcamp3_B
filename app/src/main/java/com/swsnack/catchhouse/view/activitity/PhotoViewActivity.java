@@ -44,6 +44,7 @@ public class PhotoViewActivity extends BaseActivity<ActivityPhotoViewBinding> {
             getBinding().vpPhoto.setAdapter(adapter);
             adapter.notifyDataSetChanged();
             getBinding().vpPhoto.setCurrentItem(position);
+            getBinding().tabPhoto.setupWithViewPager(getBinding().vpPhoto, true);
         }
     }
 }
