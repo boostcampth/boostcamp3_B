@@ -32,6 +32,7 @@
     <string name="snack_short_password">비밀번호를 6자리 이상 입력해주세요</string>
     <string name="snack_try_again">에러가 발생했습니다. 잠시 후 다시 시도해주세요</string>
 
+
     /* fragment_home */
     <string name="home_title">Catch House</string>
     <string name="tv_home_search">내놓은 방 검색</string>
@@ -112,6 +113,7 @@
     <string name="fr_address_title">주소 찾기</string>
     <string name="tv_address_search">검색</string>
     <string name="et_address_keyword_hint">주소를 입력해주세요.</string>
+    <string name="snack_search_success">검색을 완료하였습니다.</string>
 
     /* activity_filter_pop_up */
     <string name="tv_filter_price">가격</string>
