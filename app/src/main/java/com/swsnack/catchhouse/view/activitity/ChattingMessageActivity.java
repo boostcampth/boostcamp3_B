@@ -1,15 +1,7 @@
 package com.swsnack.catchhouse.view.activitity;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.LinearLayout;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingMessageAdapter;
@@ -18,6 +10,10 @@ import com.swsnack.catchhouse.databinding.ActivityChattingMessageBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
+
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
@@ -47,11 +43,6 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
         super.onCreate(savedInstanceState);
         init();
 
-        getBinding().tbChatMessage.setNavigationIcon(R.drawable.back_button_primary);
-        getBinding().tbChatMessage.setNavigationOnClickListener(__ ->
-                finish()
-        );
-
         if (getIntent().getParcelableExtra(USER_DATA) != null
                 && getIntent().getSerializableExtra(CHATTING_DATA) != null) {
             mViewModel.setChattingMessage((Chatting) getIntent().getSerializableExtra(CHATTING_DATA));
@@ -79,6 +70,14 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
             }
             return false;
         });
+
+        setSupportActionBar(getBinding().tbChatMessage);
+        getBinding().tbChatMessage.setNavigationIcon(R.drawable.back_button_white);
+        getBinding().tbChatMessage.setNavigationOnClickListener(__ ->
+                finish()
+        );
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
 
     @Override
