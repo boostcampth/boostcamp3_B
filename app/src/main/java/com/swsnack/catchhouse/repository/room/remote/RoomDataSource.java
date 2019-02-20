@@ -2,15 +2,14 @@ package com.swsnack.catchhouse.repository.room.remote;
 
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
-import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public interface RoomDataSource {
 

@@ -1,10 +1,10 @@
 package com.swsnack.catchhouse.repository.location;
 
-import androidx.annotation.NonNull;
-
+import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
-import com.swsnack.catchhouse.data.model.Address;
+
+import androidx.annotation.NonNull;
 
 public interface LocationDataSource {
 

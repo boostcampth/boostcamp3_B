@@ -1,14 +1,14 @@
 package com.swsnack.catchhouse.repository.location.remote;
 
-import androidx.annotation.NonNull;
-
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.firebase.database.FirebaseDatabase;
-import com.swsnack.catchhouse.repository.location.LocationDataSource;
+import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
-import com.swsnack.catchhouse.data.model.Address;
+import com.swsnack.catchhouse.repository.location.LocationDataSource;
+
+import androidx.annotation.NonNull;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_LOCATION;
 

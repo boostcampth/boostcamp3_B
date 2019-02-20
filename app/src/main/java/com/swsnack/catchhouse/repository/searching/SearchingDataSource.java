@@ -1,8 +1,8 @@
 package com.swsnack.catchhouse.repository.searching;
 
 import com.skt.Tmap.TMapPOIItem;
-import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.Filter;
+import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
 

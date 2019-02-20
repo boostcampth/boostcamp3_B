@@ -2,11 +2,12 @@ package com.swsnack.catchhouse.repository.user;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import androidx.annotation.NonNull;
 
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.User;
+
+import androidx.annotation.NonNull;
 
 public interface UserDataSource {
 

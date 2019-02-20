@@ -11,11 +11,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.Constant;
-import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
-import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
-import com.swsnack.catchhouse.repository.room.RoomRepository;
-import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
-import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
 import com.swsnack.catchhouse.data.model.User;
 
 import androidx.annotation.NonNull;
@@ -32,11 +27,7 @@ public class APIManager {
 
     public static synchronized APIManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new APIManager(AppDataSource.getInstance(UserDataImpl.getInstance(),
-                    RemoteChattingImpl.getInstance(),
-                    RoomRepository.getInstance(),
-                    RemoteLocationImpl.getInstance(),
-                    SearchingDataImpl.getInstance()));
+            INSTANCE = new APIManager(AppDataManager.getInstance());
         }
         return INSTANCE;
     }

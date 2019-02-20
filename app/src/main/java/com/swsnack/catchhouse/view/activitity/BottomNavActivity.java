@@ -10,12 +10,6 @@ import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.ViewPagerAdapter;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.repository.APIManager;
-import com.swsnack.catchhouse.repository.AppDataSource;
-import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
-import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
-import com.swsnack.catchhouse.repository.room.RoomRepository;
-import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
-import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
 import com.swsnack.catchhouse.view.fragment.MyPageFragment;
@@ -116,21 +110,11 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
     private void createViewModels() {
         createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
-                AppDataSource.getInstance(
-                        UserDataImpl.getInstance(),
-                        RemoteChattingImpl.getInstance(),
-                        RoomRepository.getInstance(),
-                        RemoteLocationImpl.getInstance(),
-                        SearchingDataImpl.getInstance()),
+                AppDataManager.getInstance(),
                 APIManager.getInstance(),
                 this));
         createViewModel(SearchingViewModel.class, new SearchingViewModelFactory(getApplication(),
-                AppDataSource.getInstance(
-                        UserDataImpl.getInstance(),
-                        RemoteChattingImpl.getInstance(),
-                        RoomRepository.getInstance(),
-                        RemoteLocationImpl.getInstance(),
-                        SearchingDataImpl.getInstance()), APIManager.getInstance(), this));
+                AppDataManager.getInstance(), APIManager.getInstance(), this));
         createViewModel(ChattingViewModel.class, new ChattingViewModelFactory(this));
     }
 
