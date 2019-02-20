@@ -373,6 +373,10 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
         return this.mSelectedInfo;
     }
 
+    public LiveData<Boolean> isShowingCardView() {
+        return mCardShow;
+    }
+
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {

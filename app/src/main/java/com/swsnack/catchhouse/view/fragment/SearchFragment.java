@@ -109,21 +109,34 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
             }
         });
 
-
         getBinding().svMap.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String s) {
+                getBinding().svMap.clearFocus();
                 getViewModel().setKeyword(getBinding().svMap.getQuery().toString());
                 getViewModel().searchAddress();
+                getBinding().svMap.setQuery("",false);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                if(s.length() == 0) {
+                    getBinding().rvMapAddress.setVisibility(View.GONE);
+                }
+                if(getViewModel().isShowingCardView().getValue() == true) {
+                    getViewModel().setCardShow(false);
+                }
                 return false;
             }
         });
+
+        getBinding().svMap.setOnCloseListener(() -> {
+            getBinding().rvMapAddress.setVisibility(View.GONE);
+            return true;
+        });
+
 
 
         adapter.setOnItemClickListener(((v, position) -> {
@@ -140,7 +153,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
         getBinding().fbMapFilter.setOnClickListener(v -> {
             new FilterFragment().show(mFragmentManager, "address selection");
         });
-
     }
 
     /*
