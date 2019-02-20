@@ -109,6 +109,19 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
             }
         });
 
+        getBinding().svMap.setOnClickListener((v -> {
+            if(getViewModel().isShowingCardView().getValue() == true) {
+                getViewModel().setCardShow(false);
+                getViewModel().setFinish(true);
+            }
+        }));
+
+        getBinding().svMap.setOnSearchClickListener((v -> {
+            if(getViewModel().isShowingCardView().getValue() == true) {
+                getViewModel().setCardShow(false);
+                getViewModel().setFinish(true);
+            }
+        }));
 
         getBinding().svMap.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -122,11 +135,18 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
 
             @Override
             public boolean onQueryTextChange(String s) {
+                if(s.length() == 0) {
+                    getBinding().rvMapAddress.setVisibility(View.GONE);
+                }
                 return false;
             }
         });
 
-        getBinding().svMap.setOnClickListener((v -> getViewModel().setCardShow(false)));
+        getBinding().svMap.setOnCloseListener(() -> {
+            getBinding().rvMapAddress.setVisibility(View.GONE);
+            return true;
+        });
+
 
 
         adapter.setOnItemClickListener(((v, position) -> {
@@ -143,7 +163,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
         getBinding().fbMapFilter.setOnClickListener(v -> {
             new FilterFragment().show(mFragmentManager, "address selection");
         });
-
     }
 
     /*
