@@ -1,13 +1,13 @@
 package com.swsnack.catchhouse.data.mapper;
 
-import com.swsnack.catchhouse.data.entity.FavoriteRoomEntity;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
 
-public class RoomEntityMapper implements Mapper<Room, FavoriteRoomEntity> {
+public class RoomEntityMapper implements Mapper<Room, RoomEntity> {
 
     @Override
-    public FavoriteRoomEntity map(Room from) {
-        return new FavoriteRoomEntity(from.getKey(),
+    public RoomEntity map(Room from) {
+        return new RoomEntity(from.getKey(),
                 from.getPrice(),
                 from.getFrom(),
                 from.getTo(),

@@ -1,84 +1,236 @@
 package com.swsnack.catchhouse.data.entity;
 
+import com.swsnack.catchhouse.repository.room.local.TypeConverter;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Index;
+import androidx.room.TypeConverters;
 
-public interface RoomEntity {
+import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
 
-    String getRoomUid();
+@Entity(tableName = ROOM_TABLE,
+        primaryKeys = {"room_uid", "firebaseUuid"},
+        indices = {@Index(value = {"room_uid"})})
+public class RoomEntity {
 
-    void setRoomUid(@NonNull String roomUid);
+    @ColumnInfo(name = "room_uid")
+    @NonNull
+    private String roomUid;
+    @NonNull
+    private String firebaseUuid;
+    private String price;
+    private String from;
+    private String to;
+    private String title;
+    private String content;
+    @TypeConverters({TypeConverter.class})
+    private List<String> images;
+    @ColumnInfo(name = "writer_uuid")
+    private String uuid;
+    private String address;
+    private String addressName;
+    private String size;
+    private boolean optionStandard;
+    private boolean optionGender;
+    private boolean optionPet;
+    private boolean optionSmoking;
+    private double latitude;
+    private double longitude;
+    private boolean isDeleted;
 
-    String getFirebaseUuid();
+    public RoomEntity(@NonNull String roomUid,
+                      String price,
+                      String from,
+                      String to,
+                      String title,
+                      String content,
+                      List<String> images,
+                      String uuid,
+                      String address,
+                      String addressName,
+                      String size,
+                      boolean optionStandard,
+                      boolean optionGender,
+                      boolean optionPet,
+                      boolean optionSmoking,
+                      double latitude,
+                      double longitude,
+                      boolean isDeleted) {
 
-    void setFirebaseUuid(String firebaseUuid);
+        this.roomUid = roomUid;
+        this.price = price;
+        this.from = from;
+        this.to = to;
+        this.title = title;
+        this.content = content;
+        this.images = images;
+        this.uuid = uuid;
+        this.address = address;
+        this.addressName = addressName;
+        this.size = size;
+        this.optionStandard = optionStandard;
+        this.optionGender = optionGender;
+        this.optionPet = optionPet;
+        this.optionSmoking = optionSmoking;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.isDeleted = isDeleted;
+    }
 
-    String getPrice();
+    @NonNull
+    public String getRoomUid() {
+        return roomUid;
+    }
 
-    void setPrice(String price);
+    public void setRoomUid(@NonNull String roomUid) {
+        this.roomUid = roomUid;
+    }
 
-    String getFrom();
+    public String getFirebaseUuid() {
+        return firebaseUuid;
+    }
 
-    void setFrom(String from);
+    public void setFirebaseUuid(String firebaseUuid) {
+        this.firebaseUuid = firebaseUuid;
+    }
 
-    String getTo();
+    public String getPrice() {
+        return price;
+    }
 
-    void setTo(String to);
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-    String getTitle();
+    public String getFrom() {
+        return from;
+    }
 
-    void setTitle(String title);
+    public void setFrom(String from) {
+        this.from = from;
+    }
 
-    String getContent();
+    public String getTo() {
+        return to;
+    }
 
-    void setContent(String content);
+    public void setTo(String to) {
+        this.to = to;
+    }
 
-    List<String> getImages();
+    public String getTitle() {
+        return title;
+    }
 
-    void setImages(List<String> images);
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    String getUuid();
+    public String getContent() {
+        return content;
+    }
 
-    void setUuid(String uuid);
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-    String getAddress();
+    public List<String> getImages() {
+        return images;
+    }
 
-    void setAddress(String address);
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
 
-    String getAddressName();
+    public String getUuid() {
+        return uuid;
+    }
 
-    void setAddressName(String addressName);
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-    String getSize();
+    public String getAddress() {
+        return address;
+    }
 
-    void setSize(String size);
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
-    boolean isOptionStandard();
+    public String getAddressName() {
+        return addressName;
+    }
 
-    void setOptionStandard(boolean optionStandard);
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
+    }
 
-    boolean isOptionGender();
+    public String getSize() {
+        return size;
+    }
 
-    void setOptionGender(boolean optionGender);
+    public void setSize(String size) {
+        this.size = size;
+    }
 
-    boolean isOptionPet();
+    public boolean isOptionStandard() {
+        return optionStandard;
+    }
 
-    void setOptionPet(boolean optionPet);
+    public void setOptionStandard(boolean optionStandard) {
+        this.optionStandard = optionStandard;
+    }
 
-    boolean isOptionSmoking();
+    public boolean isOptionGender() {
+        return optionGender;
+    }
 
-    void setOptionSmoking(boolean optionSmoking);
+    public void setOptionGender(boolean optionGender) {
+        this.optionGender = optionGender;
+    }
 
-    double getLatitude();
+    public boolean isOptionPet() {
+        return optionPet;
+    }
 
-    void setLatitude(double latitude);
+    public void setOptionPet(boolean optionPet) {
+        this.optionPet = optionPet;
+    }
 
-    double getLongitude();
+    public boolean isOptionSmoking() {
+        return optionSmoking;
+    }
 
-    void setLongitude(double longitude);
+    public void setOptionSmoking(boolean optionSmoking) {
+        this.optionSmoking = optionSmoking;
+    }
 
-    boolean isDeleted();
+    public double getLatitude() {
+        return latitude;
+    }
 
-    void setDeleted(boolean deleted);
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
 }

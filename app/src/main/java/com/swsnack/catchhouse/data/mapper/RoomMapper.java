@@ -1,15 +1,15 @@
 package com.swsnack.catchhouse.data.mapper;
 
-import com.swsnack.catchhouse.data.entity.FavoriteRoomEntity;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoomMapper implements Mapper<FavoriteRoomEntity, Room> {
+public class RoomMapper implements Mapper<RoomEntity, Room> {
 
     @Override
-    public Room map(FavoriteRoomEntity from) {
+    public Room map(RoomEntity from) {
         return new Room(from.getRoomUid(),
                 from.getPrice(),
                 from.getFrom(),
@@ -30,9 +30,9 @@ public class RoomMapper implements Mapper<FavoriteRoomEntity, Room> {
                 from.isDeleted());
     }
 
-    public List<Room> mapToList(List<FavoriteRoomEntity> from) {
+    public List<Room> mapToList(List<RoomEntity> from) {
         List<Room> roomList = new ArrayList<>();
-        for (FavoriteRoomEntity item : from) {
+        for (RoomEntity item : from) {
             roomList.add(map(item));
         }
         return roomList;

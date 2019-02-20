@@ -2,7 +2,7 @@ package com.swsnack.catchhouse.repository.room.local;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.data.db.AppDatabase;
-import com.swsnack.catchhouse.data.entity.FavoriteRoomEntity;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.mapper.RoomEntityMapper;
 import com.swsnack.catchhouse.data.mapper.RoomMapper;
 import com.swsnack.catchhouse.data.model.Room;
@@ -35,9 +35,9 @@ public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
-        FavoriteRoomEntity favoriteRoomEntity = new RoomEntityMapper().map(room);
-        favoriteRoomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        new FavoriteRoomHelper.AsyncSetFavoriteRoom(mRoomDao).execute(favoriteRoomEntity);
+        RoomEntity roomEntity = new RoomEntityMapper().map(room);
+        roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        new FavoriteRoomHelper.AsyncSetFavoriteRoom(mRoomDao).execute(roomEntity);
     }
 
     @Override
@@ -46,9 +46,9 @@ public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
             return;
         }
 
-        FavoriteRoomEntity favoriteRoomEntity = new RoomEntityMapper().map(room);
-        favoriteRoomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        new FavoriteRoomHelper.AsyncDeleteFavoriteRoom(mRoomDao).execute(favoriteRoomEntity);
+        RoomEntity roomEntity = new RoomEntityMapper().map(room);
+        roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        new FavoriteRoomHelper.AsyncDeleteFavoriteRoom(mRoomDao).execute(roomEntity);
 
     }
 
@@ -60,13 +60,13 @@ public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
         }
 
         try {
-            List<FavoriteRoomEntity> favoriteRoomEntityList = new FavoriteRoomHelper
+            List<RoomEntity> roomEntityList = new FavoriteRoomHelper
                     .AsyncLoadFavoriteRoomList(mRoomDao)
                     .execute(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .get();
 
-            if (favoriteRoomEntityList != null) {
-                return new RoomMapper().mapToList(favoriteRoomEntityList);
+            if (roomEntityList != null) {
+                return new RoomMapper().mapToList(roomEntityList);
             }
             return null;
 
@@ -91,12 +91,12 @@ public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
         }
 
         try {
-            FavoriteRoomEntity favoriteRoomEntity = new FavoriteRoomHelper
+            RoomEntity roomEntity = new FavoriteRoomHelper
                     .AsyncLoadFavoriteRoom(mRoomDao)
                     .execute(key, FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .get();
-            if (favoriteRoomEntity != null) {
-                return new RoomMapper().map(favoriteRoomEntity);
+            if (roomEntity != null) {
+                return new RoomMapper().map(roomEntity);
             }
             return null;
 
@@ -110,9 +110,9 @@ public class LocalFavoriteRoomImpl implements FavoriteRoomDataSource {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return;
         }
-        FavoriteRoomEntity favoriteRoomEntity = new RoomEntityMapper().map(room);
-        favoriteRoomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        RoomEntity roomEntity = new RoomEntityMapper().map(room);
+        roomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        new FavoriteRoomHelper.AsyncUpdateFavoriteRoom(mRoomDao).execute(favoriteRoomEntity);
+        new FavoriteRoomHelper.AsyncUpdateFavoriteRoom(mRoomDao).execute(roomEntity);
     }
 }
