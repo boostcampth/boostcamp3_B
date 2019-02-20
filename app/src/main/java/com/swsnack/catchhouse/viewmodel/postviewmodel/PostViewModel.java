@@ -92,7 +92,7 @@ public class PostViewModel extends ReactiveViewModel {
         if (getDataManager()
                 .getFavoriteRoom(room.getValue().getKey()) != null) {
             mIsFavorite.setValue(true);
-            getDataManager().updateRoom(DataConverter.convertToRoomEntity(room.getValue()));
+            getDataManager().updateRoom(room.getValue());
         } else {
             mIsFavorite.setValue(false);
         }
@@ -140,11 +140,11 @@ public class PostViewModel extends ReactiveViewModel {
 
         if (!mIsFavorite.getValue()) {
             getDataManager()
-                    .setFavoriteRoom(DataConverter.convertToRoomEntity(room.getValue()));
+                    .setFavoriteRoom(room.getValue());
             mIsFavorite.setValue(true);
         } else {
             getDataManager()
-                    .deleteFavoriteRoom(DataConverter.convertToRoomEntity(room.getValue()));
+                    .deleteFavoriteRoom(room.getValue());
             mIsFavorite.setValue(false);
         }
     }

@@ -8,12 +8,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.APIManager;
 import com.swsnack.catchhouse.data.DataManager;
-import com.swsnack.catchhouse.data.entity.SellRoomEntity;
-import com.swsnack.catchhouse.data.listener.OnFailedListener;
-import com.swsnack.catchhouse.data.listener.OnSuccessListener;
 import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.ExpectedPrice;
 import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.repository.OnFailedListener;
+import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 

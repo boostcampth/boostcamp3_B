@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.data;
+package com.swsnack.catchhouse.repository;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,8 +12,11 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.data.model.User;
-import com.swsnack.catchhouse.repository.OnFailedListener;
-import com.swsnack.catchhouse.repository.OnSuccessListener;
+import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
+import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
+import com.swsnack.catchhouse.repository.room.RoomRepository;
+import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
+import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,16 +28,20 @@ import static com.swsnack.catchhouse.Constant.FacebookData.NAME;
 public class APIManager {
 
     private static APIManager INSTANCE;
-    private DataManager mDataManager;
+    private DataSource mDataManager;
 
     public static synchronized APIManager getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new APIManager(AppDataManager.getInstance());
+            INSTANCE = new APIManager(AppDataSource.getInstance(UserDataImpl.getInstance(),
+                    RemoteChattingImpl.getInstance(),
+                    RoomRepository.getInstance(),
+                    RemoteLocationImpl.getInstance(),
+                    SearchingDataImpl.getInstance()));
         }
         return INSTANCE;
     }
 
-    private APIManager(DataManager dataManager) {
+    private APIManager(DataSource dataManager) {
         mDataManager = dataManager;
     }
 

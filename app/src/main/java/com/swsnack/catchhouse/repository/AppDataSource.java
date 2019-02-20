@@ -1,33 +1,22 @@
-package com.swsnack.catchhouse.data;
+package com.swsnack.catchhouse.repository;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.skt.Tmap.TMapPOIItem;
-import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Address;
-import com.swsnack.catchhouse.data.model.Chatting;
 import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
-import com.swsnack.catchhouse.repository.OnFailedListener;
-import com.swsnack.catchhouse.repository.OnSuccessListener;
 import com.swsnack.catchhouse.repository.chatting.ChattingDataSource;
-import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
 import com.swsnack.catchhouse.repository.location.LocationDataSource;
-import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
-import com.swsnack.catchhouse.repository.room.local.LocalFavoriteRoomImpl;
-import com.swsnack.catchhouse.repository.room.local.LocalRecentRoomImpl;
-import com.swsnack.catchhouse.repository.room.local.LocalSellRoomDataSource;
+import com.swsnack.catchhouse.repository.room.RoomRepository;
+import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDataSource;
 import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
-import com.swsnack.catchhouse.repository.room.local.SellRoomImpl;
-import com.swsnack.catchhouse.repository.room.remote.RoomDataImpl;
 import com.swsnack.catchhouse.repository.room.remote.RoomDataSource;
 import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
-import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
 import com.swsnack.catchhouse.repository.user.UserDataSource;
-import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
 
 import java.util.List;
 
@@ -35,39 +24,47 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.reactivex.Single;
 
-public class AppDataManager implements DataManager {
+public class AppDataSource implements DataSource {
 
-    private UserDataSource mUserDataManager;
-    private ChattingDataSource mRemoteChattingManager;
-    private RoomDataSource mRoomDataManager;
-    private LocalFavoriteRoomImpl mLocalRoomDataSource;
+    private UserDataSource mUserDataSource;
+    private ChattingDataSource mRemoteChattingDataSource;
+    private RoomDataSource mRoomDataSource;
+    private FavoriteRoomDataSource mFavoriteRoomDataSource;
     private RecentRoomDataSource mRecentRoomDataManager;
-    private LocationDataSource mLocationDataManager;
-    private SearchingDataSource mSearchingDataManager;
-    private LocalSellRoomDataSource mLocalSellRoomManager;
+    private LocationDataSource mLocationDataSource;
+    private SearchingDataSource mSearchingDataSource;
 
-    private AppDataManager() {
+    private AppDataSource(UserDataSource userDataSource,
+                          ChattingDataSource remoteChattingDataSource,
+                          RoomRepository roomRepository,
+                          LocationDataSource locationDataSource,
+                          SearchingDataSource searchingDataSource) {
 
-        mUserDataManager = UserDataImpl.getInstance();
-        mRemoteChattingManager = RemoteChattingImpl.getInstance();
-        mRoomDataManager = RoomDataImpl.getInstance();
-        mLocalRoomDataSource = LocalFavoriteRoomImpl.getInstance();
-        mRecentRoomDataManager = LocalRecentRoomImpl.getInstance();
-        mLocationDataManager = RemoteLocationImpl.getInstance();
-        mSearchingDataManager = SearchingDataImpl.getInstance();
-        mLocalSellRoomManager = SellRoomImpl.getInstance();
+        mUserDataSource = userDataSource;
+        mRemoteChattingDataSource = remoteChattingDataSource;
+        mRoomDataSource = roomRepository;
+        mFavoriteRoomDataSource = roomRepository;
+        mRecentRoomDataManager = roomRepository;
+        mLocationDataSource = locationDataSource;
+        mSearchingDataSource = searchingDataSource;
     }
 
-    private static AppDataManager INSTANCE;
+    private static AppDataSource INSTANCE;
 
-    public static synchronized AppDataManager getInstance() {
+    public static synchronized AppDataSource getInstance(@NonNull UserDataSource userDataSource,
+                                                         @NonNull ChattingDataSource remoteChattingDataSource,
+                                                         @NonNull RoomRepository roomRepository,
+                                                         @NonNull LocationDataSource locationDataSource,
+                                                         @NonNull SearchingDataSource searchingDataSource) {
         if (INSTANCE == null) {
-            INSTANCE = new AppDataManager();
+            INSTANCE = new AppDataSource(userDataSource,
+                    remoteChattingDataSource,
+                    roomRepository,
+                    locationDataSource,
+                    searchingDataSource);
         }
         return INSTANCE;
     }
-
-
 
     @Override
     public void updateProfile(@NonNull String uuid,
@@ -76,26 +73,26 @@ public class AppDataManager implements DataManager {
                               @NonNull OnSuccessListener<Void> onSuccessListener,
                               @NonNull OnFailedListener onFailedListener) {
 
-        mUserDataManager.updateProfile(uuid, uri, user, onSuccessListener, onFailedListener);
+        mUserDataSource.updateProfile(uuid, uri, user, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void deleteUser(@NonNull String uuid, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        mUserDataManager.deleteUser(uuid, onSuccessListener, onFailedListener);
+        mUserDataSource.deleteUser(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void getUserAndListeningForChanging(@NonNull String uuid,
                                                @NonNull OnSuccessListener<User> onSuccessListener,
                                                @NonNull OnFailedListener onFailedListener) {
-        mUserDataManager.getUserAndListeningForChanging(uuid, onSuccessListener, onFailedListener);
+        mUserDataSource.getUserAndListeningForChanging(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void getUserFromSingleSnapShot(@NonNull String uuid,
                                           @NonNull OnSuccessListener<User> onSuccessListener,
                                           @NonNull OnFailedListener onFailedListener) {
-        mUserDataManager.getUserFromSingleSnapShot(uuid, onSuccessListener, onFailedListener);
+        mUserDataSource.getUserFromSingleSnapShot(uuid, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -104,7 +101,7 @@ public class AppDataManager implements DataManager {
                         @NonNull OnSuccessListener<Void> onSuccessListener,
                         @NonNull OnFailedListener onFailedListener) {
 
-        mUserDataManager.setUser(uuid, user, onSuccessListener, onFailedListener);
+        mUserDataSource.setUser(uuid, user, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -114,7 +111,7 @@ public class AppDataManager implements DataManager {
                         @NonNull OnSuccessListener<Void> onSuccessListener,
                         @NonNull OnFailedListener onFailedListener) {
 
-        mUserDataManager.setUser(uuid, user, uri, onSuccessListener, onFailedListener);
+        mUserDataSource.setUser(uuid, user, uri, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -123,7 +120,7 @@ public class AppDataManager implements DataManager {
                                         @NonNull OnSuccessListener<Void> onSuccessListener,
                                         @NonNull OnFailedListener onFailedListener) {
 
-        mUserDataManager.setUserNotAlreadySigned(uuid, user, onSuccessListener, onFailedListener);
+        mUserDataSource.setUserNotAlreadySigned(uuid, user, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -132,7 +129,7 @@ public class AppDataManager implements DataManager {
                            @NonNull OnSuccessListener<Void> onSuccessListener,
                            @NonNull OnFailedListener onFailedListener) {
 
-        mUserDataManager.updateUser(uuid, user, onSuccessListener, onFailedListener);
+        mUserDataSource.updateUser(uuid, user, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -140,41 +137,41 @@ public class AppDataManager implements DataManager {
                            @NonNull OnSuccessListener<Bitmap> onSuccessListener,
                            @NonNull OnFailedListener onFailedListener) {
 
-        mUserDataManager.getProfile(uri, onSuccessListener, onFailedListener);
+        mUserDataSource.getProfile(uri, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void getChattingRoom(@NonNull String destinationUuid,
-                                @NonNull OnSuccessListener<String> onSuccessListener,
+                                @NonNull OnSuccessListener onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.getChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.getChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
     }
 
     @Override
-    public void listeningChattingListChanged(@NonNull OnSuccessListener<List<Chatting>> onSuccessListener,
+    public void listeningChattingListChanged(@NonNull OnSuccessListener onSuccessListener,
                                              @NonNull OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.listeningChattingListChanged(onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.listeningChattingListChanged(onSuccessListener, onFailedListener);
     }
 
     @Override
     public void cancelObservingChattingList() {
-        mRemoteChattingManager.cancelObservingChattingList();
+        mRemoteChattingDataSource.cancelObservingChattingList();
     }
 
     @Override
     public void listeningChatMessageChanged(@NonNull String chatRoomId,
                                             @NonNull OnSuccessListener<List<Message>> onSuccessListener,
-                                            @NonNull OnFailedListener onFailedListener) {
+                                            OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.listeningChatMessageChanged(chatRoomId, onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.listeningChatMessageChanged(chatRoomId, onSuccessListener, onFailedListener);
 
     }
 
     @Override
     public void cancelMessageModelObserving() {
-        mRemoteChattingManager.cancelMessageModelObserving();
+        mRemoteChattingDataSource.cancelMessageModelObserving();
     }
 
     @Override
@@ -182,7 +179,7 @@ public class AppDataManager implements DataManager {
                                 @NonNull OnSuccessListener<String> onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.setChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.setChattingRoom(destinationUuid, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -193,13 +190,13 @@ public class AppDataManager implements DataManager {
                                @NonNull OnSuccessListener<String> onSuccessListener,
                                @NonNull OnFailedListener onFailedListener) {
 
-        mRemoteChattingManager.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailedListener);
+        mRemoteChattingDataSource.setChatMessage(messagesLength, roomUid, destinationUid, content, onSuccessListener, onFailedListener);
 
     }
 
     @Override
     public String createKey() {
-        return mRoomDataManager.createKey();
+        return mRoomDataSource.createKey();
     }
 
     @Override
@@ -207,7 +204,7 @@ public class AppDataManager implements DataManager {
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
 
-        mRoomDataManager.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
+        mRoomDataSource.uploadRoomImage(uuid, imageList, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -215,7 +212,7 @@ public class AppDataManager implements DataManager {
                         @NonNull OnSuccessListener<Void> onSuccessListener,
                         @NonNull OnFailedListener onFailedListener) {
 
-        mRoomDataManager.setRoom(key, room, onSuccessListener, onFailedListener);
+        mRoomDataSource.setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
 
@@ -223,7 +220,7 @@ public class AppDataManager implements DataManager {
     public void getRoom(@NonNull String key,
                         @NonNull OnSuccessListener<Room> onSuccessListener,
                         @NonNull OnFailedListener onFailedListener) {
-        mRoomDataManager.getRoom(key, onSuccessListener, onFailedListener);
+        mRoomDataSource.getRoom(key, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -231,48 +228,48 @@ public class AppDataManager implements DataManager {
                                    @NonNull OnSuccessListener<String> onSuccessListener,
                                    @NonNull OnFailedListener onFailedListener) {
 
-        mLocationDataManager.uploadLocationData(uuid, address, onSuccessListener, onFailedListener);
+        mLocationDataSource.uploadLocationData(uuid, address, onSuccessListener, onFailedListener);
     }
 
     @NonNull
     public Single<List<TMapPOIItem>> getPOIList(@NonNull String keyword) {
-        return mSearchingDataManager.getPOIList(keyword);
+        return mSearchingDataSource.getPOIList(keyword);
     }
 
     @NonNull
     public Single<List<Room>> getNearRoomList(@NonNull Filter filter) {
-        return mSearchingDataManager.getNearRoomList(filter);
+        return mSearchingDataSource.getNearRoomList(filter);
     }
 
     @Override
     public void setFavoriteRoom(Room room) {
-        mLocalRoomDataSource.setFavoriteRoom(room);
+        mFavoriteRoomDataSource.setFavoriteRoom(room);
     }
 
     @Override
     public void deleteFavoriteRoom(Room room) {
-        mLocalRoomDataSource.deleteFavoriteRoom(room);
+        mFavoriteRoomDataSource.deleteFavoriteRoom(room);
 
     }
 
     @Override
     public void deleteFavoriteRoom() {
-        mLocalRoomDataSource.deleteFavoriteRoom();
+        mFavoriteRoomDataSource.deleteFavoriteRoom();
     }
 
     @Override
     public List<Room> getFavoriteRoomList() {
-        return mLocalRoomDataSource.getFavoriteRoomList();
+        return mFavoriteRoomDataSource.getFavoriteRoomList();
     }
 
     @Override
     public Room getFavoriteRoom(String key) {
-        return mLocalRoomDataSource.getFavoriteRoom(key);
+        return mFavoriteRoomDataSource.getFavoriteRoom(key);
     }
 
     @Override
     public void updateRoom(Room room) {
-        mLocalRoomDataSource.updateRoom(room);
+        mFavoriteRoomDataSource.updateRoom(room);
     }
 
     @Override
@@ -288,35 +285,5 @@ public class AppDataManager implements DataManager {
     @Override
     public void deleteRecentRoomList() {
         mRecentRoomDataManager.deleteRecentRoomList();
-    }
-
-    @Override
-    public void setSellRoom(SellRoomEntity sellRoomEntity) {
-        mLocalSellRoomManager.setSellRoom(sellRoomEntity);
-    }
-
-    @Override
-    public void deleteSellRoom(SellRoomEntity sellRoomEntity) {
-        mLocalSellRoomManager.deleteSellRoom(sellRoomEntity);
-    }
-
-    @Override
-    public List<SellRoomEntity> getSellRoomList() {
-        return mLocalSellRoomManager.getSellRoomList();
-    }
-
-    @Override
-    public void deleteSellRoom() {
-        mLocalSellRoomManager.deleteSellRoom();
-    }
-
-    @Override
-    public SellRoomEntity getSellRoom(String key) {
-        return mLocalSellRoomManager.getSellRoom(key);
-    }
-
-    @Override
-    public void updateRoom(SellRoomEntity sellRoomEntity) {
-        mLocalSellRoomManager.updateRoom(sellRoomEntity);
     }
 }

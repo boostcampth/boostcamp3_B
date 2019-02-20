@@ -32,20 +32,15 @@ public class UserDataBinding {
     }
 
     @BindingAdapter({"setFavoriteRoom"})
-    public static void setFavoriteRoom(RecyclerView recyclerView, List<RoomEntity> roomEntityList) {
+    public static void setFavoriteRoom(RecyclerView recyclerView, List<Room> roomList) {
         RoomListAdapter roomListAdapter = (RoomListAdapter) recyclerView.getAdapter();
         if (roomListAdapter == null) {
             return;
         }
 
-        if (roomEntityList == null) {
+        if (roomList == null) {
             roomListAdapter.setList(new ArrayList<>());
             return;
-        }
-
-        List<Room> roomList = new ArrayList<>();
-        for (RoomEntity roomEntity : roomEntityList) {
-            roomList.add(DataConverter.convertToRoom(roomEntity));
         }
         roomListAdapter.setList(roomList);
     }
