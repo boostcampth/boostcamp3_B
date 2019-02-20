@@ -77,6 +77,9 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
             case Constant.SuccessKey.UPDATE_NICK_NAME_SUCCESS:
                 showSnackMessage(getString(R.string.snack_change_nick_name_success));
                 break;
+            case Constant.SuccessKey.SEARCH_SUCCESS:
+                showSnackMessage(getString(R.string.snack_search_success));
+                break;
         }
     }
 

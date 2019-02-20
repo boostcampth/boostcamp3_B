@@ -22,6 +22,7 @@ import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
+import com.swsnack.catchhouse.Constant;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.RoomCard;
@@ -144,7 +145,7 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                 getFilterDistance(), isFilterOptionStandard(), isFilterOptionGender(),
                 isFilterOptionPet(), isFilterOptionSmoking());
 
-        getDataManager().getNearRoomList(filter)
+        getCompositeDisposable().add(getDataManager().getNearRoomList(filter)
                 .doOnSubscribe(__ -> {
                     mListener.isWorking();
                     removeAllOverlay();
@@ -155,22 +156,16 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                     circleOverlay.setOutlineColor(ContextCompat.getColor(mAppContext,R.color.colorTransOrange));
                     circleOverlay.setOutlineWidth(5);
                     mCircle.postValue(circleOverlay);
-
-
                 })
                 .doAfterTerminate(() -> {
-                    mListener.isFinished();
-                    /*
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    mPosition.postValue(latLng); // Move map*/
                     mCardShow.postValue(true);
                 })
+                .doAfterSuccess(__ -> mListener.onSuccess(Constant.SuccessKey.SEARCH_SUCCESS))
                 .subscribe(roomDataList -> {
+
                     Log.v("csh", "Single Success");
                     mRoomList.postValue(roomDataList);
-
                     Log.v("csh", "test:" + mRoomCardList.getValue());
-
 
                     //////////////////////
                     LatLngBounds bounds = new LatLngBounds.Builder()
@@ -182,17 +177,7 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                         Room room = roomDataList.get(i);
                         LatLng latLng = new LatLng(room.getLatitude(), room.getLongitude());
                         Marker marker = new Marker(latLng);
-                        /*
-                        InfoWindow infoWindow = new InfoWindow();
-                        infoWindow.setAdapter(new InfoWindow.DefaultTextAdapter(mAppContext) {
-                            @NonNull
-                            @Override
-                            public CharSequence getText(@NonNull InfoWindow infoWindow) {
-                                Log.v("csh","infoWindow");
-                                return room.getSize()+"평";
-                            }
-                        });
-                        infoWindow.open(marker);*/
+
                         marker.setTag(room);
                         //marker.setCaptionText(room.getAddressName());
                         markerList.add(marker);
@@ -222,12 +207,15 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                                 roomDataList.get(i).getSize(),
                                 roomDataList.get(i).getUuid()));
 
+
                     }
                     mRoomCardList.postValue(roomDataList);
                 }, throwable -> {
                     Log.v("csh", "Single Error" + throwable.getMessage());
-                    Toast.makeText(mAppContext, throwable.getMessage(), Toast.LENGTH_SHORT).show();
-                });
+                    //Toast.makeText(mAppContext, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                    mRoomCardList.postValue(new ArrayList<>());
+                    mListener.onError(throwable.getMessage());
+                }));
     }
 
     public void onClickMarker(Marker marker, InfoWindow infoWindow) {
