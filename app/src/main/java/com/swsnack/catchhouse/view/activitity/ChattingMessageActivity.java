@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.KeyEvent;
@@ -46,6 +47,11 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
         super.onCreate(savedInstanceState);
         init();
 
+        getBinding().tbChatMessage.setNavigationIcon(R.drawable.back_button_primary);
+        getBinding().tbChatMessage.setNavigationOnClickListener(__ ->
+                finish()
+        );
+
         if (getIntent().getParcelableExtra(USER_DATA) != null
                 && getIntent().getSerializableExtra(CHATTING_DATA) != null) {
             mViewModel.setChattingMessage((Chatting) getIntent().getSerializableExtra(CHATTING_DATA));
@@ -61,7 +67,7 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
 
         ChattingMessageAdapter messageAdapter = new ChattingMessageAdapter(getApplicationContext(), mViewModel);
         getBinding().rvChattingMessage.setAdapter(messageAdapter);
-        getBinding().rvChattingMessage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
+        getBinding().rvChattingMessage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
         getBinding().etChattingMessageContent.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {

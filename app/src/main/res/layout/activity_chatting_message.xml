@@ -15,6 +15,13 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_chat_message"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="12dp"
+            app:layout_collapseMode="pin" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
