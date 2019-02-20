@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.data.db.room.local;
+package com.swsnack.catchhouse.repository.room.local;
 
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 

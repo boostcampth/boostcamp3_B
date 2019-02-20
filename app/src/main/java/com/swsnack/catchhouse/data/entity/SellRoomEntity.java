@@ -1,6 +1,5 @@
 package com.swsnack.catchhouse.data.entity;
 
-import com.swsnack.catchhouse.data.db.room.local.TypeConverter;
 
 import java.util.List;
 
@@ -8,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
+import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
 @Entity(tableName = "my_sell_room",

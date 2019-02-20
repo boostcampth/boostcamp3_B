@@ -4,6 +4,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.skt.Tmap.TMapPOIItem;
+import com.swsnack.catchhouse.repository.room.local.LocalSellRoomDataSource;
+import com.swsnack.catchhouse.repository.room.local.SellRoomImpl;
+import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.model.Message;
@@ -33,6 +36,7 @@ public class AppDataSource implements DataSource {
     private RecentRoomDataSource mRecentRoomDataManager;
     private LocationDataSource mLocationDataSource;
     private SearchingDataSource mSearchingDataSource;
+    private LocalSellRoomDataSource mSellRoomDataManager;
 
     private AppDataSource(UserDataSource userDataSource,
                           ChattingDataSource remoteChattingDataSource,
@@ -47,6 +51,7 @@ public class AppDataSource implements DataSource {
         mRecentRoomDataManager = roomRepository;
         mLocationDataSource = locationDataSource;
         mSearchingDataSource = searchingDataSource;
+        mSellRoomDataManager = SellRoomImpl.getInstance();
     }
 
     private static AppDataSource INSTANCE;
@@ -285,5 +290,35 @@ public class AppDataSource implements DataSource {
     @Override
     public void deleteRecentRoomList() {
         mRecentRoomDataManager.deleteRecentRoomList();
+    }
+
+    @Override
+    public void setSellRoom(SellRoomEntity sellRoomEntity) {
+        mSellRoomDataManager.setSellRoom(sellRoomEntity);
+    }
+
+    @Override
+    public void deleteSellRoom(SellRoomEntity sellRoomEntity) {
+        mSellRoomDataManager.deleteSellRoom(sellRoomEntity);
+    }
+
+    @Override
+    public List<SellRoomEntity> getSellRoomList() {
+        return mSellRoomDataManager.getSellRoomList();
+    }
+
+    @Override
+    public void deleteSellRoom() {
+        mSellRoomDataManager.deleteSellRoom();
+    }
+
+    @Override
+    public SellRoomEntity getSellRoom(String key) {
+        return mSellRoomDataManager.getSellRoom(key);
+    }
+
+    @Override
+    public void updateRoom(SellRoomEntity sellRoomEntity) {
+        mSellRoomDataManager.updateRoom(sellRoomEntity);
     }
 }

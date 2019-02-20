@@ -1,14 +1,13 @@
-package com.swsnack.catchhouse.data.db.room.local;
+package com.swsnack.catchhouse.repository.room.local;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.data.db.AppDatabase;
-import com.swsnack.catchhouse.data.entity.RoomEntity;
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-public class SellRoomImpl implements LocalSellRoomDataSource{
+public class SellRoomImpl implements LocalSellRoomDataSource {
 
     private static SellRoomImpl INSTANCE;
     private SellRoomDao mRoomDao;

@@ -1,8 +1,9 @@
-package com.swsnack.catchhouse.data.db.room.local;
+package com.swsnack.catchhouse.repository.room.local;
 
 import android.os.AsyncTask;
 
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
+import com.swsnack.catchhouse.repository.room.local.SellRoomDao;
 
 import java.util.List;
 
