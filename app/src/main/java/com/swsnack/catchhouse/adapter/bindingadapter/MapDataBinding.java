@@ -42,6 +42,7 @@ import com.swsnack.catchhouse.data.model.Address;
 import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
 import java.util.List;
+
 @InverseBindingMethods({
         @InverseBindingMethod(type = SeekBar.class, attribute = "android:progress"),
 })
@@ -49,13 +50,13 @@ public class MapDataBinding {
 
     @BindingAdapter({"setAddressList"})
     public static void setAddressList(RecyclerView recyclerView, List<Address> addressList) {
-        AddressListAdapter addressListAdapter = (AddressListAdapter)recyclerView.getAdapter();
+        AddressListAdapter addressListAdapter = (AddressListAdapter) recyclerView.getAdapter();
         addressListAdapter.updateItems(addressList);
     }
 
     @BindingAdapter({"setRoomCardList"})
     public static void setRoomCardList(RecyclerView recyclerView, List<Room> roomCardList) {
-        RoomCardListAdapter roomCardListAdapter = (RoomCardListAdapter)recyclerView.getAdapter();
+        RoomCardListAdapter roomCardListAdapter = (RoomCardListAdapter) recyclerView.getAdapter();
         roomCardListAdapter.updateItems(roomCardList);
     }
 
@@ -78,9 +79,9 @@ public class MapDataBinding {
 
     @BindingAdapter("imageBitmap")
     public static void setImageBitmap(ImageView imageView, String uri) {
-        Log.v("csh","이미지들어옴"+uri);
+        Log.v("csh", "이미지들어옴" + uri);
 
-        Glide.with(AppApplication.getAppContext()).asBitmap().load(uri).apply(new RequestOptions().override(120*2,80*2).centerCrop()) // .override(320, 180).
+        Glide.with(AppApplication.getAppContext()).asBitmap().load(uri).apply(new RequestOptions().override(120 * 2, 80 * 2).centerCrop()) // .override(320, 180).
                 .listener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
@@ -93,7 +94,6 @@ public class MapDataBinding {
                         return false;
                     }
                 }).submit();
-
     }
 
     @BindingAdapter("adapter")
@@ -109,15 +109,15 @@ public class MapDataBinding {
     @BindingAdapter("isCardShow")
     public static void isCardShow(RecyclerView recyclerView, boolean cardShow) {
 
-        if(recyclerView==null)
+        if (recyclerView == null)
             return;
 
-        if(cardShow==true) {
+        if (cardShow == true) {
             recyclerView.setVisibility(View.VISIBLE);
             TranslateAnimation animate = new TranslateAnimation(
                     0,                 // fromXDelta
                     0,                 // toXDelta
-                    recyclerView.getHeight()+20,  // fromYDelta
+                    recyclerView.getHeight() + 20,  // fromYDelta
                     0);                // toYDelta
             animate.setDuration(500);
             animate.setFillAfter(true);
@@ -127,7 +127,7 @@ public class MapDataBinding {
                     0,                 // fromXDelta
                     0,                 // toXDelta
                     0,                 // fromYDelta
-                    recyclerView.getHeight()+100); // toYDelta
+                    recyclerView.getHeight() + 100); // toYDelta
             animate.setDuration(500);
             animate.setFillAfter(false);
 
@@ -151,15 +151,15 @@ public class MapDataBinding {
         }
     }
 
-    @BindingAdapter({"setNaverMapMarker","bindViewModel"})
+    @BindingAdapter({"setNaverMapMarker", "bindViewModel"})
     public static void setMarker(MapView mapView, List<Marker> markerList, SearchingViewModel viewModel) {
-        Log.v("csh","setMarker");
-        if(markerList == null || markerList.size() == 0) {
+        Log.v("csh", "setMarker");
+        if (markerList == null || markerList.size() == 0) {
             return;
         }
 
         mapView.getMapAsync(naverMap -> {
-            for(int i=0; i<markerList.size(); i++) {
+            for (int i = 0; i < markerList.size(); i++) {
 
                 Marker marker = markerList.get(i);
                 InfoWindow infoWindow = new InfoWindow();
@@ -167,8 +167,8 @@ public class MapDataBinding {
                     @NonNull
                     @Override
                     public CharSequence getText(@NonNull InfoWindow infoWindow) {
-                        Room room = (Room)infoWindow.getMarker().getTag();
-                        return room.getSize()+"평";
+                        Room room = (Room) infoWindow.getMarker().getTag();
+                        return room.getSize() + "평";
                     }
                 });
 
@@ -177,7 +177,7 @@ public class MapDataBinding {
                     @Override
                     public boolean onClick(@NonNull Overlay overlay) {
                         viewModel.onClickMarker(String.valueOf(marker.getPosition().latitude));
-                        if(marker.getInfoWindow() == null) {
+                        if (marker.getInfoWindow() == null) {
 
 
                         }
@@ -190,7 +190,7 @@ public class MapDataBinding {
                 marker.setWidth(100);
                 marker.setHeight(150);
                 infoWindow.open(marker);
-                Log.v("csh",""+marker.getPosition().latitude);
+                Log.v("csh", "" + marker.getPosition().latitude);
             }
         });
 
@@ -204,6 +204,4 @@ public class MapDataBinding {
             naverMap.moveCamera(cameraUpdate);
         });
     }
-
-
 }

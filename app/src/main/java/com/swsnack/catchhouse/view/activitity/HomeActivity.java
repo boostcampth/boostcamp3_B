@@ -16,9 +16,8 @@ import static com.google.firebase.analytics.FirebaseAnalytics.Event.SEARCH;
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
 
-    float topFirstTouchY;
+    float firstTouchY;
     float topY;
-    float bottomFirstTouchY;
     float bottomY;
     private long firstBackPressedTime;
 
@@ -28,29 +27,37 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         firstBackPressedTime = 0;
         topY = getBinding().lyTop.getY();
         bottomY = getWindowManager().getDefaultDisplay().getHeight() / 2;
-        getBinding().lyTop.setOnTouchListener(new View.OnTouchListener() {
 
+        getBinding().clRoot.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        topFirstTouchY = event.getRawY();
+                        firstTouchY = event.getRawY();
                         break;
 
                     case MotionEvent.ACTION_MOVE:
-                        if (event.getRawY() >= topFirstTouchY) {
-                            return true;
+                        if (event.getRawY() >= firstTouchY) {
+                            getBinding().lyTop.animate()
+                                    .y(firstTouchY - event.getRawY())
+                                    .setDuration(0)
+                                    .start();
+
+                            getBinding().lyBottom.animate()
+                                    .y(bottomY + (event.getRawY() - firstTouchY))
+                                    .setDuration(0)
+                                    .start();
+                        } else {
+                            getBinding().lyTop.animate()
+                                    .y(event.getRawY() - firstTouchY)
+                                    .setDuration(0)
+                                    .start();
+
+                            getBinding().lyBottom.animate()
+                                    .y(bottomY + (firstTouchY - event.getRawY()))
+                                    .setDuration(0)
+                                    .start();
                         }
-
-                        getBinding().lyTop.animate()
-                                .y(event.getRawY() - topFirstTouchY)
-                                .setDuration(0)
-                                .start();
-
-                        getBinding().lyBottom.animate()
-                                .y(bottomY + (topFirstTouchY - event.getRawY()))
-                                .setDuration(0)
-                                .start();
                         break;
                     case MotionEvent.ACTION_UP:
                         getBinding().lyTop.animate()
@@ -62,61 +69,25 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                                 .y(bottomY)
                                 .setDuration(0)
                                 .start();
-                        if (topFirstTouchY - event.getRawY() > getWindowManager().getDefaultDisplay().getHeight() / 4) {
+
+                        if (firstTouchY - event.getRawY() > getWindowManager().getDefaultDisplay().getHeight() / 3) {
+                            freezeUI();
                             Intent intent = new Intent(getApplicationContext(), BottomNavActivity.class);
                             intent.putExtra(SEARCH, SEARCH);
                             startActivity(intent);
+
                             return true;
-                        }
-                        break;
-                    default:
-                        return false;
-                }
-                return true;
-            }
-        });
-
-        getBinding().lyBottom.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        bottomFirstTouchY = event.getRawY();
-                        break;
-
-                    case MotionEvent.ACTION_MOVE:
-                        if (event.getRawY() <= bottomFirstTouchY) {
-                            return true;
-                        }
-                        getBinding().lyBottom.animate()
-                                .y(bottomY + (event.getRawY() - bottomFirstTouchY))
-                                .setDuration(0)
-                                .start();
-
-                        getBinding().lyTop.animate()
-                                .y(topY + (bottomFirstTouchY - event.getRawY()))
-                                .setDuration(0)
-                                .start();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        getBinding().lyBottom.animate()
-                                .y(bottomY)
-                                .setDuration(0)
-                                .start();
-
-                        getBinding().lyTop.animate()
-                                .y(topY)
-                                .setDuration(0)
-                                .start();
-
-                        if (event.getRawY() - bottomFirstTouchY > getWindowManager().getDefaultDisplay().getHeight() / 4) {
-                            if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+                        } else if (event.getRawY() - firstTouchY > getWindowManager().getDefaultDisplay().getHeight() / 3) {
+                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
                                 Snackbar.make(getBinding().getRoot(), R.string.not_singed, Snackbar.LENGTH_SHORT).show();
                                 return true;
                             }
+                            freezeUI();
                             startActivity(new Intent(getApplicationContext(), WriteActivity.class));
+
                             return true;
                         }
+
                         break;
                     default:
                         return false;
@@ -124,7 +95,12 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 return true;
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        unFreezeUI();
     }
 
     @Override
