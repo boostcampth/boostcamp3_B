@@ -114,6 +114,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
 
             @Override
             public boolean onQueryTextSubmit(String s) {
+                getBinding().svMap.clearFocus();
                 getViewModel().setKeyword(getBinding().svMap.getQuery().toString());
                 getViewModel().searchAddress();
                 return false;
@@ -124,6 +125,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
                 return false;
             }
         });
+
+        getBinding().svMap.setOnClickListener((v -> getViewModel().setCardShow(false)));
 
 
         adapter.setOnItemClickListener(((v, position) -> {
