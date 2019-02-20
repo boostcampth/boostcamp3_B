@@ -8,6 +8,7 @@ import android.view.View;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.skt.Tmap.TMapTapi;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.ActivityHomeBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
@@ -36,6 +37,9 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         } else {
             getBinding().btLogin.setVisibility(View.INVISIBLE);
         }
+
+        TMapTapi tApi = new TMapTapi(getApplicationContext());
+        tApi.setSKTMapAuthentication(getResources().getString(R.string.tmap_api_key));
 
         getBinding().clRoot.setOnTouchListener(new View.OnTouchListener() {
             @Override

@@ -71,6 +71,7 @@ public class AppRoomRemoteDataManager implements RoomDataManager {
             int size = byteList.size();
             int count = 0;
 
+
             for (byte[] image : byteList) {
                 StorageReference ref = fs.child(uuid + "/" + count++);
                 refs.add(ref);
@@ -87,17 +88,28 @@ public class AppRoomRemoteDataManager implements RoomDataManager {
                             downloadUrls.add(url.toString());
 
                             if (size == downloadUrls.size()) {
+                                boolean errorFlag = false;
+
                                 for (String downloadUrl : downloadUrls) {
                                     if (TextUtils.isEmpty(downloadUrl)) {
                                         for (StorageReference storageReference : refs) {
                                             storageReference.delete();
                                         }
+                                        errorFlag = true;
+                                        break;
                                     }
                                 }
-                                onSuccessListener.onSuccess(downloadUrls);
+
+                                if (errorFlag) {
+                                    onFailedListener.onFailed(new Exception("upload error"));
+                                } else {
+                                    onSuccessListener.onSuccess(downloadUrls);
+                                }
                             }
                         }
-                ).addOnFailureListener(__ -> downloadUrls.add(""));
+                ).addOnFailureListener(__ ->
+                        downloadUrls.add("")
+                );
             }
         }, onFailedListener);
     }

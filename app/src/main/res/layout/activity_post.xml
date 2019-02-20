@@ -16,406 +16,418 @@
             type="com.swsnack.catchhouse.data.model.User" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorDefaultGray"
-        android:fitsSystemWindows="true">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar_layout"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/colorDefaultGray"
             android:fitsSystemWindows="true">
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/ctl_post"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@android:color/white"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                android:fitsSystemWindows="true">
 
-                <LinearLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/ctl_post"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <androidx.viewpager.widget.ViewPager
-                        android:id="@+id/vp_post"
-                        android:layout_width="match_parent"
-                        android:layout_height="320dp"
-                        app:adapter="@{handler.room.images}" />
-
-                    <com.google.android.material.tabs.TabLayout
-                        android:id="@+id/tab_post"
-                        android:layout_width="match_parent"
-                        android:layout_height="20dp"
-                        app:tabBackground="@drawable/tab_selector"
-                        app:tabGravity="center"
-                        app:tabIndicatorHeight="0dp" />
-                </LinearLayout>
-
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/tb_post"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:elevation="12dp"
-                    app:layout_collapseMode="pin" />
-
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/ns_post_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/ly_post_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:background="@android:color/white"
-                    android:orientation="horizontal"
-                    android:padding="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <ImageView
-                        android:id="@+id/iv_post_profile"
-                        style="@style/iv.round"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:src="@drawable/profile"
-                        bind:setProfile="@{handler.mProfile}" />
-
-                    <TextView
-                        android:id="@+id/tv_post_writer"
-                        style="@style/tv.body"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="4dp"
-                        android:text="@{@string/formatted_user_info(handler.mNickName, handler.mGender)}" />
-
-                </LinearLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ly_post_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@android:color/white"
-                    android:paddingBottom="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ly_post_user">
-
-                    <TextView
-                        android:id="@+id/tv_post_title"
-                        style="@style/tv.header"
-                        android:layout_gravity="start"
-                        android:layout_margin="8dp"
-                        android:layout_marginStart="16dp"
-                        android:text="@{handler.room.title}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_post_title2"
-                        style="@style/tv.title"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
-                        android:gravity="start"
-                        android:text="@string/tv_post_price"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_post_title" />
-
-                    <TextView
-                        android:id="@+id/tv_post_price"
-                        style="@style/tv.title"
-                        android:layout_gravity="start"
-                        android:layout_marginStart="16dp"
-                        android:text="@{handler.mExpectedPrice}"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/text_header_h5"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_post_title2" />
-
-                    <TextView
-                        android:id="@+id/tv_post_period_title"
-                        style="@style/tv.body"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/tv_post_date"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_post_price" />
-
-                    <TextView
-                        android:id="@+id/tv_post_period"
-                        style="@style/tv.body"
-                        android:layout_marginStart="16dp"
-                        android:text="@{@string/formatted_period(handler.room.from, handler.room.to)}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_post_period_title" />
-
-
-                    <TextView
-                        android:id="@+id/tv_filter_option"
-                        style="@style/tv.body"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="@{handler.mOptionTag}"
-                        android:textColor="@color/colorPrimary"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_post_period" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/ly_post_room_info"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@android:color/white"
-                    android:paddingBottom="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ly_post_title">
-
-                    <TextView
-                        android:id="@+id/tv_post_post_info"
-                        style="@style/tv.title"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/tv_post_room_info"
-                        android:textColor="@color/colorOnSecondary"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/tv_post_address_title"
-                        style="@style/tv.body"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/tv_post_address"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_post_post_info" />
-
-                    <TextView
-                        android:id="@+id/tv_post_address"
-                        style="@style/tv.body"
-                        android:layout_marginStart="32dp"
-                        android:text="@{handler.room.address}"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_post_address_title"
-                        app:layout_constraintStart_toEndOf="@id/tv_post_address_title"
-                        app:layout_constraintTop_toTopOf="@id/tv_post_address_title" />
-
-                    <TextView
-                        android:id="@+id/tv_post_size_title"
-                        style="@style/tv.body"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/tv_post_size"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tv_post_address_title" />
-
-                    <TextView
-                        android:id="@+id/tv_post_size"
-                        style="@style/tv.body"
-                        android:layout_marginStart="0dp"
-                        android:text="@{@string/formatted_room_size(handler.room.size)}"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_post_size_title"
-                        app:layout_constraintStart_toStartOf="@id/tv_post_address"
-                        app:layout_constraintTop_toTopOf="@id/tv_post_size_title" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <LinearLayout
-                    android:id="@+id/ly_post_map"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:background="@android:color/white"
-                    android:orientation="vertical"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ly_post_room_info">
-
-                    <TextView
-                        style="@style/tv.title"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/tv_post_map"
-                        android:textColor="@color/colorOnSecondary"
-                        android:textStyle="bold" />
+                    android:background="@android:color/transparent"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="@android:color/white"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
                     <LinearLayout
-                        android:id="@+id/ll_post_tmap_container"
                         android:layout_width="match_parent"
-                        android:layout_height="240dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="16dp"
-                        android:orientation="vertical"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vp_post"
+                            android:layout_width="match_parent"
+                            android:layout_height="320dp"
+                            app:adapter="@{handler.room.images}" />
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tab_post"
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            app:tabBackground="@drawable/tab_selector"
+                            app:tabGravity="center"
+                            app:tabIndicatorHeight="0dp" />
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.Toolbar
+                        android:id="@+id/tb_post"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:elevation="12dp"
+                        app:layout_collapseMode="pin" />
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/ns_post_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/ly_post_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:background="@android:color/white"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/iv_post_profile"
+                            style="@style/iv.round"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:src="@drawable/profile"
+                            bind:setProfile="@{handler.mProfile}" />
+
+                        <TextView
+                            android:id="@+id/tv_post_writer"
+                            style="@style/tv.body"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="4dp"
+                            android:text="@{@string/formatted_user_info(handler.mNickName, handler.mGender)}" />
+
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ly_post_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:background="@android:color/white"
+                        android:paddingBottom="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ly_post_user">
+
+                        <TextView
+                            android:id="@+id/tv_post_title"
+                            style="@style/tv.header"
+                            android:layout_gravity="start"
+                            android:layout_margin="8dp"
+                            android:layout_marginStart="16dp"
+                            android:text="@{handler.room.title}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_post_title2"
+                            style="@style/tv.title"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="12dp"
+                            android:gravity="start"
+                            android:text="@string/tv_post_price"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_post_title" />
+
+                        <TextView
+                            android:id="@+id/tv_post_price"
+                            style="@style/tv.title"
+                            android:layout_gravity="start"
+                            android:layout_marginStart="16dp"
+                            android:text="@{handler.mExpectedPrice}"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/text_header_h5"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_post_title2" />
+
+                        <TextView
+                            android:id="@+id/tv_post_period_title"
+                            style="@style/tv.body"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/tv_post_date"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_post_price" />
+
+                        <TextView
+                            android:id="@+id/tv_post_period"
+                            style="@style/tv.body"
+                            android:layout_marginStart="16dp"
+                            android:text="@{@string/formatted_period(handler.room.from, handler.room.to)}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_post_period_title" />
+
+
+                        <TextView
+                            android:id="@+id/tv_filter_option"
+                            style="@style/tv.body"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="@{handler.mOptionTag}"
+                            android:textColor="@color/colorPrimary"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_post_period" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/ly_post_room_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:background="@android:color/white"
+                        android:paddingBottom="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ly_post_title">
+
+                        <TextView
+                            android:id="@+id/tv_post_post_info"
+                            style="@style/tv.title"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/tv_post_room_info"
+                            android:textColor="@color/colorOnSecondary"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_post_address_title"
+                            style="@style/tv.body"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/tv_post_address"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_post_post_info" />
+
+                        <TextView
+                            android:id="@+id/tv_post_address"
+                            style="@style/tv.body"
+                            android:layout_marginStart="32dp"
+                            android:text="@{handler.room.address}"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_post_address_title"
+                            app:layout_constraintStart_toEndOf="@id/tv_post_address_title"
+                            app:layout_constraintTop_toTopOf="@id/tv_post_address_title" />
+
+                        <TextView
+                            android:id="@+id/tv_post_size_title"
+                            style="@style/tv.body"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/tv_post_size"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_post_address_title" />
+
+                        <TextView
+                            android:id="@+id/tv_post_size"
+                            style="@style/tv.body"
+                            android:layout_marginStart="0dp"
+                            android:text="@{@string/formatted_room_size(handler.room.size)}"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_post_size_title"
+                            app:layout_constraintStart_toStartOf="@id/tv_post_address"
+                            app:layout_constraintTop_toTopOf="@id/tv_post_size_title" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ly_post_map"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ly_post_room_info">
+
+                        <TextView
+                            style="@style/tv.title"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/tv_post_map"
+                            android:textColor="@color/colorOnSecondary"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_post_tmap_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="240dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="16dp"
+                            android:orientation="vertical"
+                            android:paddingStart="24dp"
+                            android:paddingEnd="24dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:background="@android:color/white"
+                        android:orientation="vertical"
+                        android:paddingBottom="64dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ly_post_map">
+
+                        <TextView
+                            style="@style/tv.title"
+                            android:layout_width="wrap_content"
+
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="상세 정보"
+                            android:textColor="@color/colorOnSecondary"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_post_content"
+                            style="@style/tv.body"
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@drawable/et_round_background"
+                            android:backgroundTint="@android:color/white"
+                            android:text="@{handler.room.content}" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_gravity="bottom"
+                android:background="@android:color/white">
+
+                <LinearLayout
+                    android:id="@+id/ll_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:background="@android:color/white"
+                    android:elevation="16dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:visibility="@{safeUnbox(handler.mIsWriter)? View.GONE : View.VISIBLE, default=visible}">
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.2"
+                        android:onClick="@{handler::addOrRemoveFavoriteRoom}"
+                        android:src="@drawable/favorite_default"
+                        bind:isFavorite="@{handler.isFavorite}" />
+
+                    <ImageView
+                        android:layout_width="1dp"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:background="@color/colorDefaultGray"
+                        android:src="@drawable/divider" />
+
+                    <TextView
+                        style="@style/tv.body"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.4"
+                        android:gravity="center"
+                        android:text="@{@string/formatted_period_bottom(handler.room.from, handler.room.to)}"
+                        android:textSize="12sp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/tv_post_chatting"
+                        style="@style/btn.accent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="0.4"
+                        android:text="@string/tv_post_chatting"
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_post_writer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
                     android:background="@android:color/white"
-                    android:orientation="vertical"
-                    android:paddingBottom="64dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ly_post_map">
+                    android:elevation="16dp"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:visibility="@{safeUnbox(handler.mIsWriter)? View.VISIBLE : View.GONE, default=gone}">
 
-                    <TextView
-                        style="@style/tv.title"
-                        android:layout_width="wrap_content"
-
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/bt_post_modify"
+                        style="@style/btn.accent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="16dp"
-                        android:text="상세 정보"
-                        android:textColor="@color/colorOnSecondary"
-                        android:textStyle="bold" />
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="0.5"
+                        android:text="@string/btn_modify"
+                        android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/tv_post_content"
-                        style="@style/tv.body"
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/bt_post_delete"
+                        style="@style/btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:background="@drawable/et_round_background"
-                        android:backgroundTint="@android:color/white"
-                        android:text="@{handler.room.content}" />
-
+                        android:layout_marginEnd="16dp"
+                        android:layout_weight="0.5"
+                        android:onClick="@{handler::onClickDeleteButton}"
+                        android:text="@string/btn_delete"
+                        android:textSize="12sp" />
                 </LinearLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_gravity="bottom"
-            android:background="@android:color/white">
-
-            <LinearLayout
-                android:id="@+id/ll_post"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:background="@android:color/white"
-                android:elevation="16dp"
-                android:gravity="bottom"
-                android:orientation="horizontal"
-                android:visibility="@{safeUnbox(handler.mIsWriter)? View.GONE : View.VISIBLE, default=visible}">
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.2"
-                    android:onClick="@{handler::addOrRemoveFavoriteRoom}"
-                    android:src="@drawable/favorite_default"
-                    bind:isFavorite="@{handler.isFavorite}" />
-
-                <ImageView
-                    android:layout_width="1dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="center"
-                    android:background="@color/colorDefaultGray"
-                    android:src="@drawable/divider" />
-
-                <TextView
-                    style="@style/tv.body"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="0.4"
-                    android:gravity="center"
-                    android:text="@{@string/formatted_period_bottom(handler.room.from, handler.room.to)}"
-                    android:textSize="12sp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/tv_post_chatting"
-                    style="@style/btn.accent"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="0.4"
-                    android:text="@string/tv_post_chatting"
-                    android:textSize="12sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_post_writer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:background="@android:color/white"
-                android:elevation="16dp"
-                android:gravity="bottom"
-                android:orientation="horizontal"
-                android:visibility="@{safeUnbox(handler.mIsWriter)? View.VISIBLE : View.GONE, default=gone}">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bt_post_modify"
-                    style="@style/btn.accent"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="0.5"
-                    android:text="@string/btn_modify"
-                    android:textSize="12sp" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/bt_post_delete"
-                    style="@style/btn"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_weight="0.5"
-                    android:onClick="@{handler::onClickDeleteButton}"
-                    android:text="@string/btn_delete"
-                    android:textSize="12sp" />
-            </LinearLayout>
-        </FrameLayout>
+            </FrameLayout>
 
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <ProgressBar
+            android:id="@+id/pg_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+    </FrameLayout>
 </layout>

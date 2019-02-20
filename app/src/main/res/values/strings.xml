@@ -106,6 +106,7 @@
     <string name="empty_room_size_error">방 크기를 입력해주세요.</string>
     <string name="empty_title_error">글의 제목을 정해주세요.</string>
     <string name="no_selection_date_error">기간을 설정을 확인해주세요.</string>
+    <string name="db_network_error">네트워크가 불안정합니다. 다시 시도해 주세요.</string>
 
     /* fragment_address_search */
     <string name="fr_address_title">주소 찾기</string>
