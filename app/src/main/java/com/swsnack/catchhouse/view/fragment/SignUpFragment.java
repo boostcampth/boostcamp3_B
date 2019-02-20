@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentSignUpBinding;
+import com.swsnack.catchhouse.util.KeyboardUtil;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.yalantis.ucrop.UCrop;
@@ -58,6 +59,11 @@ public class SignUpFragment extends BaseFragment<FragmentSignUpBinding, UserView
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
             startActivityForResult(intent, GALLERY);
+        });
+
+        getBinding().btSignUp.setOnClickListener(v -> {
+            mViewModel.signUpWithEmail(v);
+            KeyboardUtil.keyBoardClose(getActivity());
         });
     }
 

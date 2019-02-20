@@ -21,6 +21,7 @@ import com.swsnack.catchhouse.databinding.ActivityWriteBinding;
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.AppDataSource;
 import com.swsnack.catchhouse.util.DateCalculator;
+import com.swsnack.catchhouse.util.KeyboardUtil;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.AddressSearchFragment;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
@@ -276,6 +277,9 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         );
 
         /* post button */
-        getBinding().tvWritePost.setOnClickListener(__ -> mViewModel.onClickPost());
+        getBinding().tvWritePost.setOnClickListener(__ -> {
+            mViewModel.onClickPost();
+            KeyboardUtil.keyBoardClose(this);
+        });
     }
 }

@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -21,6 +22,7 @@ import android.widget.SeekBar;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentFilterBinding;
+import com.swsnack.catchhouse.util.KeyboardUtil;
 import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
 import java.text.DecimalFormat;
@@ -65,8 +67,25 @@ public class FilterFragment extends DialogFragment {
             mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             updateDate(v);
         };
-        mBinding.etFilterDateFrom.setOnClickListener(this::onClickEditText);
-        mBinding.etFilterDateTo.setOnClickListener(this::onClickEditText);
+
+        mBinding.etFilterDateFrom.setKeyListener(null);
+        mBinding.etFilterDateTo.setKeyListener(null);
+        mBinding.etFilterDateFrom.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                v.performClick();
+                onClickEditText(v);
+            }
+            return false;
+        });
+
+        mBinding.etFilterDateTo.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                v.performClick();
+                onClickEditText(v);
+            }
+            return false;
+        });
+
         mBinding.etFilterPriceFrom.setOnFocusChangeListener(this::onFocusChange);
         mBinding.etFilterPriceTo.setOnFocusChangeListener(this::onFocusChange);
 
@@ -118,6 +137,7 @@ public class FilterFragment extends DialogFragment {
             //mViewModel.mFilterUpdate.setValue(true);
             mViewModel.onUpdateMap();
             dismiss();
+            KeyboardUtil.keyBoardClose(getActivity());
         });
     }
 

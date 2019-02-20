@@ -1,22 +1,24 @@
 package com.swsnack.catchhouse.view.fragment;
 
-import androidx.lifecycle.ViewModelProviders;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
-import com.swsnack.catchhouse.databinding.FragmentAddressSearchBinding;
 import com.swsnack.catchhouse.adapter.SimpleDividerItemDecoration;
+import com.swsnack.catchhouse.databinding.FragmentAddressSearchBinding;
+import com.swsnack.catchhouse.util.KeyboardUtil;
 import com.swsnack.catchhouse.viewmodel.roomsviewmodel.RoomsViewModel;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class AddressSearchFragment extends DialogFragment {
 
@@ -45,7 +47,7 @@ public class AddressSearchFragment extends DialogFragment {
 
         /* recycler view set */
         mBinding.rvAddress.setLayoutManager(new LinearLayoutManager(getContext(),
-                LinearLayout.VERTICAL, false));
+                RecyclerView.VERTICAL, false));
         mBinding.rvAddress.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         mBinding.rvAddress.setAdapter(new AddressListAdapter(getActivity()));
 
@@ -55,8 +57,9 @@ public class AddressSearchFragment extends DialogFragment {
                     this.dismiss();
                 });
 
-        mBinding.tvAddressSearch.setOnClickListener(__ ->
-                mViewModel.onSearchAddress(mBinding.etAddressKeyword.getText().toString())
-        );
+        mBinding.tvAddressSearch.setOnClickListener(__ -> {
+            mViewModel.onSearchAddress(mBinding.etAddressKeyword.getText().toString());
+            KeyboardUtil.keyBoardClose(getActivity());
+        });
     }
 }

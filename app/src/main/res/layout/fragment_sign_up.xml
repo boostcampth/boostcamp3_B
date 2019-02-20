@@ -141,6 +141,7 @@
             </RadioGroup>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/bt_sign_up"
                 style="@style/btn.accent"
                 android:layout_width="0dp"
                 android:onClick="@{handler::signUpWithEmail}"
