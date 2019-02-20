@@ -21,11 +21,12 @@
             android:id="@+id/bottom_my_page_recent_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/white"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:paddingBottom="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@android:color/white">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/tv_my_page_recently_visit_title"
@@ -33,14 +34,6 @@
                 android:text="@string/recently_visit_title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_my_page_recently_visit_sub_title"
-                style="@style/tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/not_singed" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_my_page_recently_visit"
@@ -57,41 +50,67 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/bottom_my_page_favorite_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/bottom_my_page_recent_container"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginTop="4dp"
-            android:background="@android:color/white">
-
-            <TextView
-            android:id="@+id/tv_my_page_my_favorite_title"
-            style="@style/tv.title"
-            android:text="@string/my_favorite_title"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rv_my_page_recently_visit" />
+            app:layout_constraintTop_toBottomOf="@id/bottom_my_page_recent_container">
 
             <TextView
-            android:id="@+id/tv_my_page_my_favorite_sub_title"
-            style="@style/tv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/not_singed" />
+                android:id="@+id/tv_my_page_my_favorite_title"
+                style="@style/tv.title"
+                android:text="@string/my_favorite_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_my_page_recently_visit" />
+
 
             <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_my_page_my_favorite"
+                android:id="@+id/rv_my_page_my_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="@{safeUnbox(handler.mIsSigned)? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_my_page_my_favorite_title"
+                bind:setFavoriteRoom="@{handler.favoriteRoomList}" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="@{safeUnbox(handler.mIsSigned)? View.VISIBLE : View.GONE, default=gone}"
+            android:layout_marginTop="4dp"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_my_page_my_favorite_title"
-            bind:setFavoriteRoom="@{handler.favoriteRoomList}" />
+            app:layout_constraintTop_toBottomOf="@id/bottom_my_page_favorite_container">
+
+            <TextView
+                android:id="@+id/tv_my_page_my_sell_title"
+                style="@style/tv.title"
+                android:text="@string/my_page_sell_list"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rv_my_page_recently_visit" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_my_page_my_sell"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="@{safeUnbox(handler.mIsSigned)? View.VISIBLE : View.GONE, default=gone}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_my_page_my_favorite_title"
+                bind:setSellList="@{handler.sellRoomList}" />
 
         </LinearLayout>
 

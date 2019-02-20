@@ -19,6 +19,10 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
+import com.swsnack.catchhouse.data.APIManager;
+import com.swsnack.catchhouse.data.DataManager;
+import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.repository.APIManager;
@@ -49,6 +53,7 @@ public class UserViewModel extends ReactiveViewModel {
     private ViewModelListener mListener;
     private Uri mProfileUri;
     private MutableLiveData<List<Room>> mFavoriteRoomList;
+    private MutableLiveData<List<SellRoomEntity>> mSellRoomList;
     private MutableLiveData<List<Room>> mRecentRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
@@ -61,6 +66,7 @@ public class UserViewModel extends ReactiveViewModel {
     UserViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         this.mAppContext = application;
+        this.mSellRoomList = new MutableLiveData<>();
         this.mFavoriteRoomList = new MutableLiveData<>();
         this.mRecentRoomList = new MutableLiveData<>();
         this.mUser = new MutableLiveData<>();
@@ -280,6 +286,9 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
     }
 
+    public void getSellRoom() {
+        mSellRoomList.setValue(getDataManager().getSellRoomList());
+    }
     public void getFavoriteRoom() {
         mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
     }
@@ -298,5 +307,9 @@ public class UserViewModel extends ReactiveViewModel {
 
     public LiveData<List<Room>> getRecentRoomList() {
         return mRecentRoomList;
+    }
+
+    public LiveData<List<SellRoomEntity>> getSellRoomList() {
+        return mSellRoomList;
     }
 }
