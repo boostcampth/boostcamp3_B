@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.view.fragment;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -49,12 +50,14 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        Log.v("csh","onCreateView");
         return getBinding().getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @androidx.annotation.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.v("csh","onViewCreated");
         getBinding().nmMap.onCreate(savedInstanceState);
 
         mFragmentManager = getActivity().getSupportFragmentManager();
@@ -80,26 +83,21 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
 
         getBinding().nmMap.getMapAsync(getViewModel());
 
+        getBinding().fbMapFilter.setColorFilter(ContextCompat.getColor(getContext(),R.color.colorBottomNavDefault));
 
-        getBinding().nmMap.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if(getViewModel().isCardShow().getValue() == true) {
-                            getViewModel().setCardShow(false);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-
-
-
-                        break;
-                }
-                return false;
+        getBinding().nmMap.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if(getViewModel().isCardShow().getValue() == true) {
+                        getViewModel().setCardShow(false);
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    break;
             }
+            return false;
         });
 
         getBinding().fbMapFilter.setOnClickListener(new View.OnClickListener() {
@@ -109,21 +107,34 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
             }
         });
 
-
         getBinding().svMap.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String s) {
+                getBinding().svMap.clearFocus();
                 getViewModel().setKeyword(getBinding().svMap.getQuery().toString());
                 getViewModel().searchAddress();
+                getBinding().svMap.setQuery("",false);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                if(s.length() == 0) {
+                    getBinding().rvMapAddress.setVisibility(View.GONE);
+                }
+                if(getViewModel().isShowingCardView().getValue() == true) {
+                    getViewModel().setCardShow(false);
+                }
                 return false;
             }
         });
+
+        getBinding().svMap.setOnCloseListener(() -> {
+            getBinding().rvMapAddress.setVisibility(View.GONE);
+            return true;
+        });
+
 
 
         adapter.setOnItemClickListener(((v, position) -> {
@@ -140,7 +151,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
         getBinding().fbMapFilter.setOnClickListener(v -> {
             new FilterFragment().show(mFragmentManager, "address selection");
         });
-
     }
 
     /*

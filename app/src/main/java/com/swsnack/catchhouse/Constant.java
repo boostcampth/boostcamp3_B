@@ -101,6 +101,7 @@ public class Constant {
         String UPDATE_PASSWORD_SUCCESS = "updatePasswordSuccess";
         String UPDATE_PROFILE_SUCCESS = "updateProfileSuccess";
         String SEND_MESSAGE_SUCCESS = "sendMessageSuccess";
+        String SEARCH_SUCCESS = "searchSuccess";
     }
 
     //magic constant
