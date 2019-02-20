@@ -168,6 +168,9 @@ public class PostViewModel extends ReactiveViewModel {
     }
 
     private boolean checkIsWriter(String uuid) {
+        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return false;
+        }
         String myKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         return TextUtils.equals(uuid, myKey);
