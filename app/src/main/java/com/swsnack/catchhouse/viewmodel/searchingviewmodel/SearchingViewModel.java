@@ -169,8 +169,6 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                     Log.v("csh", "Single Success");
                     mRoomList.postValue(roomDataList);
 
-                    Toast.makeText(mAppContext, "검색 완료", Toast.LENGTH_SHORT).show();
-
                     Log.v("csh", "test:" + mRoomCardList.getValue());
 
 

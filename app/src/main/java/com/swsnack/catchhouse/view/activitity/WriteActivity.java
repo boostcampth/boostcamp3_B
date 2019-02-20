@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.ViewModelProviders;
 
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
@@ -34,10 +38,8 @@ import static com.swsnack.catchhouse.Constant.RequestCode.PICK_IMAGE_MULTIPLE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;
-import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NETWORK;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_ADDRESS;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_DATE;
-import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_IMAGE;
 
 public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
@@ -48,7 +50,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
         super.onCreate(savedInstanceState);
 
         createViewModels();
-
 
         /* check modify mode */
         Room room = getIntent().getParcelableExtra(INTENT_ROOM);
@@ -77,16 +78,6 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
         switch (errorMessage) {
 
-            case ERROR_NO_SELECTION_IMAGE:
-                Snackbar.make(getBinding().getRoot(), getString(R.string.empty_image_error)
-                        , Snackbar.LENGTH_SHORT).show();
-                break;
-
-            case ERROR_NETWORK:
-                Snackbar.make(getBinding().getRoot(), getString(R.string.network_error)
-                        , Snackbar.LENGTH_SHORT).show();
-                break;
-
             case ERROR_EMPTY_PRICE:
                 getBinding().etWriteValue.setError(getString(R.string.empty_price_error));
                 getBinding().etWriteValue.requestFocus();
@@ -112,18 +103,23 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
                 getBinding().etWriteTitle.setError(getString(R.string.empty_title_error));
                 getBinding().etWriteTitle.requestFocus();
                 break;
+
+            default:
+                Snackbar.make(getBinding().getRoot(), errorMessage
+                        , Snackbar.LENGTH_SHORT).show();
         }
     }
 
     @Override
     public void isWorking() {
         super.isWorking();
-
+        getBinding().pgWrite.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void isFinished() {
         super.isFinished();
+        getBinding().pgWrite.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -229,7 +225,9 @@ public class WriteActivity extends BaseActivity<ActivityWriteBinding> {
 
     private void setClickListener() {
         /* back button */
-        getBinding().tbWrite.setNavigationIcon(R.drawable.back_button_primary);
+        Drawable upArrow = ResourcesCompat.getDrawable(getResources(), R.drawable.back_button_primary, null);
+        upArrow.setColorFilter(Color.parseColor("#000000"), PorterDuff.Mode.SRC_ATOP);
+        getBinding().tbWrite.setNavigationIcon(upArrow);
         getBinding().tbWrite.setNavigationOnClickListener(__ ->
                 finish()
         );

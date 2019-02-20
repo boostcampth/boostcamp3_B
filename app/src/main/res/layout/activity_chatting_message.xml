@@ -4,7 +4,6 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="handler"
             type="com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel" />
@@ -14,6 +13,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tb_chat_message"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/white"
+                android:elevation="12dp"
+                app:layout_collapseMode="pin">
+
+                <TextView
+                    style="@style/tv.title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@{handler.getDestinationUserData.nickName}" />
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,8 +50,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 bind:setChattingMessage="@{handler.chattingMessage}"
-                bind:setUserData="@{handler.getDestinationUserData}">
-            </androidx.recyclerview.widget.RecyclerView>
+                bind:setUserData="@{handler.getDestinationUserData}" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/cd_chatting_message_layout"

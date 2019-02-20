@@ -1,15 +1,8 @@
 package com.swsnack.catchhouse.adapter.bindingadapter;
 
-import androidx.annotation.NonNull;
-import androidx.databinding.BindingAdapter;
-import androidx.databinding.InverseBindingMethod;
-import androidx.databinding.InverseBindingMethods;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +10,12 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
@@ -34,25 +24,28 @@ import com.naver.maps.geometry.LatLngBounds;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
-import com.naver.maps.map.MapFragment;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.overlay.CircleOverlay;
 import com.naver.maps.map.overlay.InfoWindow;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
-import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.MarkerIcons;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.AddressListAdapter;
 import com.swsnack.catchhouse.adapter.RoomCardListAdapter;
-import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.data.model.RoomCard;
 import com.swsnack.catchhouse.data.model.Address;
+import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.view.activitity.PostActivity;
 import com.swsnack.catchhouse.viewmodel.searchingviewmodel.SearchingViewModel;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.InverseBindingMethod;
+import androidx.databinding.InverseBindingMethods;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.swsnack.catchhouse.Constant.INTENT_ROOM;
 
@@ -107,7 +100,6 @@ public class MapDataBinding {
                         return false;
                     }
                 }).submit();
-
     }
 
     @BindingAdapter("adapter")
@@ -121,14 +113,15 @@ public class MapDataBinding {
     }
 
     // @BindingAdapter("isCardShow")
-    @BindingAdapter({"isCardShow","bindViewModel"})
+    @BindingAdapter({"isCardShow", "bindViewModel"})
     public static void isCardShow(RecyclerView recyclerView, boolean cardShow, SearchingViewModel viewModel) {
 
         if (recyclerView == null)
             return;
 
         if (cardShow == true) {
-            Log.v("csh","true");
+
+            Log.v("csh", "true");
             recyclerView.setVisibility(View.VISIBLE);
             TranslateAnimation animate = new TranslateAnimation(
                     0,                 // fromXDelta
@@ -139,7 +132,7 @@ public class MapDataBinding {
             animate.setFillAfter(true);
             recyclerView.startAnimation(animate);
         } else {
-            Log.v("csh","false");
+            Log.v("csh", "false");
             TranslateAnimation animate = new TranslateAnimation(
                     0,                 // fromXDelta
                     0,                 // toXDelta
@@ -202,19 +195,19 @@ public class MapDataBinding {
                     protected View getContentView(@NonNull InfoWindow infoWindow) {
 
                         //Typeface typeface = getContext().getResources().getFont(R.font.youth);
-                       // textView.setTypeface(typeface);
+                        // textView.setTypeface(typeface);
 
-                        Room room = (Room)marker.getTag();
+                        Room room = (Room) marker.getTag();
 
-                        LayoutInflater layoutInflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                         View view = layoutInflater.inflate(R.layout.item_map_selected, null);
                         TextView address = view.findViewById(R.id.tv_selected_address);
                         TextView size = view.findViewById(R.id.tv_selected_size);
                         TextView date = view.findViewById(R.id.tv_selected_date);
 
                         address.setText(room.getAddress());
-                        size.setText(room.getSize()+"평");
-                        date.setText(room.getFrom().substring(2)+" ~ "+room.getTo().substring(2));
+                        size.setText(room.getSize() + "평");
+                        date.setText(room.getFrom().substring(2) + " ~ " + room.getTo().substring(2));
                         infoWindow.setOnClickListener(new Overlay.OnClickListener() {
                             @Override
                             public boolean onClick(@NonNull Overlay overlay) {
@@ -233,8 +226,9 @@ public class MapDataBinding {
                 marker.setOnClickListener(new Overlay.OnClickListener() {
                     @Override
                     public boolean onClick(@NonNull Overlay overlay) {
+
                         viewModel.onClickMarker(marker, infoWindow);
-                        CameraUpdate cameraUpdate = CameraUpdate.toCameraPosition(new CameraPosition(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude),15));
+                        CameraUpdate cameraUpdate = CameraUpdate.toCameraPosition(new CameraPosition(new LatLng(marker.getPosition().latitude, marker.getPosition().longitude), 15));
                         cameraUpdate.animate(CameraAnimation.Fly);
                         naverMap.moveCamera(cameraUpdate);
                         infoWindow.open(marker);
@@ -267,14 +261,14 @@ public class MapDataBinding {
 
     @BindingAdapter("setPosition")
     public static void setPosition(MapView mapView, LatLngBounds pos) {
-        if(pos == null) {
+        if (pos == null) {
             return;
         }
         mapView.getMapAsync(naverMap -> {
             //CameraUpdate cameraUpdate = CameraUpdate.scrollTo(pos);
-            Log.v("csh","setPosition!!!!!!!!!!!!");
+            Log.v("csh", "setPosition!!!!!!!!!!!!");
 
-            CameraUpdate cameraUpdate = CameraUpdate.fitBounds(pos,500);
+            CameraUpdate cameraUpdate = CameraUpdate.fitBounds(pos, 500);
 
 
             cameraUpdate.animate(CameraAnimation.Easing);
@@ -282,6 +276,4 @@ public class MapDataBinding {
 
         });
     }
-
-
 }

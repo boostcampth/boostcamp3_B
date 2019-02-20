@@ -1,14 +1,7 @@
 package com.swsnack.catchhouse.view.activitity;
 
-import androidx.lifecycle.ViewModelProviders;
-
 import android.os.Bundle;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.LinearLayout;
 
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.chattingadapter.ChattingMessageAdapter;
@@ -17,6 +10,10 @@ import com.swsnack.catchhouse.databinding.ActivityChattingMessageBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModelFactory;
+
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
@@ -61,7 +58,7 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
 
         ChattingMessageAdapter messageAdapter = new ChattingMessageAdapter(getApplicationContext(), mViewModel);
         getBinding().rvChattingMessage.setAdapter(messageAdapter);
-        getBinding().rvChattingMessage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayout.VERTICAL, false));
+        getBinding().rvChattingMessage.setLayoutManager(new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false));
 
         getBinding().etChattingMessageContent.setOnKeyListener((v, keyCode, event) -> {
             if ((event.getAction() == KeyEvent.ACTION_DOWN) && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -73,6 +70,14 @@ public class ChattingMessageActivity extends BaseActivity<ActivityChattingMessag
             }
             return false;
         });
+
+        setSupportActionBar(getBinding().tbChatMessage);
+        getBinding().tbChatMessage.setNavigationIcon(R.drawable.back_button_primary);
+        getBinding().tbChatMessage.setNavigationOnClickListener(__ ->
+                finish()
+        );
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
 
     @Override

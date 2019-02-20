@@ -5,8 +5,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:background="@android:color/black"
         android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="12dp"
+            app:layout_collapseMode="pin" />
 
         <com.swsnack.catchhouse.view.custom.PhotoViewPager
             android:id="@+id/vp_photo"

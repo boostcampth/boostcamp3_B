@@ -19,6 +19,7 @@ public abstract class BaseViewPagerAdapter<T, VM> extends PagerAdapter {
 
     public void setItem(List<T> items) {
         mList = items;
+        notifyDataSetChanged();
     }
 
     @Override

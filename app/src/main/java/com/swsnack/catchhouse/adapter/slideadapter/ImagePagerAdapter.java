@@ -1,5 +1,6 @@
 package com.swsnack.catchhouse.adapter.slideadapter;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,28 +12,30 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.signature.ObjectKey;
+import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseViewPagerAdapter;
 import com.swsnack.catchhouse.databinding.ItemImagePagerBinding;
-import com.swsnack.catchhouse.view.fragment.PhotoViewFragment;
-import com.swsnack.catchhouse.view.fragment.SignUpFragment;
+import com.swsnack.catchhouse.view.activitity.PhotoViewActivity;
 import com.swsnack.catchhouse.viewmodel.postviewmodel.PostViewModel;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 
+import static com.swsnack.catchhouse.Constant.ParcelableData.IMAGE_LIST_DATA;
+import static com.swsnack.catchhouse.Constant.ParcelableData.VIEWPAGER_CURRENT_POSITION;
+
 public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewModel> {
 
-    private FragmentManager mFragmentManager;
+    private AppApplication mAppApplication;
 
     public ImagePagerAdapter(PostViewModel postViewModel, FragmentManager fragmentManager) {
         super(postViewModel);
-        mFragmentManager = fragmentManager;
+        mAppApplication = AppApplication.getAppContext();
     }
 
     @NonNull
@@ -73,13 +76,13 @@ public class ImagePagerAdapter extends BaseViewPagerAdapter<String, PostViewMode
                 )
                 .into(binding.ivImagePager);
 
-//        binding.ivImagePager.setOnClickListener(v ->
-//                mFragmentManager
-//                        .beginTransaction()
-//                        .replace(R.id.fl_post_container, new PhotoViewFragment())
-//                        .addToBackStack("")
-//                        .commit()
-//        );
+        binding.ivImagePager.setOnClickListener(v -> {
+                    Intent intent = new Intent(mAppApplication, PhotoViewActivity.class);
+                    intent.putStringArrayListExtra(IMAGE_LIST_DATA, (ArrayList<String>) mList);
+                    intent.putExtra(VIEWPAGER_CURRENT_POSITION, position);
+                    mAppApplication.startActivity(intent);
+                }
+        );
 
         container.addView(binding.getRoot());
         return binding.getRoot();

@@ -74,6 +74,7 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
     private void viewInit() {
         Room room = getIntent().getParcelableExtra(INTENT_ROOM);
 
+        /* 삭제된 글인지 확인 */
         if (room.isDeleted()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(getString(R.string.dl_deleted_post))
@@ -164,6 +165,12 @@ public class PostActivity extends BaseActivity<ActivityPostBinding> {
                 }
         );
 
+        getBinding().vpPost.setOnClickListener(__ -> {
+                    Intent intent = new Intent(this, PhotoViewActivity.class);
+                    intent.putExtra(INTENT_ROOM, mViewModel.room.getValue());
+                    startActivity(intent);
+                }
+        );
     }
 
     private void createViewModels() {

@@ -36,4 +36,5 @@
         android:layout_marginTop="5dp"
         android:text="기간"
         android:textSize="12sp" />
+
 </LinearLayout>

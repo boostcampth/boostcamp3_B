@@ -41,11 +41,6 @@ public class PostViewModel extends ReactiveViewModel {
         mListener = listener;
     }
 
-    //TODO: 1
-    public void deleteMyPost() {
-
-    }
-
     private void getProfileFromUri(Uri uri) {
         mListener.isWorking();
         getDataManager()

@@ -28,7 +28,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_PRICE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_ROOM_SIZE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_EMPTY_TITLE;
-import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NETWORK;
+
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_ADDRESS;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_DATE;
 import static com.swsnack.catchhouse.Constant.WriteException.ERROR_NO_SELECTION_IMAGE;
@@ -106,7 +106,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                             mListener.isFinished();
                         }
                         , exception ->
-                                mListener.onError("error")
+                                mListener.onError(mAppContext.getString(R.string.network_error))
                 )
         );
     }
@@ -134,7 +134,7 @@ public class RoomsViewModel extends ReactiveViewModel {
 
         OnFailedListener errorHandler = error -> {
             mListener.isFinished();
-            mListener.onError(ERROR_NETWORK);
+            mListener.onError(mAppContext.getString(R.string.network_error));
         };
 
         if (TextUtils.isEmpty(myKey)) {

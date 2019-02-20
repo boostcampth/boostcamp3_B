@@ -33,7 +33,7 @@ import androidx.viewpager.widget.ViewPager;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-import static com.google.firebase.analytics.FirebaseAnalytics.Event.SEARCH;
+import static com.swsnack.catchhouse.Constant.ParcelableData.BOTTOM_NAVIGATION_POSITION;
 
 public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
@@ -56,16 +56,20 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
             case Constant.SuccessKey.SIGN_IN_SUCCESS:
                 /*handle here : when sign in success replace fragment to my page*/
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new MyPageFragment(), MyPageFragment.class.getName()).commit();
+                getBinding().vpBottomNav.setCurrentItem(0);
                 break;
             case Constant.SuccessKey.SIGN_OUT_SUCCESS:
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                getBinding().vpBottomNav.setCurrentItem(0);
                 break;
             case Constant.SuccessKey.DELETE_USER_SUCCESS:
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                getBinding().vpBottomNav.setCurrentItem(0);
                 break;
             case Constant.SuccessKey.UPDATE_PASSWORD_SUCCESS:
                 showSnackMessage(getString(R.string.snack_re_sign_in));
                 mFragmentManager.beginTransaction().replace(R.id.fl_sign_container, new SignInFragment(), SignInFragment.class.getName()).commit();
+                getBinding().vpBottomNav.setCurrentItem(0);
                 break;
             case Constant.SuccessKey.UPDATE_PROFILE_SUCCESS:
                 showSnackMessage(getString(R.string.snack_update_profile_success));
@@ -103,10 +107,6 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
             onNavItemSelected(v);
             return true;
         });
-
-        TMapTapi tApi = new TMapTapi(getApplicationContext());
-        tApi.setSKTMapAuthentication(getResources().getString(R.string.tmap_api_key));
-
     }
 
     private void createViewModels() {
@@ -186,10 +186,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
             }
         });
+
         viewPagerAdapter.setItems(list);
-        if (getIntent().getStringExtra(SEARCH) != null) {
-            getBinding().vpBottomNav.setCurrentItem(1);
-        }
+        int position = getIntent().getIntExtra(BOTTOM_NAVIGATION_POSITION, 1);
+        getBinding().vpBottomNav.setCurrentItem(position);
     }
 
     public void setViewPagerListener(OnViewPagerChangedListener onViewPagerChangedListener) {
