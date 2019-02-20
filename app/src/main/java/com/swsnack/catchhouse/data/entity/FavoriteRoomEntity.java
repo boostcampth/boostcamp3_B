@@ -15,7 +15,7 @@ import static com.swsnack.catchhouse.Constant.DatabaseKey.ROOM_TABLE;
 @Entity(tableName = ROOM_TABLE,
         primaryKeys = {"room_uid", "firebaseUuid"},
         indices = {@Index(value = {"room_uid"})})
-public class RoomEntity {
+public class FavoriteRoomEntity {
 
     @ColumnInfo(name = "room_uid")
     @NonNull
@@ -42,24 +42,24 @@ public class RoomEntity {
     private double longitude;
     private boolean isDeleted;
 
-    public RoomEntity(@NonNull String roomUid,
-                      String price,
-                      String from,
-                      String to,
-                      String title,
-                      String content,
-                      List<String> images,
-                      String uuid,
-                      String address,
-                      String addressName,
-                      String size,
-                      boolean optionStandard,
-                      boolean optionGender,
-                      boolean optionPet,
-                      boolean optionSmoking,
-                      double latitude,
-                      double longitude,
-                      boolean isDeleted) {
+    public FavoriteRoomEntity(@NonNull String roomUid,
+                              String price,
+                              String from,
+                              String to,
+                              String title,
+                              String content,
+                              List<String> images,
+                              String uuid,
+                              String address,
+                              String addressName,
+                              String size,
+                              boolean optionStandard,
+                              boolean optionGender,
+                              boolean optionPet,
+                              boolean optionSmoking,
+                              double latitude,
+                              double longitude,
+                              boolean isDeleted) {
 
         this.roomUid = roomUid;
         this.price = price;

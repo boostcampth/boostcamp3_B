@@ -157,7 +157,7 @@ public class PostViewModel extends ReactiveViewModel {
         Room deletingRoom = room.getValue();
         deletingRoom.setDeleted(true);
 
-        getDataManager().setRoom(deletingRoom.getKey(), deletingRoom,
+        getDataManager().delete(deletingRoom.getKey(), deletingRoom,
                 __ -> mListener.onSuccess(""),
                 error -> mListener.onError(error.getMessage())
         );

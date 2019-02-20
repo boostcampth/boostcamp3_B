@@ -9,7 +9,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.roomadapter.RoomListAdapter;
-import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.ArrayList;
@@ -73,40 +72,17 @@ public class UserDataBinding {
     }
 
     @BindingAdapter({"setSellList"})
-    public static void setSellRoom(RecyclerView recyclerView, List<SellRoomEntity> roomEntityList) {
+    public static void setSellRoom(RecyclerView recyclerView, List<Room> roomList) {
         RoomListAdapter roomListAdapter = (RoomListAdapter) recyclerView.getAdapter();
 
         if(roomListAdapter == null) {
             return;
         }
 
-        if(roomEntityList == null) {
+        if(roomList == null) {
             roomListAdapter.setList(new ArrayList<>());
             return;
         }
-
-        List<Room> roomList = new ArrayList<>();
-        for(SellRoomEntity roomEntity : roomEntityList) {
-            roomList.add(new Room(roomEntity.getRoomUid(),
-                    roomEntity.getPrice(),
-                    roomEntity.getFrom(),
-                    roomEntity.getTo(),
-                    roomEntity.getTitle(),
-                    roomEntity.getContent(),
-                    roomEntity.getImages(),
-                    roomEntity.getUuid(),
-                    roomEntity.getAddress(),
-                    roomEntity.getAddressName(),
-                    roomEntity.getSize(),
-                    roomEntity.isOptionStandard(),
-                    roomEntity.isOptionGender(),
-                    roomEntity.isOptionPet(),
-                    roomEntity.isOptionSmoking(),
-                    roomEntity.getLatitude(),
-                    roomEntity.getLongitude(),
-                    false));
-        }
-
         roomListAdapter.setList(roomList);
         recyclerView.scrollToPosition(0);
     }

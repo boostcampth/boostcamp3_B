@@ -15,20 +15,20 @@ import androidx.room.Update;
 public interface SellRoomDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void setFavoriteRoom(SellRoomEntity sellRoomEntity);
+    void setSellRoom(SellRoomEntity sellRoomEntity);
 
     @Delete
-    void deleteFavoriteRoom(SellRoomEntity sellRoomEntity);
+    void deleteSellRoom(SellRoomEntity sellRoomEntity);
 
     @Query("SELECT * FROM my_sell_room WHERE firebaseUuid = :userUuid")
-    List<SellRoomEntity> loadFavoriteRoom(String userUuid);
+    List<SellRoomEntity> getSellRoom(String userUuid);
 
     @Query("SELECT * FROM my_sell_room WHERE room_uid = :key AND firebaseUuid = :userUuid")
-    SellRoomEntity getFavoriteRoom(String key, String userUuid);
+    SellRoomEntity getSellRoom(String key, String userUuid);
 
     @Query("DELETE FROM my_sell_room WHERE firebaseUuid = :userUuid")
-    void deleteFavoriteRoom(String userUuid);
+    void deleteSellRoom(String userUuid);
 
     @Update
-    void update(SellRoomEntity sellRoomEntity);
+    void updateSellRoom(SellRoomEntity sellRoomEntity);
 }

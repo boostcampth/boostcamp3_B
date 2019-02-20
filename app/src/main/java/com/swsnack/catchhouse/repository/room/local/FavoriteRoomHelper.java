@@ -2,96 +2,96 @@ package com.swsnack.catchhouse.repository.room.local;
 
 import android.os.AsyncTask;
 
-import com.swsnack.catchhouse.data.entity.RoomEntity;
+import com.swsnack.catchhouse.data.entity.FavoriteRoomEntity;
 
 import java.util.List;
 
 class FavoriteRoomHelper {
 
-    public static class AsyncSetFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
+    public static class AsyncSetFavoriteRoom extends AsyncTask<FavoriteRoomEntity, Void, Void> {
 
-        private RoomDao mRoomDao;
+        private FavoriteRoomDao mFavoriteRoomDao;
 
-        AsyncSetFavoriteRoom(RoomDao roomDao) {
-            this.mRoomDao = roomDao;
+        AsyncSetFavoriteRoom(FavoriteRoomDao favoriteRoomDao) {
+            this.mFavoriteRoomDao = favoriteRoomDao;
         }
 
         @Override
-        protected Void doInBackground(RoomEntity... roomEntities) {
-            mRoomDao.setFavoriteRoom(roomEntities[0]);
+        protected Void doInBackground(FavoriteRoomEntity... roomEntities) {
+            mFavoriteRoomDao.setFavoriteRoom(roomEntities[0]);
             return null;
         }
     }
 
-    public static class AsyncDeleteFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
+    public static class AsyncDeleteFavoriteRoom extends AsyncTask<FavoriteRoomEntity, Void, Void> {
 
-        private RoomDao mRoomDao;
+        private FavoriteRoomDao mFavoriteRoomDao;
 
-        AsyncDeleteFavoriteRoom(RoomDao roomDao) {
-            mRoomDao = roomDao;
+        AsyncDeleteFavoriteRoom(FavoriteRoomDao favoriteRoomDao) {
+            mFavoriteRoomDao = favoriteRoomDao;
         }
 
         @Override
-        protected Void doInBackground(RoomEntity... roomEntities) {
-            mRoomDao.deleteFavoriteRoom(roomEntities[0]);
+        protected Void doInBackground(FavoriteRoomEntity... roomEntities) {
+            mFavoriteRoomDao.deleteFavoriteRoom(roomEntities[0]);
             return null;
         }
     }
 
-    public static class AsyncLoadFavoriteRoomList extends AsyncTask<String, Void, List<RoomEntity>> {
+    public static class AsyncLoadFavoriteRoomList extends AsyncTask<String, Void, List<FavoriteRoomEntity>> {
 
-        private RoomDao mRoomDao;
+        private FavoriteRoomDao mFavoriteRoomDao;
 
-        AsyncLoadFavoriteRoomList(RoomDao roomDao) {
-            this.mRoomDao = roomDao;
+        AsyncLoadFavoriteRoomList(FavoriteRoomDao favoriteRoomDao) {
+            this.mFavoriteRoomDao = favoriteRoomDao;
         }
 
         @Override
-        protected List<RoomEntity> doInBackground(String... strings) {
-            return mRoomDao.loadFavoriteRoom(strings[0]);
+        protected List<FavoriteRoomEntity> doInBackground(String... strings) {
+            return mFavoriteRoomDao.loadFavoriteRoom(strings[0]);
         }
     }
 
-    public static class  AsyncLoadFavoriteRoom extends AsyncTask<String, Void, RoomEntity> {
+    public static class  AsyncLoadFavoriteRoom extends AsyncTask<String, Void, FavoriteRoomEntity> {
 
-        private RoomDao mRoomDao;
+        private FavoriteRoomDao mFavoriteRoomDao;
 
-        AsyncLoadFavoriteRoom(RoomDao roomDao) {
-            this.mRoomDao = roomDao;
+        AsyncLoadFavoriteRoom(FavoriteRoomDao favoriteRoomDao) {
+            this.mFavoriteRoomDao = favoriteRoomDao;
         }
 
         @Override
-        protected RoomEntity doInBackground(String... strings) {
-            return mRoomDao.getFavoriteRoom(strings[0], strings[1]);
+        protected FavoriteRoomEntity doInBackground(String... strings) {
+            return mFavoriteRoomDao.getFavoriteRoom(strings[0], strings[1]);
         }
     }
 
     public static class AsyncDeleteUserFavoriteRoom extends AsyncTask<String, Void, Void> {
 
-        private RoomDao mRoomDao;
+        private FavoriteRoomDao mFavoriteRoomDao;
 
-        AsyncDeleteUserFavoriteRoom(RoomDao roomDao) {
-            this.mRoomDao = roomDao;
+        AsyncDeleteUserFavoriteRoom(FavoriteRoomDao favoriteRoomDao) {
+            this.mFavoriteRoomDao = favoriteRoomDao;
         }
 
         @Override
         protected Void doInBackground(String... strings) {
-            mRoomDao.deleteFavoriteRoom(strings[0]);
+            mFavoriteRoomDao.deleteFavoriteRoom(strings[0]);
             return null;
         }
     }
 
-    public static class AsyncUpdateFavoriteRoom extends AsyncTask<RoomEntity, Void, Void> {
+    public static class AsyncUpdateFavoriteRoom extends AsyncTask<FavoriteRoomEntity, Void, Void> {
 
-        private RoomDao mRoomDao;
+        private FavoriteRoomDao mFavoriteRoomDao;
 
-        AsyncUpdateFavoriteRoom(RoomDao roomDao) {
-            this.mRoomDao = roomDao;
+        AsyncUpdateFavoriteRoom(FavoriteRoomDao favoriteRoomDao) {
+            this.mFavoriteRoomDao = favoriteRoomDao;
         }
 
         @Override
-        protected Void doInBackground(RoomEntity... roomEntities) {
-            mRoomDao.update(roomEntities[0]);
+        protected Void doInBackground(FavoriteRoomEntity... roomEntities) {
+            mFavoriteRoomDao.update(roomEntities[0]);
             return null;
         }
     }

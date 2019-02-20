@@ -3,7 +3,6 @@ package com.swsnack.catchhouse.repository.room.local;
 import android.os.AsyncTask;
 
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
-import com.swsnack.catchhouse.repository.room.local.SellRoomDao;
 
 import java.util.List;
 
@@ -19,7 +18,7 @@ class SellRoomHelper {
 
         @Override
         protected Void doInBackground(SellRoomEntity... roomEntities) {
-            mSellRoomDao.setFavoriteRoom(roomEntities[0]);
+            mSellRoomDao.setSellRoom(roomEntities[0]);
             return null;
         }
     }
@@ -34,7 +33,7 @@ class SellRoomHelper {
 
         @Override
         protected Void doInBackground(SellRoomEntity... roomEntities) {
-            mSellRoomDao.deleteFavoriteRoom(roomEntities[0]);
+            mSellRoomDao.deleteSellRoom(roomEntities[0]);
             return null;
         }
     }
@@ -49,7 +48,7 @@ class SellRoomHelper {
 
         @Override
         protected List<SellRoomEntity> doInBackground(String... strings) {
-            return mSellRoomDao.loadFavoriteRoom(strings[0]);
+            return mSellRoomDao.getSellRoom(strings[0]);
         }
     }
 
@@ -63,7 +62,7 @@ class SellRoomHelper {
 
         @Override
         protected SellRoomEntity doInBackground(String... strings) {
-            return mSellRoomDao.getFavoriteRoom(strings[0], strings[1]);
+            return mSellRoomDao.getSellRoom(strings[0], strings[1]);
         }
     }
 
@@ -77,7 +76,7 @@ class SellRoomHelper {
 
         @Override
         protected Void doInBackground(String... strings) {
-            mSellRoomDao.deleteFavoriteRoom(strings[0]);
+            mSellRoomDao.deleteSellRoom(strings[0]);
             return null;
         }
     }
@@ -92,7 +91,7 @@ class SellRoomHelper {
 
         @Override
         protected Void doInBackground(SellRoomEntity... roomEntities) {
-            mSellRoomDao.update(roomEntities[0]);
+            mSellRoomDao.updateSellRoom(roomEntities[0]);
             return null;
         }
     }
