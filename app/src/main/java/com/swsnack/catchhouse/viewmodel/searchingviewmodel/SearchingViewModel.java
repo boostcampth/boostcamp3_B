@@ -140,7 +140,7 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                 .doAfterTerminate(() -> {
                     mListener.isFinished();
                     LatLng latLng = new LatLng(latitude, longitude);
-                    mPosition.postValue(latLng); // Move map
+                    mPosition.postValue(latLng); // Move nav_map
                     mCardShow.postValue(true);
                 })
                 .subscribe(roomDataList -> {

@@ -7,11 +7,12 @@ import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.ActivityHomeBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 
-import static com.google.firebase.analytics.FirebaseAnalytics.Event.SEARCH;
+import static com.swsnack.catchhouse.Constant.ParcelableData.BOTTOM_NAVIGATION_POSITION;
 
 
 public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
@@ -20,6 +21,7 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
     float topY;
     float bottomY;
     private long firstBackPressedTime;
+    FirebaseUser uuid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,13 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
         firstBackPressedTime = 0;
         topY = getBinding().lyTop.getY();
         bottomY = getWindowManager().getDefaultDisplay().getHeight() / 2;
+        uuid = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (uuid == null) {
+            getBinding().btLogin.setVisibility(View.VISIBLE);
+        } else {
+            getBinding().btLogin.setVisibility(View.INVISIBLE);
+        }
 
         getBinding().clRoot.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -73,12 +82,12 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                         if (firstTouchY - event.getRawY() > getWindowManager().getDefaultDisplay().getHeight() / 3) {
                             freezeUI();
                             Intent intent = new Intent(getApplicationContext(), BottomNavActivity.class);
-                            intent.putExtra(SEARCH, SEARCH);
+                            intent.putExtra(BOTTOM_NAVIGATION_POSITION, 1);
                             startActivity(intent);
 
                             return true;
                         } else if (event.getRawY() - firstTouchY > getWindowManager().getDefaultDisplay().getHeight() / 3) {
-                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                            if (uuid == null) {
                                 Snackbar.make(getBinding().getRoot(), R.string.not_singed, Snackbar.LENGTH_SHORT).show();
                                 return true;
                             }
@@ -95,12 +104,27 @@ public class HomeActivity extends BaseActivity<ActivityHomeBinding> {
                 return true;
             }
         });
+
+        getBinding().btLogin.setOnClickListener(__ -> {
+                    Intent intent = new Intent(getApplicationContext(), BottomNavActivity.class);
+                    intent.putExtra(BOTTOM_NAVIGATION_POSITION, 0);
+                    startActivity(intent);
+                }
+        );
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         unFreezeUI();
+        uuid = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (uuid == null) {
+            getBinding().btLogin.setVisibility(View.VISIBLE);
+        } else {
+            getBinding().btLogin.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

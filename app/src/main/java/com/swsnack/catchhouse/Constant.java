@@ -31,18 +31,17 @@ import static com.swsnack.catchhouse.Constant.FirebaseKey.CHATTING;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_USER;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.MESSAGE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.NICK_NAME;
+import static com.swsnack.catchhouse.Constant.FirebaseKey.SIGNED;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_PROFILE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.UUID;
-import static com.swsnack.catchhouse.Constant.FirebaseKey.SIGNED;
 import static com.swsnack.catchhouse.Constant.Gender.FEMALE;
 import static com.swsnack.catchhouse.Constant.Gender.MALE;
+import static com.swsnack.catchhouse.Constant.ParcelableData.BOTTOM_NAVIGATION_POSITION;
 import static com.swsnack.catchhouse.Constant.ParcelableData.CHATTING_DATA;
+import static com.swsnack.catchhouse.Constant.ParcelableData.IMAGE_LIST_DATA;
 import static com.swsnack.catchhouse.Constant.ParcelableData.USER_DATA;
-import static com.swsnack.catchhouse.Constant.RequestCode.FILTER;
-import static com.swsnack.catchhouse.Constant.RequestCode.GALLERY;
-import static com.swsnack.catchhouse.Constant.RequestCode.GOOGLE_SIGN_IN;
-import static com.swsnack.catchhouse.Constant.RequestCode.PICK_IMAGE_MULTIPLE;
+import static com.swsnack.catchhouse.Constant.ParcelableData.VIEWPAGER_CURRENT_POSITION;
 import static com.swsnack.catchhouse.Constant.RequestCode.SEARCH;
 import static com.swsnack.catchhouse.Constant.SignInMethod.E_MAIL;
 import static com.swsnack.catchhouse.Constant.SignInMethod.FACEBOOK;
@@ -178,12 +177,14 @@ public class Constant {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @StringDef({USER_DATA, CHATTING_DATA})
+    @StringDef({USER_DATA, CHATTING_DATA, IMAGE_LIST_DATA, VIEWPAGER_CURRENT_POSITION,
+            BOTTOM_NAVIGATION_POSITION})
     public @interface ParcelableData {
         String USER_DATA = "userData";
         String CHATTING_DATA = "chattingData";
         String IMAGE_LIST_DATA = "imageListData";
         String VIEWPAGER_CURRENT_POSITION = "viewPagerCurrentPosition";
+        String BOTTOM_NAVIGATION_POSITION = "bottom_navigation_position";
     }
 
     @Retention(RetentionPolicy.SOURCE)

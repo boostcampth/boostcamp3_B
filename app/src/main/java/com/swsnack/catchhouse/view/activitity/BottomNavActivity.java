@@ -18,8 +18,8 @@ import com.swsnack.catchhouse.data.db.user.remote.AppUserDataManager;
 import com.swsnack.catchhouse.databinding.ActivityBottomNavBinding;
 import com.swsnack.catchhouse.view.BaseActivity;
 import com.swsnack.catchhouse.view.fragment.ChatListFragment;
-import com.swsnack.catchhouse.view.fragment.SearchFragment;
 import com.swsnack.catchhouse.view.fragment.MyPageFragment;
+import com.swsnack.catchhouse.view.fragment.SearchFragment;
 import com.swsnack.catchhouse.view.fragment.SignFragment;
 import com.swsnack.catchhouse.view.fragment.SignInFragment;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
@@ -38,7 +38,7 @@ import androidx.viewpager.widget.ViewPager;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-import static com.google.firebase.analytics.FirebaseAnalytics.Event.SEARCH;
+import static com.swsnack.catchhouse.Constant.ParcelableData.BOTTOM_NAVIGATION_POSITION;
 
 public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
@@ -202,10 +202,10 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
             }
         });
+
         viewPagerAdapter.setItems(list);
-        if (getIntent().getStringExtra(SEARCH) != null) {
-            getBinding().vpBottomNav.setCurrentItem(1);
-        }
+        int position = getIntent().getIntExtra(BOTTOM_NAVIGATION_POSITION, 1);
+        getBinding().vpBottomNav.setCurrentItem(position);
     }
 
     public void setViewPagerListener(OnViewPagerChangedListener onViewPagerChangedListener) {
