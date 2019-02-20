@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.view.fragment;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -49,12 +50,14 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        Log.v("csh","onCreateView");
         return getBinding().getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @androidx.annotation.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.v("csh","onViewCreated");
         getBinding().nmMap.onCreate(savedInstanceState);
 
         mFragmentManager = getActivity().getSupportFragmentManager();
@@ -80,26 +83,21 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
 
         getBinding().nmMap.getMapAsync(getViewModel());
 
+        getBinding().fbMapFilter.setColorFilter(ContextCompat.getColor(getContext(),R.color.colorBottomNavDefault));
 
-        getBinding().nmMap.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        if(getViewModel().isCardShow().getValue() == true) {
-                            getViewModel().setCardShow(false);
-                        }
-                        break;
-                    case MotionEvent.ACTION_UP:
-
-
-
-                        break;
-                }
-                return false;
+        getBinding().nmMap.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if(getViewModel().isCardShow().getValue() == true) {
+                        getViewModel().setCardShow(false);
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                    break;
             }
+            return false;
         });
 
         getBinding().fbMapFilter.setOnClickListener(new View.OnClickListener() {

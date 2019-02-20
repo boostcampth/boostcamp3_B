@@ -93,5 +93,9 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="FloatingAccentButtonOverlay" >
+        <item name="colorAccent">@color/colorBottomNavDefault</item>
+    </style>
+
 
 </resources>
