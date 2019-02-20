@@ -52,7 +52,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 bindViewModel="@{handler}"
                 setNaverMapMarker="@{handler.getMarkerList()}"
-                setPosition="@{handler.getPosition()}" />
+                setPosition="@{handler.getPosition()}"
+                setCircle="@{handler.getCircle()}"/>
 
             <!--<Button-->
                 <!--android:id="@+id/bt_map_near"-->
@@ -125,6 +126,7 @@
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
                 app:isCardShow="@{handler.isCardShow()}"
+                bindViewModel="@{handler}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
