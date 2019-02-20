@@ -23,8 +23,11 @@ import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
@@ -67,6 +70,53 @@ public class SearchingDataImpl implements SearchingDataSource {
         }));
     }
 
+    private boolean isCorrect(Filter filter, Room room) {
+
+        if(room.isDeleted()==true) {
+            return false;
+        }
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+
+        if(filter.getDateFrom() != null && filter.getDateTo() != null) {
+            try {
+                Date dateRoomFrom = formatter.parse(room.getFrom());
+                Date dateRoomTo = formatter.parse(room.getTo());
+                Date dateFilterFrom = formatter.parse(filter.getDateFrom());
+                Date dateFilterTo = formatter.parse(filter.getDateTo());
+                if (dateFilterFrom.getTime() > dateRoomFrom.getTime() || dateFilterTo.getTime() < dateRoomTo.getTime()) {
+                    return false;
+                }
+            } catch (Exception e) {
+            }
+        }
+
+        Log.v("csh","filter.getPriceFrom()"+filter.getPriceFrom());
+        if(filter.getPriceFrom() != null && filter.getPriceTo() != null) {
+            if(filter.getPriceFrom() != "" && filter.getPriceTo() != "") {
+                if (Integer.parseInt(room.getPrice()) < Integer.parseInt(filter.getPriceFrom().replaceAll(",","")) && Integer.parseInt(room.getTo()) > Integer.parseInt(filter.getPriceTo().replaceAll(",",""))) {
+                    return false;
+                }
+            }
+        }
+
+        if(room.isOptionGender() != filter.isOptionGender()) {
+            return false;
+        }
+        if(room.isOptionPet() != filter.isOptionPet()) {
+            return false;
+        }
+        if(room.isOptionSmoking() != filter.isOptionSmoking()) {
+            return false;
+        }
+        if(room.isOptionStandard() != filter.isOptionStandard()) {
+            return false;
+        }
+
+        return true;
+
+    }
+
     @NonNull
     public Single<List<Room>> getNearRoomList(@NonNull Filter filter) {
         if(cnt>0) {
@@ -99,7 +149,11 @@ public class SearchingDataImpl implements SearchingDataSource {
                                     @Override
                                     public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
 //                                        room.setImage(resource);
-                                        roomList.add(room);
+
+                                        if(isCorrect(filter, room) == true) {
+                                            roomList.add(room);
+                                        }
+
                                         Log.v("csh", "데이터 추가됨");
                                         if (--cnt == 0) {
                                             subscribe.onSuccess(roomList);
