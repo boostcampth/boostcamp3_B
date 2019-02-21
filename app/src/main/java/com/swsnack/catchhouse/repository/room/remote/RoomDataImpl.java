@@ -12,7 +12,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.swsnack.catchhouse.AppApplication;
+import com.swsnack.catchhouse.data.mapper.FirebaseRoomMapper;
 import com.swsnack.catchhouse.data.model.Room;
+import com.swsnack.catchhouse.firebase.DBValueHelper;
 import com.swsnack.catchhouse.firebase.StorageHelper;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
@@ -51,6 +53,7 @@ public class RoomDataImpl implements RemoteRoomDataSource {
         return db.push().getKey();
     }
 
+    int uploadCheckCount = 0;
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
@@ -61,14 +64,23 @@ public class RoomDataImpl implements RemoteRoomDataSource {
             int count = i;
             new StorageHelper(fs.child(uuid + "/" + i), imageList.get(i))
                     .getStorageStatus(uri -> {
+                        uploadImageCountPlus();
                         if (uri != null) {
                             downloadUrls.add(uri.toString());
                         }
                         if (count == imageList.size() - 1) {
                             onSuccessListener.onSuccess(downloadUrls);
                         }
+
+                        if(uploadCheckCount == imageList.size() -1) {
+                            //success
+                        }
                     }, onFailedListener);
         }
+    }
+
+    synchronized void uploadImageCountPlus() {
+        uploadCheckCount++;
     }
 
     @Override
@@ -101,6 +113,11 @@ public class RoomDataImpl implements RemoteRoomDataSource {
                 onFailedListener.onFailed(new RuntimeException(databaseError.getMessage()));
             }
         });
+
+        db.child(key).addListenerForSingleValueEvent(
+                new DBValueHelper<>(new FirebaseRoomMapper(),
+                        onSuccessListener,
+                        onFailedListener));
     }
 
     @Override

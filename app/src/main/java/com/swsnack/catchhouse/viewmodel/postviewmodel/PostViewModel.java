@@ -1,6 +1,5 @@
 package com.swsnack.catchhouse.viewmodel.postviewmodel;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,7 +25,7 @@ public class PostViewModel extends ReactiveViewModel {
     public final MutableLiveData<String> mOptionTag = new MutableLiveData<>();
     public final MutableLiveData<String> mNickName = new MutableLiveData<>();
     public final MutableLiveData<String> mGender = new MutableLiveData<>();
-    public final MutableLiveData<Bitmap> mProfile = new MutableLiveData<>();
+    public final MutableLiveData<Uri> mProfile = new MutableLiveData<>();
     public final MutableLiveData<Boolean> mIsWriter = new MutableLiveData<>();
 
     public MutableLiveData<Room> room;
@@ -42,14 +41,7 @@ public class PostViewModel extends ReactiveViewModel {
     }
 
     private void getProfileFromUri(Uri uri) {
-        mListener.isWorking();
-        getDataManager()
-                .getProfile(uri,
-                        bitmap -> {
-                            mListener.isFinished();
-                            mProfile.setValue(bitmap);
-                        },
-                        error -> mListener.onError(getStringFromResource(R.string.snack_failed_load_image)));
+        mProfile.setValue(uri);
     }
 
     private void init() {
@@ -168,7 +160,7 @@ public class PostViewModel extends ReactiveViewModel {
     }
 
     private boolean checkIsWriter(String uuid) {
-        if(FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             return false;
         }
         String myKey = FirebaseAuth.getInstance().getCurrentUser().getUid();

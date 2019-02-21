@@ -63,6 +63,8 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
     private MutableLiveData<Marker> mSelectedMarker = new MutableLiveData<>();
     private MutableLiveData<InfoWindow> mSelectedInfo = new MutableLiveData<>();
 
+    private MutableLiveData<String> mTotal = new MutableLiveData<>();
+
     /* FILTER */
     public MutableLiveData<Boolean> mFilterUpdate = new MutableLiveData<>(); // 필터 업데이트
     public MutableLiveData<String> mFilterPriceFrom = new MutableLiveData<>();
@@ -99,6 +101,7 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
         mKeyword.setValue("강남");
         mFinish.setValue(false);
         mCardShow.setValue(false);
+        mTotal.setValue("검색된 매물 수 : 0");
 
     }
 
@@ -147,7 +150,7 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
 
         getCompositeDisposable().add(getDataManager().getNearRoomList(filter)
                 .doOnSubscribe(__ -> {
-                    mListener.isWorking();
+                    //mListener.isWorking();
                     removeAllOverlay();
                     CircleOverlay circleOverlay = new CircleOverlay();
                     circleOverlay.setCenter(new LatLng(latitude, longitude));
@@ -160,7 +163,10 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                 .doAfterTerminate(() -> {
                     mCardShow.postValue(true);
                 })
-                .doAfterSuccess(__ -> mListener.onSuccess(Constant.SuccessKey.SEARCH_SUCCESS))
+                .doAfterSuccess(roomList -> {
+                    mTotal.postValue("검색된 매물 수 : "+roomList.size());
+                    mListener.onSuccess(Constant.SuccessKey.SEARCH_SUCCESS);
+                })
                 .subscribe(roomDataList -> {
 
                     Log.v("csh", "Single Success");
@@ -196,7 +202,6 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                             uri = roomDataList.get(i).getImages().get(0);
                         }
 
-
                         /* TODO : 가격 필터 기간에 곱해야함 */
                         roomCardList.add(new RoomCard(uri,
                                 roomDataList.get(i).getTitle(),
@@ -206,14 +211,13 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                                 roomDataList.get(i).getPrice(),
                                 roomDataList.get(i).getSize(),
                                 roomDataList.get(i).getUuid()));
-
-
                     }
                     mRoomCardList.postValue(roomDataList);
                 }, throwable -> {
                     Log.v("csh", "Single Error" + throwable.getMessage());
                     //Toast.makeText(mAppContext, throwable.getMessage(), Toast.LENGTH_SHORT).show();
                     mRoomCardList.postValue(new ArrayList<>());
+                    mTotal.postValue("검색된 매물 수 : "+0);
                     mListener.onError(throwable.getMessage());
                 }));
     }
@@ -304,6 +308,8 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
     public LiveData<CircleOverlay> getCircle() {
         return this.mCircle;
     }
+
+    public LiveData<String> getTotal() { return this.mTotal; }
 
     public String getFilterPriceFrom() {
         String ret = mFilterPriceFrom.getValue();

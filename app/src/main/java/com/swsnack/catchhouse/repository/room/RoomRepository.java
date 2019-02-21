@@ -2,8 +2,6 @@ package com.swsnack.catchhouse.repository.room;
 
 import android.net.Uri;
 
-import com.swsnack.catchhouse.data.entity.SellRoomEntity;
-import com.swsnack.catchhouse.data.mapper.SellRoomMapper;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
@@ -59,8 +57,7 @@ public class RoomRepository implements RemoteRoomDataSource, FavoriteRoomDataSou
     @Override
     public void setRoom(@NonNull String key, @NonNull Room room, @Nullable OnSuccessListener<Void> onSuccessListener, @Nullable OnFailedListener onFailedListener) {
         mRemoteRoomDataSource.setRoom(key, room, success -> {
-                    SellRoomEntity sellRoomEntity = new SellRoomMapper().map(room);
-                    sellRoomEntity.setRoomUid(key);
+                    setSellRoom(room);
                     onSuccessListener.onSuccess(success);
                 }
                 , onFailedListener);
