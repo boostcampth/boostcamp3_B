@@ -1,6 +1,5 @@
 package com.swsnack.catchhouse.repository;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 
 import com.skt.Tmap.TMapPOIItem;
@@ -126,14 +125,6 @@ public class AppDataSource implements DataSource {
                            @NonNull OnFailedListener onFailedListener) {
 
         mUserDataSource.updateUser(uuid, user, onSuccessListener, onFailedListener);
-    }
-
-    @Override
-    public void getProfile(@NonNull Uri uri,
-                           @NonNull OnSuccessListener<Bitmap> onSuccessListener,
-                           @NonNull OnFailedListener onFailedListener) {
-
-        mUserDataSource.getProfile(uri, onSuccessListener, onFailedListener);
     }
 
     @Override

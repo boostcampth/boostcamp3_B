@@ -20,8 +20,8 @@ public interface RemoteRoomDataSource {
                          @NonNull OnFailedListener onFailedListener);
 
     void setRoom(@NonNull String key, @NonNull Room room,
-                 @Nullable OnSuccessListener<Void> onSuccessListener,
-                 @Nullable OnFailedListener onFailedListener);
+                 @NonNull OnSuccessListener<Void> onSuccessListener,
+                 @NonNull OnFailedListener onFailedListener);
 
     void getRoom(@NonNull String key,
                  @NonNull OnSuccessListener<Room> onSuccessListener,

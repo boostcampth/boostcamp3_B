@@ -1,33 +1,26 @@
 package com.swsnack.catchhouse.util;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.swsnack.catchhouse.AppApplication;
+import com.bumptech.glide.request.RequestOptions;
 
-import java.util.concurrent.ExecutionException;
+import androidx.databinding.BindingAdapter;
 
 public class GlideUtil {
 
-    public static Bitmap getBitmapFromUri(Uri uri) throws ExecutionException, InterruptedException {
-        return new AsyncGetBitmap().execute(uri).get();
-    }
-
-    private static class AsyncGetBitmap extends AsyncTask<Uri, Void, Bitmap> {
-
-        @Override
-        protected Bitmap doInBackground(Uri... uris) {
-            try {
-                return Glide.with(AppApplication.getAppContext())
-                        .asBitmap()
-                        .load(uris[0])
-                        .submit().get();
-            } catch (ExecutionException | InterruptedException e) {
-                return null;
-            }
+    @BindingAdapter("setProfileImageCircle")
+    public static void setProfileImage(ImageView imageView, Uri uri) {
+        if (uri != null) {
+            Glide.with(imageView).load(uri).apply(new RequestOptions().circleCrop()).into(imageView);
         }
     }
 
+    @BindingAdapter("setProfileImageCenterCrop")
+    public static void setImage(ImageView imageView, Uri uri) {
+        if (uri != null) {
+            Glide.with(imageView).load(uri).apply(new RequestOptions().centerCrop()).into(imageView);
+        }
+    }
 }

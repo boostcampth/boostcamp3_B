@@ -1,11 +1,10 @@
 package com.swsnack.catchhouse.repository.user;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 
+import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
-import com.swsnack.catchhouse.data.model.User;
 
 import androidx.annotation.NonNull;
 
@@ -49,9 +48,4 @@ public interface UserDataSource {
     void deleteUser(@NonNull String uuid,
                     @NonNull OnSuccessListener<Void> onSuccessListener,
                     @NonNull OnFailedListener onFailedListener);
-
-    void getProfile(@NonNull Uri uri,
-                    @NonNull OnSuccessListener<Bitmap> onSuccessListener,
-                    @NonNull OnFailedListener onFailedListener);
-
 }
