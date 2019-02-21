@@ -150,7 +150,7 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
 
         getCompositeDisposable().add(getDataManager().getNearRoomList(filter)
                 .doOnSubscribe(__ -> {
-                    mListener.isWorking();
+                    //mListener.isWorking();
                     removeAllOverlay();
                     CircleOverlay circleOverlay = new CircleOverlay();
                     circleOverlay.setCenter(new LatLng(latitude, longitude));
@@ -201,7 +201,6 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                         if (roomDataList.get(i).getImages().get(0) != null) {
                             uri = roomDataList.get(i).getImages().get(0);
                         }
-
 
                         /* TODO : 가격 필터 기간에 곱해야함 */
                         roomCardList.add(new RoomCard(uri,
