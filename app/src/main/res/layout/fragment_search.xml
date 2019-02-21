@@ -45,28 +45,17 @@
 
             <com.naver.maps.map.MapView
                 android:id="@+id/nm_map"
+                bindViewModel="@{handler}"
+                setCircle="@{handler.getCircle()}"
+                setNaverMapMarker="@{handler.getMarkerList()}"
+                setPosition="@{handler.getPosition()}"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="48dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                bindViewModel="@{handler}"
-                setNaverMapMarker="@{handler.getMarkerList()}"
-                setPosition="@{handler.getPosition()}"
-                setCircle="@{handler.getCircle()}"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_map_address"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp"
-                android:visibility="@{handler.finish}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-                bind:setAddressList="@{handler.addressList}" />
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fb_map_filter"
@@ -89,11 +78,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_map_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="48dp"
+                android:visibility="@{handler.finish}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+                bind:setAddressList="@{handler.addressList}" />
+
+
             <TextView
                 android:id="@+id/tv_search_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:text="@{handler.getTotal()}"
                 android:theme="@style/tv.body"
                 android:textColor="@color/colorPrimary"
@@ -105,7 +106,7 @@
                 android:id="@+id/rv_map_room"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
                 app:isCardShow="@{handler.isCardShow()}"
                 bindViewModel="@{handler}"
