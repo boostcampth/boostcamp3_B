@@ -53,6 +53,7 @@ public class RoomDataImpl implements RemoteRoomDataSource {
         return db.push().getKey();
     }
 
+    int uploadCheckCount = 0;
     @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
@@ -63,14 +64,23 @@ public class RoomDataImpl implements RemoteRoomDataSource {
             int count = i;
             new StorageHelper(fs.child(uuid + "/" + i), imageList.get(i))
                     .getStorageStatus(uri -> {
+                        uploadImageCountPlus();
                         if (uri != null) {
                             downloadUrls.add(uri.toString());
                         }
                         if (count == imageList.size() - 1) {
                             onSuccessListener.onSuccess(downloadUrls);
                         }
+
+                        if(uploadCheckCount == imageList.size() -1) {
+                            //success
+                        }
                     }, onFailedListener);
         }
+    }
+
+    synchronized void uploadImageCountPlus() {
+        uploadCheckCount++;
     }
 
     @Override
