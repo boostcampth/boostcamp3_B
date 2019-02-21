@@ -13,7 +13,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="false">
 
         <com.google.android.material.appbar.AppBarLayout
 
@@ -25,8 +25,8 @@
                 style="@style/tb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:title="@string/sign_up"
                 android:background="@android:color/white"
+                app:title="@string/sign_up"
                 app:titleTextColor="@color/colorPrimary" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -34,13 +34,13 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
+            android:fitsSystemWindows="false"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <ImageView
                 android:id="@+id/iv_sign_up_profile"
                 style="@style/iv.round"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="8dp"
                 android:hint="@string/sign_email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +64,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textEmailAddress"
                     android:nextFocusDown="@id/et_sign_up_password"
-                    android:text="@={handler.mEmail}" />
+                    android:text="@={handler.mEmail}"
+                    android:windowSoftInputMode="adjustResize" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -84,7 +85,8 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"
                     android:nextFocusDown="@id/et_sign_up_nick_name"
-                    android:text="@={handler.mPassword}" />
+                    android:text="@={handler.mPassword}"
+                    android:windowSoftInputMode="adjustResize" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -103,7 +105,8 @@
                     android:layout_width="@dimen/sign_in_et_width"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:text="@={handler.mNickName}" />
+                    android:text="@={handler.mNickName}"
+                    android:windowSoftInputMode="adjustResize" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
