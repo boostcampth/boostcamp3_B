@@ -94,9 +94,29 @@ public class SearchingDataImpl implements SearchingDataSource {
             }
         }
 
+
+
+/*
         if (filter.getPriceFrom() != null && filter.getPriceTo() != null) {
             if (filter.getPriceFrom() != "" && filter.getPriceTo() != "") {
-                if (Integer.parseInt(room.getPrice()) < Integer.parseInt(filter.getPriceFrom().replaceAll(",", "")) && Integer.parseInt(room.getTo()) > Integer.parseInt(filter.getPriceTo().replaceAll(",", ""))) {
+                if (Integer.parseInt(room.getPrice()) < Integer.parseInt(filter.getPriceFrom().replaceAll(",", "")) && Integer.parseInt(room.getPrice()) > Integer.parseInt(filter.getPriceTo().replaceAll(",", ""))) {
+
+                    return false;
+                }
+            }
+        }*/
+
+        if(filter.getPriceFrom() != null) {
+            if(filter.getPriceFrom() != "") {
+                if(Integer.parseInt(filter.getPriceFrom().replaceAll(",", "")) > Integer.parseInt(room.getPrice())) {
+                    return false;
+                }
+            }
+        }
+
+        if(filter.getPriceTo() != null) {
+            if(filter.getPriceTo() != "") {
+                if(Integer.parseInt(filter.getPriceTo().replaceAll(",", "")) < Integer.parseInt(room.getPrice())) {
                     return false;
                 }
             }
@@ -148,6 +168,8 @@ public class SearchingDataImpl implements SearchingDataSource {
                         room.setLatitude(location.latitude);
                         room.setLongitude(location.longitude);
                         if (isCorrect(filter, room) == true) {
+
+
                             roomList.add(room);
                         } else {
                             Log.v("csh", "필터 엘스");

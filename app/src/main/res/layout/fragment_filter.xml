@@ -38,7 +38,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_filter_price_from"
                 style="@style/tv.body"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:clickable="true"
@@ -74,7 +74,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_filter_price_to"
                 style="@style/tv.body"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:clickable="true"
@@ -90,7 +90,7 @@
             style="@style/tv.body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:text="@string/tv_filter_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_filter_price_from_layout" />
@@ -109,7 +109,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_filter_date_from"
                 style="@style/tv.body"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:clickable="true"
@@ -145,7 +145,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_filter_date_to"
                 style="@style/tv.body"
-                android:layout_width="80dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="0dp"
                 android:clickable="true"
@@ -161,7 +161,7 @@
             style="@style/tv.body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:text="@string/tv_filter_option"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_filter_date_from_layout" />
@@ -226,7 +226,7 @@
             style="@style/tv.body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="16dp"
             android:text="@string/tv_filter_option_distance"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cb_filter_smoking" />
