@@ -64,17 +64,17 @@ public class RoomDataImpl implements RemoteRoomDataSource {
             int count = i;
             new StorageHelper(fs.child(uuid + "/" + i), imageList.get(i))
                     .getStorageStatus(uri -> {
-                        uploadImageCountPlus();
+//                        uploadImageCountPlus();
                         if (uri != null) {
                             downloadUrls.add(uri.toString());
                         }
                         if (count == imageList.size() - 1) {
                             onSuccessListener.onSuccess(downloadUrls);
                         }
-
-                        if(uploadCheckCount == imageList.size() -1) {
-                            //success
-                        }
+//
+//                        if(uploadCheckCount == imageList.size() -1) {
+//                            //success
+//                        }
                     }, onFailedListener);
         }
     }

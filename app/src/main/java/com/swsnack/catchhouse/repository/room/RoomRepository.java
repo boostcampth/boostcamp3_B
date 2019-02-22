@@ -72,6 +72,7 @@ public class RoomRepository implements RemoteRoomDataSource, FavoriteRoomDataSou
     public void delete(@NonNull String key, @NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
         mRemoteRoomDataSource.delete(key, room, success -> {
                     deleteSellRoom(room);
+                    mRecentRoomDataManager.deleteRoom(room);
                     onSuccessListener.onSuccess(success);
                 }
                 , onFailedListener);
@@ -120,6 +121,11 @@ public class RoomRepository implements RemoteRoomDataSource, FavoriteRoomDataSou
     @Override
     public void deleteRecentRoomList() {
         mRecentRoomDataManager.deleteRecentRoomList();
+    }
+
+    @Override
+    public void deleteRoom(Room room) {
+        mRecentRoomDataManager.deleteRoom(room);
     }
 
     @Override

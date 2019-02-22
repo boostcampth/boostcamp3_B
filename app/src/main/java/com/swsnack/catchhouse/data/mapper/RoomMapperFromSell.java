@@ -27,7 +27,7 @@ public class RoomMapperFromSell implements Mapper<SellRoomEntity, Room> {
                 from.isOptionSmoking(),
                 from.getLatitude(),
                 from.getLongitude(),
-                false);
+                from.isDeleted());
     }
 
     public List<Room> mapToList(List<SellRoomEntity> from) {

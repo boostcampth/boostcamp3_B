@@ -280,6 +280,11 @@ public class AppDataSource implements DataSource {
     }
 
     @Override
+    public void deleteRoom(Room room) {
+        deleteRoom(room);
+    }
+
+    @Override
     public void setSellRoom(Room room) {
         mSellRoomDataSource.setSellRoom(room);
     }

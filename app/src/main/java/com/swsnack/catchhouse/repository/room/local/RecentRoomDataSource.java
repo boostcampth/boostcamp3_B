@@ -11,4 +11,6 @@ public interface RecentRoomDataSource {
     List<Room> getRecentRoom();
 
     void deleteRecentRoomList();
+
+    void deleteRoom(Room room);
 }

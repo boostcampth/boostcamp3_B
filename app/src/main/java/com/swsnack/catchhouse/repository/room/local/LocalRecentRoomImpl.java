@@ -48,6 +48,11 @@ public class LocalRecentRoomImpl implements RecentRoomDataSource {
     }
 
     @Override
+    public void deleteRoom(Room room) {
+        mRecentRoomCache.remove(room);
+    }
+
+    @Override
     public void deleteRecentRoomList() {
         mRecentRoomCache.clear();
     }

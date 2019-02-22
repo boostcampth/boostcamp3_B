@@ -23,6 +23,7 @@ public class SellRoomMapper implements Mapper<Room, SellRoomEntity> {
                 from.isOptionPet(),
                 from.isOptionSmoking(),
                 from.getLatitude(),
-                from.getLongitude());
+                from.getLongitude(),
+                from.isDeleted());
     }
 }

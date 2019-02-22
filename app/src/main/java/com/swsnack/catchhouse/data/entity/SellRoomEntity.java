@@ -39,6 +39,7 @@ public class SellRoomEntity {
     private boolean optionSmoking;
     private double latitude;
     private double longitude;
+    private boolean isDeleted;
 
     public SellRoomEntity(@NonNull String roomUid,
                           String price,
@@ -56,7 +57,8 @@ public class SellRoomEntity {
                           boolean optionPet,
                           boolean optionSmoking,
                           double latitude,
-                          double longitude) {
+                          double longitude,
+                          boolean isDeleted) {
 
         this.roomUid = roomUid;
         this.price = price;
@@ -75,6 +77,7 @@ public class SellRoomEntity {
         this.optionSmoking = optionSmoking;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.isDeleted = isDeleted;
     }
 
     @NonNull
@@ -220,5 +223,13 @@ public class SellRoomEntity {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }
