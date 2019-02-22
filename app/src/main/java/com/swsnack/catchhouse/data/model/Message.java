@@ -30,14 +30,6 @@ public class Message implements Serializable {
         return content;
     }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public void setSendUuid(String sendUuid) {
-        this.sendUuid = sendUuid;
-    }
-
     public void setContent(String content) {
         this.content = content;
     }
@@ -45,8 +37,16 @@ public class Message implements Serializable {
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Message)) {
-           return false;
+            return false;
         }
-        return this.timestamp.equals(((Message) obj).getTimestamp());
+        Message compareObj = (Message) obj;
+        return this.timestamp.equals(((Message) obj).getTimestamp()) &&
+                this.sendUuid.equals(compareObj.getSendUuid()) &&
+                this.content.equals(compareObj.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return timestamp.hashCode();
     }
 }
