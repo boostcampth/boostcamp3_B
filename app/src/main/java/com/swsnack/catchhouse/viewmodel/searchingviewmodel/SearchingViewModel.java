@@ -165,7 +165,8 @@ public class SearchingViewModel extends ReactiveViewModel implements OnMapReadyC
                 })
                 .doAfterSuccess(roomList -> {
                     mTotal.postValue("검색된 매물 수 : "+roomList.size());
-                    mListener.onSuccess(Constant.SuccessKey.SEARCH_SUCCESS);
+                    //mListener.onSuccess(Constant.SuccessKey.SEARCH_SUCCESS);
+                    mListener.isFinished();
                 })
                 .subscribe(roomDataList -> {
 
