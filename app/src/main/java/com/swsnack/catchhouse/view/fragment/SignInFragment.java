@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.databinding.FragmentSignInBinding;
+import com.swsnack.catchhouse.util.KeyboardUtil;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 
@@ -80,6 +81,12 @@ public class SignInFragment extends BaseFragment<FragmentSignInBinding, UserView
                         .replace(R.id.fl_sign_container, new SignUpFragment())
                         .addToBackStack(SignUpFragment.class.getName())
                         .commit());
+
+        getBinding().tvSignInLogin.setOnClickListener(v -> {
+            mViewModel.signInWithEmail(v);
+            KeyboardUtil.keyBoardClose(getActivity());
+        });
+
     }
 
     @Override

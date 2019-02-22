@@ -92,7 +92,6 @@
                 android:id="@+id/tv_sign_in_login"
                 style="@style/btn"
                 android:layout_width="0dp"
-                android:onClick="@{handler::signInWithEmail}"
                 android:text="@string/sign_in_login"
                 app:layout_constraintEnd_toEndOf="@id/tvl_sign_up_password"
                 app:layout_constraintStart_toStartOf="@id/tvl_sign_up_password"
