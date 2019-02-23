@@ -59,11 +59,9 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
 
-        Log.d("포지션", position + "");
-
         ItemChattingListBinding binding = ((ChattingListItemHolder) holder).getBinding();
         binding.setChattingData(arrayList.get(position));
-        mChattingViewModel.getUser(position,
+        mChattingViewModel.getUser(arrayList.get(position).getUsers(),
                 binding::setUserData,
                 error -> Snackbar.make(binding.getRoot(), R.string.snack_failed_load_list, Snackbar.LENGTH_SHORT).show());
 
