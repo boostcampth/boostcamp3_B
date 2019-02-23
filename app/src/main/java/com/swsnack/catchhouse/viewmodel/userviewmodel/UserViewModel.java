@@ -1,6 +1,5 @@
 package com.swsnack.catchhouse.viewmodel.userviewmodel;
 
-import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -18,14 +17,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -45,19 +41,17 @@ import static com.swsnack.catchhouse.util.StringUtil.getStringFromResource;
 public class UserViewModel extends ReactiveViewModel {
 
     private ViewModelListener mListener;
+    public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<Uri> mProfileUri;
-    private MutableLiveData<List<Room>> mSellRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
-    public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
     public MutableLiveData<String> mNickName;
 
-    UserViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
+    UserViewModel(DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
         this.mProfileUri = new MutableLiveData<>();
-        this.mSellRoomList = new MutableLiveData<>();
         this.mUser = new MutableLiveData<>();
         this.mGender = new MutableLiveData<>();
         this.mIsSigned = new MutableLiveData<>();
@@ -263,10 +257,6 @@ public class UserViewModel extends ReactiveViewModel {
 
     public LiveData<User> getUser() {
         return mUser;
-    }
-
-    public LiveData<List<Room>> getSellRoomList() {
-        return mSellRoomList;
     }
 
     private LiveData<Uri> getProfileUri() {

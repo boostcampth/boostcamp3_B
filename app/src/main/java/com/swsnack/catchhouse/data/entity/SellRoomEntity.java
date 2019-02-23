@@ -1,7 +1,7 @@
 package com.swsnack.catchhouse.data.entity;
 
 
-import com.swsnack.catchhouse.repository.room.local.TypeConverter;
+import com.swsnack.catchhouse.data.source.room.local.TypeConverter;
 
 import java.util.List;
 

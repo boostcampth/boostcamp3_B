@@ -1,7 +1,7 @@
 package com.swsnack.catchhouse.viewmodel.recentroomviewmodel;
 
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.repository.recentroom.RecentRoomRepository;
+import com.swsnack.catchhouse.data.source.recentroom.RecentRoomRepository;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 
 import java.util.List;

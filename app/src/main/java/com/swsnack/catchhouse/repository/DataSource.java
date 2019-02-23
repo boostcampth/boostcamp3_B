@@ -1,12 +1,10 @@
 package com.swsnack.catchhouse.repository;
 
-import com.swsnack.catchhouse.repository.chatting.ChattingDataSource;
-import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepository;
-import com.swsnack.catchhouse.repository.location.LocationDataSource;
-import com.swsnack.catchhouse.repository.recentroom.RecentRoomRepository;
-import com.swsnack.catchhouse.repository.room.RoomRepository;
-import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
-import com.swsnack.catchhouse.repository.user.UserDataSource;
+import com.swsnack.catchhouse.data.source.chatting.ChattingDataSource;
+import com.swsnack.catchhouse.data.source.location.LocationDataSource;
+import com.swsnack.catchhouse.data.source.recentroom.RecentRoomRepository;
+import com.swsnack.catchhouse.data.source.searching.SearchingDataSource;
+import com.swsnack.catchhouse.data.source.user.UserDataSource;
 
 public interface DataSource extends UserDataSource,
         ChattingDataSource,

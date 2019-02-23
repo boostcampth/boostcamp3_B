@@ -1,7 +1,7 @@
 package com.swsnack.catchhouse.viewmodel.recentroomviewmodel;
 
 
-import com.swsnack.catchhouse.repository.recentroom.RecentRoomRepository;
+import com.swsnack.catchhouse.data.source.recentroom.RecentRoomRepository;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

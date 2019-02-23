@@ -26,7 +26,9 @@ public class ReactiveViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        mDisposables.dispose();
+        if(mDisposables != null) {
+            mDisposables.dispose();
+        }
     }
 
     protected CompositeDisposable getCompositeDisposable() {

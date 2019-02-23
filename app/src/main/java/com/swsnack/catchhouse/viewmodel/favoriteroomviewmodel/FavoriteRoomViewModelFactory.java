@@ -1,6 +1,6 @@
 package com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel;
 
-import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepository;
+import com.swsnack.catchhouse.repository.FavoriteRoomRepository;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

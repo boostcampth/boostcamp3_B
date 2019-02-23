@@ -16,6 +16,10 @@
         <variable
             name="recentRoom"
             type="com.swsnack.catchhouse.viewmodel.recentroomviewmodel.RecentRoomViewModel"/>
+
+        <variable
+            name="sellRoom"
+            type="com.swsnack.catchhouse.viewmodel.sellroomviewmodel.SellRoomViewModel"/>
     </data>
 
 
@@ -102,6 +106,7 @@
                     app:handler="@{handler}"
                     app:favoriteRoom="@{favoriteRoom}"
                     app:recentRoom="@{recentRoom}"
+                    app:sellRoom="@{sellRoom}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

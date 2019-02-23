@@ -18,6 +18,10 @@
         <variable
             name="recentRoom"
             type="com.swsnack.catchhouse.viewmodel.recentroomviewmodel.RecentRoomViewModel"/>
+
+        <variable
+            name="sellRoom"
+            type="com.swsnack.catchhouse.viewmodel.sellroomviewmodel.SellRoomViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -118,7 +122,7 @@
                 android:visibility="@{safeUnbox(handler.mIsSigned)? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_my_page_my_favorite_title"
-                bind:setSellList="@{handler.sellRoomList}" />
+                bind:setSellList="@{sellRoom.mySellList}" />
 
         </LinearLayout>
 

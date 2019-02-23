@@ -2,7 +2,7 @@ package com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.data.model.Room;
-import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepository;
+import com.swsnack.catchhouse.repository.FavoriteRoomRepository;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 
 import java.util.List;

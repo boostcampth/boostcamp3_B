@@ -8,22 +8,18 @@ import com.swsnack.catchhouse.data.model.Filter;
 import com.swsnack.catchhouse.data.model.Message;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
-import com.swsnack.catchhouse.repository.chatting.ChattingDataSource;
-import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
-import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepository;
-import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepositoryImpl;
-import com.swsnack.catchhouse.repository.location.LocationDataSource;
-import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
-import com.swsnack.catchhouse.repository.recentroom.RecentRoomRepository;
-import com.swsnack.catchhouse.repository.recentroom.RecentRoomRepositoryImpl;
-import com.swsnack.catchhouse.repository.room.RoomRepository;
-import com.swsnack.catchhouse.repository.room.RoomRepositoryImpl;
-import com.swsnack.catchhouse.repository.room.local.SellRoomDataSource;
-import com.swsnack.catchhouse.repository.room.local.SellRoomData;
-import com.swsnack.catchhouse.repository.searching.SearchingDataSource;
-import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
-import com.swsnack.catchhouse.repository.user.UserDataSource;
-import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
+import com.swsnack.catchhouse.data.source.chatting.ChattingDataSource;
+import com.swsnack.catchhouse.data.source.chatting.remote.RemoteChattingImpl;
+import com.swsnack.catchhouse.data.source.location.LocationDataSource;
+import com.swsnack.catchhouse.data.source.location.remote.RemoteLocationImpl;
+import com.swsnack.catchhouse.data.source.recentroom.RecentRoomRepository;
+import com.swsnack.catchhouse.data.source.recentroom.RecentRoomRepositoryImpl;
+import com.swsnack.catchhouse.data.source.room.local.SellRoomDataSource;
+import com.swsnack.catchhouse.data.source.room.local.SellRoomData;
+import com.swsnack.catchhouse.data.source.searching.SearchingDataSource;
+import com.swsnack.catchhouse.data.source.searching.remote.SearchingDataImpl;
+import com.swsnack.catchhouse.data.source.user.UserDataSource;
+import com.swsnack.catchhouse.data.source.user.remote.UserDataImpl;
 
 import java.util.List;
 
@@ -252,8 +248,8 @@ public class AppDataSource implements DataSource {
     }
 
     @Override
-    public void setRoom(@NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        roomRepository.setRoom(room, onSuccessListener, onFailedListener);
+    public void setRoom(@NonNull String key, @NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
+        roomRepository.setRoom(key, room, onSuccessListener, onFailedListener);
     }
 
     @Override
@@ -262,13 +258,18 @@ public class AppDataSource implements DataSource {
     }
 
     @Override
-    public void deleteRoom(@NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
-        roomRepository.deleteRoom(room, onSuccessListener, onFailedListener);
+    public void deleteRoom(@NonNull String key, @NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
+        roomRepository.deleteRoom(key, room, onSuccessListener, onFailedListener);
     }
 
     @Override
     public void updateRoom(@NonNull Room room, @NonNull OnSuccessListener<Void> onSuccessListener, @NonNull OnFailedListener onFailedListener) {
         roomRepository.updateRoom(room, onSuccessListener, onFailedListener);
+    }
+
+    @Override
+    public List<Room> getSellList() {
+        return roomRepository.getSellList();
     }
 
     @Override
