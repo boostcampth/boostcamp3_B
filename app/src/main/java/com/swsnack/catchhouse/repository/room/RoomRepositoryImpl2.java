@@ -8,8 +8,8 @@
 //import com.swsnack.catchhouse.repository.OnSuccessListener;
 //import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomDataSource;
 //import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomDaoImpl;
-//import com.swsnack.catchhouse.repository.room.local.LocalRecentRoomImpl;
-//import com.swsnack.catchhouse.repository.room.local.RecentRoomDataSource;
+//import com.swsnack.catchhouse.repository.recentroom.RecentRoomDao;
+//import com.swsnack.catchhouse.repository.recentroom.RecentRoomDataSource;
 //import com.swsnack.catchhouse.repository.room.local.SellRoomDataSource;
 //import com.swsnack.catchhouse.repository.room.local.SellRoomData;
 //import com.swsnack.catchhouse.repository.room.remote.RemoteRoomDataSource;
@@ -40,7 +40,7 @@
 //    private RoomRepositoryImpl2() {
 //
 //        mLocalRoomDataManager = FavoriteRoomDaoImpl.getInstance();
-//        mRecentRoomDataManager = LocalRecentRoomImpl.getInstance();
+//        mRecentRoomDataManager = RecentRoomDao.getInstance();
 //        mLocalSellRoomManager = SellRoomData.getInstance();
 //    }
 //

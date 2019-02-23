@@ -18,10 +18,13 @@ import com.swsnack.catchhouse.databinding.DialogChangeNickNameBinding;
 import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
 import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepositoryImpl;
+import com.swsnack.catchhouse.repository.recentroom.RecentRoomRepositoryImpl;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activitity.PostActivity;
 import com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel.FavoriteRoomViewModel;
 import com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel.FavoriteRoomViewModelFactory;
+import com.swsnack.catchhouse.viewmodel.recentroomviewmodel.RecentRoomViewModel;
+import com.swsnack.catchhouse.viewmodel.recentroomviewmodel.RecentRoomViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.yalantis.ucrop.UCrop;
 
@@ -47,6 +50,8 @@ import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
 
     private FavoriteRoomViewModel mFavoriteRoomViewModel;
+    private RecentRoomViewModel mRecentRoomViewModel;
+    private UserViewModel mUserViewModel;
 
     @Override
     protected int getLayout() {
@@ -71,6 +76,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
 
         getBinding().setHandler(getViewModel());
         getBinding().setFavoriteRoom(mFavoriteRoomViewModel);
+        getBinding().setRecentRoom(mRecentRoomViewModel);
         getViewModel().getUserData();
 
         for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
@@ -130,6 +136,10 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
         mFavoriteRoomViewModel = ViewModelProviders.of(this,
                 new FavoriteRoomViewModelFactory(FavoriteRoomRepositoryImpl.getInstance()))
                 .get(FavoriteRoomViewModel.class);
+
+        mRecentRoomViewModel = ViewModelProviders.of(this,
+                new RecentRoomViewModelFactory(RecentRoomRepositoryImpl.getInstance()))
+                .get(RecentRoomViewModel.class);
     }
 
     private void onChangeNickNameBtnClicked() {
@@ -192,6 +202,7 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     public void onStart() {
         super.onStart();
         mFavoriteRoomViewModel.getFavoriteRoom();
+        mRecentRoomViewModel.getRecentRoom();
 //        getViewModel().getFavoriteRoom();
 //        getViewModel().getRecentRoom();
 //        getViewModel().getSellRoom();

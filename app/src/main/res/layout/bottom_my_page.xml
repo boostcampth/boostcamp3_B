@@ -14,6 +14,10 @@
         <variable
             name="favoriteRoom"
             type="com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel.FavoriteRoomViewModel"/>
+
+        <variable
+            name="recentRoom"
+            type="com.swsnack.catchhouse.viewmodel.recentroomviewmodel.RecentRoomViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,7 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_my_page_recently_visit_title"
-                bind:setRecentRoom="@{handler.recentRoomList}" />
+                bind:setRecentRoom="@{recentRoom.recentRoomList}" />
 
         </LinearLayout>
 

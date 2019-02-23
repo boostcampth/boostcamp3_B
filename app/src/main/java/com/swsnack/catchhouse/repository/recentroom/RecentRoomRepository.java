@@ -1,10 +1,10 @@
-package com.swsnack.catchhouse.repository.room.local;
+package com.swsnack.catchhouse.repository.recentroom;
 
 import com.swsnack.catchhouse.data.model.Room;
 
 import java.util.List;
 
-public interface RecentRoomDataSource {
+public interface RecentRoomRepository {
 
     void setRecentRoom(Room room);
 

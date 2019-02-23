@@ -151,8 +151,8 @@ public class PostViewModel extends ReactiveViewModel {
     }
 
     private void visitNewRoom() {
-//        getDataManager()
-//                .setRecentRoom(room.getValue());
+        getDataManager()
+                .setRecentRoom(room.getValue());
     }
 
     public LiveData<Boolean> isFavorite() {

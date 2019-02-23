@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.repository.room.local;
+package com.swsnack.catchhouse.repository.recentroom;
 
 import android.os.Build;
 
@@ -17,21 +17,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-public class LocalRecentRoomImpl implements AppDataCache<Room>, RecentRoomDataSource {
+public class RecentRoomDao implements AppDataCache<Room> {
 
     private Map<Room, Long> mRecentRoomCache;
-    private static LocalRecentRoomImpl INSTANCE;
+    private static RecentRoomDao INSTANCE;
 
-    public static LocalRecentRoomImpl getInstance() {
-        if(INSTANCE == null) {
-            synchronized (LocalRecentRoomImpl.class) {
-                INSTANCE = new LocalRecentRoomImpl();
+    public static RecentRoomDao getInstance() {
+        if (INSTANCE == null) {
+            synchronized (RecentRoomDao.class) {
+                INSTANCE = new RecentRoomDao();
             }
         }
         return INSTANCE;
     }
 
-    private LocalRecentRoomImpl() {
+    private RecentRoomDao() {
         mRecentRoomCache = new HashMap<>(getCacheItemSize());
     }
 
@@ -41,9 +41,8 @@ public class LocalRecentRoomImpl implements AppDataCache<Room>, RecentRoomDataSo
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
     public void setRecentRoom(@NonNull Room room) {
-        if(mRecentRoomCache.size() < getCacheItemSize()) {
+        if (mRecentRoomCache.size() < getCacheItemSize()) {
             mRecentRoomCache.put(room, new Date().getTime());
             return;
         }
@@ -54,17 +53,14 @@ public class LocalRecentRoomImpl implements AppDataCache<Room>, RecentRoomDataSo
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
-    @Override
     public List<Room> getRecentRoom() {
         return desSortByTimeStamp();
     }
 
-    @Override
     public void deleteRecentRoomList() {
         mRecentRoomCache.clear();
     }
 
-    @Override
     public void deleteRoom(@NonNull Room room) {
         mRecentRoomCache.remove(room);
     }

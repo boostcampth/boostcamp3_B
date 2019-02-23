@@ -12,6 +12,10 @@
         <variable
             name="favoriteRoom"
             type="com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel.FavoriteRoomViewModel"/>
+
+        <variable
+            name="recentRoom"
+            type="com.swsnack.catchhouse.viewmodel.recentroomviewmodel.RecentRoomViewModel"/>
     </data>
 
 
@@ -97,6 +101,7 @@
                     android:layout_height="wrap_content"
                     app:handler="@{handler}"
                     app:favoriteRoom="@{favoriteRoom}"
+                    app:recentRoom="@{recentRoom}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

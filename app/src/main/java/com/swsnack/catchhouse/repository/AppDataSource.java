@@ -14,6 +14,8 @@ import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepository;
 import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepositoryImpl;
 import com.swsnack.catchhouse.repository.location.LocationDataSource;
 import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
+import com.swsnack.catchhouse.repository.recentroom.RecentRoomRepository;
+import com.swsnack.catchhouse.repository.recentroom.RecentRoomRepositoryImpl;
 import com.swsnack.catchhouse.repository.room.RoomRepository;
 import com.swsnack.catchhouse.repository.room.RoomRepositoryImpl;
 import com.swsnack.catchhouse.repository.room.local.SellRoomDataSource;
@@ -36,6 +38,7 @@ public class AppDataSource implements DataSource {
 //    private RemoteRoomDataSource mRemoteRoomDataSource;
 //    private FavoriteRoomDataSource mFavoriteRoomDataSource;
 //    private RecentRoomDataSource mRecentRoomDataManager;
+    private RecentRoomRepository recentRoomRepository;
     private FavoriteRoomRepository favoriteRoomRepository;
     private RoomRepository roomRepository;
     private LocationDataSource mLocationDataSource;
@@ -54,6 +57,7 @@ public class AppDataSource implements DataSource {
         mSellRoomDataSource = SellRoomData.getInstance();
         roomRepository = RoomRepositoryImpl.getInstance();
         favoriteRoomRepository = FavoriteRoomRepositoryImpl.getInstance();
+        recentRoomRepository = RecentRoomRepositoryImpl.getInstance();
     }
 
     private static AppDataSource INSTANCE;
@@ -295,6 +299,26 @@ public class AppDataSource implements DataSource {
     @Override
     public void updateRoom(Room room) {
         favoriteRoomRepository.updateRoom(room);
+    }
+
+    @Override
+    public void setRecentRoom(Room room) {
+        recentRoomRepository.setRecentRoom(room);
+    }
+
+    @Override
+    public List<Room> getRecentRoom() {
+        return recentRoomRepository.getRecentRoom();
+    }
+
+    @Override
+    public void deleteRecentRoomList() {
+        recentRoomRepository.deleteRecentRoomList();
+    }
+
+    @Override
+    public void deleteRoom(Room room) {
+        recentRoomRepository.deleteRoom(room);
     }
 
 //    @Override

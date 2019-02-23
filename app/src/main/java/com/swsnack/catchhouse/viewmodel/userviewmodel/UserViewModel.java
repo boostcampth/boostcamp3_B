@@ -44,11 +44,9 @@ import static com.swsnack.catchhouse.util.StringUtil.getStringFromResource;
 
 public class UserViewModel extends ReactiveViewModel {
 
-    private Application mAppContext;
     private ViewModelListener mListener;
     public MutableLiveData<Uri> mProfileUri;
     private MutableLiveData<List<Room>> mSellRoomList;
-    private MutableLiveData<List<Room>> mRecentRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
     public MutableLiveData<Boolean> mIsSigned;
@@ -58,10 +56,8 @@ public class UserViewModel extends ReactiveViewModel {
 
     UserViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
-        this.mAppContext = application;
         this.mProfileUri = new MutableLiveData<>();
         this.mSellRoomList = new MutableLiveData<>();
-        this.mRecentRoomList = new MutableLiveData<>();
         this.mUser = new MutableLiveData<>();
         this.mGender = new MutableLiveData<>();
         this.mIsSigned = new MutableLiveData<>();
@@ -265,24 +261,8 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
     }
 
-//    public void getSellRoom() {
-//        mSellRoomList.setValue(getDataManager().getSellRoomList());
-//    }
-
-//    public void getFavoriteRoom() {
-//        mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
-//    }
-
-//    public void getRecentRoom() {
-//        mRecentRoomList.setValue(getDataManager().getRecentRoom());
-//    }
-
     public LiveData<User> getUser() {
         return mUser;
-    }
-
-    public LiveData<List<Room>> getRecentRoomList() {
-        return mRecentRoomList;
     }
 
     public LiveData<List<Room>> getSellRoomList() {
