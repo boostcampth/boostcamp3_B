@@ -2,13 +2,14 @@ package com.swsnack.catchhouse.view.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.MotionEvent;
 
-import com.naver.maps.map.MapView;
+import com.swsnack.catchhouse.Constant;
 
 import androidx.viewpager.widget.ViewPager;
 
 public class CustomViewPager extends ViewPager {
+
     public CustomViewPager(Context context) {
         super(context);
     }
@@ -18,10 +19,10 @@ public class CustomViewPager extends ViewPager {
     }
 
     @Override
-    protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-        if(v instanceof MapView){
-            return true;
-        }
-        return super.canScroll(v, checkV, dx, x, y);
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (getCurrentItem() == Constant.PAGE_MAP)
+            return false;
+        return super.onInterceptTouchEvent(ev);
     }
+
 }
