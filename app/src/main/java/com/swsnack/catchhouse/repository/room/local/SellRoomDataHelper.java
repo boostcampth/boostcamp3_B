@@ -6,7 +6,7 @@ import com.swsnack.catchhouse.data.entity.SellRoomEntity;
 
 import java.util.List;
 
-class SellRoomHelper {
+class SellRoomDataHelper {
 
     public static class AsyncSetSellRoom extends AsyncTask<SellRoomEntity, Void, Void> {
 

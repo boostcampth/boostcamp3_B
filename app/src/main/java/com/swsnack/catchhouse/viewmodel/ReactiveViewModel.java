@@ -19,6 +19,10 @@ public class ReactiveViewModel extends ViewModel {
         mApiManager = apiManager;
     }
 
+    public ReactiveViewModel() {
+
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();

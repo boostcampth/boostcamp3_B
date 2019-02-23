@@ -47,7 +47,6 @@ public class UserViewModel extends ReactiveViewModel {
     private Application mAppContext;
     private ViewModelListener mListener;
     public MutableLiveData<Uri> mProfileUri;
-    private MutableLiveData<List<Room>> mFavoriteRoomList;
     private MutableLiveData<List<Room>> mSellRoomList;
     private MutableLiveData<List<Room>> mRecentRoomList;
     private MutableLiveData<String> mGender;
@@ -62,7 +61,6 @@ public class UserViewModel extends ReactiveViewModel {
         this.mAppContext = application;
         this.mProfileUri = new MutableLiveData<>();
         this.mSellRoomList = new MutableLiveData<>();
-        this.mFavoriteRoomList = new MutableLiveData<>();
         this.mRecentRoomList = new MutableLiveData<>();
         this.mUser = new MutableLiveData<>();
         this.mGender = new MutableLiveData<>();
@@ -184,8 +182,6 @@ public class UserViewModel extends ReactiveViewModel {
         }
         mListener.isWorking();
 
-        User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
-
         getApiManager()
                 .firebaseSignIn(mEmail.getValue(),
                         mPassword.getValue(),
@@ -269,24 +265,20 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
     }
 
-    public void getSellRoom() {
-        mSellRoomList.setValue(getDataManager().getSellRoomList());
-    }
+//    public void getSellRoom() {
+//        mSellRoomList.setValue(getDataManager().getSellRoomList());
+//    }
 
-    public void getFavoriteRoom() {
-        mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
-    }
+//    public void getFavoriteRoom() {
+//        mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
+//    }
 
-    public void getRecentRoom() {
-        mRecentRoomList.setValue(getDataManager().getRecentRoom());
-    }
+//    public void getRecentRoom() {
+//        mRecentRoomList.setValue(getDataManager().getRecentRoom());
+//    }
 
     public LiveData<User> getUser() {
         return mUser;
-    }
-
-    public LiveData<List<Room>> getFavoriteRoomList() {
-        return mFavoriteRoomList;
     }
 
     public LiveData<List<Room>> getRecentRoomList() {

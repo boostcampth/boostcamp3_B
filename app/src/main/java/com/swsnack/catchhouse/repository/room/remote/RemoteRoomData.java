@@ -1,6 +1,5 @@
 package com.swsnack.catchhouse.repository.room.remote;
 
-import android.app.Application;
 import android.net.Uri;
 
 import com.google.firebase.database.DataSnapshot;
@@ -11,7 +10,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.mapper.FirebaseRoomMapper;
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.firebase.DBValueHelper;
@@ -20,41 +18,39 @@ import com.swsnack.catchhouse.repository.OnFailedListener;
 import com.swsnack.catchhouse.repository.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 
 import static com.swsnack.catchhouse.Constant.FirebaseKey.DB_ROOM;
 import static com.swsnack.catchhouse.Constant.FirebaseKey.STORAGE_ROOM_IMAGE;
 
-public class RoomDataImpl implements RemoteRoomDataSource {
+public class RemoteRoomData implements RemoteRoomDataSource{
 
     private DatabaseReference db;
     private StorageReference fs;
-    private Application mApplication;
 
-    private static RoomDataImpl INSTANCE;
+    private static RemoteRoomData INSTANCE;
 
-    public static synchronized RoomDataImpl getInstance() {
+    public static synchronized RemoteRoomData getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new RoomDataImpl();
+            INSTANCE = new RemoteRoomData();
         }
         return INSTANCE;
     }
 
-    private RoomDataImpl() {
+    private RemoteRoomData() {
         db = FirebaseDatabase.getInstance().getReference().child(DB_ROOM);
         fs = FirebaseStorage.getInstance().getReference().child(STORAGE_ROOM_IMAGE);
-        mApplication = AppApplication.getAppContext();
     }
 
-    @Override
     public String createKey() {
         return db.push().getKey();
     }
 
     int uploadCheckCount = 0;
-    @Override
     public void uploadRoomImage(@NonNull String uuid, @NonNull List<Uri> imageList,
                                 @NonNull OnSuccessListener<List<String>> onSuccessListener,
                                 @NonNull OnFailedListener onFailedListener) {
@@ -83,16 +79,15 @@ public class RoomDataImpl implements RemoteRoomDataSource {
         uploadCheckCount++;
     }
 
-    @Override
-    public void setRoom(@NonNull String key, @NonNull Room room,
+    public void setRoom(@NonNull Room room,
                         @NonNull OnSuccessListener<Void> onSuccessListener,
                         @NonNull OnFailedListener onFailedListener) {
-        db.child(key).setValue(room)
+
+        db.child(createKey()).setValue(room)
                 .addOnSuccessListener(onSuccessListener::onSuccess)
                 .addOnFailureListener(onFailedListener::onFailed);
     }
 
-    @Override
     public void getRoom(@NonNull String key,
                         @NonNull OnSuccessListener<Room> onSuccessListener,
                         @NonNull OnFailedListener onFailedListener) {
@@ -120,14 +115,26 @@ public class RoomDataImpl implements RemoteRoomDataSource {
                         onFailedListener));
     }
 
-    @Override
-    public void delete(@NonNull String key,
-                       @NonNull Room room,
+    public void delete(@NonNull Room room,
                        @NonNull OnSuccessListener<Void> onSuccessListener,
                        @NonNull OnFailedListener onFailedListener) {
 
-        room.setDeleted(true);
-        setRoom(key, room, onSuccessListener, onFailedListener);
+        Map<String, Object> updateFields = new HashMap<>();
+        updateFields.put("deleted", false);
 
+        db.child(room.getKey())
+                .updateChildren(updateFields)
+                .addOnSuccessListener(onSuccessListener::onSuccess)
+                .addOnFailureListener(onFailedListener::onFailed);
+    }
+
+    public void updateRoom(@NonNull Room room,
+                           @NonNull OnSuccessListener<Void> onSuccessListener,
+                           @NonNull OnFailedListener onFailedListener) {
+
+        db.child(room.getKey())
+                .setValue(room)
+                .addOnSuccessListener(onSuccessListener::onSuccess)
+                .addOnFailureListener(onFailedListener::onFailed);
     }
 }

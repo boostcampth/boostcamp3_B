@@ -17,8 +17,11 @@ import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.databinding.DialogChangeNickNameBinding;
 import com.swsnack.catchhouse.databinding.DialogChangePasswordBinding;
 import com.swsnack.catchhouse.databinding.FragmentMyPageBinding;
+import com.swsnack.catchhouse.repository.favoriteroom.FavoriteRoomRepositoryImpl;
 import com.swsnack.catchhouse.view.BaseFragment;
 import com.swsnack.catchhouse.view.activitity.PostActivity;
+import com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel.FavoriteRoomViewModel;
+import com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel.FavoriteRoomViewModelFactory;
 import com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel;
 import com.yalantis.ucrop.UCrop;
 
@@ -28,6 +31,7 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import static android.app.Activity.RESULT_OK;
@@ -41,6 +45,8 @@ import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_SQUARE;
 import static com.swsnack.catchhouse.Constant.Ucrop.UCROP_WIDTH_MAX;
 
 public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserViewModel> {
+
+    private FavoriteRoomViewModel mFavoriteRoomViewModel;
 
     @Override
     protected int getLayout() {
@@ -61,10 +67,12 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        init();
+
         getBinding().setHandler(getViewModel());
+        getBinding().setFavoriteRoom(mFavoriteRoomViewModel);
         getViewModel().getUserData();
 
-        init();
         for (String signInMethod : FirebaseAuth.getInstance().getCurrentUser().getProviders()) {
             if (signInMethod.equals(FACEBOOK) || signInMethod.equals(GOOGLE)) {
                 getBinding().tvMyPageChangePassword.setVisibility(View.GONE);
@@ -118,6 +126,10 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     private void init() {
         getBinding().ctlMyPage.setExpandedTitleColor(Color.TRANSPARENT);
         getBinding().ctlMyPage.setCollapsedTitleTextColor(getResources().getColor(R.color.colorPrimary));
+
+        mFavoriteRoomViewModel = ViewModelProviders.of(this,
+                new FavoriteRoomViewModelFactory(FavoriteRoomRepositoryImpl.getInstance()))
+                .get(FavoriteRoomViewModel.class);
     }
 
     private void onChangeNickNameBtnClicked() {
@@ -179,9 +191,10 @@ public class MyPageFragment extends BaseFragment<FragmentMyPageBinding, UserView
     @Override
     public void onStart() {
         super.onStart();
-        getViewModel().getFavoriteRoom();
-        getViewModel().getRecentRoom();
-        getViewModel().getSellRoom();
+        mFavoriteRoomViewModel.getFavoriteRoom();
+//        getViewModel().getFavoriteRoom();
+//        getViewModel().getRecentRoom();
+//        getViewModel().getSellRoom();
     }
 
 

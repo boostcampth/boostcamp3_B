@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.repository.room.local;
+package com.swsnack.catchhouse.repository.favoriteroom;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.data.db.AppDatabase;
@@ -13,21 +13,21 @@ import java.util.concurrent.ExecutionException;
 
 import androidx.annotation.Nullable;
 
-public class FavoriteRoomImpl implements FavoriteRoomDataSource {
+public class FavoriteRoomDaoImpl implements FavoriteRoomDataSource {
 
-    private static FavoriteRoomImpl INSTANCE;
+    private static FavoriteRoomDaoImpl INSTANCE;
     private FavoriteRoomDao mRoomDao;
 
-    public static FavoriteRoomImpl getInstance() {
+    public static FavoriteRoomDaoImpl getInstance() {
         if (INSTANCE == null) {
-            synchronized (FavoriteRoomImpl.class) {
-                INSTANCE = new FavoriteRoomImpl();
+            synchronized (FavoriteRoomDaoImpl.class) {
+                INSTANCE = new FavoriteRoomDaoImpl();
             }
         }
         return INSTANCE;
     }
 
-    private FavoriteRoomImpl() {
+    private FavoriteRoomDaoImpl() {
         mRoomDao = AppDatabase.getInstance().getRoomDataAccessor();
     }
 

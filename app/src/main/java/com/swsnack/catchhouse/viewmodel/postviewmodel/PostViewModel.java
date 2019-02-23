@@ -144,15 +144,15 @@ public class PostViewModel extends ReactiveViewModel {
         Room deletingRoom = room.getValue();
         deletingRoom.setDeleted(true);
 
-        getDataManager().delete(deletingRoom.getKey(), deletingRoom,
-                __ -> mListener.onSuccess(""),
-                error -> mListener.onError(error.getMessage())
-        );
+//        getDataManager().delete(deletingRoom.getKey(), deletingRoom,
+//                __ -> mListener.onSuccess(""),
+//                error -> mListener.onError(error.getMessage())
+//        );
     }
 
     private void visitNewRoom() {
-        getDataManager()
-                .setRecentRoom(room.getValue());
+//        getDataManager()
+//                .setRecentRoom(room.getValue());
     }
 
     public LiveData<Boolean> isFavorite() {

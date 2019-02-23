@@ -1,4 +1,4 @@
-package com.swsnack.catchhouse.repository.room.local;
+package com.swsnack.catchhouse.repository.favoriteroom;
 
 import android.os.AsyncTask;
 

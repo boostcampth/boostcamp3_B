@@ -2,9 +2,7 @@ package com.swsnack.catchhouse.repository.room.local;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.swsnack.catchhouse.data.db.AppDatabase;
-import com.swsnack.catchhouse.data.entity.FavoriteRoomEntity;
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
-import com.swsnack.catchhouse.data.mapper.RoomMapperFromFavorite;
 import com.swsnack.catchhouse.data.mapper.RoomMapperFromSell;
 import com.swsnack.catchhouse.data.mapper.SellRoomMapper;
 import com.swsnack.catchhouse.data.model.Room;
@@ -15,21 +13,21 @@ import java.util.concurrent.ExecutionException;
 
 import androidx.annotation.Nullable;
 
-public class SellRoomImpl implements SellRoomDataSource {
+public class SellRoomData implements SellRoomDataSource {
 
-    private static SellRoomImpl INSTANCE;
+    private static SellRoomData INSTANCE;
     private SellRoomDao mRoomDao;
 
-    public static SellRoomImpl getInstance() {
+    public static SellRoomData getInstance() {
         if (INSTANCE == null) {
-            synchronized (SellRoomImpl.class) {
-                INSTANCE = new SellRoomImpl();
+            synchronized (SellRoomData.class) {
+                INSTANCE = new SellRoomData();
             }
         }
         return INSTANCE;
     }
 
-    private SellRoomImpl() {
+    private SellRoomData() {
         mRoomDao = AppDatabase.getInstance().getSellRoomDataAccessor();
     }
 
@@ -41,7 +39,7 @@ public class SellRoomImpl implements SellRoomDataSource {
 
         SellRoomEntity sellRoomEntity = new SellRoomMapper().map(room);
         sellRoomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        new SellRoomHelper.AsyncSetSellRoom(mRoomDao).execute(sellRoomEntity);
+        new SellRoomDataHelper.AsyncSetSellRoom(mRoomDao).execute(sellRoomEntity);
     }
 
     @Override
@@ -52,7 +50,7 @@ public class SellRoomImpl implements SellRoomDataSource {
 
         SellRoomEntity sellRoomEntity = new SellRoomMapper().map(room);
         sellRoomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        new SellRoomHelper.AsyncDeleteSellRoom(mRoomDao).execute(sellRoomEntity);
+        new SellRoomDataHelper.AsyncDeleteSellRoom(mRoomDao).execute(sellRoomEntity);
 
     }
 
@@ -63,7 +61,7 @@ public class SellRoomImpl implements SellRoomDataSource {
         }
 
         try {
-            List<SellRoomEntity> roomEntityList = new SellRoomHelper
+            List<SellRoomEntity> roomEntityList = new SellRoomDataHelper
                     .AsyncLoadSellRoomList(mRoomDao)
                     .execute(FirebaseAuth.getInstance().getCurrentUser().getUid())
                     .get();
@@ -82,7 +80,7 @@ public class SellRoomImpl implements SellRoomDataSource {
             return;
         }
 
-        new SellRoomHelper.AsyncDeleteUserSellRoom(mRoomDao).execute(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        new SellRoomDataHelper.AsyncDeleteUserSellRoom(mRoomDao).execute(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
     }
 
@@ -94,7 +92,7 @@ public class SellRoomImpl implements SellRoomDataSource {
         }
 
         try {
-            SellRoomEntity sellRoomEntity = new SellRoomHelper.AsyncLoadSellRoom(mRoomDao).execute(key, FirebaseAuth.getInstance().getCurrentUser().getUid()).get();
+            SellRoomEntity sellRoomEntity = new SellRoomDataHelper.AsyncLoadSellRoom(mRoomDao).execute(key, FirebaseAuth.getInstance().getCurrentUser().getUid()).get();
             if(sellRoomEntity != null) {
                 return new RoomMapperFromSell().map(sellRoomEntity);
             }
@@ -111,7 +109,7 @@ public class SellRoomImpl implements SellRoomDataSource {
         }
         SellRoomEntity sellRoomEntity = new SellRoomMapper().map(room);
         sellRoomEntity.setFirebaseUuid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        new SellRoomHelper.AsyncUpdateSellRoom(mRoomDao).execute(sellRoomEntity);
+        new SellRoomDataHelper.AsyncUpdateSellRoom(mRoomDao).execute(sellRoomEntity);
 
     }
 

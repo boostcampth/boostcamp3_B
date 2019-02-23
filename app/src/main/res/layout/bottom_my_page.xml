@@ -10,6 +10,10 @@
         <variable
             name="handler"
             type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel" />
+
+        <variable
+            name="favoriteRoom"
+            type="com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel.FavoriteRoomViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,7 +82,7 @@
                 android:visibility="@{safeUnbox(handler.mIsSigned)? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_my_page_my_favorite_title"
-                bind:setFavoriteRoom="@{handler.favoriteRoomList}" />
+                bind:setFavoriteRoom="@{favoriteRoom.favoriteRoomList}" />
 
         </LinearLayout>
 

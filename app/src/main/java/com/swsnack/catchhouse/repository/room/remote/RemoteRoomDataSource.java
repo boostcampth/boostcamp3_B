@@ -19,7 +19,7 @@ public interface RemoteRoomDataSource {
                          @NonNull OnSuccessListener<List<String>> onSuccessListener,
                          @NonNull OnFailedListener onFailedListener);
 
-    void setRoom(@NonNull String key, @NonNull Room room,
+    void setRoom(@NonNull Room room,
                  @NonNull OnSuccessListener<Void> onSuccessListener,
                  @NonNull OnFailedListener onFailedListener);
 
@@ -28,8 +28,7 @@ public interface RemoteRoomDataSource {
                  @NonNull OnFailedListener onFailedListener);
 
     //FIXME 용현's 가 추가함. 확인 부탁이요. Key는 필요 없을 것 같아요. 내부에서 동작하게 하면 Room객체만 던져줘도 될것 같습니다. 나중에 수정 부탁드려요
-    void delete(@NonNull String key,
-                @NonNull Room room,
+    void delete(@NonNull Room room,
                 @NonNull OnSuccessListener<Void> onSuccessListener,
                 @NonNull OnFailedListener onFailedListener);
 }

@@ -225,7 +225,7 @@ public class RoomsViewModel extends ReactiveViewModel {
                 )
         );
 
-        getDataManager().setRoom(key, room.getValue(), onSuccessListener, onFailedListener);
+        getDataManager().setRoom(room.getValue(), onSuccessListener, onFailedListener);
     }
 
     private Single<List<Address>> searchAddress(String keyword) {

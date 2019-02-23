@@ -8,6 +8,10 @@
         <variable
             name="handler"
             type="com.swsnack.catchhouse.viewmodel.userviewmodel.UserViewModel" />
+
+        <variable
+            name="favoriteRoom"
+            type="com.swsnack.catchhouse.viewmodel.favoriteroomviewmodel.FavoriteRoomViewModel"/>
     </data>
 
 
@@ -92,6 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:handler="@{handler}"
+                    app:favoriteRoom="@{favoriteRoom}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
