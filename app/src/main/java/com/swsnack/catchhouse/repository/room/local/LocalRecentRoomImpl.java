@@ -1,22 +1,29 @@
 package com.swsnack.catchhouse.repository.room.local;
 
+import android.os.Build;
+
 import com.swsnack.catchhouse.data.db.AppDataCache;
 import com.swsnack.catchhouse.data.model.Room;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-public class LocalRecentRoomImpl implements RecentRoomDataSource {
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
-    private HashMap<Room, Long> mRecentRoomCache;
+public class LocalRecentRoomImpl implements AppDataCache<Room>, RecentRoomDataSource {
+
+    private Map<Room, Long> mRecentRoomCache;
     private static LocalRecentRoomImpl INSTANCE;
 
     public static LocalRecentRoomImpl getInstance() {
-        if (INSTANCE == null) {
+        if(INSTANCE == null) {
             synchronized (LocalRecentRoomImpl.class) {
                 INSTANCE = new LocalRecentRoomImpl();
             }
@@ -25,31 +32,31 @@ public class LocalRecentRoomImpl implements RecentRoomDataSource {
     }
 
     private LocalRecentRoomImpl() {
-        mRecentRoomCache = AppDataCache.getInstance().getRecentRoomCache();
+        mRecentRoomCache = new HashMap<>(getCacheItemSize());
     }
 
     @Override
-    public void setRecentRoom(Room room) {
-        if (mRecentRoomCache.size() < 5) {
+    public int getCacheItemSize() {
+        return 5;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void setRecentRoom(@NonNull Room room) {
+        if(mRecentRoomCache.size() < getCacheItemSize()) {
             mRecentRoomCache.put(room, new Date().getTime());
             return;
         }
-        List<Room> sortingList = sortByTimeStampRoom();
-        mRecentRoomCache.remove(sortingList.get(0));
+
+        mRecentRoomCache.remove(ascSortByTimeStamp().get(0));
         setRecentRoom(room);
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Nullable
     @Override
     public List<Room> getRecentRoom() {
-        List<Room> reversedSortedRoom = sortByTimeStampRoom();
-        Collections.reverse(reversedSortedRoom);
-        return reversedSortedRoom;
-    }
-
-    @Override
-    public void deleteRoom(Room room) {
-        mRecentRoomCache.remove(room);
+        return desSortByTimeStamp();
     }
 
     @Override
@@ -57,10 +64,30 @@ public class LocalRecentRoomImpl implements RecentRoomDataSource {
         mRecentRoomCache.clear();
     }
 
-    private List<Room> sortByTimeStampRoom() {
-        List<Room> sortingList = new ArrayList<>(mRecentRoomCache.keySet());
-        Collections.sort(sortingList, (oldRoom, newRoom) ->
-                Objects.requireNonNull(mRecentRoomCache.get(oldRoom)).compareTo(Objects.requireNonNull(mRecentRoomCache.get(newRoom))));
-        return sortingList;
+    @Override
+    public void deleteRoom(@NonNull Room room) {
+        mRecentRoomCache.remove(room);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private List<Room> ascSortByTimeStamp() {
+        Comparator<Room> comparator = (r1, r2) ->
+                Objects.requireNonNull(mRecentRoomCache.get(r1))
+                        .compareTo(Objects.requireNonNull(mRecentRoomCache.get(r2)));
+
+        return mRecentRoomCache.keySet().stream()
+                .sorted(comparator).collect(Collectors.toList());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private List<Room> desSortByTimeStamp() {
+        Comparator<Room> comparator = (r1, r2) ->
+                Objects.requireNonNull(mRecentRoomCache.get(r1))
+                        .compareTo(Objects.requireNonNull(mRecentRoomCache.get(r2)));
+
+        Comparator<Room> reverse = comparator.reversed();
+
+        return mRecentRoomCache.keySet().stream()
+                .sorted(reverse).collect(Collectors.toList());
     }
 }

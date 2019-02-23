@@ -40,7 +40,7 @@ public class ChattingDataBinding {
             return;
         }
 
-        List<Chatting> orderedList = DataConverter.reOrderedListByTimeStamp(chattingList);
+        List<Chatting> orderedList = DataConverter.sortByTimeStamp(chattingList);
         chattingListAdapter.setList(orderedList);
     }
 

@@ -13,7 +13,7 @@ import androidx.annotation.RequiresApi;
 public class DataConverter {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public static List<Chatting> reOrderedListByTimeStamp(List<Chatting> chattingList) {
+    public static List<Chatting> sortByTimeStamp(List<Chatting> chattingList) {
         if (chattingList == null) {
             return null;
         }

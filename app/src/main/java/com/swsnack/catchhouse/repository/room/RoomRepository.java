@@ -1,6 +1,7 @@
 package com.swsnack.catchhouse.repository.room;
 
 import android.net.Uri;
+import android.os.Build;
 
 import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.repository.OnFailedListener;
@@ -18,6 +19,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 public class RoomRepository implements RemoteRoomDataSource, FavoriteRoomDataSource, RecentRoomDataSource, SellRoomDataSource {
 
@@ -108,11 +110,13 @@ public class RoomRepository implements RemoteRoomDataSource, FavoriteRoomDataSou
         mLocalRoomDataManager.updateRoom(room);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void setRecentRoom(Room room) {
         mRecentRoomDataManager.setRecentRoom(room);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public List<Room> getRecentRoom() {
         return mRecentRoomDataManager.getRecentRoom();
