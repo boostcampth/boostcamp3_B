@@ -1,7 +1,9 @@
 package com.swsnack.catchhouse.view.activitity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.skt.Tmap.TMapTapi;
@@ -189,6 +191,8 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
 
             }
         });
+
+
 
         viewPagerAdapter.setItems(list);
         int position = getIntent().getIntExtra(BOTTOM_NAVIGATION_POSITION, 1);

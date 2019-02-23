@@ -100,13 +100,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, Searchin
             return false;
         });
 
-        getBinding().fbMapFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.v("csh", "asd");
-            }
-        });
-
         getBinding().svMap.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override

@@ -5,10 +5,15 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.google.gms:google-services:4.0.1'
+        //classpath 'com.google.gms:google-services:4.2.0'
+        classpath 'io.fabric.tools:gradle:1.26.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -22,6 +27,12 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven {
             url 'https://navercorp.bintray.com/maps'
+        }
+        maven {
+            url 'https://maven.google.com/'
+        }
+        maven {
+            url 'https://maven.fabric.io/public'
         }
     }
 }
@@ -44,6 +55,7 @@ ext {
     firebaseVersion = '16.0.6'
     firebaseAuthVersion = '16.1.0'
     firebaseStorageVersion = '16.0.5'
+    firebaseCrashlyticsVersion = '2.9.8'
     googleAuthVersion = '16.0.1'
     facebookAuthVersion = '4.39.0'
     geofireVersion = "2.3.1"
