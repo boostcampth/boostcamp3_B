@@ -115,8 +115,7 @@ public class BottomNavActivity extends BaseActivity<ActivityBottomNavBinding> {
     }
 
     private void createViewModels() {
-        createViewModel(UserViewModel.class, new UserViewModelFactory(getApplication(),
-                AppDataSource.getInstance(),
+        createViewModel(UserViewModel.class, new UserViewModelFactory(AppDataSource.getInstance(),
                 APIManager.getInstance(),
                 this));
         createViewModel(SearchingViewModel.class, new SearchingViewModelFactory(getApplication(),

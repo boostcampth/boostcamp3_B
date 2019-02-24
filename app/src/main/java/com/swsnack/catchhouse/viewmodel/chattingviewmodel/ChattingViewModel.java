@@ -20,6 +20,7 @@ import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.swsnack.catchhouse.Constant.SuccessKey.SEND_MESSAGE_SUCCESS;
 
@@ -57,8 +58,8 @@ public class ChattingViewModel extends ReactiveViewModel {
                 .cancelObservingChattingList();
     }
 
-    public void getUser(int position, OnSuccessListener<User> onSuccessListener, OnFailureListener onFailureListener) {
-        for (String uuid : mChattingList.getValue().get(position).getUsers().keySet()) {
+    public void getUser(Map<String, Boolean> users, OnSuccessListener<User> onSuccessListener, OnFailureListener onFailureListener) {
+        for (String uuid :users.keySet()) {
             if (!uuid.equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
                 getDataManager()
                         .getUserFromSingleSnapShot(uuid,

@@ -1,9 +1,11 @@
 package com.swsnack.catchhouse.adapter.bindingadapter;
 
+import androidx.annotation.RequiresApi;
 import androidx.databinding.BindingAdapter;
 import android.net.Uri;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import java.util.List;
 
 public class ChattingDataBinding {
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @BindingAdapter({"setChattingList"})
     public static void setList(RecyclerView recyclerView, List<Chatting> chattingList) {
         ChattingListAdapter chattingListAdapter = (ChattingListAdapter) recyclerView.getAdapter();
@@ -37,7 +40,7 @@ public class ChattingDataBinding {
             return;
         }
 
-        List<Chatting> orderedList = DataConverter.reOrderedListByTimeStamp(chattingList);
+        List<Chatting> orderedList = DataConverter.sortByTimeStamp(chattingList);
         chattingListAdapter.setList(orderedList);
     }
 

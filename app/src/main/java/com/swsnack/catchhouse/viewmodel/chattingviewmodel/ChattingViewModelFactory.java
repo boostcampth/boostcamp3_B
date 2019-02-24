@@ -2,11 +2,6 @@ package com.swsnack.catchhouse.viewmodel.chattingviewmodel;
 
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.AppDataSource;
-import com.swsnack.catchhouse.repository.chatting.remote.RemoteChattingImpl;
-import com.swsnack.catchhouse.repository.location.remote.RemoteLocationImpl;
-import com.swsnack.catchhouse.repository.room.RoomRepository;
-import com.swsnack.catchhouse.repository.searching.remote.SearchingDataImpl;
-import com.swsnack.catchhouse.repository.user.remote.UserDataImpl;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
 
 import androidx.annotation.NonNull;

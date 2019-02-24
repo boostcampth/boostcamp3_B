@@ -3,9 +3,9 @@ package com.swsnack.catchhouse.data.db;
 import com.swsnack.catchhouse.AppApplication;
 import com.swsnack.catchhouse.data.entity.FavoriteRoomEntity;
 import com.swsnack.catchhouse.data.entity.SellRoomEntity;
-import com.swsnack.catchhouse.repository.room.local.FavoriteRoomDao;
-import com.swsnack.catchhouse.repository.room.local.SellRoomDao;
-import com.swsnack.catchhouse.repository.room.local.TypeConverter;
+import com.swsnack.catchhouse.data.source.favoriteroom.FavoriteRoomDao;
+import com.swsnack.catchhouse.data.source.room.local.SellRoomDao;
+import com.swsnack.catchhouse.data.source.room.local.TypeConverter;
 
 import androidx.room.Database;
 import androidx.room.Room;

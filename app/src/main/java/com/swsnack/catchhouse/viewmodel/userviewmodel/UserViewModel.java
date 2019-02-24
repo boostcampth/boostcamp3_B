@@ -1,6 +1,5 @@
 package com.swsnack.catchhouse.viewmodel.userviewmodel;
 
-import android.app.Application;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.View;
@@ -18,14 +17,11 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.swsnack.catchhouse.R;
-import com.swsnack.catchhouse.data.model.Room;
 import com.swsnack.catchhouse.data.model.User;
 import com.swsnack.catchhouse.repository.APIManager;
 import com.swsnack.catchhouse.repository.DataSource;
 import com.swsnack.catchhouse.viewmodel.ReactiveViewModel;
 import com.swsnack.catchhouse.viewmodel.ViewModelListener;
-
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -44,26 +40,18 @@ import static com.swsnack.catchhouse.util.StringUtil.getStringFromResource;
 
 public class UserViewModel extends ReactiveViewModel {
 
-    private Application mAppContext;
     private ViewModelListener mListener;
+    public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<Uri> mProfileUri;
-    private MutableLiveData<List<Room>> mFavoriteRoomList;
-    private MutableLiveData<List<Room>> mSellRoomList;
-    private MutableLiveData<List<Room>> mRecentRoomList;
     private MutableLiveData<String> mGender;
     private MutableLiveData<User> mUser;
-    public MutableLiveData<Boolean> mIsSigned;
     public MutableLiveData<String> mEmail;
     public MutableLiveData<String> mPassword;
     public MutableLiveData<String> mNickName;
 
-    UserViewModel(Application application, DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
+    UserViewModel(DataSource dataManager, APIManager apiManager, ViewModelListener listener) {
         super(dataManager, apiManager);
-        this.mAppContext = application;
         this.mProfileUri = new MutableLiveData<>();
-        this.mSellRoomList = new MutableLiveData<>();
-        this.mFavoriteRoomList = new MutableLiveData<>();
-        this.mRecentRoomList = new MutableLiveData<>();
         this.mUser = new MutableLiveData<>();
         this.mGender = new MutableLiveData<>();
         this.mIsSigned = new MutableLiveData<>();
@@ -184,8 +172,6 @@ public class UserViewModel extends ReactiveViewModel {
         }
         mListener.isWorking();
 
-        User user = new User(mEmail.getValue(), mNickName.getValue(), mGender.getValue());
-
         getApiManager()
                 .firebaseSignIn(mEmail.getValue(),
                         mPassword.getValue(),
@@ -269,32 +255,8 @@ public class UserViewModel extends ReactiveViewModel {
                         error -> mListener.onError(getStringFromResource(R.string.snack_update_profile_failed)));
     }
 
-    public void getSellRoom() {
-        mSellRoomList.setValue(getDataManager().getSellRoomList());
-    }
-
-    public void getFavoriteRoom() {
-        mFavoriteRoomList.setValue(getDataManager().getFavoriteRoomList());
-    }
-
-    public void getRecentRoom() {
-        mRecentRoomList.setValue(getDataManager().getRecentRoom());
-    }
-
     public LiveData<User> getUser() {
         return mUser;
-    }
-
-    public LiveData<List<Room>> getFavoriteRoomList() {
-        return mFavoriteRoomList;
-    }
-
-    public LiveData<List<Room>> getRecentRoomList() {
-        return mRecentRoomList;
-    }
-
-    public LiveData<List<Room>> getSellRoomList() {
-        return mSellRoomList;
     }
 
     private LiveData<Uri> getProfileUri() {

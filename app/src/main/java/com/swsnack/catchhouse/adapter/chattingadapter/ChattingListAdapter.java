@@ -1,13 +1,11 @@
 package com.swsnack.catchhouse.adapter.chattingadapter;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.swsnack.catchhouse.R;
 import com.swsnack.catchhouse.adapter.BaseRecyclerViewAdapter;
 import com.swsnack.catchhouse.data.model.Chatting;
@@ -16,6 +14,10 @@ import com.swsnack.catchhouse.databinding.ItemChattingListBinding;
 import com.swsnack.catchhouse.viewmodel.chattingviewmodel.ChattingViewModel;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, ChattingListItemHolder> {
 
@@ -59,7 +61,7 @@ public class ChattingListAdapter extends BaseRecyclerViewAdapter<Chatting, Chatt
 
         ItemChattingListBinding binding = ((ChattingListItemHolder) holder).getBinding();
         binding.setChattingData(arrayList.get(position));
-        mChattingViewModel.getUser(position,
+        mChattingViewModel.getUser(arrayList.get(position).getUsers(),
                 binding::setUserData,
                 error -> Snackbar.make(binding.getRoot(), R.string.snack_failed_load_list, Snackbar.LENGTH_SHORT).show());
 

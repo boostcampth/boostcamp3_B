@@ -1,12 +1,12 @@
 package com.swsnack.catchhouse.adapter.chattingadapter;
 
+import com.swsnack.catchhouse.databinding.ItemChattingListBinding;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LifecycleRegistry;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.swsnack.catchhouse.databinding.ItemChattingListBinding;
 
 public class ChattingListItemHolder extends RecyclerView.ViewHolder implements LifecycleOwner {
 

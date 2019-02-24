@@ -1,10 +1,10 @@
 package com.swsnack.catchhouse.data.model;
 
-import androidx.annotation.Nullable;
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+
+import androidx.annotation.Nullable;
 
 public class Chatting implements Serializable {
 
@@ -45,13 +45,14 @@ public class Chatting implements Serializable {
         return this.roomUid.equals(((Chatting) obj).getRoomUid());
     }
 
+    @Override
+    public int hashCode() {
+        return roomUid.hashCode();
+    }
+
     @Nullable
     public List<Message> getMessages() {
         return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
     }
 }
 

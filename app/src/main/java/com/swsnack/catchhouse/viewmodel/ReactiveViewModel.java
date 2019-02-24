@@ -19,10 +19,16 @@ public class ReactiveViewModel extends ViewModel {
         mApiManager = apiManager;
     }
 
+    public ReactiveViewModel() {
+
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
-        mDisposables.dispose();
+        if(mDisposables != null) {
+            mDisposables.dispose();
+        }
     }
 
     protected CompositeDisposable getCompositeDisposable() {

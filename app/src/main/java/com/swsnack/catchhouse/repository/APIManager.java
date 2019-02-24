@@ -126,8 +126,8 @@ public class APIManager {
 
         mDataManager.cancelMessageModelObserving();
         mDataManager.cancelObservingChattingList();
-        mDataManager.deleteRecentRoomList();
-        mDataManager.deleteFavoriteRoom();
+//        mDataManager.deleteRecentRoomList();
+//        mDataManager.deleteFavoriteRoom();
 
         mDataManager.deleteUser(uuid,
                 deleteUserSuccess -> deleteUser(onSuccessListener, onFailedListener),
@@ -142,7 +142,7 @@ public class APIManager {
         FirebaseAuth.getInstance().signOut();
         mDataManager.cancelMessageModelObserving();
         mDataManager.cancelObservingChattingList();
-        mDataManager.deleteRecentRoomList();
+//        mDataManager.deleteRecentRoomList();
     }
 
     public void updatePassword(@NonNull String oldPassword,
