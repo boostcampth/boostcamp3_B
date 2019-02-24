@@ -79,32 +79,33 @@ public class SearchingDataImpl implements SearchingDataSource {
             return false;
         }
 
+
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
-        if (filter.getDateFrom() != null && filter.getDateTo() != null) {
+        if (filter.getDateFrom() != null) {
             try {
                 Date dateRoomFrom = formatter.parse(room.getFrom());
-                Date dateRoomTo = formatter.parse(room.getTo());
                 Date dateFilterFrom = formatter.parse(filter.getDateFrom());
-                Date dateFilterTo = formatter.parse(filter.getDateTo());
-                if (dateFilterFrom.getTime() > dateRoomFrom.getTime() || dateFilterTo.getTime() < dateRoomTo.getTime()) {
+
+                if (dateFilterFrom.getTime() < dateRoomFrom.getTime()) {
+                    Log.v("csh","Filter From:"+dateFilterFrom);
+                    Log.v("csh","Room From:"+dateRoomFrom);
                     return false;
                 }
             } catch (Exception e) {
             }
         }
 
-
-
-/*
-        if (filter.getPriceFrom() != null && filter.getPriceTo() != null) {
-            if (filter.getPriceFrom() != "" && filter.getPriceTo() != "") {
-                if (Integer.parseInt(room.getPrice()) < Integer.parseInt(filter.getPriceFrom().replaceAll(",", "")) && Integer.parseInt(room.getPrice()) > Integer.parseInt(filter.getPriceTo().replaceAll(",", ""))) {
-
+        if (filter.getDateTo() != null) {
+            try {
+                Date dateRoomTo = formatter.parse(room.getTo());
+                Date dateFilterTo = formatter.parse(filter.getDateTo());
+                if (dateFilterTo.getTime() > dateRoomTo.getTime()) {
                     return false;
                 }
+            } catch (Exception e) {
             }
-        }*/
+        }
 
         if(filter.getPriceFrom() != null) {
             if(filter.getPriceFrom() != "") {
